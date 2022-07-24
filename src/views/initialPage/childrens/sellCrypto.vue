@@ -288,7 +288,6 @@ export default {
     nextStep(){
       //是否是从菜单进入
       this.$store.state.routerQueryPath = false
-
       // this.payCommission.symbol = this.$store.state.feeParams.symbol;
       // let routerParams = {
       //   amount: this.payAmount,
@@ -304,7 +303,11 @@ export default {
       this.$store.state.cardInfoFromPath = 'configSell';
       delete this.$store.state.sellForm;
       delete this.$store.state.sellRouterParams.cardInfoList;
-      this.$router.push('/sell-formUserInfo')
+      if(localStorage.getItem("token")){
+        this.$router.push('/sell-formUserInfo');
+      }else{
+        this.$router.replace('/emailCode');
+      }
     },
   },
 }

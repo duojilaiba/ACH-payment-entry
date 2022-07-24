@@ -7,6 +7,11 @@
       <div class="icon" v-if="$store.state.goHomeState" @click="goBack"><img src="../assets/images/goBack.png"></div>
       <div class="linkName">
         {{ $t(routerName) }}
+        <!-- 卖币表单页展示修改卖币信息入口 -->
+        <div class="sellChangeForm" v-if="this.$store.state.cardInfoFromPath === 'configSell'">
+          <p>· United States</p>
+          <p><img src="../assets/images/changeIcon.svg" alt=""></p>
+        </div>
         <!-- 退款页面标题添加币种 -->
         <span class="currency" v-if="$route.path === '/Refund'">{{ $route.query.currency }}</span>
       </div>
@@ -157,6 +162,27 @@ export default {
       display: flex;
       .currency{
         margin-left: 0.06rem;
+      }
+      .sellChangeForm{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: SFProDisplayRegular;
+        font-weight: 400;
+        font-size: 0.13rem;
+        color: #0059DA;
+        margin-left: 0.08rem;
+        cursor: pointer;
+        p:last-child{
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 0.14rem;
+          margin-left: 0.04rem;
+          img{
+            width: 100%;
+          }
+        }
       }
     }
   }
