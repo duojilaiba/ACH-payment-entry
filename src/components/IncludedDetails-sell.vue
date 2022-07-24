@@ -241,7 +241,6 @@ export default {
     },
     queryFee(){
       let patams = JSON.parse(JSON.stringify(this.$store.state.feeParams))
-      patams.symbol = patams.symbol +'USDT'
       this.$axios.get(this.$api.get_inquiryFeeSell,patams).then(res=>{
         if(res && res.returnCode === "0000"){
           this.feeInfo = res.data;

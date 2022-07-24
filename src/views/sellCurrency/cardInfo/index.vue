@@ -345,6 +345,7 @@ export default {
     //确认订单 - 请求服务
     processRequest(val){
       if(this.request_loading === false){ 
+        
         this.request_loading = true;
         let params = {
           sellCardDTO: val,

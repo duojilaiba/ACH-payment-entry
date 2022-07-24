@@ -153,13 +153,13 @@ export default {
       }else if(val === 1){
         this.status=0
         this.kycVerState = 0
-        // if(this.$store.state.cardInfoFromPath === 'configSell'){
-        //   this.$router.push(`/sellOrder`)
-        //   return
-        // }
-        sessionStorage.removeItem('getToken')
+        console.log(this.$store.state.homeTabstate );
+        if(this.$store.state.homeTabstate ==='sellCrypto'){
+          sessionStorage.removeItem('getToken')
             sessionStorage.removeItem('sellState')
-          alert('成功跳转')
+            this.$router.push('/configSell')
+        }
+        
         
         
         return
@@ -198,7 +198,7 @@ export default {
     //获取用户的kyc验证token
     getUserToken(){
       let data = {
-        fullName:'20T0fT/6GpV2B6qCvN5HRQ=='
+        fullName:this.$store.state.sellRouterParams.fullName
       }
        this.$axios.post(this.$api.post_getKycToken+'?fullName='+data.fullName).then(res=>{
          if(!res){
