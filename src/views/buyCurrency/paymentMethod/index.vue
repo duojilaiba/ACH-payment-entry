@@ -266,6 +266,9 @@ export default {
       if(this.cardCheck !== '' && this.payMethod.payWayCode === '10001'){
         this.payMethod.cardNumber = AES_Encrypt(this.payMethod.cardNumber);
         this.$store.state.buyRouterParams.userCardId = this.payMethod.userCardId;
+        // this.$axios.post(this.$api.post_getKycThrough).then(res=>{
+        //   console.log(res);
+        // })
         this.$router.push(`/creditCardConfig?submitForm=${JSON.stringify(this.payMethod)}&configPaymentFrom=userPayment`);
         return;
       }

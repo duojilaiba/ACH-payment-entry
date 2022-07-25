@@ -58,7 +58,9 @@ export default {
     //获取kyc验证token
   "post_getKycToken":'/kyc/getKycToken',
   //买币是否要kyc验证
-  "post_getKycThrough":'/rypto/buyKycThrough',
+  "post_getKycThrough":'/crypto/buyKycThrough',
+  //卖币是否要kyc验证
+  "post_getKycStatus":'/kyc/getKycStatus',
   //用户一键登陆接口
   "getUserLogin":'/login/free/certification'
 }

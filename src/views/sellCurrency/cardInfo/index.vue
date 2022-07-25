@@ -384,10 +384,10 @@ export default {
     },
 
     isKyc(val){
-      let params = {
-        amount: this.$store.state.sellRouterParams.amount * this.$store.state.sellRouterParams.currencyData.price
-      }
-      this.$axios.get(this.$api.get_kyc,params).then(res=>{
+      // let params = {
+      //   amount: this.$store.state.sellRouterParams.amount * this.$store.state.sellRouterParams.currencyData.price
+      // }
+      this.$axios.post(this.$api.post_getKycStatus).then(res=>{
         if(res && res.returnCode === '0000'){
           if(res.data.isKyc === true){
             this.$store.state.sellRouterParams.fullName = val.name;
