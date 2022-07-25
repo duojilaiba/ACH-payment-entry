@@ -3,7 +3,7 @@
     <!-- 展示成功失败等待状态页面 -->
     <div class="Verification_content" v-if="status==0" :key="0">
       <div class="kyc_nav">
-      <img src="@/assets/images/ShutDown.png" @click="goHome" alt="">
+      <img v-if=" kycVerState !== 1" src="@/assets/images/ShutDown.png" @click="goHome" alt="">
     </div>
     <!-- 点击进行kyc验证 -->
         <div class="content" v-if="kycVerState==0">
@@ -51,11 +51,12 @@
         </div>
     </div>
     <!-- kyc验证页面 -->
+    
     <div class="verif_kyc" v-else :key="1">
-          <img src="@/assets/images/ShutDown.png" @click="removeItemKyv" alt="">
+          <div class="verif_kyc_nav"><img src="@/assets/images/ShutDown.png" @click="removeItemKyv" alt="" ></div>
+     
       <div id="sumsub-websdk-container" ></div>
     </div>
-    
   </div>
 </template>
 <script>
@@ -111,7 +112,7 @@ export default {
           }else{
             //重新验证
             this.status = 0
-            this.kycVerState = 1
+            this.kycVerState = 0
             return
           }
             
@@ -192,13 +193,15 @@ export default {
         })
        sessionStorage.removeItem('sellState') 
        sessionStorage.removeItem('getToken')
-      this.$router.go(-1)
+      this.$router.go('-1')
     },
     //关闭kyc验证
     removeItemKyv(){
       this.status = 0;
+      this.kycVerState = 0
        sessionStorage.removeItem('sellState') 
        sessionStorage.removeItem('getToken')
+      //  this.$router.replace('/')
     },
     //获取用户的kyc验证token
     getUserToken(){
@@ -260,7 +263,6 @@ export default {
    }else{
      return false
    }
-   
 
   //  console.log(this.kycVerState=2);
   },
@@ -366,13 +368,21 @@ export default {
     width: 3.4rem;
     position: fixed;
     overflow: scroll;
-   >img{
-     height: .14rem;
-     cursor: pointer;
-     position: absolute;
-     right: .1rem;
-     top: .0rem;
-   }
+    .verif_kyc_nav{
+      width: 100%;
+      height: .3rem;
+      background: #FFFFFF;
+      position: sticky;
+      top: 0;
+      >img{
+        height: .14rem;
+        cursor: pointer;
+        position: absolute;
+        right: 0rem;
+        top: .0rem;
+      }
+    }
+   
  #sumsub-websdk-container{
   height: 100%;
   

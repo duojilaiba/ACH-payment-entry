@@ -41,7 +41,7 @@
     <div class="sendCrypto_content">
       <div class="title">{{  $t('nav.Sellorder_Network') }}</div>
       <div class="content" @click="Network_show = true">
-        <p :style="{color:transferredShow?'#063376 !important':''}">{{ orderStateData.network }}</p>
+        <p :style="{color:transferredShow?'#063376 !important':''}">{{ orderStateData.networkName }}</p>
         <img style="height:.15rem" src="@/assets/images/SelectNetwork.png" alt="">
       </div>
     </div>
@@ -92,7 +92,7 @@
    <div :class="!Network_show?'sendCrypto_bottomContent':'sendCrypto_bottomContent sendCrypto_bottomContentActive'" >
        <div class="Network-title">{{ $t('nav.Sellorder_Network') }} <img @click="Network_show = false" src="@/assets/images/ShutDown.png" alt=""></div>
        
-       <div class="Network-content" v-for="item in Sellorder_NetworkList?Sellorder_NetworkList:''" :key="item.id" @click="networkSelect(item)">{{ item.networkName }} <img :src="item.network==orderStateData.network?NetworkCheck:''" alt=""></div>
+       <div class="Network-content" v-for="item in Sellorder_NetworkList?Sellorder_NetworkList:''" :key="item.id" @click="networkSelect(item)">{{ item.networkName }} <img :src="item.networkName==orderStateData.networkName?NetworkCheck:''" alt=""></div>
      </div>
   </div>
 </template>
