@@ -349,7 +349,7 @@ export default {
         this.request_loading = true;
         let params = {
           sellCardDTO: val,
-          // orderId: this.$store.state.sellForm ? this.$store.state.sellForm.id : '', // 不传为新增卡信息，传为修改卡信息
+          orderId: this.$store.state.cardInfoFromPath === 'configSell' ? '' : this.$store.state.sellOrderId, // 不传为新增卡信息，传为修改卡信息
           cryptoCurrency: this.$store.state.sellRouterParams.currencyData.name,
           sellVolume: this.$store.state.sellRouterParams.amount,
           network: this.$store.state.sellRouterParams.currencyData.sellNetwork.network,

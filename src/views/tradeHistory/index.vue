@@ -7,73 +7,71 @@
     </div>
 
     <!-- 买币历史 -->
-    <div class="historyList-box" v-show="tabViewName === 'buy'"
+    <div class="historyList-box" v-show="tabViewName === 'buy'">
       <div class="noData" v-if="buy_historyList.length===0">
-      <div class="noDataImg"><img src="../../assets/images/noData.png"></div>
-      <div class="noDataText">{{ $t('nav.history_noListText') }}</div>
-      <p>{{ $t('nav.history_noListText2') }}</p>
-      <button class="continue" @click="goHome">
-        {{ $t('nav.history_noListButton') }}
-        <img class="rightIcon" src="../../assets/images/rightIconSell.png" alt="">
-      </button>
-    </div>
-    <div class="historyList" v-else>
-      <van-list v-model="loading" :finished="finished" :finished-text="$t('nav.history_noMore')" @load="onLoad" loading-text="Loading" error-text="Loading failed">
-        <div class="van-clearfix">
-          <div class="float-item" v-for="(item,index) in buy_historyList" :key="index">
-            <div class="historyLi_header">
-              <div class="historyLi_header_left">
-                <div class="cryptoCurrencyIcon"><img :src="item.cryptoCurrencyIcon"></div>
-                <div>
-                  <div class="cryptoCurrencyName">{{ item.cryptoCurrency }}</div>
-                  <div class="time">{{ item.createdTime }}</div>
+        <div class="noDataImg"><img src="../../assets/images/noData.png"></div>
+        <div class="noDataText">{{ $t('nav.history_noListText') }}</div>
+        <p>{{ $t('nav.history_noListText2') }}</p>
+        <button class="continue" @click="goHome">
+          {{ $t('nav.history_noListButton') }}
+          <img class="rightIcon" src="../../assets/images/rightIconSell.png" alt="">
+        </button>
+      </div>
+      <div class="historyList" v-else>
+        <van-list v-model="buyLoading" :finished="buyFinished" :finished-text="$t('nav.history_noMore')" @load="buyOnLoad" loading-text="Loading" error-text="Loading failed">
+          <div class="van-clearfix">
+            <div class="float-item" v-for="(item,index) in buy_historyList" :key="index">
+              <div class="historyLi_header">
+                <div class="historyLi_header_left">
+                  <div class="cryptoCurrencyIcon"><img :src="item.cryptoCurrencyIcon"></div>
+                  <div>
+                    <div class="cryptoCurrencyName">{{ item.cryptoCurrency }}</div>
+                    <div class="time">{{ item.createdTime }}</div>
+                  </div>
+                </div>
+                <div class="state">
+                  <span v-if="item.orderState === 1 || item.orderState === 2" class="state_loading">{{ $t('nav.history_state_Processing') }}</span>
+                  <span v-if="item.orderState === 3 || item.orderState === 4" class="state_loading">{{ $t('nav.history_state_Transfer') }}</span>
+                  <span v-if="item.orderState === 5" class="state_success">{{ $t('nav.history_state_Complete') }}</span>
+                  <!--                <span v-if="item.orderState === 0" class="state_error">fail</span>-->
+  <!--                <span v-if="item.orderState === 2 || item.orderState === 3" class="state_loading">Transferring</span>-->
                 </div>
               </div>
-              <div class="state">
-                <span v-if="item.orderState === 1 || item.orderState === 2" class="state_loading">{{ $t('nav.history_state_Processing') }}</span>
-                <span v-if="item.orderState === 3 || item.orderState === 4" class="state_loading">{{ $t('nav.history_state_Transfer') }}</span>
-                <span v-if="item.orderState === 5" class="state_success">{{ $t('nav.history_state_Complete') }}</span>
-                <!--                <span v-if="item.orderState === 0" class="state_error">fail</span>-->
-<!--                <span v-if="item.orderState === 2 || item.orderState === 3" class="state_loading">Transferring</span>-->
+              <div class="details_line">
+                <div class="details_line_title">{{ $t('nav.history_listTitle1') }}:</div>
+                <div class="details_line_value">{{ item.orderNo }}</div>
               </div>
-            </div>
-            <div class="details_line">
-              <div class="details_line_title">{{ $t('nav.history_listTitle1') }}:</div>
-              <div class="details_line_value">{{ item.orderNo }}</div>
-            </div>
-            <div class="details_line">
-              <div class="details_line_title">{{ $t('nav.payResult_feeAmount') }}:</div>
-              <div class="details_line_value">{{ item.fiatCurrencySymbol }}{{ item.amount }}</div>
-            </div>
-            <div class="details_line">
-              <div class="details_line_title">{{ item.cryptoCurrency }} {{ $t('nav.fee_listTitle_price') }}:</div>
-              <div class="details_line_value">{{ item.fiatCurrencySymbol }}{{ item.cryptoCurrencyPrice }}</div>
-            </div>
-            <div class="details_line">
-              <div class="details_line_title">{{ $t('nav.history_listTitle2') }}:</div>
-              <div class="details_line_value">{{ item.cryptoCurrencyVolume }}{{ item.cryptoCurrency }}</div>
-            </div>
-            <div class="details_line" >
-              <div class="details_line_title">
-                <span v-if="item.depositType===1">ACH {{ $t('nav.payResult_feeWallet') }}:</span>
-                <span v-if="item.depositType===2">{{ $t('nav.payResult_feeAddress') }}:</span>
+              <div class="details_line">
+                <div class="details_line_title">{{ $t('nav.payResult_feeAmount') }}:</div>
+                <div class="details_line_value">{{ item.fiatCurrencySymbol }}{{ item.amount }}</div>
               </div>
-              <div class="details_line_value address_value">{{ item.address }}</div>
-            </div>
-            <div class="details_line" v-if="item.hashId">
-              <div class="details_line_title">{{ $t('nav.history_listTitle3') }}:</div>
-              <div class="details_line_value">{{ item.hashId }}</div>
+              <div class="details_line">
+                <div class="details_line_title">{{ item.cryptoCurrency }} {{ $t('nav.fee_listTitle_price') }}:</div>
+                <div class="details_line_value">{{ item.fiatCurrencySymbol }}{{ item.cryptoCurrencyPrice }}</div>
+              </div>
+              <div class="details_line">
+                <div class="details_line_title">{{ $t('nav.history_listTitle2') }}:</div>
+                <div class="details_line_value">{{ item.cryptoCurrencyVolume }}{{ item.cryptoCurrency }}</div>
+              </div>
+              <div class="details_line" >
+                <div class="details_line_title">
+                  <span v-if="item.depositType===1">ACH {{ $t('nav.payResult_feeWallet') }}:</span>
+                  <span v-if="item.depositType===2">{{ $t('nav.payResult_feeAddress') }}:</span>
+                </div>
+                <div class="details_line_value address_value">{{ item.address }}</div>
+              </div>
+              <div class="details_line" v-if="item.hashId">
+                <div class="details_line_title">{{ $t('nav.history_listTitle3') }}:</div>
+                <div class="details_line_value">{{ item.hashId }}</div>
+              </div>
             </div>
           </div>
-        </div>
-      </van-list>
-    </div>
+        </van-list>
+      </div>
     </div>
 
     <!-- 卖币历史 -->
-    <!-- <div class="historyList-box" v-show="tabViewName === 'buy'">
-      
-    </div> -->
+    
 
   </div>
 </template>
@@ -81,57 +79,100 @@
 <script>
 
 export default {
-  name: "Trade History",
+  name: "TradeHistory",
   data(){
     return{
       tabViewName: 'buy',
 
-      query: {
+      buyQuery: {
         orderState: 1,
         orderType: 1,
         pageIndex: 1,
         pageSize: 5
       },
       buy_historyList: [],
+
+      buyLoading: false,
+      buyFinished: false,
+
+      //卖币
+      sellQuery: {
+        orderState: 1,
+        orderType: 1,
+        pageIndex: 1,
+        pageSize: 5
+      },
       sell_historyList: [],
 
-      loading: false,
-      finished: false,
+      sellLoading: false,
+      sellFinished: false,
     }
   },
   activated(){
-    this.query = {
-      orderState: 1,
-      orderType: 1,
-      pageIndex: 1,
-      pageSize: 5
-    };
-    this.buy_historyList = [];
-    this.queryTransactionHistory();
+    if(this.tabViewName === "buy"){
+      this.buyQuery = {
+        orderState: 1,
+        orderType: 1,
+        pageIndex: 1,
+        pageSize: 5
+      };
+      this.buy_historyList = [];
+      this.buyTransactionHistory();
+    }else{
+      this.sellQuery = {
+        orderState: 1,
+        orderType: 1,
+        pageIndex: 1,
+        pageSize: 5
+      };
+      this.sell_historyList = [];
+      this.sellTransactionHistory();
+    }
   },
   methods:{
     goHome(){
       this.$router.push('/')
     },
-    queryTransactionHistory(){
+    buyTransactionHistory(){
       let _this = this;
-      this.$axios.get(this.$api.get_transactionHistory,this.query).then(res=>{
+      this.$axios.get(this.$api.get_transactionHistory,this.buyQuery).then(res=>{
         if(res.data){
           let newArray = res.data.result.filter(item=>{return item.orderState !== 0 && item.orderState !== 6});
           _this.buy_historyList = _this.buy_historyList.concat(newArray);
-          _this.loading = false;
-          if ((_this.query.pageIndex * _this.query.pageSize) > res.data.total || _this.buy_historyList.length === res.data.total){
-            _this.finished = true;
+          _this.buyLoading = false;
+          if ((_this.buyQuery.pageIndex * _this.buyQuery.pageSize) > res.data.total || _this.buy_historyList.length === res.data.total){
+            _this.buyFinished = true;
           }
         }
       })
     },
-    onLoad() {
+    buyOnLoad(){
       setTimeout(() => {
         this.query.pageIndex += 1;
-        this.queryTransactionHistory();
+        this.buyTransactionHistory();
       }, 1000);
     },
+    
+    //卖币
+    sellTransactionHistory(){
+      let _this = this;
+      this.$axios.get(this.$api.get_transactionHistory,this.sellQuery).then(res=>{
+        if(res.data){
+          let newArray = res.data.result.filter(item=>{return item.orderState !== 0 && item.orderState !== 6});
+          _this.sell_historyList = _this.sell_historyList.concat(newArray);
+          _this.sellLoading = false;
+          if ((_this.sellQuery.pageIndex * _this.sellQuery.pageSize) > res.data.total || _this.sell_historyList.length === res.data.total){
+            _this.sellFinished = true;
+          }
+        }
+      })
+    },
+    sellOnLoad(){
+      setTimeout(() => {
+        this.query.pageIndex += 1;
+        this.sellTransactionHistory();
+      }, 1000);
+    }
   }
 }
 </script>
