@@ -180,15 +180,32 @@ export default {
         })
         axios(config).then(function (response) {
           if(response.data.status && response.returnCode === '0000'){
+            this.login_loading = false
             localStorage.setItem('token',localStorage.getItem('fin_token'))
             localStorage.setItem('email',localStorage.getItem('login_email'))
-            _this.$router.push('/')
+            if(_this.$store.state.routerQueryPath === true){
+          _this.$router.push('/');
+          return
+        } 
+            if(_this.$route.query.fromName === 'tradeList'){
+              _this.$router.replace('/tradeHistory');
+            }else{
+              //登陆跳转路径根据router.from的路由跳转不同页面
+              if(_this.$store.state.emailFromPath === 'buyCrypto'){
+                _this.$router.push(`/receivingMode`);
+              }else if(_this.$store.state.emailFromPath === 'sellCrypto'){
+                  // _this.$router.push('/')
+                  _this.$router.push('/sell-formUserInfo')
+                
+              }else if(_this.$store.state.emailFromPath === 'sellOrder'){
+                _this.$router.push('/sellOrder');
+              }else{
+                _this.$router.push('/');
+              }
+            }
           }
         })
         
-        console.log('设备ID__'+AES_Decrypt(localStorage.getItem('fingerprint_id')));
-        console.log('邮箱ID__'+AES_Decrypt(localStorage.getItem('login_email')));
-        // alert('一键登陆')
         return
       }
       this.emailErrorState = false;

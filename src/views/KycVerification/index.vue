@@ -1,6 +1,6 @@
   <template>
   <div class="KycVer-container">
-    <!-- 展示成功状态页面 -->
+    <!-- 展示成功失败等待状态页面 -->
     <div class="Verification_content" v-if="status==0" :key="0">
       <div class="kyc_nav">
       <img src="@/assets/images/ShutDown.png" @click="goHome" alt="">
@@ -96,7 +96,7 @@ export default {
           }
           //正在处理
           if(type.reviewStatus === "pending"){
-            console.log('正在处理')
+            // console.log('正在处理')
             return
             //成功
           }else if(type.reviewStatus === "completed" && type.reviewResult.reviewAnswer === 'GREEN'){
@@ -135,7 +135,8 @@ export default {
     //获取kyc验证的token
     getNewAccessToken() {
       this.getUserToken()
-      setTimeout(() => {
+      clearTimeout(this.timeOut)
+        this.timeOut = setTimeout(() => {
         return Promise.resolve(this.getToken)
       }, 1000);
         // get a new token from your backend
@@ -145,7 +146,8 @@ export default {
       //0进行kyc验证 1 成功跳转到卖币或者卖币订单page 2失败重新验证kyc
       if(val===0 && this.nextKyc){
         this.nextKyc = false
-        setTimeout(()=>{
+        clearTimeout(this.timeOut)
+        this.timeOut = setTimeout(()=>{
         this.status = 1
         this.getUserToken()
         // this.$router.push('/sellOrder')
@@ -169,7 +171,8 @@ export default {
         
         this.nextKyc = false
         
-        setTimeout(()=>{
+        clearTimeout(this.timeOut)
+        this.timeOut =setTimeout(()=>{
           this.status=1
           this.getUserToken()
           this.nextKyc = true
@@ -182,7 +185,8 @@ export default {
     //关闭页面
     goHome(){
       //返回来的页面并且清空状态
-        setTimeout(()=>{
+        clearTimeout(this.timeOut)
+        this.timeOut =setTimeout(()=>{
           this.kycVerState = 0
         sessionStorage.setItem('kycVerState',this.kycVerState)
         })
@@ -215,7 +219,8 @@ export default {
             this.nextKyc = true
             sessionStorage.setItem('getToken',res.data)
             sessionStorage.setItem('sellState',this.status)
-            setTimeout(()=>{
+            clearTimeout(this.timeOut)
+        this.timeOut =setTimeout(()=>{
               // console.log(this.getToken);
               this.launchWebSdk(this.getToken)
             },1000)
@@ -248,7 +253,8 @@ export default {
    if(sessionStorage.getItem('sellState') && sessionStorage.getItem('getToken')){
      this.status = sessionStorage.getItem('sellState') 
       this.getToken = sessionStorage.getItem('getToken')
-      setTimeout(()=>{
+      clearTimeout(this.timeOut)
+        this.timeOut = setTimeout(()=>{
         this.launchWebSdk(this.getToken)
       },200)
    }else{
@@ -259,6 +265,7 @@ export default {
   //  console.log(this.kycVerState=2);
   },
   deactivated(){
+    clearTimeout(this.timeOut)
     sessionStorage.removeItem('kycVerState')
     sessionStorage.removeItem('sellState')
     sessionStorage.removeItem('getToken')

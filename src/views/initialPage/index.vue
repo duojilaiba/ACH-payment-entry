@@ -4,10 +4,10 @@
       <div class="homePage_view" v-show="!menuState">
         <div class="home-header">
           <div class="home-tab">
-            <!-- <div :class="{'tabClass': tabstate==='buyCrypto'}" @click="switchTab('buyCrypto')" v-if="tableState===false">{{ $t('nav.routerName_buy') }}</div> -->
+            <div :class="{'tabClass': tabstate==='buyCrypto'}" @click="switchTab('buyCrypto')" v-if="tableState===false">{{ $t('nav.routerName_buy') }}</div>
             <div :class="{'tabClass': tabstate==='sellCrypto'}" @click="switchTab('sellCrypto')" v-if="tableState===false">{{ $t('nav.routerName_sell') }}</div>
             <!-- 商户配置菜单栏 -->
-            <!-- <div :class="{'tabClass': tabstate==='buyCrypto'}" @click="switchTab('buyCrypto')" v-if="tableState===true && tabstate==='buyCrypto'">{{ $t('nav.routerName_buy') }}</div> -->
+            <div :class="{'tabClass': tabstate==='buyCrypto'}" @click="switchTab('buyCrypto')" v-if="tableState===true && tabstate==='buyCrypto'">{{ $t('nav.routerName_buy') }}</div>
             <div :class="{'tabClass': tabstate==='sellCrypto'}" @click="switchTab('sellCrypto')" v-else-if="tableState===true && tabstate==='sellCrypto'">{{ $t('nav.routerName_sell') }}</div>
           </div>
           <!-- <div class="allPage-icon">

@@ -32,6 +32,7 @@ export function querySubmitToken(){
         headers: {
             'token': localStorage.getItem('token') ? localStorage.getItem('token') : '',
             'sign': localStorage.getItem('sign') ? localStorage.getItem('sign') : '',
+            'fingerprint-id': localStorage.getItem('fingerprint_id')?localStorage.getItem('fingerprint_id'):'',
             'timestamp': timestamp,
             'Content-Type': 'application/json',
             timezone: moment.tz.guess(),

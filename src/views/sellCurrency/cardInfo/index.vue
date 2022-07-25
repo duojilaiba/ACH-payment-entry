@@ -393,7 +393,8 @@ export default {
             this.$store.state.sellRouterParams.fullName = val.name;
             this.$router.push('/kycVerification');
           }else{
-            
+            //如果不需要kyc验证 直接跳订单状态页页面
+            this.$router.push('/sellOrder');
           }
         }
       })

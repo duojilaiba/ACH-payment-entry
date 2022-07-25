@@ -207,7 +207,7 @@ export default {
         //是否是从菜单进入
         
         this.$router.push('/emailCode')
-        }, 500);
+        }, 200);
       }
     },
     //显示退出登陆判断是否是pc 还是 移动

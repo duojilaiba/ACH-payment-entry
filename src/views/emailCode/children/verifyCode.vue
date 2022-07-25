@@ -129,22 +129,8 @@ import { AES_Encrypt } from '@/utils/encryp.js';
                 _this.$router.push(`/receivingMode`);
               }else if(_this.$store.state.emailFromPath === 'sellCrypto'){
                   // _this.$router.push('/')
-
-                let params = {
-                  country: _this.$store.state.sellRouterParams.positionData.alpha2,
-                  fiatName: _this.$store.state.sellRouterParams.positionData.code,
-                };
-                _this.$axios.get(_this.$api.get_userSellCardInfo,params).then(res=>{
-                  //data - null 没有填写过表单,跳转到表单页
-                  //data - !null 有填写过表单,跳转到确认订单页
-                  if(res && res.returnCode === "0000" && res.data === null){
-                    delete _this.$store.state.sellForm;
-                    _this.$router.push('/sell-formUserInfo')
-                  }else if(res && res.returnCode === "0000" && res.data !== null){
-                    _this.$store.state.sellForm = res.data;
-                    _this.$router.push('/configSell')
-                  }
-                })
+                  _this.$router.push('/sell-formUserInfo')
+                
               }else if(_this.$store.state.emailFromPath === 'sellOrder'){
                 _this.$router.push('/sellOrder');
               }else{
