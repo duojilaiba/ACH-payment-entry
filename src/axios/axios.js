@@ -23,7 +23,6 @@ function processSign_encryption(){
     let userId = sign.substring(sign.lastIndexOf("H")+1,sign.length);
     let userNo = localStorage.getItem("userNo").substring(localStorage.getItem("userNo").length-5);
     timestamp = new Date().getTime();
-    localStorage.setItem('timestamp',timestamp)
     let newSign = AES_Encrypt(userId + "-" + userNo + "-" + timestamp);
     localStorage.setItem("sign",newSign);
   }

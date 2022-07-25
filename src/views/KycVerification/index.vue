@@ -90,7 +90,7 @@ export default {
        //获取成功或失败或等待状态
       
         .on('idCheck.applicantStatus', (type,) => {
-           console.log(type);
+          //  console.log(type);
           if(!type){
             return
           }
@@ -150,8 +150,6 @@ export default {
         this.getUserToken()
         // this.$router.push('/sellOrder')
         },1000)
-        
-        
         return 
       }else if(val === 1){
         this.status=0
@@ -218,7 +216,7 @@ export default {
             sessionStorage.setItem('getToken',res.data)
             sessionStorage.setItem('sellState',this.status)
             setTimeout(()=>{
-              console.log(this.getToken);
+              // console.log(this.getToken);
               this.launchWebSdk(this.getToken)
             },1000)
             return 
@@ -261,9 +259,9 @@ export default {
   //  console.log(this.kycVerState=2);
   },
   deactivated(){
-    // console.log(sessionStorage.getItem('kycVerState'));
-    // console.log(sessionStorage.getItem('sellState'));
-    // console.log(sessionStorage.getItem('getToken'));
+    sessionStorage.removeItem('kycVerState')
+    sessionStorage.removeItem('sellState')
+    sessionStorage.removeItem('getToken')
   }
   
 }

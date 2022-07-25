@@ -71,6 +71,11 @@ export default {
         this.$router.push('/');
         return;
       }
+      console.log(this.routerPath);
+      if(this.routerPath === '/paymentMethod' &&  this.$route.path === '/receivingMode'){
+        this.$router.push('/');
+        return;
+      }
       if(this.routerPath === '/verifyCode' && this.$route.path === '/receivingMode'){
         this.$router.push('/');
         return;
@@ -80,8 +85,12 @@ export default {
         return;
       }
 
-      if(this.routerPath === '/emailCode' || this.routerPath === '/verifyCode'){
+      if( this.routerPath === '/verifyCode'){
         this.$router.go(-1)
+        return;
+      }
+      if(this.routerPath === '/emailCode' ){
+        this.$router.push('/')
         return;
       }
       if(this.$route.path === '/creditCardForm-cardInfo' && this.routerPath === '/basisIdAuth'){
