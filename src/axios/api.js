@@ -54,6 +54,10 @@ export default {
   "get_sellRefund": '/trade/sell/order/refund',
   //是否需要kyc验证
   "get_kyc": '/trade/query/sell/coin/kyc',
+  //卖币历史订单列表
+  "get_sellHistory": '/trade/query/sell/order/history',
+  //卖币查询订单详细信息
+  "get_sellOrderDetails": '/trade/query/sell/order/details',
   //------------------------- kyc验证获取token接口 -------------------------
     //获取kyc验证token
   "post_getKycToken":'/kyc/getKycToken',

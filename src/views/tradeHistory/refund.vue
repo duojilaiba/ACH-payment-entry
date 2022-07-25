@@ -41,6 +41,10 @@ export default {
       }
     }
   },
+
+  activated(){
+    this.orderId = this.$route.query.orderId;
+  },
   methods: {
     //扫码获取到的数据
     onDecode(result) {
@@ -76,7 +80,7 @@ export default {
 
     confirmRefund(){
       let params = {
-        orderId: this.$route.query.orderId,
+        orderId: this.orderId,
         address: this.walletAddress
       }
       this.$axios.get(this.$api.get_sellRefund,params).then(res=>{

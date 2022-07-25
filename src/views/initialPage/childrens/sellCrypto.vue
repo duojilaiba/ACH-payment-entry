@@ -20,7 +20,7 @@
 
       <div class="methods_select cursor">
         <div class="methods_select-left">
-          <div class="form_title get_title">{{ $t('nav.home_buyFee_title1') }}</div>
+          <div class="form_title">{{ $t('nav.home_buyFee_title1') }}</div>
           <div class="get_input">
             <span v-if="getAmount!==''">{{ getAmount }}</span>
             <span class="no_getAmount" v-else>0.00</span>
@@ -95,7 +95,7 @@ export default {
       allPayCommission: [],
 
       triggerType: "hover",
-      
+
       inputFocus: false,
     }
   },
@@ -354,7 +354,7 @@ html,body,#buyCrypto{
 }
 .inputFocus{
   border: 1px solid #D0ECFC;
-  box-shadow: 0 0 0.35rem rgba(89, 153, 248, 0.1); 
+  box-shadow: 0 0 0.35rem rgba(89, 153, 248, 0.1);
 }
 
 .pay_input{
@@ -390,8 +390,7 @@ html,body,#buyCrypto{
   width: 1.4rem;
   height: 0.26rem;
   overflow: auto;
-  font-family: 'SF Pro Display';
-  font-style: normal;
+  font-family: SFProDisplayMedium;
   font-weight: 500;
   font-size: 0.2rem;
   line-height: 0.24rem;
@@ -504,69 +503,9 @@ footer{
   cursor: auto;
 }
 
-.feeViewBtn{
-  text-align: right;
-  font-size: 0.14rem;
-  font-family: 'Jost', sans-serif;
-  font-weight: 500;
-  color: #4479D9;
-  margin-top: 0.1rem;
-  cursor: pointer;
-}
-
 .calculationProcess{
   margin-top: 0.32rem;
   margin-bottom: 0.1rem;
-  .calculationProcess_line{
-    display: flex;
-    align-items: center;
-    margin-top: 0.13rem;
-    .line_name{
-      font-size: 0.14rem;
-      font-family: "GeoDemibold", GeoDemibold;
-      font-weight: 400;
-      color: #232323;
-      display: flex;
-      align-items: center;
-      .tipsIcon{
-        width: 0.14rem;
-        height: 0.14rem;
-        margin-left: 0.1rem;
-        display: flex;
-        img{
-          width: 100%;
-          height: 100%;
-        }
-      }
-    }
-    .line_number{
-      margin-left: auto;
-      font-size: 0.14rem;
-      font-family: 'Jost', sans-serif;
-      font-weight: bold;
-      color: #232323;
-      display: flex;
-      align-items: center;
-      .minText{
-        font-size: 0.14rem;
-        font-weight: 400;
-        color: #666666;
-        margin-right: 0.2rem;
-      }
-      .line_number_icon{
-        margin-right: 0.05rem;
-        img{
-          width: 0.12rem;
-        }
-      }
-      .line_number_red{
-        font-size: 0.14rem;
-        font-family: 'Jost', sans-serif;
-        font-weight: 500;
-        color: #FF0000;
-      }
-    }
-  }
 }
 
 @keyframes loadingIcon {
