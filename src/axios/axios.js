@@ -23,6 +23,7 @@ function processSign_encryption(){
     let userId = sign.substring(sign.lastIndexOf("H")+1,sign.length);
     let userNo = localStorage.getItem("userNo").substring(localStorage.getItem("userNo").length-5);
     timestamp = new Date().getTime();
+    localStorage.setItem('timestamp',timestamp)
     let newSign = AES_Encrypt(userId + "-" + userNo + "-" + timestamp);
     localStorage.setItem("sign",newSign);
   }
@@ -100,6 +101,7 @@ axios.interceptors.response.use(function (response) {
   if(response.config.url === process.env.VUE_APP_BASE_API + '/user/login' && response.data.data !== null){
     localStorage.setItem("userId",AES_Decrypt(response.headers.sign));
     localStorage.setItem("token",response.headers.token);
+    localStorage.setItem("fin_token",response.headers.token);
     localStorage.setItem("email",response.data.data.email);
     localStorage.setItem("userNo",response.data.data.userNo);
     localStorage.setItem("kycStatus",response.data.data.kycStatus);
@@ -109,9 +111,19 @@ axios.interceptors.response.use(function (response) {
   if(response.config.url !== process.env.VUE_APP_BASE_API + '/user/login' && response.headers.token){
     localStorage.setItem("submit-token",response.headers.token);
   }
-
+  if((response.data.returnCode === '70011')){
+    // localStorage.removeItem("token");
+    // localStorage.removeItem("email");
+    // localStorage.removeItem("userNo");
+    // localStorage.removeItem("userId");
+    // localStorage.removeItem("kycStatus");
+    // store.commit("clearToken"); //取消请求
+    // store.commit("emptyToken");
+    router.replace(`/emailCode`);
+      return;
+  }
   //no login info
-  if((response.data.returnCode === '70006' || response.data.returnCode === '70008') && router.currentRoute.path !== '/emailCode'){
+  if((response.data.returnCode === '70006' || response.data.returnCode === '70008') && router.currentRoute.path !== '/emailCode' && response.data.returnCode !== '70011'){
     localStorage.removeItem("sign");
     localStorage.removeItem("token");
     localStorage.removeItem("email");

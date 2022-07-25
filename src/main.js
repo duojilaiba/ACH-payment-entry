@@ -27,9 +27,11 @@ import FingerprintJS from '@fingerprintjs/fingerprintjs-pro'
 const fpPromise = FingerprintJS.load({
   apiKey: 'tj43GDmCqsLyYSJYmaMc'
 })
+//加密设备ID
+import {AES_Encrypt} from './utils/encryp'
 // Get the visitor identifier when you need it.
 fpPromise.then(fp => fp.get()).then(result => {
-  window.localStorage.setItem("fingerprint_id",result.visitorId);
+  window.localStorage.setItem("fingerprint_id",AES_Encrypt(result.visitorId));
 });
 
 //阿里云接口埋点

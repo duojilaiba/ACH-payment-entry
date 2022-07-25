@@ -90,6 +90,7 @@ import { AES_Encrypt } from '@/utils/encryp.js';
         var data = new FormData();
          data.append('email', this.$store.state.userEmail);
          data.append('verificationCode', AES_Encrypt(this.value));
+         data.append('fingerprintId', localStorage.getItem('fingerprint_id'));
          var config = {
           method: 'post',
           url: process.env.VUE_APP_BASE_API + this.$api.post_login,

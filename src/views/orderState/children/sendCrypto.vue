@@ -3,7 +3,7 @@
     <div class="sendCrypto_nav">
       <div class="sendCrypto_nav_left" @click="$router.replace('/')">
         <img src="@/assets/images/goBack.png" alt="">
-        <p>Sell {{orderStateData.cryptoCurrency}}</p>
+        <p>Sell {{orderStateData.cryptocurrency}}</p>
       </div>
           <!-- <div class="sendCrypto_nav_right" >
             <img class="menu" src="@/assets/images/rightMeun.png" v-if="this.$parent.$parent.routerViewState" @click="openMenu">
@@ -41,7 +41,7 @@
     <div class="sendCrypto_content">
       <div class="title">{{  $t('nav.Sellorder_Network') }}</div>
       <div class="content" @click="Network_show = true">
-        <p :style="{color:transferredShow?'#063376 !important':''}">{{ orderStateData.networkName }}</p>
+        <p :style="{color:transferredShow?'#063376 !important':''}">{{ orderStateData.network }}</p>
         <img style="height:.15rem" src="@/assets/images/SelectNetwork.png" alt="">
       </div>
     </div>
@@ -49,7 +49,7 @@
       </div>
       <div class="sendCrypto_button" @click="transferredShow=true">
       <div>
-          {{ $t('nav.Sell_Order_haveSent') }} {{orderStateData.cryptoCurrency}}
+          {{ $t('nav.Sell_Order_haveSent') }} {{orderStateData.cryptocurrency}}
           <img src="@/assets/images/rightIconSell.png" alt="">
       </div>
     </div>
@@ -91,7 +91,8 @@
    </div>
    <div :class="!Network_show?'sendCrypto_bottomContent':'sendCrypto_bottomContent sendCrypto_bottomContentActive'" >
        <div class="Network-title">{{ $t('nav.Sellorder_Network') }} <img @click="Network_show = false" src="@/assets/images/ShutDown.png" alt=""></div>
-       <div class="Network-content" v-for="item in Sellorder_NetworkList?Sellorder_NetworkList:''" :key="item.id" @click="networkSelect(item)">{{ item.networkName }} <img :src="item.networkName==orderStateData.networkName?NetworkCheck:''" alt=""></div>
+       
+       <div class="Network-content" v-for="item in Sellorder_NetworkList?Sellorder_NetworkList:''" :key="item.id" @click="networkSelect(item)">{{ item.networkName }} <img :src="item.network==orderStateData.network?NetworkCheck:''" alt=""></div>
      </div>
   </div>
 </template>
@@ -217,9 +218,9 @@ export default {
     },
     //获取网络列表
      async  getNetworkList(){
-     
+        // console.log();
       let params = {
-        coin:this.$store.state.orderStatus.cryptoCurrency
+        coin:this.$store.state.sellRouterParams.cryptoCurrency
       }
       let res  = await this.$axios.get(this.$api.get_networkList,params)
       if(res.data && res.returnCode === '0000')
@@ -235,7 +236,7 @@ export default {
     },
     //确认网络
     networkSelect(val){
-      if(this.orderStateData.networkName===val.networkName){
+      if(this.orderStateData.network===val.network){
         this.Network_show = false
         return false
       }
@@ -266,7 +267,7 @@ export default {
     queryFee(){
       
       let patams = JSON.parse(JSON.stringify(this.$store.state.feeParams))
-      patams.symbol = patams.symbol +'USDT'
+     
        this.$axios.get(this.$api.get_sellRampfee,patams).then(res=>{
          if(res && res.returnCode === "0000"){
           this.feeInfo = res.data;

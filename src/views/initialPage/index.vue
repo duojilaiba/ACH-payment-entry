@@ -175,6 +175,7 @@ html,body,#homePage,.homePage_view,.homePage_content{
         cursor: pointer;
         padding-bottom: 0.12rem;
         border-bottom: 4px solid #FFFFFF;
+
       }
       div:nth-of-type(2){
         margin-left: 0.4rem;

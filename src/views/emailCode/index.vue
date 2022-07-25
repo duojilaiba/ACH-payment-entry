@@ -55,9 +55,10 @@
 
 <script>
 // import includedDetails from "../../components/IncludedDetails";
-// import axios from 'axios';
+import axios from 'axios';
 import { debounce } from '../../utils/index';
 import { AES_Encrypt,AES_Decrypt } from '@/utils/encryp.js';
+import moment from 'moment-timezone';
 
 export default {
   name: "emailCode",
@@ -147,10 +148,33 @@ export default {
       }
       
       if(this.loggedIn===true){
+        var config = {
+          method: 'get',
+          url: process.env.VUE_APP_BASE_API + this.$api.getUserLogin,
+          headers: {
+            'token': localStorage.getItem('fin_token'),
+            'fingerprint_id':localStorage.getItem('fingerprint_id'),
+            'Accept-Language':sessionStorage.getItem('language')?sessionStorage.getItem('language'):'en-US',
+            'sign': localStorage.getItem('sign') ? localStorage.getItem('sign') : '',
+            'timestamp': localStorage.getItem('timestamp'),
+            'Content-Type': 'application/json',
+            timezone: moment.tz.guess(),
+          },
+          
+        };
+        axios.interceptors.response.use(function (config) {
+          return config;
+        }, function (error) {
+          // Do something with response error
+          return Promise.reject(error);
+        })
+        axios(config).then(function (response) {
+          console.log(response);
+        })
         
-        console.log('设备ID__'+localStorage.getItem('fingerprint_id'));
-        console.log('邮箱ID__'+this.email);
-        alert('一键登陆')
+        console.log('设备ID__'+AES_Decrypt(localStorage.getItem('fingerprint_id')));
+        console.log('邮箱ID__'+AES_Decrypt(localStorage.getItem('login_email')));
+        // alert('一键登陆')
         return
       }
       this.emailErrorState = false;

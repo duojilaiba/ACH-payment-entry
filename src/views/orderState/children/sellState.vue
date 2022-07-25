@@ -11,7 +11,7 @@
           <img v-else-if="[2,3,4,5,6].includes(orderStateData.orderStatus)" src="@/assets/images/stateSell/icon1_finish.png" alt="">
         <div class="sellState_right" >
           <p :style="{ color:orderStateData.orderStatus==0?'#949EA4':'' }">Crypto Sent</p>
-          <p v-if="orderStateData.orderStatus!==0" :style="{color:orderStateData.orderStatus==1?'#0059DA':'#063376'}">Block confirmed ( {{ orderStateData.blockNumber?orderStateData.blockNumber:0 }} / {{ orderStateData.confirmedNum }} )</p>
+          <p v-if="orderStateData.orderStatus!==0" :style="{color:orderStateData.orderStatus==1?'#0059DA':'#063376'}">Block confirmed ( {{ orderStateData.confirmBlock }} / {{ orderStateData.totalBlock }} )</p>
         </div>
       </div>
       <img class="line" :src="[0,1].includes(orderStateData.orderStatus)?line.LineImg:line.LineImgActive" alt="">

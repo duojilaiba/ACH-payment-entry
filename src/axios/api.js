@@ -36,9 +36,10 @@ export default {
   //获取卖币用户卡信息
   "get_userSellCardInfo": '/user/card/query/sell',
   //卖币确认订单
-  // "post_sellConfirmOrder": '/trade/confirm/sell/order',
+  "post_sellConfirmOrder": '/trade/confirm/sell/order',
   //查询卖币订单订单状态
-  "get_PlayCurrencyStatus":'/trade/query/sellOrder',
+  "get_PlayCurrencyStatus":'/trade/query/sell/order',
+
   //获取卖币支持网络
   "get_networkList":'/crypto/sell/network',
   //卖币确认订单
@@ -57,5 +58,7 @@ export default {
     //获取kyc验证token
   "post_getKycToken":'/kyc/getKycToken',
   //买币是否要kyc验证
-  "post_getKycThrough":'/rypto/buyKycThrough'
+  "post_getKycThrough":'/rypto/buyKycThrough',
+  //用户一键登陆接口
+  "getUserLogin":'/login/free/certification'
 }

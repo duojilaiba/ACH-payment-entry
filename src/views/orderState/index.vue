@@ -130,13 +130,13 @@ export default{
       // console.log(this.$store.state.sellOrderId);
       let parmas = {
         // id:'140'
-        id:this.$store.state.sellOrderId?this.$store.state.sellOrderId:sellOrderId
+        orderId:this.$store.state.sellOrderId?this.$store.state.sellOrderId:sellOrderId
       }
       // console.log(parmas);
       this.$axios.get(this.$api.get_PlayCurrencyStatus,parmas).then(res=>{
         if(res && res.data){
           // res.data.expirationTime=1000
-          // res.data.orderStatus=  1
+          // res.data.orderStatus=  6
           this.orderStateData = res.data
           this.$store.state.orderStatus = res.data
           this.playMoneyState = res.data.orderStatus
@@ -154,7 +154,7 @@ export default{
             this.timer = null;
             //  this.$store.replaceState({})
           }
-          if(res.data.expirationTime<=0 || this.playMoneyState=== 7){
+          if(res.data.expirationTime<=0 && this.playMoneyState=== 7){
           //   // this.playMoneyState = 7
             this.orderStateData.orderStatus = 7
             this.$store.state.nextOrderState = 1

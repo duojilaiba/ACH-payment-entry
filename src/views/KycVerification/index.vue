@@ -1,6 +1,6 @@
   <template>
   <div class="KycVer-container">
-    <!-- 展示成功失败页面 -->
+    <!-- 展示成功状态页面 -->
     <div class="Verification_content" v-if="status==0" :key="0">
       <div class="kyc_nav">
       <img src="@/assets/images/ShutDown.png" @click="goHome" alt="">
@@ -135,29 +135,33 @@ export default {
     //获取kyc验证的token
     getNewAccessToken() {
       this.getUserToken()
-      // let newAccessToken = '_act-sbx-080f8eef-29d9-42a2-b9f8-dd894ad94e7e'
-        return Promise.resolve(this.getToken)// get a new token from your backend
+      setTimeout(() => {
+        return Promise.resolve(this.getToken)
+      }, 1000);
+        // get a new token from your backend
     },
     //next 下一步
     nextKycVer(val){
       //0进行kyc验证 1 成功跳转到卖币或者卖币订单page 2失败重新验证kyc
       if(val===0 && this.nextKyc){
-        // console.log(this.$store.state.cardInfoFromPath);
         this.nextKyc = false
         setTimeout(()=>{
-          this.status=1
+        this.status = 1
         this.getUserToken()
+        // this.$router.push('/sellOrder')
         },1000)
+        
         
         return 
       }else if(val === 1){
         this.status=0
         this.kycVerState = 0
-        console.log(this.$store.state.homeTabstate );
+        // console.log(this.$store.state.homeTabstate);
+        //跳转清空页面状态
         if(this.$store.state.homeTabstate ==='sellCrypto'){
           sessionStorage.removeItem('getToken')
             sessionStorage.removeItem('sellState')
-            this.$router.push('/configSell')
+            this.$router.push('/sellOrder')
         }
         
         
@@ -171,7 +175,6 @@ export default {
           this.status=1
           this.getUserToken()
           this.nextKyc = true
-          this.launchWebSdk(this.getToken)
         },3000)
       }else{
         return false
@@ -197,11 +200,13 @@ export default {
     },
     //获取用户的kyc验证token
     getUserToken(){
-      let data = {
-        fullName:this.$store.state.sellRouterParams.fullName
-      }
-       this.$axios.post(this.$api.post_getKycToken+'?fullName='+data.fullName).then(res=>{
+      var FormData = require('form-data');
+        var data = new FormData();
+         data.append('fullName',this.$store.state.sellRouterParams.fullName);
+     
+       this.$axios.post(this.$api.post_getKycToken,data).then(res=>{
          if(!res){
+           this.status=0
             this.nextKyc = true
             this.$toast('未知错误')
             return
@@ -209,12 +214,13 @@ export default {
            
           if(res.data && res.returnCode === '0000'){
             this.getToken =  res.data
+            this.nextKyc = true
             sessionStorage.setItem('getToken',res.data)
             sessionStorage.setItem('sellState',this.status)
-            // setTimeout(()=>{
-              this.nextKyc = true
+            setTimeout(()=>{
+              console.log(this.getToken);
               this.launchWebSdk(this.getToken)
-            // },2000)
+            },1000)
             return 
           }else if(res.data && res.returnCode === '110'){
             this.status = 0
@@ -253,7 +259,13 @@ export default {
    
 
   //  console.log(this.kycVerState=2);
+  },
+  deactivated(){
+    // console.log(sessionStorage.getItem('kycVerState'));
+    // console.log(sessionStorage.getItem('sellState'));
+    // console.log(sessionStorage.getItem('getToken'));
   }
+  
 }
 </script>
 

@@ -369,6 +369,7 @@ export default {
             sellForm.idNumber = this.encrypt(sellForm.idNumber);
             this.$store.state.sellForm = sellForm;
             this.$store.state.sellOrderId = res.data.orderId;
+             this.$store.state.nextOrderState =1
             //跳转状态
             if(this.$store.state.cardInfoFromPath === 'configSell'){
               this.isKyc(val);
