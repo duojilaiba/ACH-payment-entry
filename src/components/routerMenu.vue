@@ -157,6 +157,8 @@ export default {
             localStorage.removeItem("email");
             localStorage.removeItem("userNo");
             localStorage.removeItem("userId");
+            localStorage.removeItem("login_email");
+            localStorage.removeItem("fin_token");
             localStorage.removeItem("kycStatus");
             // sessionStorage.removeItem('accessMerchantInfo')
             sessionStorage.removeItem('store')
