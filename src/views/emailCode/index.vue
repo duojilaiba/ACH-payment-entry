@@ -148,12 +148,13 @@ export default {
       }
       
       if(this.loggedIn===true){
+        
         var config = {
           method: 'get',
           url: process.env.VUE_APP_BASE_API + this.$api.getUserLogin,
           headers: {
             'token': localStorage.getItem('fin_token'),
-            'fingerprint_id':localStorage.getItem('fingerprint_id'),
+            'fingerprintId':localStorage.getItem('fingerprintId'),
             'Accept-Language':sessionStorage.getItem('language')?sessionStorage.getItem('language'):'en-US',
             'sign': localStorage.getItem('sign') ? localStorage.getItem('sign') : '',
             'timestamp': new Date().getTime(),
