@@ -146,18 +146,23 @@ export default {
        });
        return
       }
-      
+      let timestamp = ''
       if(this.loggedIn===true){
-        
+         let sign = localStorage.getItem("userId");
+          let userId = sign.substring(sign.lastIndexOf("H")+1,sign.length);
+          let userNo = localStorage.getItem("userNo").substring(localStorage.getItem("userNo").length-5);
+           timestamp = new Date().getTime();
+          let newSign = AES_Encrypt(userId + "-" + userNo + "-" + timestamp);
+          // localStorage.setItem("sign",newSign);
         var config = {
           method: 'get',
           url: process.env.VUE_APP_BASE_API + this.$api.getUserLogin,
           headers: {
             'token': localStorage.getItem('fin_token'),
-            'fingerprint-id':localStorage.getItem('fingerprintId'),
+            'fingerprint-id':localStorage.getItem('fingerprint_id'),
             'Accept-Language':sessionStorage.getItem('language')?sessionStorage.getItem('language'):'en-US',
-            'sign': localStorage.getItem('sign') ? localStorage.getItem('sign') : '',
-            'timestamp': new Date().getTime(),
+            'sign': newSign,
+            'timestamp': timestamp,
             'Content-Type': 'application/json',
             timezone: moment.tz.guess(),
           },
