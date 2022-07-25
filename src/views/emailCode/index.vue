@@ -154,7 +154,7 @@ export default {
           url: process.env.VUE_APP_BASE_API + this.$api.getUserLogin,
           headers: {
             'token': localStorage.getItem('fin_token'),
-            'fingerprintId':localStorage.getItem('fingerprintId'),
+            'fingerprint-id':localStorage.getItem('fingerprintId'),
             'Accept-Language':sessionStorage.getItem('language')?sessionStorage.getItem('language'):'en-US',
             'sign': localStorage.getItem('sign') ? localStorage.getItem('sign') : '',
             'timestamp': new Date().getTime(),

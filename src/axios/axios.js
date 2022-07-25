@@ -182,7 +182,7 @@ export default {
         'submit-token': submitToken === 'submitToken' ? localStorage.getItem("submit-token") : '',
         'Accept-Language': sessionStorage.getItem("language") ? sessionStorage.getItem("language") : 'en-US',
         'Content-Type': 'application/json',
-        'fingerprintId':localStorage.getItem('fingerprint_id')?AES_Decrypt(localStorage.getItem('fingerprint_id')):'',
+        'fingerprint-id':localStorage.getItem('fingerprint_id')?AES_Decrypt(localStorage.getItem('fingerprint_id')):'',
         timezone: moment.tz.guess(),
       },
     }).then((response) => {
@@ -216,7 +216,7 @@ export default {
         'timestamp': timestamp,
         'Accept-Language': sessionStorage.getItem("language") ? sessionStorage.getItem("language") : 'en-US',
         'Content-Type': 'application/json',
-        'fingerprintId':localStorage.getItem('fingerprint_id')?AES_Decrypt(localStorage.getItem('fingerprint_id')):'',
+        'fingerprint-id':localStorage.getItem('fingerprint_id')?AES_Decrypt(localStorage.getItem('fingerprint_id')):'',
         timezone: moment.tz.guess(),
       }
     }).then((response) => {
