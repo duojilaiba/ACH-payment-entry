@@ -111,8 +111,8 @@ axios.interceptors.response.use(function (response) {
     localStorage.setItem("submit-token",response.headers.token);
   }
   if((response.data.returnCode === '70011')){
-    // localStorage.removeItem("token");
-    // localStorage.removeItem("email");
+    localStorage.removeItem("token");
+    localStorage.removeItem("email");
     // localStorage.removeItem("userNo");
     // localStorage.removeItem("userId");
     // localStorage.removeItem("kycStatus");
@@ -124,6 +124,8 @@ axios.interceptors.response.use(function (response) {
   //no login info
   if((response.data.returnCode === '70006' || response.data.returnCode === '70008') && router.currentRoute.path !== '/emailCode' && response.data.returnCode !== '70011'){
     localStorage.removeItem("sign");
+    localStorage.removeItem("fingerprint_id");
+    localStorage.removeItem("fin_token");
     localStorage.removeItem("token");
     localStorage.removeItem("email");
     localStorage.removeItem("userNo");
@@ -180,6 +182,7 @@ export default {
         'submit-token': submitToken === 'submitToken' ? localStorage.getItem("submit-token") : '',
         'Accept-Language': sessionStorage.getItem("language") ? sessionStorage.getItem("language") : 'en-US',
         'Content-Type': 'application/json',
+        'fingerprint_id':localStorage.getItem('fingerprint_id')?localStorage.getItem('fingerprint_id'):'',
         timezone: moment.tz.guess(),
       },
     }).then((response) => {
@@ -213,6 +216,7 @@ export default {
         'timestamp': timestamp,
         'Accept-Language': sessionStorage.getItem("language") ? sessionStorage.getItem("language") : 'en-US',
         'Content-Type': 'application/json',
+        'fingerprint_id':localStorage.getItem('fingerprint_id')?localStorage.getItem('fingerprint_id'):'',
         timezone: moment.tz.guess(),
       }
     }).then((response) => {
