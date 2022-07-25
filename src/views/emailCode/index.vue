@@ -97,6 +97,7 @@ export default {
       }else{
         this.loggedIn = false
         this.checked = false
+        this.email = ''
       }
     },300)
     if(sessionStorage.getItem("accessMerchantInfo") !== "{}" && sessionStorage.getItem("accessMerchantInfo") !== null){
@@ -122,11 +123,13 @@ export default {
       }else{
         this.loggedIn = false
         this.checked = false
+        this.email = ''
       }
     },300)
       
    
 },
+
   methods: {
     getCode:debounce(function () {
       this.getCode_state = false;
@@ -148,12 +151,13 @@ export default {
       }
       let timestamp = ''
       if(this.loggedIn===true){
+        let _this = this
          let sign = localStorage.getItem("userId");
           let userId = sign.substring(sign.lastIndexOf("H")+1,sign.length);
           let userNo = localStorage.getItem("userNo").substring(localStorage.getItem("userNo").length-5);
            timestamp = new Date().getTime();
           let newSign = AES_Encrypt(userId + "-" + userNo + "-" + timestamp);
-          // localStorage.setItem("sign",newSign);
+          localStorage.setItem("sign",newSign);
         var config = {
           method: 'get',
           url: process.env.VUE_APP_BASE_API + this.$api.getUserLogin,
@@ -175,12 +179,33 @@ export default {
           return Promise.reject(error);
         })
         axios(config).then(function (response) {
-          console.log(response);
+          if(response.data.status && response.returnCode === '0000'){
+            this.login_loading = false
+            localStorage.setItem('token',localStorage.getItem('fin_token'))
+            localStorage.setItem('email',localStorage.getItem('login_email'))
+            if(_this.$store.state.routerQueryPath === true){
+          _this.$router.push('/');
+          return
+        } 
+            if(_this.$route.query.fromName === 'tradeList'){
+              _this.$router.replace('/tradeHistory');
+            }else{
+              //登陆跳转路径根据router.from的路由跳转不同页面
+              if(_this.$store.state.emailFromPath === 'buyCrypto'){
+                _this.$router.push(`/receivingMode`);
+              }else if(_this.$store.state.emailFromPath === 'sellCrypto'){
+                  // _this.$router.push('/')
+                  _this.$router.push('/sell-formUserInfo')
+                
+              }else if(_this.$store.state.emailFromPath === 'sellOrder'){
+                _this.$router.push('/sellOrder');
+              }else{
+                _this.$router.push('/');
+              }
+            }
+          }
         })
         
-        console.log('设备ID__'+AES_Decrypt(localStorage.getItem('fingerprint_id')));
-        console.log('邮箱ID__'+AES_Decrypt(localStorage.getItem('login_email')));
-        // alert('一键登陆')
         return
       }
       this.emailErrorState = false;

@@ -10,7 +10,7 @@
       <div class="verifyCode_title" v-else style="margin-top:.4rem;text-align: center;" >{{ $t('nav.codeTitle2') }}  <span @click="getEmailCode">{{ $t('nav.login_getCode') }} </span></div>
       </div>
       <div style="position:relative;">
-
+        
       <div class="verifyCode_button" @click="toLogin" :style="{background:netActive && !showLoading?'#0059DAFF':''}">
         {{ $t('nav.Proceed') }}
         <img class="icon" src="@/assets/images/rightIconSell.png" alt="" v-if="!showLoading">
@@ -128,7 +128,9 @@ import { AES_Encrypt } from '@/utils/encryp.js';
               if(_this.$store.state.emailFromPath === 'buyCrypto'){
                 _this.$router.push(`/receivingMode`);
               }else if(_this.$store.state.emailFromPath === 'sellCrypto'){
-                _this.$router.push('/sell-formUserInfo')
+                  // _this.$router.push('/')
+                  _this.$router.push('/sell-formUserInfo')
+                
               }else if(_this.$store.state.emailFromPath === 'sellOrder'){
                 _this.$router.push('/sellOrder');
               }else{
@@ -158,7 +160,7 @@ import { AES_Encrypt } from '@/utils/encryp.js';
      }
 
     },
-
+    
   },
   computed:{
     netActive(){

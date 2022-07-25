@@ -157,6 +157,8 @@ export default {
             localStorage.removeItem("email");
             localStorage.removeItem("userNo");
             localStorage.removeItem("userId");
+            localStorage.removeItem("login_email");
+            localStorage.removeItem("fin_token");
             localStorage.removeItem("kycStatus");
             // sessionStorage.removeItem('accessMerchantInfo')
             sessionStorage.removeItem('store')
@@ -205,7 +207,7 @@ export default {
         //是否是从菜单进入
         
         this.$router.push('/emailCode')
-        }, 500);
+        }, 200);
       }
     },
     //显示退出登陆判断是否是pc 还是 移动

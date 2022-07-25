@@ -1,9 +1,9 @@
   <template>
   <div class="KycVer-container">
-    <!-- 展示成功状态页面 -->
+    <!-- 展示成功失败等待状态页面 -->
     <div class="Verification_content" v-if="status==0" :key="0">
       <div class="kyc_nav">
-      <img src="@/assets/images/ShutDown.png" @click="goHome" alt="">
+      <img v-if=" kycVerState !== 1" src="@/assets/images/ShutDown.png" @click="goHome" alt="">
     </div>
     <!-- 点击进行kyc验证 -->
         <div class="content" v-if="kycVerState==0">
@@ -51,11 +51,12 @@
         </div>
     </div>
     <!-- kyc验证页面 -->
+    
     <div class="verif_kyc" v-else :key="1">
-          <img src="@/assets/images/ShutDown.png" @click="removeItemKyv" alt="">
+          <div class="verif_kyc_nav"><img src="@/assets/images/ShutDown.png" @click="removeItemKyv" alt="" ></div>
+     
       <div id="sumsub-websdk-container" ></div>
     </div>
-    
   </div>
 </template>
 <script>
@@ -90,13 +91,17 @@ export default {
        //获取成功或失败或等待状态
       
         .on('idCheck.applicantStatus', (type,) => {
-          //  console.log(type);
+           console.log(type);
           if(!type){
             return
           }
           //正在处理
-          if(type.reviewStatus === "pending"){
-            console.log('正在处理')
+          if(type.reviewStatus === 'pending'){
+            return false
+             //重新验证
+          }else if(type.reviewStatus === "completed" && type.reviewResult.reviewAnswer === 'RED' && type.reviewResult.reviewRejectType==='RETRY'){
+            // this.status = 0
+            // this.kycVerState = 2
             return
             //成功
           }else if(type.reviewStatus === "completed" && type.reviewResult.reviewAnswer === 'GREEN'){
@@ -104,14 +109,10 @@ export default {
             this.kycVerState = 1
             return
             //失败
-          }else if(type.reviewStatus === "completed" && type.reviewResult.reviewAnswer === 'RED'){
+          }else{
+           
             this.status = 0
             this.kycVerState = 2
-            return
-          }else{
-            //重新验证
-            this.status = 0
-            this.kycVerState = 1
             return
           }
             
@@ -135,7 +136,8 @@ export default {
     //获取kyc验证的token
     getNewAccessToken() {
       this.getUserToken()
-      setTimeout(() => {
+      clearTimeout(this.timeOut)
+        this.timeOut = setTimeout(() => {
         return Promise.resolve(this.getToken)
       }, 1000);
         // get a new token from your backend
@@ -145,7 +147,8 @@ export default {
       //0进行kyc验证 1 成功跳转到卖币或者卖币订单page 2失败重新验证kyc
       if(val===0 && this.nextKyc){
         this.nextKyc = false
-        setTimeout(()=>{
+        clearTimeout(this.timeOut)
+        this.timeOut = setTimeout(()=>{
         this.status = 1
         this.getUserToken()
         // this.$router.push('/sellOrder')
@@ -169,7 +172,8 @@ export default {
         
         this.nextKyc = false
         
-        setTimeout(()=>{
+        clearTimeout(this.timeOut)
+        this.timeOut =setTimeout(()=>{
           this.status=1
           this.getUserToken()
           this.nextKyc = true
@@ -182,19 +186,22 @@ export default {
     //关闭页面
     goHome(){
       //返回来的页面并且清空状态
-        setTimeout(()=>{
+        clearTimeout(this.timeOut)
+        this.timeOut =setTimeout(()=>{
           this.kycVerState = 0
         sessionStorage.setItem('kycVerState',this.kycVerState)
         })
        sessionStorage.removeItem('sellState') 
        sessionStorage.removeItem('getToken')
-      this.$router.go(-1)
+      this.$router.go('-1')
     },
     //关闭kyc验证
     removeItemKyv(){
       this.status = 0;
+      this.kycVerState = 0
        sessionStorage.removeItem('sellState') 
        sessionStorage.removeItem('getToken')
+      //  this.$router.replace('/')
     },
     //获取用户的kyc验证token
     getUserToken(){
@@ -215,7 +222,8 @@ export default {
             this.nextKyc = true
             sessionStorage.setItem('getToken',res.data)
             sessionStorage.setItem('sellState',this.status)
-            setTimeout(()=>{
+            clearTimeout(this.timeOut)
+        this.timeOut =setTimeout(()=>{
               // console.log(this.getToken);
               this.launchWebSdk(this.getToken)
             },1000)
@@ -248,17 +256,19 @@ export default {
    if(sessionStorage.getItem('sellState') && sessionStorage.getItem('getToken')){
      this.status = sessionStorage.getItem('sellState') 
       this.getToken = sessionStorage.getItem('getToken')
-      setTimeout(()=>{
+      clearTimeout(this.timeOut)
+        this.timeOut = setTimeout(()=>{
+          console.log(this.getToken);
         this.launchWebSdk(this.getToken)
       },200)
    }else{
      return false
    }
-   
 
   //  console.log(this.kycVerState=2);
   },
   deactivated(){
+    clearTimeout(this.timeOut)
     sessionStorage.removeItem('kycVerState')
     sessionStorage.removeItem('sellState')
     sessionStorage.removeItem('getToken')
@@ -359,13 +369,21 @@ export default {
     width: 3.4rem;
     position: fixed;
     overflow: scroll;
-   >img{
-     height: .14rem;
-     cursor: pointer;
-     position: absolute;
-     right: .1rem;
-     top: .0rem;
-   }
+    .verif_kyc_nav{
+      width: 100%;
+      height: .3rem;
+      background: #FFFFFF;
+      position: sticky;
+      top: 0;
+      >img{
+        height: .14rem;
+        cursor: pointer;
+        position: absolute;
+        right: 0rem;
+        top: .0rem;
+      }
+    }
+   
  #sumsub-websdk-container{
   height: 100%;
   
