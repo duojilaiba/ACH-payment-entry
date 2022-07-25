@@ -156,7 +156,7 @@ export default {
             'fingerprint_id':localStorage.getItem('fingerprint_id'),
             'Accept-Language':sessionStorage.getItem('language')?sessionStorage.getItem('language'):'en-US',
             'sign': localStorage.getItem('sign') ? localStorage.getItem('sign') : '',
-            'timestamp': localStorage.getItem('timestamp'),
+            'timestamp': new Date().getTime(),
             'Content-Type': 'application/json',
             timezone: moment.tz.guess(),
           },

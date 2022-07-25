@@ -63,6 +63,10 @@ export default {
       //   return;
       // }
       //add sellOrder page back home
+      if(this.$route.path === '/emailCode' ){
+        this.$router.push('/')
+        return;
+      }
       if(this.$route.path === '/paymentResult'|| this.$route.path === '/sellOrder' ){
         this.$store.state.nextOrderState=1
         this.$router.push('/');
@@ -76,7 +80,7 @@ export default {
         this.$router.push('/');
         return;
       }
-      console.log(this.routerPath);
+      // console.log(this.routerPath);
       if(this.routerPath === '/paymentMethod' &&  this.$route.path === '/receivingMode'){
         this.$router.push('/');
         return;
@@ -90,14 +94,11 @@ export default {
         return;
       }
 
-      if( this.routerPath === '/verifyCode'){
+      if( this.routerPath === '/emailCode' && this.$route.path === '/verifyCode'){
         this.$router.go(-1)
         return;
       }
-      if(this.routerPath === '/emailCode' ){
-        this.$router.push('/')
-        return;
-      }
+      
       if(this.$route.path === '/creditCardForm-cardInfo' && this.routerPath === '/basisIdAuth'){
         this.$router.go(-6);
         return;
