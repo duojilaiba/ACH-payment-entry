@@ -91,13 +91,17 @@ export default {
        //获取成功或失败或等待状态
       
         .on('idCheck.applicantStatus', (type,) => {
-          //  console.log(type);
+           console.log(type);
           if(!type){
             return
           }
           //正在处理
-          if(type.reviewStatus === "pending"){
-            // console.log('正在处理')
+          if(type.reviewStatus === 'pending'){
+            return false
+             //重新验证
+          }else if(type.reviewStatus === "completed" && type.reviewResult.reviewAnswer === 'RED' && type.reviewResult.reviewRejectType==='RETRY'){
+            // this.status = 0
+            // this.kycVerState = 2
             return
             //成功
           }else if(type.reviewStatus === "completed" && type.reviewResult.reviewAnswer === 'GREEN'){
@@ -105,14 +109,10 @@ export default {
             this.kycVerState = 1
             return
             //失败
-          }else if(type.reviewStatus === "completed" && type.reviewResult.reviewAnswer === 'RED'){
+          }else{
+           
             this.status = 0
             this.kycVerState = 2
-            return
-          }else{
-            //重新验证
-            this.status = 0
-            this.kycVerState = 0
             return
           }
             
@@ -258,6 +258,7 @@ export default {
       this.getToken = sessionStorage.getItem('getToken')
       clearTimeout(this.timeOut)
         this.timeOut = setTimeout(()=>{
+          console.log(this.getToken);
         this.launchWebSdk(this.getToken)
       },200)
    }else{
