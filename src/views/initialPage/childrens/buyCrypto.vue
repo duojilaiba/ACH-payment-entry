@@ -2,23 +2,29 @@
   <div id="buyCrypto">
     <!-- 买币功能模块 -->
     <div class="buyCrypto_content">
-      <div class="form_title pay_title">{{ $t('nav.home_youPay') }}</div>
-      <div class="methods_select cursor">
-        <!-- @keydown="inputChange" -->
-        <van-field class="pay_input" :type="youPaytype" @input="inputChange" v-model.number="payAmount" pattern="[0-9]*" inputmode="decimal" @blur="youPayBlur" :disabled="payAmountState" placeholder="0.00"/>
-        <div class="pay_company" @click="openSearch('payCurrency')">
-          <div class="countryIcon"><img :src="positionData.positionImg"></div>
-          <div>{{ payCommission.code }}</div>
-          <img class="rightIcon" src="@/assets/images/blackDownIcon.png">
+      <div class="methods_select cursor" :class="{'inputFocus': inputFocus}">
+        <div class="methods_select-left">
+          <div class="form_title pay_title">{{ $t('nav.home_youPay') }}</div>
+          <van-field class="pay_input" :type="youPaytype" @input="inputChange" v-model.number="payAmount" pattern="[0-9]*" inputmode="decimal" @blur="youPayBlur" @focus="inputFocus=true" :disabled="payAmountState" placeholder="0.00"/>
         </div>
+        <div class="get_company" @click="openSearch('payCurrency')">
+          <div class="getImg networkImg">
+            <img :src="positionData.positionImg">
+            <div class="networkIcon"><img src="../../../assets/images/hk.svg"></div>
+          </div>
+          <div class="getText">{{ payCommission.code }}</div>
+          <div class="rightIcon"><img src="@/assets/images/blackDownIcon.png"></div>
+        </div>
+        <div class="warning_text" v-if="warningTextState" v-html="payAmount_tips"></div>
       </div>
-      <div class="warning_text" v-if="warningTextState" v-html="payAmount_tips"></div>
 
-      <div class="form_title get_title">{{ $t('nav.home_buyFee_title1') }}</div>
       <div class="methods_select cursor">
-        <div class="get_input">
-          <span v-if="getAmount!==''">{{ getAmount }}</span>
-          <span class="no_getAmount" v-else>0.00</span>
+        <div class="methods_select-left">
+          <div class="form_title">{{ $t('nav.home_buyFee_title1') }}</div>
+          <div class="get_input">
+            <span v-if="getAmount!==''">{{ getAmount }}</span>
+            <span class="no_getAmount" v-else>0.00</span>
+          </div>
         </div>
         <div class="get_company" @click="openSearch('currency')">
           <div class="getImg"><img :src="currencyData.icon"></div>
@@ -98,6 +104,8 @@ export default {
       exchangeRate: 0,
 
       triggerType: "hover",
+
+      inputFocus: false,
     }
   },
   computed: {
@@ -163,6 +171,7 @@ export default {
     },
     //法币币种为USD如果少于两位小数，将自动添加0
     youPayBlur(){
+      this.inputFocus = false;
       if(this.payAmount > 0 && this.payCommission.code === 'USD'){
         this.payAmount = (Math.round(this.payAmount*100)/100).toFixed(2);
       }
@@ -438,43 +447,47 @@ html,body,#buyCrypto{
 }
 
 .form_title{
-  font-size: 0.14rem;
-  font-family: "GeoRegular", GeoRegular;
-  font-weight: 500;
-  color: #707070;
-  padding-bottom: 0.08rem;
+  font-family: 'SFProDisplayRegular',SFProDisplayRegular;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 0.13rem;
+  color: #949EA4;
 }
 
 .methods_title{
   margin-top: 0.2rem;
 }
 .methods_select{
-  min-height: 0.56rem;
-  background: #F3F4F5;
-  border-radius: 0.12rem;
-  font-size: 0.16rem;
-  font-family: "GeoDemibold", GeoDemibold;
-  font-weight: 500;
-  color: #232323;
-  line-height: 0.56rem;
+  min-height: 1.05rem;
+  background: #FFFFFF;
+  border: 1px solid #EEEEEE;
+  border-radius: 0.06rem;
   padding: 0 0.16rem;
   cursor: pointer;
+  display: flex;
+  align-items: center;
   position: relative;
+  &:nth-of-type(2){
+    margin-top: 0.12rem;
+  }
+}
+.inputFocus{
+  border: 1px solid #D0ECFC;
+  box-shadow: 0 0 0.35rem rgba(89, 153, 248, 0.1);
 }
 
 .pay_input{
-  width: 100%;
-  height: 100%;
+  width: 1.4rem;
   border: none;
   outline: none;
-  background: #F3F4F5;
-  font-size: 0.16rem;
-  font-family: "GeoRegular", GeoRegular;
+  font-family: 'SFProDisplayMedium',SFProDisplayMedium;
   font-weight: 500;
-  color: #232323;
-  padding: 0 0.56rem 0 0;
+  font-size: 0.2rem;
+  color: #0059DA;
+  padding: 0;
+  margin-top: 0.06rem;
   &::placeholder{
-    color: #999999 !important;
+    color: #C2C2C2 !important;
   }
 }
 .pay_company{
@@ -510,60 +523,93 @@ html,body,#buyCrypto{
 
 .warning_text{
   position: absolute;
-  font-size: 0.13rem;
-  font-family: "GeoLight", GeoLight;
+  bottom: 0.08rem;
+  left: 0.18rem;
+  font-family: 'SFProDisplayRegular',SFProDisplayRegular;
   font-weight: 400;
-  color: #E55643;
-  margin: 0.06rem 0.2rem 0 0.16rem;
+  font-size: 0.1rem;
+  color: #FF3333;
+  line-height: 0.12rem;
 }
 
-.get_title{
-  margin-top: 0.4rem;
+.methods_select-left{
+  margin-top: -0.1rem;
 }
 .get_input{
-  width: 100%;
-  height: 0.56rem;
-  padding: 0 1.5rem 0 0;
-  background: #F3F4F5;
-  font-size: 0.16rem;
-  font-family: "GeoRegular", GeoRegular;
+  width: 1.4rem;
+  height: 0.26rem;
+  overflow: auto;
+  font-family: SFProDisplayMedium;
   font-weight: 500;
-  color: #232323;
+  font-size: 0.2rem;
+  line-height: 0.24rem;
+  color: #063376;
+  margin-top: 0.06rem;
   .no_getAmount{
-    color: #999999;
+    color: #C2C2C2;
   }
 }
 .get_company{
-  position: absolute;
-  top: 0;
-  right: 0;
-  min-width: 1.44rem;
-  height: 100%;
-  border-radius: 0 0.12rem 0.12rem 0;
+  margin-left: auto;
+  margin-top: -0.1rem;
+  padding: 0 0.12rem;
+  min-width: 1.2rem;
+  height: 0.46rem;
+  background: #F7F8FA;
+  border: 1px solid #EEEEEE;
+  border-radius: 54px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "GeoRegular", GeoRegular;
-  background: #EDEDEF;
+  font-family: "SFProDisplayRegular", SFProDisplayRegular;
   cursor: pointer;
+  .networkImg{
+    margin-right: 0.12rem!important;
+  }
   .getImg{
     display: flex;
-    margin-right: 0.1rem;
+    margin-right: 0.06rem;
+    width: 0.24rem;
+    min-height: 0.24rem;
+    background: #94ACBA;
+    border-radius: 50%;
+    position: relative;
     img{
-      width: 0.3rem;
+      width: 0.24rem;
+      border-radius: 50%;
+    }
+    .networkIcon{
+      background: #FFFFFF;
+      width: 0.16rem;
+      height: 0.16rem;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      bottom: 0;
+      right: -0.06rem;
+      img{
+        width: 0.12rem;
+        height: 0.12rem;
+        border-radius: 50%;
+      }
     }
   }
   .getText{
     display: flex;
-    font-size: 0.16rem;
-    font-family: 'GeoRegular', GeoRegular;
-    font-weight: 500;
-    color: #232323;
-    margin-right: 0.18rem;
+    font-family: 'SFProDisplayRegular',SFProDisplayRegular;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 0.13rem;
+    color: #063376;
+    min-width: 0.28rem;
   }
   .rightIcon{
     display: flex;
     align-items: center;
+    width: 0.24rem;
+    margin-left: auto;
     img{
       width: 0.24rem;
     }
@@ -624,19 +670,18 @@ footer{
 }
 
 .pay_input ::v-deep .van-cell__value--alone{
-  min-height: 0.56rem;
+  min-height: 0.26rem;
 }
 .pay_input ::v-deep .van-field__control{
-  min-height: 0.56rem;
+  min-height: 0.26rem;
   border: none;
   outline: none;
-  background: #F3F4F5;
-  font-size: 0.16rem !important;
-  font-family: 'GeoRegular', GeoRegular;
+  background: #FFFFFF;
+  font-size: 0.2rem !important;
+  font-family: 'SFProDisplayMedium',SFProDisplayMedium;
   font-weight: 500;
-  color: #232323 !important;
-  padding: 0 0.56rem 0 0;
+  color: #0059DA !important;
   &::placeholder{
-    color: #999999 !important;
+    color: #C2C2C2 !important;
   }
 }</style>

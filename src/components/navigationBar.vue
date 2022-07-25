@@ -8,7 +8,7 @@
       <div class="linkName">
         {{ $t(routerName) }}
         <!-- 卖币表单页展示修改卖币信息入口 -->
-        <div class="sellChangeForm" v-if="this.$store.state.cardInfoFromPath === 'configSell'">
+        <div class="sellChangeForm" v-if="this.$store.state.cardInfoFromPath === 'configSell' && $route.path === '/sell-formUserInfo'" @click="sellFormBack">
           <p>· United States</p>
           <p><img src="../assets/images/changeIcon.svg" alt=""></p>
         </div>
@@ -98,7 +98,7 @@ export default {
         this.$router.go(-1)
         return;
       }
-      
+
       if(this.$route.path === '/creditCardForm-cardInfo' && this.routerPath === '/basisIdAuth'){
         this.$router.go(-6);
         return;
@@ -128,11 +128,17 @@ export default {
         return;
       }
 
+      //修改卖币表单默认赋值状态
+      this.$store.state.sellRouterParams.cacheForm = false;
 
       this.$router.go(-1);
     },
     openMenu(){
       this.$parent.routerViewState === true ? this.$parent.routerViewState = false : this.$parent.routerViewState = true;
+    },
+    sellFormBack(){
+      this.$store.state.sellRouterParams.cacheForm = true;
+      this.$router.replace("/");
     }
   },
   computed:{

@@ -54,13 +54,15 @@ export default {
       choiseItem: {},
     }
   },
-  // beforeRouteEnter(to,from,next){
-  //   next(vm=>{
-  //     if(from.path === '/tradeHistory') {
-  //       vm.merchantDocking()
-  //     }
-  //   });
-  // },
+  beforeRouteLeave(to,from,next){
+    console.log(to,from)
+    next(vm=>{
+      console.log(vm)
+      // if(from.path === '/tradeHistory') {
+      //   vm.merchantDocking()
+      // }
+    });
+  },
   mounted(){
     this.merchantDocking();
   },

@@ -104,10 +104,23 @@ export default {
   //首页进入卖币卡表单页面清空缓存
   beforeRouteEnter(to,from,next) {
     next(vm => {
-      if (to.path === '/sell-formUserInfo' && from.path === '/' && vm.$store.state.cardInfoFromPath !== 'sellOrder') {
+      //初始化选中最近一次历史卡信息状态
+      vm.isOldCardInfo = false;
+      if(to.path === '/sell-formUserInfo' && from.path === '/'){
+        console.log("chufa1")
+        vm.assignmentForm();
+      }
+      if ((to.path === '/sell-formUserInfo' && from.path === '/' && vm.$store.state.sellRouterParams.cacheForm === false)&& vm.$store.state.cardInfoFromPath !== 'sellOrder') {
+        console.log("chufa2")
         vm.formJson = [];
       }
     })
+  },
+  beforeRouteLeave(to,from,next) {
+    //离开页面保存表单信息
+    let paramsFormData = this.paramsFormData();
+    window.sessionStorage.setItem("sellForm",JSON.stringify(paramsFormData));
+    next();
   },
   activated(){
     //初始化根据可视高度控制向下提示按钮状态
@@ -118,6 +131,9 @@ export default {
         this.goDown_state = false;
       }
     })
+
+    //恢复卡信息
+    this.assignmentForm();
 
     //加载卡信息列表
     this.queryCardInfoList();
@@ -133,17 +149,6 @@ export default {
       this.formJson.filter(item=>{ return item.paramsName === "address" })[0].required = false;
     }
   },
-  // watch: {
-  //   '$parent.historicalCardInfoSell_state': {
-  //     deep: true,
-  //     immediate: true,
-  //     handler(val){
-  //       if(val === false){
-  //         this.decryptCardInfo();
-  //       }
-  //     }
-  //   }
-  // },
   computed: {
     //动态表单判空、正则校验
     disabled(){
@@ -182,6 +187,9 @@ export default {
       requiredArray.length === 0 ? this.formJson.forEach((item,index)=>{this.formJson[index].tipsState = false}) : '';
       return requiredArray.length === 0 && this.request_loading === false ? false : true;
     },
+    // sellForm(){
+    //   return this.$store.state.sellForm;
+    // },
   },
   methods: {
     // 正则校验 展示提示信息
@@ -204,7 +212,6 @@ export default {
     //表单 - 单选框
     openSelect(item,index){
       this.selectState = true;
-      console.log(this.selectState)
       this.selected = {
         item: item.radioList,
         index: index,
@@ -292,33 +299,8 @@ export default {
       }
     },
 
-    //解密历史表单信息
-    decryptCardInfo(val){
-      if(this.$store.state.sellForm) {
-        let sellForm = [];
-        if(val && val === 1){
-          sellForm = JSON.parse(JSON.stringify(this.$store.state.sellRouterParams.cardInfoList[0]));
-        }else{
-          sellForm = JSON.parse(JSON.stringify(this.$store.state.sellForm));
-        }
-        this.formJson.forEach((item,index) => {
-          for (let itemKey in sellForm) {
-            if(item.paramsName === itemKey){
-              if(itemKey === 'contactNumber'||itemKey === 'name'||itemKey === 'email'||itemKey === 'accountNumber'||itemKey === 'idNumber'){
-                this.formJson[index].model = AES_Decrypt(sellForm[itemKey]);
-              }else{
-                this.formJson[index].model = sellForm[itemKey];
-              }
-            }
-          }
-        })
-        let bankAccountTypeDate = this.formJson.filter(res=>{return res.paramsName === 'bankAccountType'})[0];
-        this.bankAccountType(bankAccountTypeDate,1);
-      }
-    },
-
-    //确认订单 - 处理请求参数
-    submit(){
+    //表单数据转换对象 处理表单加密数据 定义表单入参特殊字段
+    paramsFormData(){
       let queryForm = {
         countryCode: this.$store.state.sellRouterParams.positionData.alpha2, // 国家Code
         fiatCode: this.$store.state.sellRouterParams.positionData.code, // 法币Code
@@ -340,12 +322,18 @@ export default {
       params.idNumber = this.encrypt(params.idNumber);
       this.currency === "BRL" ? params.idType = "CPF" : '';
       this.currency === "CLP" ?  params.idType = "RUT" : '';
+      return params;
+    },
+    //确认订单 - 处理请求参数
+    submit(){
+      this.$store.state.sellRouterParams.cacheForm = false;
+      let params = this.paramsFormData();
       this.processRequest(params);
     },
     //确认订单 - 请求服务
     processRequest(val){
-      if(this.request_loading === false){ 
-        
+      if(this.request_loading === false){
+
         this.request_loading = true;
         let params = {
           sellCardDTO: val,
@@ -374,7 +362,7 @@ export default {
             if(this.$store.state.cardInfoFromPath === 'configSell'){
               this.isKyc(val);
             }else{
-              
+              this.$router.push(`/sellOrder?sellOrderId=${this.$route.query.orderId}`)
             }
           }
         }).catch(()=>{
@@ -393,7 +381,7 @@ export default {
             this.$store.state.sellRouterParams.fullName = val.name;
             this.$router.push('/kycVerification');
           }else{
-            
+
           }
         }
       })
@@ -442,6 +430,17 @@ export default {
       })
     },
 
+    //点击tab栏返回首页修改卖币信息再次进入赋值表单信息
+    assignmentForm(){
+      let sellForm = {};
+      window.sessionStorage.getItem("sellForm") ? sellForm = JSON.parse(window.sessionStorage.getItem("sellForm")) : '';
+      if(this.$store.state.sellRouterParams.cacheForm === true && sellForm.fiatCode === this.$store.state.sellRouterParams.positionData.code){
+        setTimeout(()=>{
+          this.decryptCardInfo(JSON.parse(window.sessionStorage.getItem("sellForm")));
+        },500)
+      }
+    },
+
     //展示历史卡信息
     openCardInfo(){
       this.$parent.historicalCardInfoSell_state = true;
@@ -458,21 +457,43 @@ export default {
           this.$store.state.sellRouterParams.cardInfoList = res.data;
           this.$store.state.sellForm = res.data[0];
           //默认展示最近一条数据
-          let oldCardInfo = JSON.parse(JSON.stringify(res.data[0]));
-          oldCardInfo.accountNumber = AES_Decrypt(oldCardInfo.accountNumber);
+          let oldCardInfo = {};
+          if(res.data.length > 0){
+            oldCardInfo = JSON.parse(JSON.stringify(res.data[0]));
+            oldCardInfo.accountNumber = AES_Decrypt(oldCardInfo.accountNumber);
+          }
           this.oldCardInfo = oldCardInfo;
         }
       })
     },
 
-    //赋值最近一次卡信息
+    //处理选择历史表单和赋值最近一次卡信息
     assignmentOldCardInfo(){
       if(this.isOldCardInfo === false){
         this.currency = this.$store.state.sellRouterParams.positionData.code;
         this.formJson = JSON.parse(JSON.stringify(allFormJson.filter(item=>{return item.currency.includes(this.currency)})[0].form));
       }else{
-        this.decryptCardInfo(1);
+        this.decryptCardInfo(JSON.parse(JSON.stringify(this.$store.state.sellRouterParams.cardInfoList[0]))); //选择历史卡信息
       }
+    },
+
+    //解密历史表单信息
+    decryptCardInfo(val){
+      let sellForm = [];
+      sellForm = val;
+      this.formJson.forEach((item,index) => {
+        for (let itemKey in sellForm) {
+          if(item.paramsName === itemKey){
+            if(itemKey === 'contactNumber'||itemKey === 'name'||itemKey === 'email'||itemKey === 'accountNumber'||itemKey === 'idNumber'){
+              this.formJson[index].model = AES_Decrypt(sellForm[itemKey]);
+            }else{
+              this.formJson[index].model = sellForm[itemKey];
+            }
+          }
+        }
+      })
+      let bankAccountTypeDate = this.formJson.filter(res=>{return res.paramsName === 'bankAccountType'})[0];
+      this.bankAccountType(bankAccountTypeDate,1);
     },
 
     encrypt(val){

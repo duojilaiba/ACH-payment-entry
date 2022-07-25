@@ -4,19 +4,19 @@
       <div class="line-height1">
         <div class="left">Sell USDT</div>
         <div class="right">
-          <div class="statusView">
+          <div class="statusView" v-if="detailsData.orderStatus === 2">
             <div></div>
-            <div>Block Confirmed (5/15) </div>
+            <div>Block Confirmed ({{ detailsData.confirmBlock }}/{{ detailsData.totalBlock }}) </div>
           </div>
-          <div class="statusView completed">
+          <div class="statusView completed" v-else-if="detailsData.orderStatus === 5">
             <div></div>
             <div>Completed</div>
           </div>
-          <div class="statusView failed1">
+          <div class="statusView failed1" v-else-if="detailsData.orderStatus === 8 && detailsData.failureNumber < 2">
             <div></div>
             <div>Failed</div>
           </div>
-          <div class="statusView failed2">
+          <div class="statusView failed2" v-else-if="detailsData.orderStatus === 9">
             <div></div>
             <div>Failed</div>
           </div>
@@ -24,45 +24,45 @@
       </div>
       <div class="amountInfo">
         <div class="amountInfo-line">
-          <div class="left">Order Amount (USDT)</div>
+          <div class="left">Order Amount ({{ detailsData.cryptocurrency }})</div>
           <div class="right">
-            <span class="value"></span>
-            <span class="empty">-- </span>
+            <span class="value" v-if="detailsData.orderAmount !== '' && detailsData.orderAmount !== null">{{ detailsData.orderAmount }}</span>
+            <span class="empty" v-else>-- </span>
           </div>
         </div>
         <div class="amountInfo-line">
-          <div class="left">Actual Amount (USDT)</div>
+          <div class="left">Actual Amount ({{ detailsData.cryptocurrency }})</div>
           <div class="right">
-            <span class="value"></span>
-            <span class="empty">-- </span>
+            <span class="value" v-if="detailsData.actualAmount !== '' && detailsData.actualAmount !== null">{{ detailsData.actualAmount }}</span>
+            <span class="empty" v-else>-- </span>
           </div>
         </div>
         <div class="amountInfo-line">
-          <div class="left">Price (USD)</div>
+          <div class="left">Price ({{ detailsData.fiatName }})</div>
           <div class="right">
-            <span class="value"></span>
-            <span class="empty">-- </span>
+            <span class="value" v-if="detailsData.price !== '' && detailsData.price !== null">{{ detailsData.price }}</span>
+            <span class="empty" v-else>-- </span>
           </div>
         </div>
         <div class="amountInfo-line">
-          <div class="left">Total (USD)</div>
+          <div class="left">Total ({{ detailsData.fiatName }})</div>
           <div class="right">
-            <span class="value"></span>
-            <span class="empty">-- </span>
+            <span class="value" v-if="detailsData.total !== '' && detailsData.total !== null">{{ detailsData.total }}</span>
+            <span class="empty" v-else>-- </span>
           </div>
         </div>
         <div class="amountInfo-line">
-          <div class="left">Ramp Fee (USD)</div>
+          <div class="left">Ramp Fee ({{ detailsData.fiatName }})</div>
           <div class="right">
-            <span class="value"></span>
-            <span class="empty">-- </span>
+            <span class="value" v-if="detailsData.rampFee !== '' && detailsData.rampFee !== null">{{ detailsData.rampFee }}</span>
+            <span class="empty" v-else>-- </span>
           </div>
         </div>
         <div class="amountInfo-line">
-          <div class="left">Final Total (USD)</div>
+          <div class="left">Final Total ({{ detailsData.fiatName }})</div>
           <div class="right">
-            <span class="value"></span>
-            <span class="empty">-- </span>
+            <span class="value" v-if="detailsData.total !== '' && detailsData.total !== null">{{ detailsData.total }}</span>
+            <span class="empty" v-else>-- </span>
           </div>
         </div>
       </div>
@@ -71,13 +71,16 @@
         <div class="title">
           <div class="left">Status</div>
           <div class="right">
-            <span>Block Confirmed</span>
-            <span class="completed">Completed</span>
-            <span class="failed1">Failed</span>
-            <span class="failed2">Failed</span>
+            <span v-if="detailsData.orderStatus === 3">Block Confirmed</span>
+            <span class="completed" v-else-if="detailsData.orderStatus === 5">Completed</span>
+            <span class="failed1" v-else-if="detailsData.orderStatus === 8 && detailsData.failureNumber < 2">Failed</span>
+            <span class="failed2" v-else-if="detailsData.orderStatus === 9">Failed</span>
           </div>
         </div>
-        <div class="speed-progress"></div>
+        <div class="speed-progress">
+          <div class="percentage" :style="{width: percentage + '%'}" :class="{'completed': detailsData.orderStatus === 5,'failed': detailsData.orderStatus === 8 && detailsData.failureNumber < 2,'refunded': detailsData.orderStatus === 9}"></div>
+          <div class="all"></div>
+        </div>
       </div>
 
       <div class="orderInfo">
@@ -85,7 +88,7 @@
           <div class="left">Order ID:</div>
           <div class="right">
             <div class="copyView">
-              <div class="copyValue">12345678923ddavfseerh</div>
+              <div class="copyValue">{{ detailsData.orderId }}</div>
               <div class="icon"><img src="@/assets/images/copy_history.svg" alt=""></div>
             </div>
           </div>
@@ -93,27 +96,27 @@
         <div class="amountInfo-line">
           <div class="left">Order Time:</div>
           <div class="right">
-            <span class="value">2022-06-10 15:40:03</span>
+            <span class="value">{{ detailsData.orderTime }}</span>
           </div>
         </div>
         <div class="amountInfo-line">
           <div class="left">Confirmed Time:</div>
           <div class="right">
-            <span class="value">2022-06-10 15:40:03</span>
+            <span class="value">{{ detailsData.confirmedTime }}</span>
           </div>
         </div>
         <!-- Completed -->
         <div class="amountInfo-line">
           <div class="left">Transfer Time:</div>
           <div class="right">
-            <span class="value">2022-06-10 15:40:03</span>
+            <span class="value">{{ detailsData.transferTime }}</span>
           </div>
         </div>
         <!-- Failed - 2 -->
         <div class="amountInfo-line">
           <div class="left">Refund Time:</div>
           <div class="right">
-            <span class="value">2022-06-10 15:40:03</span>
+            <span class="value">{{ detailsData.refundTime }}</span>
           </div>
         </div>
       </div>
@@ -122,14 +125,14 @@
         <div class="amountInfo-line">
           <div class="left">Network:</div>
           <div class="right">
-            <span class="value">Trc20</span>
+            <span class="value">{{ detailsData.network }}</span>
           </div>
         </div>
         <div class="amountInfo-line">
           <div class="left">Address:</div>
           <div class="right">
             <div class="copyView">
-              <div class="copyValue">0dx2accsdvergbrvw</div>
+              <div class="copyValue">{{ detailsData.address }}</div>
               <div class="icon"><img src="@/assets/images/copy_history.svg" alt=""></div>
             </div>
           </div>
@@ -138,7 +141,7 @@
           <div class="left">TxID:</div>
           <div class="right">
             <div class="copyView">
-              <div class="copyValue">adeqdxsfcavbvergbrvw</div>
+              <div class="copyValue">{{ detailsData.txID }}</div>
               <div class="icon"><img src="@/assets/images/copy_history.svg" alt=""></div>
             </div>
           </div>
@@ -146,14 +149,14 @@
         <div class="amountInfo-line">
           <div class="left">Recipient Account:</div>
           <div class="right">
-            <span class="value">Mastercard  **** 8111</span>
+            <span class="value">Mastercard  **** {{ detailsData.account ? detailsData.account.substring(detailsData.account.length-4,detailsData.account.length) : '' }}</span>
           </div>
         </div>
       </div>
     </div>
 
     <!-- failed - 1 -->
-    <footer>
+    <footer v-if="detailsData.orderStatus === 8 && detailsData.failureNumber < 2">
       <button @click="updateCardInfo">
         Update Information
         <span class="witchBank">Mastercard</span>
@@ -168,12 +171,39 @@
 <script>
 export default {
   name: "tradeHistory-details",
+  data(){
+    return{
+      detailsData: {},
+      percentage: 0,
+    }
+  },
+  activated(){
+    this.orderId = this.$route.query.orderId;
+    this.detailsInfo();
+  },
   methods: {
+    detailsInfo(){
+      let params = {
+        orderId: this.orderId
+      }
+      this.$axios.get(this.$api.get_sellOrderDetails,params).then(res=>{
+        if(res && res.returnCode === '0000'){
+          this.detailsData = res.data;
+          if(this.detailsData.orderStatus === 2){
+            let percentage = res.data.confirmBlock / res.data.totalBlock;
+            this.percentage = percentage * 100;
+          }else{
+            this.percentage = 100;
+          }
+        }
+      })
+    },
+
     updateCardInfo(){
-      this.$router.push(`/sell-formUserInfo`);
+      this.$router.push(`/sell-formUserInfo?cardInfoFromPath=sellOrder?sellOrderId=${this.orderId}`);
     },
     refund(){
-      this.$router.replace(`/Refund?orderId=${12}`);
+      this.$router.replace(`/Refund?orderId=${this.orderId}`);
     }
   }
 }
@@ -193,14 +223,19 @@ export default {
       margin-top: 0.32rem;
       padding-bottom: 0.16rem;
       border-bottom: 1px solid #F4F4F4;
+      .left{
+        font-family: SFProDisplayMedium;
+        font-weight: 500;
+        font-size: 0.16rem;
+        color: #063376;
+      }
       .right{
         .statusView{
           margin-left: auto;
           display: flex;
           justify-content: center;
           align-items: center;
-          font-family: 'SF Pro Display';
-          font-style: normal;
+          font-family: SFProDisplayRegular;
           font-weight: 400;
           font-size: 0.13rem;
           color: #0059DA;
@@ -237,24 +272,23 @@ export default {
       min-height: 0.14rem;
       display: flex;
       align-items: center;
-      font-family: 'SF Pro Display';
-      font-style: normal;
+      font-family: SFProDisplayRegular;
       font-weight: 400;
       font-size: 0.13rem;
       color: #949EA4;
       margin-top: 0.16rem;
+      .left{
+        margin-right: 0.2rem;
+      }
       .right{
         margin-left: auto;
         .empty{
-          font-family: 'SF Pro Display';
-          font-style: normal;
           font-weight: 400;
           font-size: 0.13rem;
           color: #949EA4;
         }
         .value{
-          font-family: 'SF Pro Display';
-          font-style: normal;
+          font-family: SFProDisplayMedium;
           font-weight: 500;
           font-size: 0.13rem;
           color: #063376;
@@ -264,16 +298,22 @@ export default {
           align-items: center;
           cursor: pointer;
           .copyValue{
-            font-family: 'SF Pro Display';
+            max-width: 1.8rem;
+            font-family: SFProDisplayMedium;
             font-style: normal;
             font-weight: 500;
             font-size: 0.13rem;
             color: #949EA4;
+            overflow: hidden;/*超出部分隐藏*/
+            white-space: nowrap;/*不换行*/
+            text-overflow:ellipsis;/*超出部分文字以...显示*/
+            text-align: right;
           }
           .icon{
             display: flex;
             align-items: center;
-            margin-left: 0.12rem;
+            margin-left: 0.04rem;
+            width: 0.2rem;
             img{
               width: 0.2rem;
             }
@@ -288,21 +328,19 @@ export default {
       .title{
         display: flex;
         align-items: center;
-        font-family: 'SF Pro Display';
-        font-style: normal;
+        font-family: SFProDisplayRegular;
         font-weight: 400;
         font-size: 0.13rem;
         color: #949EA4;
         .right{
           margin-left: auto;
-          font-family: 'SF Pro Display';
+          font-family: SFProDisplayRegular;
           font-style: normal;
           font-weight: 400;
           font-size: 0.13rem;
           color: #0059DA;
           .completed{
-            font-family: 'SF Pro Display';
-            font-style: normal;
+            font-family: SFProDisplayRegular;
             font-weight: 400;
             font-size: 0.13rem;
             color: #0AB24D;
@@ -317,10 +355,31 @@ export default {
       }
       .speed-progress{
         width: 100%;
-        height: 0.04rem;
-        background: #F7F8FA;
-        border-radius: 0.04rem;
         margin-top: 0.08rem;
+        position: relative;
+        .all{
+          width: 100%;
+          height: 0.04rem;
+          background: #F7F8FA;
+          border-radius: 0.04rem;
+        }
+        .percentage{
+          width: 100%;
+          height: 0.04rem;
+          border-radius: 0.04rem;
+          position: absolute;
+          left: 0;
+          top: 0;
+        }
+        .completed{
+          background: #0AB24D;
+        }
+        .failed{
+          background: #FF8D24;
+        }
+        .refunded{
+          background: #FF2F2F;
+        }
       }
     }
     .orderInfo{
@@ -347,8 +406,7 @@ export default {
       background: #FFEEDE;
       border: 1px solid #FFDAB8;
       border-radius: 0.28rem;
-      font-family: 'SF Pro Display';
-      font-style: normal;
+      font-family: SFProDisplayMedium;
       font-weight: 500;
       font-size: 0.16rem;
       color: #FF8D24;
@@ -358,15 +416,14 @@ export default {
       cursor: pointer;
       .witchBank{
         margin-left: 0.12rem;
-        font-style: normal;
+        font-family: SFProDisplayRegular;
         font-weight: 400;
         font-size: 0.1rem;
         color: #FF8D24;
       }
       .bankCard{
         margin-left: 0.04rem;
-        font-family: 'SF Pro Display';
-        font-style: normal;
+        font-family: SFProDisplayRegular;
         font-weight: 400;
         font-size: 0.1rem;
         color: #FF8D24;
@@ -378,8 +435,7 @@ export default {
     }
     p{
       min-height: 0.14rem;
-      font-family: 'SF Pro Display';
-      font-style: normal;
+      font-family: SFProDisplayRegular;
       font-weight: 400;
       font-size: 0.13rem;
       color: #0059DA;
