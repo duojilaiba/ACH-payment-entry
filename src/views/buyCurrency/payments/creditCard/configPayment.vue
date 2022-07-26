@@ -3,7 +3,7 @@
     <div class="cardConfigPayment-content">
       <div class="formLine">
         <div class="formTitle">{{ $t('nav.buy_configPay_title1') }}</div>
-        <div class="formContent cardInfo" @click="goPayForm">
+        <div class="formContent cardInfo"> <!--  @click="goPayForm" -->
           <div class="formContent-left">
             <div class="card-icon">
               <img src="../../../../assets/images/visaText.svg" v-if="cardName==='visa'">

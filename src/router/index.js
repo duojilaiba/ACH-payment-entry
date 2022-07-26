@@ -127,6 +127,17 @@ export const constantRoutes = [
       keepAlive: true,
     }
   },
+    //修改卡信息
+  {
+    path: "/modifyCardInfo",
+    name: 'modifyCardInfo',
+    component: resolve => require(['../views/buyCurrency/payments/creditCard/modifyCardInfo.vue'], resolve),
+    meta: {
+      requireAuth: true,
+      title: 'nav.routerName_buyForm',
+      keepAlive: true,
+    }
+  },
   {
     path: "/creditCardConfig",
     name: 'creditCardConfig',
