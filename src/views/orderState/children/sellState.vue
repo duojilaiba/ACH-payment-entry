@@ -55,7 +55,7 @@
     </div>
     <div class="sellState_bottom">
       <p>You may leave this page. Order updates will be sent to your email and can be checked in the order history.</p>
-      <div class="button" @click="$router.push('/tradeHistory')">
+      <div class="button" @click="goHistry">
         <p>Order History</p>
         <img src="@/assets/images/rightIconSell.png" alt="">
       </div>
@@ -88,6 +88,10 @@ export default {
         this.$store.state.nextOrderState = 1
       }, 1000);
       this.$router.replace('/')
+    },
+    goHistry(){
+      this.$store.state.historyTab = 'sell'
+      this.$router.push('/tradeHistory')
     }
   },
 

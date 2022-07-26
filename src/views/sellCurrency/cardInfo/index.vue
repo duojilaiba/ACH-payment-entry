@@ -376,12 +376,13 @@ export default {
       //   amount: this.$store.state.sellRouterParams.amount * this.$store.state.sellRouterParams.currencyData.price
       // }
       this.$axios.post(this.$api.post_getKycStatus).then(res=>{
+        // console.log(res);
         if(res && res.returnCode === '0000'){
-          if(res.data.isKyc === true){
+          if(res.data === true){
             this.$store.state.sellRouterParams.fullName = val.name;
             this.$router.push('/kycVerification');
           }else{
-
+               this.$router.push('/sellOrder');
           }
         }
       })

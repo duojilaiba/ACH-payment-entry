@@ -208,6 +208,8 @@ export default {
       this.cardCheck = index;
       this.paymethodCheck = "";
       this.payMethod = item;
+      this.$store.state.sellRouterParams.fullName = AES_Decrypt(item.firstname) + ' '+ AES_Decrypt(item.lastname)
+      this.$store.state.sellRouterParams.fullName = AES_Encrypt(this.$store.state.sellRouterParams.fullName)
     },
 
     //选择支付方式
@@ -266,18 +268,19 @@ export default {
       if(this.cardCheck !== '' && this.payMethod.payWayCode === '10001'){
         this.payMethod.cardNumber = AES_Encrypt(this.payMethod.cardNumber);
         this.$store.state.buyRouterParams.userCardId = this.payMethod.userCardId;
-        // this.$axios.post(this.$api.post_getKycThrough).then(res=>{
-        //   console.log(res);
-        // })
-        this.$router.push(`/creditCardConfig?submitForm=${JSON.stringify(this.payMethod)}&configPaymentFrom=userPayment`);
+        let goUrl = `/creditCardConfig?submitForm=${JSON.stringify(this.payMethod)}&configPaymentFrom=userPayment`
+        //是否需要kyc验证
+        this.isKyc(goUrl)
         return;
       }
       if(this.cardCheck !== '' && (this.payMethod.payWayCode === '10003' || '10008')){
-        this.$router.push(`/otherWays-VA?payMethod=${JSON.stringify(this.payMethod)}`);
+        let goUrl = `/otherWays-VA?payMethod=${JSON.stringify(this.payMethod)}`
+        this.isKyc(goUrl)
         return;
       }
       if(this.cardCheck !== '' && (this.payMethod.payWayCode === '10004' || '10005' || '10006')){
-        this.$router.push(`/otherWayPay?payMethod=${JSON.stringify(this.payMethod)}`);
+        let goUrl = `/otherWayPay?payMethod=${JSON.stringify(this.payMethod)}`
+        this.isKyc(goUrl)
         return;
       }
 
@@ -288,7 +291,6 @@ export default {
       }
       if(this.paymethodCheck !== ''  && this.payMethod.payWayCode !== '10001'){ //IDR | 10008
         if(this.payMethod.payWayCode === '10003' || this.payMethod.payWayCode === '10008'){
-          // sessionStorage.removeItem("indonesiaPayment")
           this.$router.push(`/otherWays-VA`);
           return;
         }
@@ -296,6 +298,21 @@ export default {
           this.$router.push(`/otherWayPay`);
         }
       }
+    },
+    //是否需要kyc验证
+    //第一个参数是需要跳转的地址  第二个参数是kyc验证之后我要跳转的地址
+    isKyc(Url){
+       this.$axios.post(this.$api.post_getKycThrough).then(res=>{
+          if(res && res.returnCode === '0000'){
+            if(res.data===true){
+              this.$store.state.WhichPage = Url
+              this.$router.push('/kycVerification')
+              return
+            }else{
+              this.$router.push(Url)
+            } 
+          }
+        })
     }
   }
 }

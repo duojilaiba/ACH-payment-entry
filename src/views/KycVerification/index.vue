@@ -157,12 +157,13 @@ export default {
       }else if(val === 1){
         this.status=0
         this.kycVerState = 0
-        // console.log(this.$store.state.homeTabstate);
-        //跳转清空页面状态
         if(this.$store.state.homeTabstate ==='sellCrypto'){
           sessionStorage.removeItem('getToken')
             sessionStorage.removeItem('sellState')
             this.$router.push('/sellOrder')
+        }else{
+          // console.log(this.$store.state.WhichPage);
+          this.$router.push(this.$store.state.WhichPage)
         }
         
         
@@ -223,7 +224,7 @@ export default {
             sessionStorage.setItem('getToken',res.data)
             sessionStorage.setItem('sellState',this.status)
             clearTimeout(this.timeOut)
-        this.timeOut =setTimeout(()=>{
+              this.timeOut =setTimeout(()=>{
               // console.log(this.getToken);
               this.launchWebSdk(this.getToken)
             },1000)
@@ -258,10 +259,12 @@ export default {
       this.getToken = sessionStorage.getItem('getToken')
       clearTimeout(this.timeOut)
         this.timeOut = setTimeout(()=>{
-          console.log(this.getToken);
+          // console.log(this.getToken);
         this.launchWebSdk(this.getToken)
       },200)
    }else{
+    //  this.status=0
+    //     this.kycVerState = 1
      return false
    }
 
@@ -369,12 +372,14 @@ export default {
     width: 3.4rem;
     position: fixed;
     overflow: scroll;
+    padding-top: .3rem;
     .verif_kyc_nav{
       width: 100%;
       height: .3rem;
       background: #FFFFFF;
       position: sticky;
       top: 0;
+      
       >img{
         height: .14rem;
         cursor: pointer;
