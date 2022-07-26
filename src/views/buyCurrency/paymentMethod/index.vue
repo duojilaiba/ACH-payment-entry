@@ -221,7 +221,7 @@ export default {
       if(this.editCardInfo_state === true){
         this.$store.state.buyRouterParams.submitForm = item;
         let goUrl = `/modifyCardInfo?submitForm=${JSON.stringify(item)}&configPaymentFrom=userPayment`
-        this.$router.replace(goUrl)
+        this.$router.push(goUrl)
         return
       }
       this.cardCheck = index;
