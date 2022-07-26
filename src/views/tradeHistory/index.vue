@@ -259,8 +259,6 @@ export default {
       this.buyTransactionHistory();
     }else{
       this.sellQuery = {
-        orderState: 1,
-        orderType: 1,
         pageIndex: 1,
         pageSize: 5
       };
@@ -291,8 +289,6 @@ export default {
         this.buyTransactionHistory();
       }else{
         this.sellQuery = {
-          orderState: 1,
-          orderType: 1,
           pageIndex: 1,
           pageSize: 5
         };
