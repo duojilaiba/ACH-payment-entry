@@ -310,7 +310,7 @@ export default {
               return
             }else{
               this.$router.push(Url)
-            } 
+            }
           }
         })
     }
