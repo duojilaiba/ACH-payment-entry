@@ -8,11 +8,27 @@
             <div></div>
             <div>Block Confirmed ({{ detailsData.confirmBlock }}/{{ detailsData.totalBlock }}) </div>
           </div>
+          <div class="statusView" v-if="detailsData.orderStatus === 3">
+            <div></div>
+            <div>Confirm Order</div>
+          </div>
+          <div class="statusView" v-if="detailsData.orderStatus === 4">
+            <div></div>
+            <div>In Transfer</div>
+          </div>
           <div class="statusView completed" v-else-if="detailsData.orderStatus === 5">
             <div></div>
             <div>Completed</div>
           </div>
-          <div class="statusView failed1" v-else-if="detailsData.orderStatus === 8 && detailsData.failureNumber < 2">
+          <div class="statusView failed1" v-else-if="detailsData.orderStatus === 6">
+            <div></div>
+            <div>Failed</div>
+          </div>
+          <div class="statusView timeout" v-else-if="detailsData.orderStatus === 7">
+            <div></div>
+            <div>Closed</div>
+          </div>
+          <div class="statusView failed3" v-else-if="detailsData.orderStatus === 8">
             <div></div>
             <div>Failed</div>
           </div>
@@ -58,10 +74,17 @@
             <span class="empty" v-else>-- </span>
           </div>
         </div>
+        <div class="amountInfo-line" v-if="detailsData.orderStatus === 6 || detailsData.orderStatus === 8 || detailsData.orderStatus === 9">
+          <div class="left">Return fee ({{ detailsData.fiatName }})</div>
+          <div class="right">
+            <span class="value" v-if="detailsData.returnFee !== '' && detailsData.returnFee !== null">{{ detailsData.returnFee }}</span>
+            <span class="empty" v-else>-- </span>
+          </div>
+        </div>
         <div class="amountInfo-line">
           <div class="left">Final Total ({{ detailsData.fiatName }})</div>
           <div class="right">
-            <span class="value" v-if="detailsData.total !== '' && detailsData.total !== null">{{ detailsData.total }}</span>
+            <span class="value" v-if="detailsData.finalTotal !== '' && detailsData.finalTotal !== null">{{ detailsData.finalTotal }}</span>
             <span class="empty" v-else>-- </span>
           </div>
         </div>
@@ -71,14 +94,22 @@
         <div class="title">
           <div class="left">Status</div>
           <div class="right">
-            <span v-if="detailsData.orderStatus === 3">Block Confirmed</span>
+            <span v-if="detailsData.orderStatus === 2">Block Confirmed</span>
+            <span v-if="detailsData.orderStatus === 3">Confirm Order</span>
+            <span v-if="detailsData.orderStatus === 4">In Transfer</span>
             <span class="completed" v-else-if="detailsData.orderStatus === 5">Completed</span>
-            <span class="failed1" v-else-if="detailsData.orderStatus === 8 && detailsData.failureNumber < 2">Failed</span>
+            <span class="failed1" v-else-if="detailsData.orderStatus === 6">Failed</span>
+            <span class="timeout" v-else-if="detailsData.orderStatus === 7">Closed</span>
+            <span class="failed3" v-else-if="detailsData.orderStatus === 8">Failed</span>
             <span class="failed2" v-else-if="detailsData.orderStatus === 9">Failed</span>
           </div>
         </div>
         <div class="speed-progress">
-          <div class="percentage" :style="{width: percentage + '%'}" :class="{'completed': detailsData.orderStatus === 5,'failed': detailsData.orderStatus === 8 && detailsData.failureNumber < 2,'refunded': detailsData.orderStatus === 9}"></div>
+          <div class="percentage" :style="{width: percentage + '%'}"
+               :class="{'completed': detailsData.orderStatus >= 2 && detailsData.orderStatus <= 5,
+               'failed': detailsData.orderStatus === 6,
+               'timeOut': detailsData.orderStatus === 7,
+               'refunded': detailsData.orderStatus === 8 || detailsData.orderStatus === 9 }"></div>
           <div class="all"></div>
         </div>
       </div>
@@ -99,21 +130,21 @@
             <span class="value">{{ detailsData.orderTime }}</span>
           </div>
         </div>
-        <div class="amountInfo-line">
+        <div class="amountInfo-line" v-if="detailsData.orderStatus !== 7">
           <div class="left">Confirmed Time:</div>
           <div class="right">
             <span class="value">{{ detailsData.confirmedTime }}</span>
           </div>
         </div>
         <!-- Completed -->
-        <div class="amountInfo-line">
+        <div class="amountInfo-line" v-if="detailsData.orderStatus === 5 ||  detailsData.orderStatus === 6 || detailsData.orderStatus === 8 || detailsData.orderStatus === 9">
           <div class="left">Transfer Time:</div>
           <div class="right">
             <span class="value">{{ detailsData.transferTime }}</span>
           </div>
         </div>
         <!-- Failed - 2 -->
-        <div class="amountInfo-line">
+        <div class="amountInfo-line" v-if="detailsData.orderStatus === 9">
           <div class="left">Refund Time:</div>
           <div class="right">
             <span class="value">{{ detailsData.refundTime }}</span>
@@ -121,7 +152,7 @@
         </div>
       </div>
 
-      <div class="orderInfo">
+      <div class="orderInfo" v-if="detailsData.orderStatus !== 7">
         <div class="amountInfo-line">
           <div class="left">Network:</div>
           <div class="right">
@@ -156,14 +187,14 @@
     </div>
 
     <!-- failed - 1 -->
-    <footer v-if="detailsData.orderStatus === 8 && detailsData.failureNumber < 2">
-      <button @click="updateCardInfo">
+    <footer v-if="detailsData.orderStatus === 6 || detailsData.orderStatus === 8">
+      <button @click="updateCardInfo" v-if="detailsData.orderStatus === 6">
         Update Information
         <span class="witchBank">Mastercard</span>
         <span class="bankCard">****8111</span>
         <img src="@/assets/images/right_icon_orange.svg" alt="">
       </button>
-        <p @click="refund">Request Refund of USDT</p>
+      <p @click="refund" v-if="detailsData.orderStatus === 8 || detailsData.orderStatus === 6">Request Refund of USDT</p>
     </footer>
   </div>
 </template>
@@ -174,12 +205,24 @@ export default {
   data(){
     return{
       detailsData: {},
-      percentage: 0,
     }
   },
   activated(){
     this.orderId = this.$route.query.orderId;
     this.detailsInfo();
+  },
+  computed: {
+    percentage(){
+      if(this.detailsData.orderStatus === 2){
+        return 25
+      }else if(this.detailsData.orderStatus === 3){
+        return 50
+      }else if(this.detailsData.orderStatus === 4){
+        return 75
+      }else{
+        return 100
+      }
+    }
   },
   methods: {
     detailsInfo(){
@@ -189,12 +232,6 @@ export default {
       this.$axios.get(this.$api.get_sellOrderDetails,params).then(res=>{
         if(res && res.returnCode === '0000'){
           this.detailsData = res.data;
-          if(this.detailsData.orderStatus === 2){
-            let percentage = res.data.confirmBlock / res.data.totalBlock;
-            this.percentage = percentage * 100;
-          }else{
-            this.percentage = 100;
-          }
         }
       })
     },
@@ -230,6 +267,7 @@ export default {
         color: #063376;
       }
       .right{
+        margin-left: auto;
         .statusView{
           margin-left: auto;
           display: flex;
@@ -259,10 +297,22 @@ export default {
             background: #FF8D24;
           }
         }
+        .timeout{
+          color: #949EA4;
+          div:first-child{
+            background: #949EA4;
+          }
+        }
         .failed2{
           color: #1EC109;
           div:first-child{
             background: #1EC109;
+          }
+        }
+        .failed3{
+          color: #FF2F2F;
+          div:first-child{
+            background: #FF2F2F;
           }
         }
       }
@@ -348,7 +398,13 @@ export default {
           .failed1{
             color: #FF8D24;
           }
+          .timeout{
+            color: #949EA4;
+          }
           .failed2{
+            color: #FF2F2F;
+          }
+          .failed3{
             color: #FF2F2F;
           }
         }
@@ -377,6 +433,9 @@ export default {
         .failed{
           background: #FF8D24;
         }
+        .timeOut{
+          background: #949EA4;
+        }
         .refunded{
           background: #FF2F2F;
         }
@@ -384,7 +443,7 @@ export default {
     }
     .orderInfo{
       width: 100%;
-      min-height: 1.2rem;
+      min-height: 0.9rem;
       background: #F7F8FA;
       border-radius: 0.06rem;
       padding: 0.2rem 0.16rem;
