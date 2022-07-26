@@ -375,10 +375,13 @@ export default {
           _this.$axios.post(this.$api.post_getKycThrough).then(_res=>{
           
               if(_res && _res.returnCode === '0000'){
-                _this.$store.state.WhichPage = `/creditCardConfig?submitForm=${JSON.stringify(queryParams)}&merchant_orderNo=${this.$route.query.merchant_orderNo}`
-                _this.$router.push('/kycVerification')
-              }else{
-                _this.$router.push(`/creditCardConfig?submitForm=${JSON.stringify(queryParams)}&merchant_orderNo=${this.$route.query.merchant_orderNo}`);
+                if(_res.data ===true){
+                  _this.$store.state.WhichPage = `/creditCardConfig?submitForm=${JSON.stringify(queryParams)}&merchant_orderNo=${this.$route.query.merchant_orderNo}`
+                  _this.$router.push('/kycVerification')
+                  return
+                }else{
+                  _this.$router.push(`/creditCardConfig?submitForm=${JSON.stringify(queryParams)}&merchant_orderNo=${this.$route.query.merchant_orderNo}`);
+                }
               }
           })
         }
