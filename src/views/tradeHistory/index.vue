@@ -170,34 +170,40 @@
                     <div class="state_name">In Transfer</div>
                   </div>
                 </div>
-                <div v-else-if="item.orderStatus === 5" class="state_success">
-                  <div class="state_failed">
+                <div v-else-if="item.orderStatus === 5" class="state_failed">
+                  <div class="orderState-line1">
                     <div class="state_circular"></div>
                     <div class="state_name">Completed</div>
                   </div>
                 </div>
-                <div v-else-if="item.orderStatus === 8 && item.failureNumber < 2" class="state_failed">
-                  <div class="state_failed">
+                <div v-else-if="item.orderStatus === 6" class="state_failed">
+                  <div class="orderState-line1">
                     <div class="state_circular"></div>
                     <div class="state_name">Failed</div>
                   </div>
                   <p class="state_failed_tips">Fiat transfer rejected by bank. Please update bank info.</p>
                   <div class="options">
-                    <div class="optionsView state_failed_refund curror">Request Refund in USDT</div>
-                    <div class="optionsView state_failed_Update curror">Update Bank Info</div>
+                    <div class="optionsView state_failed_refund curror" @click.stop="optionsPath(item,'refund')">Request Refund in USDT</div>
+                    <div class="optionsView state_failed_Update curror" @click.stop="optionsPath(item,'bankInfo')">Update Bank Info</div>
                   </div>
                 </div>
-                <div v-else-if="item.orderStatus === 8 && item.failureNumber >= 2" class="state_error">
-                  <div class="state_failed">
+                <div v-else-if="item.orderStatus === 7" class="state_timeOut">
+                  <div class="orderState-line1">
+                    <div class="state_circular"></div>
+                    <div class="state_name">Closed</div>
+                  </div>
+                </div>
+                <div v-else-if="item.orderStatus === 8" class="state_error"> <!--  && item.failureNumber >= 2 -->
+                  <div class="orderState-line1">
                     <div class="state_circular"></div>
                     <div class="state_name">Failed</div>
                   </div>
                   <div class="options">
-                    <div class="optionsView state_error_refund curror">Request Refund in USDT</div>
+                    <div class="optionsView state_error_refund curror" @click.stop="optionsPath(item,'refund')">Request Refund in USDT</div>
                   </div>
                 </div>
                 <div v-else-if="item.orderStatus === 9" class="state_refunded">
-                  <div class="state_failed">
+                  <div class="orderState-line1">
                     <div class="state_circular"></div>
                     <div class="state_name">Refunded</div>
                   </div>
@@ -336,8 +342,19 @@ export default {
       }, 1000);
     },
 
+    //跳转详情
     goOrderDetails(val){
       this.$router.push(`/tradeHistory-details?orderId=${val.orderId}`);
+    },
+
+    //退款、修改银行卡信息
+    optionsPath(val,state){
+      if(state === 'bankInfo'){
+        this.$router.push(`/sell-formUserInfo?cardInfoFromPath=sellOrder?sellOrderId=${val.orderId}`);
+        return
+      }
+      //退款
+      this.$router.replace(`/Refund?orderId=${val.orderId}`);
     }
 
   }
@@ -531,17 +548,24 @@ html,body,#tradeHistory,.historyList,.van-list{
           background: #FF8D24;
         }
       }
+      .state_timeOut{
+        color: #949EA4;
+        .state_circular{
+          background: #949EA4;
+        }
+      }
       .state_failed_tips{
         font-size: 0.1rem;
         margin-top: 0.04rem;
+        text-align: right;
       }
       .options{
         display: flex;
         align-items: center;
-        justify-content: right;
-        margin-top: 0.16rem;
+        justify-content: flex-end;
+        flex-wrap: wrap;
         .optionsView{
-          width: 1.33rem;
+          width: 1.43rem;
           height: 0.28rem;
           border-radius: 0.14rem;
           font-family: SFProDisplayRegular;
@@ -549,6 +573,7 @@ html,body,#tradeHistory,.historyList,.van-list{
           font-size: 0.1rem;
           line-height: 0.28rem;
           text-align: center;
+          margin-top: 0.16rem;
         }
         .state_failed_refund{
           background: #F7F8FA;
@@ -559,7 +584,7 @@ html,body,#tradeHistory,.historyList,.van-list{
           background: #FFEEDE;
           border: 1px solid #FFDAB8;
           color: #FF8D24;
-          margin-right: 0.17rem;
+          margin-left: 0.1rem;
         }
         .state_error_refund{
           background: #FFE8E8;
