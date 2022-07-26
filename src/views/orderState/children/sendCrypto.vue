@@ -192,6 +192,7 @@ export default {
   methods:{
     //确认切换
     confirmSell(){
+     
       this.transferredShow = false
       if(this.confirmSecondary){
         this.$router.replace('/')
@@ -298,6 +299,10 @@ export default {
     },
     //进行返回首页或者下一步的显示隐藏
     buttonNext(val){
+       if(this.orderStateData.orderStatus == 7&&val === 'goHome'){
+        this.$router.replace('/')
+        return
+      }
       this.transferredShow = true
       if(val === 'goHome'){
         this.confirmSecondary = true
