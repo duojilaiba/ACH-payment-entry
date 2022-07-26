@@ -1,7 +1,7 @@
 <template>
   <div class="sendCrypto-container" >
     <div class="sendCrypto_nav">
-      <div class="sendCrypto_nav_left" @click="$router.replace('/')">
+      <div class="sendCrypto_nav_left" @click="buttonNext('goHome')">
         <img src="@/assets/images/goBack.png" alt="">
         <p>Sell {{orderStateData.cryptocurrency}}</p>
       </div>
@@ -47,7 +47,7 @@
     </div>
     <div class="sendCrypto_bottom_title">{{ $t('nav.sell_Order_network_selected') }}</div>
       </div>
-      <div class="sendCrypto_button" @click="transferredShow=true">
+      <div class="sendCrypto_button" @click="buttonNext('button')"><!-- transferredShow=true -->
       <div>
           {{ $t('nav.Sell_Order_haveSent') }} {{orderStateData.cryptocurrency}}
           <img src="@/assets/images/rightIconSell.png" alt="">
@@ -74,10 +74,17 @@
       </div>
     </div>
     </div>
-    
+    <!-- 二次确认弹框-->
     <div v-else></div>
     <div class="sendCrypto_confing" v-show="transferredShow" >
-      <div class="content">
+      <div class="content" v-if="confirmSecondary" key="goback">
+        <p style="height:.5rem">If you leave the current page, this order will be automatically closed. Are you sure to stop this order?</p>
+        <div>
+          <p @click.stop="confirmSell">{{ $t('nav.Confirm') }}</p>
+          <p @click.stop="transferredShow = false">Cancel</p>
+        </div>
+      </div>
+      <div class="content" v-else key="next">
         <p style="height:.5rem">{{ $t('nav.Sell_Order_transferred') }}</p>
         <div>
           <p @click.stop="confirmSell">{{ $t('nav.Confirm') }}</p>
@@ -116,7 +123,9 @@ export default {
       NetworkCheck:require('@/assets/images/cardCheckIcon.png'),
       feeInfo:'',
       timerNumber:15,
-      timeOut:null
+      timeOut:null,
+      //二次确认的显示隐藏
+      confirmSecondary:true
     }
   },
   mounted(){
@@ -183,6 +192,11 @@ export default {
   methods:{
     //确认切换
     confirmSell(){
+      this.transferredShow = false
+      if(this.confirmSecondary){
+        this.$router.replace('/')
+        return
+      }
       this.$store.state.nextOrderState = 2
     },
     //复制
@@ -281,6 +295,16 @@ export default {
     //打开菜单栏
     openMenu(){
       this.$parent.$parent.routerViewState === true ? this.$parent.$parent.routerViewState = false : this.$parent.$parent.routerViewState = true;
+    },
+    //进行返回首页或者下一步的显示隐藏
+    buttonNext(val){
+      this.transferredShow = true
+      if(val === 'goHome'){
+        this.confirmSecondary = true
+        return
+      }else{
+        this.confirmSecondary =false
+      }
     }
   
   },

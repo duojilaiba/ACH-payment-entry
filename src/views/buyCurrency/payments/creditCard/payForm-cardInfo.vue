@@ -355,22 +355,27 @@ export default {
       queryParams.lastname = AES_Encrypt(queryParams.lastname.trim());
       queryParams.email = localStorage.getItem("email");
       queryParams.source = 0;
-      let _this = this
+      
+     
       this.$axios.post(this.$api.post_saveCardInfo,queryParams,'').then(res=>{
         this.request_loading = false;
+        let _this = this
         if(res && res.returnCode === '0000'){
+         
           queryParams.cardNumber = queryParams.cardNumber.replace(/ /g,'');
           queryParams.userCardId = res.data.userCardId;
           this.$store.state.buyRouterParams.userCardId = res.data.userCardId;
-          this.$store.state.sellRouterParams.fullName = AES_Decrypt(res.data.firstname) + ' '+ AES_Decrypt(res.data.lastname)
-      this.$store.state.sellRouterParams.fullName = AES_Encrypt(this.$store.state.sellRouterParams.fullName)
+          
+          this.$store.state.sellRouterParams.fullName = AES_Decrypt(res.data.firstName) + ' '+ AES_Decrypt(res.data.lastName)
+          this.$store.state.sellRouterParams.fullName = AES_Encrypt(this.$store.state.sellRouterParams.fullName)
           //是否验证过baseId
           _this.$axios.post(this.$api.post_getKycThrough).then(_res=>{
+            console.log(_res);
               if(_res && _res.returnCode === '0000'){
                 _this.$store.state.WhichPage = `/creditCardConfig?submitForm=${JSON.stringify(queryParams)}&merchant_orderNo=${this.$route.query.merchant_orderNo}`
-                this.$router.push('/kycVerification')
+                _this.$router.push('/kycVerification')
               }else{
-                _this.$router.replace(`/creditCardConfig?submitForm=${JSON.stringify(queryParams)}&merchant_orderNo=${this.$route.query.merchant_orderNo}`);
+                _this.$router.push(`/creditCardConfig?submitForm=${JSON.stringify(queryParams)}&merchant_orderNo=${this.$route.query.merchant_orderNo}`);
               }
           })
           // if(this.$store.state.buyRouterParams.kyc === true){
