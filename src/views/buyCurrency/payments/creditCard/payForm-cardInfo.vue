@@ -362,6 +362,8 @@ export default {
           queryParams.cardNumber = queryParams.cardNumber.replace(/ /g,'');
           queryParams.userCardId = res.data.userCardId;
           this.$store.state.buyRouterParams.userCardId = res.data.userCardId;
+          this.$store.state.sellRouterParams.fullName = AES_Decrypt(res.data.firstname) + ' '+ AES_Decrypt(res.data.lastname)
+      this.$store.state.sellRouterParams.fullName = AES_Encrypt(this.$store.state.sellRouterParams.fullName)
           //是否验证过baseId
           _this.$axios.post(this.$api.post_getKycThrough).then(_res=>{
               if(_res && _res.returnCode === '0000'){
