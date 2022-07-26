@@ -64,7 +64,7 @@ export default {
     },
     confirmCard(){
       this.$store.state.sellForm = this.cardInfo;
-      this.$parent.$refs.routerView.decryptCardInfo();
+      this.$parent.$refs.routerView.decryptCardInfo(this.cardInfo);
       this.$parent.historicalCardInfoSell_state = false;
     },
   }
