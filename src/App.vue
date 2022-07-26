@@ -34,6 +34,15 @@
       </div>
       <!-- 版本号 -->
 <!--      <span class="version">V: {{ version }}</span>-->
+        <!-- 账号风险提示无法进行下一步 -->
+        <div class="kycToast" v-show="AccountisShow">
+          <div>
+              <div>
+              Account risk alerts cannot proceed to the next step
+              </div>
+            <div @click="goHome">Confirm</div>
+          </div>
+        </div>
     </div>
   </div>
 </template>
@@ -58,6 +67,7 @@ export default {
       version: '',
       LanguageShow: true,
       historicalCardInfoSell_state: false,
+      AccountisShow:false
     }
   },
   computed:{
@@ -138,6 +148,7 @@ export default {
       if(this.$store.state.goHomeState === false){
         return;
       }
+      this.AccountisShow = false
       if(this.$route.path === '/' && this.LanguageShow === true){
         this.$children[1].menuState = false;
         this.$store.state.LanguageIsShow = false;
@@ -266,6 +277,46 @@ html,body,#app,#viewBox{
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.kycToast{
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.15);
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  >div{
+    width: 90%;
+    max-width: 3.5rem;
+    // height: 2.5rem;
+    background: #FFFFFF;
+    border-radius: .18rem;
+    padding: .32rem .16rem .32rem;
+    div:nth-of-type(1){
+      font-family: SFProDisplayRegular;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 24px;
+      text-align: center;
+      color: #949EA4;
+    }
+    div:nth-of-type(2){
+      width: 100%;
+      height: .5rem;
+      background:  linear-gradient(88.06deg, #0059DA 0%, #1BB2F2 100%);
+      font-family: SFProDisplayMedium;
+      color: #FFFFFF;
+      text-align: center;
+      line-height: .5rem;
+      border-radius: .3rem;
+      margin-top: .32rem;
+      cursor: pointer;
+    }
+  }
 }
 .buyCrypto_iframe_view_pc{
   padding: 0.40rem 0.30rem 0.40rem 0.30rem !important;

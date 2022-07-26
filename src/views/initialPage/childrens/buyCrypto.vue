@@ -418,6 +418,7 @@ export default {
         positionData: this.positionData
       }
       this.$store.state.buyRouterParams = routerParams;
+     
       // Login information
       if(!localStorage.getItem('token') || localStorage.getItem('token')===''){
         this.$store.state.emailFromPath = 'buyCrypto';
@@ -425,8 +426,17 @@ export default {
         this.$router.push(`/emailCode`);
         return;
       }
-      this.$store.state.homeTabstate = 'buyCrypto';
-      this.$router.push(`/receivingMode`)
+      this.$axios.post(this.$api.post_kycDisabled).then(res=>{
+        if(res && res.returnCode === '0000'){
+          if(res.data){
+            this.$parent.$parent.AccountisShow = true
+          }else{
+            this.$store.state.homeTabstate = 'buyCrypto';
+            this.$router.push(`/receivingMode`)
+          }
+        }
+      })
+      
     },
   }
 }

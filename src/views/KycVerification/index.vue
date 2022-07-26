@@ -3,7 +3,7 @@
     <!-- 展示成功失败等待状态页面 -->
     <div class="Verification_content" v-if="status==0" :key="0">
       <div class="kyc_nav">
-      <img v-if=" kycVerState !== 1" src="@/assets/images/ShutDown.png" @click="goHome" alt="">
+      <img v-if=" kycVerState===0" src="@/assets/images/ShutDown.png" @click="goHome" alt="">
     </div>
     <!-- 点击进行kyc验证 -->
         <div class="content" v-if="kycVerState==0">
@@ -26,13 +26,7 @@
         <!-- kyc验证失败 -->
         <div class="content" v-else>
           <img src="@/assets/images/kycIcon3.svg" alt="">
-            <p style="text-align:center">Your verification failed.</p>
-            <ul class="verify_list">
-                <li>Please ensure:</li>
-                <li>· <span>You submitted your own ID document .</span></li>
-                <li>· <span>The name on your ID document is identical to your payment's cardholder name .</span></li>
-                <li>· <span>You did not use multiple ID documents for the KYC verification .</span></li>
-            </ul>
+            <p style="text-align:center">The account is at risk and cannot be traded now.</p>
         </div>
         <div class="Verification_button" v-if="kycVerState==0" @click="nextKycVer(0)" :style="{opacity:!nextKyc?'.5':'',cursor:!nextKyc?'not-allowed':''}">
           <p  >Begin Verification</p>
@@ -45,7 +39,7 @@
           <van-loading class="icon" type="spinner" color="#fff" v-if="!nextKyc"/>
         </div>
         <div class="Verification_button" v-else @click="nextKycVer(2)">
-          <p >Try Again </p>
+          <p >Back to Home Page </p>
           <img src="@/assets/images/rightIconSell.png" alt="" v-if="nextKyc">
           <van-loading class="icon" type="spinner" color="#fff" v-if="!nextKyc"/>
         </div>
@@ -97,6 +91,8 @@ export default {
           }
           //正在处理
           if(type.reviewStatus === 'pending'){
+            // this.status = 0
+            // this.kycVerState = 2
             return false
              //重新验证
           }else if(type.reviewStatus === "completed" && type.reviewResult.reviewAnswer === 'RED' && type.reviewResult.reviewRejectType==='RETRY'){
@@ -110,7 +106,6 @@ export default {
             return
             //失败
           }else{
-           
             this.status = 0
             this.kycVerState = 2
             return
@@ -154,6 +149,7 @@ export default {
         // this.$router.push('/sellOrder')
         },1000)
         return 
+      //成功下一步
       }else if(val === 1){
         this.status=0
         this.kycVerState = 0
@@ -170,15 +166,10 @@ export default {
         
         return
       }else if(val === 2){
+        this.status = 0
+         this.kycVerState = 0
+        this.$router.replace('/')
         
-        this.nextKyc = false
-        
-        clearTimeout(this.timeOut)
-        this.timeOut =setTimeout(()=>{
-          this.status=1
-          this.getUserToken()
-          this.nextKyc = true
-        },3000)
       }else{
         return false
       }
@@ -264,7 +255,7 @@ export default {
       },200)
    }else{
     //  this.status=0
-    //     this.kycVerState = 1
+    //     this.kycVerState = 2
      return false
    }
 
@@ -372,13 +363,13 @@ export default {
     width: 3.4rem;
     position: fixed;
     overflow: scroll;
-    padding-top: .3rem;
     .verif_kyc_nav{
       width: 100%;
       height: .3rem;
       background: #FFFFFF;
       position: sticky;
       top: 0;
+      
       
       >img{
         height: .14rem;
@@ -391,7 +382,7 @@ export default {
    
  #sumsub-websdk-container{
   height: 100%;
-  
+  padding-top: .1rem;
   overflow: scroll;
  }
   }

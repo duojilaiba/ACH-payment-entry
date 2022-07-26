@@ -303,8 +303,20 @@ export default {
       this.$store.state.cardInfoFromPath = 'configSell';
       delete this.$store.state.sellForm;
       delete this.$store.state.sellRouterParams.cardInfoList;
+      //是否为风险
+    
       if(localStorage.getItem("token")){
-        this.$router.push('/sell-formUserInfo');
+        this.$axios.post(this.$api.post_kycDisabled).then(res=>{
+          if(res && res.returnCode === '0000'){
+            if(res.data){
+              this.$parent.$parent.AccountisShow = true
+              
+            }else{
+              this.$router.push('/sell-formUserInfo');
+            }
+          }
+        })
+        
       }else{
         this.$router.replace('/emailCode');
       }
