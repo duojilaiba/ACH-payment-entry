@@ -19,7 +19,8 @@
     <!-- close menu view -->
     <div class="navigationBar_view_left" v-else>{{ $t('nav.menu') }}</div>
     <div class="navigationBar_view_right">
-      <!-- <img class="menu" src="../assets/images/rightMeun.png" v-if="this.$parent.routerViewState" @click="openMenu"> -->
+      <!-- 买币修改表单页面 - 删除表单icon -->
+      <div class="buy_deleteCardInfo" v-if="$route.path === '/modifyCardInfo'" @click="deleteForm"><img src="../assets/images/delete-icon.png" alt=""></div>
       <img class="closeIcon" style="width:.11rem" src="../assets/images/ShutDown.png" v-if="!this.$parent.routerViewState" @click="openMenu">
     </div>
   </div>
@@ -139,7 +140,12 @@ export default {
     sellFormBack(){
       this.$store.state.sellRouterParams.cacheForm = true;
       this.$router.replace("/");
-    }
+    },
+
+    //删除买币表单
+    deleteForm(){
+      this.$parent.$refs.routerView.deleteForm()
+    },
   },
   computed:{
     //导航的显示隐藏
@@ -163,7 +169,6 @@ export default {
     align-items: center;
     font-size: 0.18rem;
     font-family: SFProDisplaybold;
-    font-weight: normal;
     color: #063376;
     font-weight: 500;
     .icon {
@@ -210,6 +215,13 @@ export default {
     }
     .closeIcon{
       width: 0.24rem;
+    }
+    .buy_deleteCardInfo{
+      margin-left: auto;
+      cursor: pointer;
+      img{
+        width: 0.24rem;
+      }
     }
     img {
       cursor: pointer;

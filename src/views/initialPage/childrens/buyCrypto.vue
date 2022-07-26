@@ -343,6 +343,7 @@ export default {
         networkFee: cryptoDate.networkFee,
         price: cryptoDate.price,
         serviceFee: cryptoDate.serviceFee,
+        buyNetwork: cryptoDate.buyNetworkList[0]
       }
       this.$store.state.buyRouterParams.cryptoCurrency = cryptoDate.name;
       let params = merchantParams;

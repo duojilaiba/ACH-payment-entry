@@ -27,6 +27,8 @@ export default {
   "get_payMethods": '/crypto/payment/v2',
   //查询订单状态
   "get_orderState": '/trade/',
+  //信用卡信息删除
+  "post_deleteForm": '/user/card/delete/',
 
   //------------------------- 卖币接口 -------------------------
   //卖币查询费用

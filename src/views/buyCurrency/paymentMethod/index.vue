@@ -3,7 +3,12 @@
     <div class="paymentMethod-content">
       <!-- 历史支付的方式 -->
       <div class="payMethodsUl" v-if="savedCard.length !== 0 && $store.state.goHomeState">
-        <div class="title">{{ $t('nav.buy_payment_savedTitle') }}</div>
+        <div class="title">
+          <div>{{ $t('nav.buy_payment_savedTitle') }}</div>
+          <div class="edit" @click="editCardInfo">
+            <span>{{ editCardInfo_state===false ? 'Edit' : 'Cancel' }}</span>
+          </div>
+        </div>
         <div class="payMethodsLi" :class="{'cardCheck': cardCheck === index}" v-for="(item,index) in savedCard" :key="index" @click="choiseSavedCard(item,index)">
           <div class="payMethodsLi-left">
             <div class="cardIcon">
@@ -18,7 +23,12 @@
               <p>{{ $t('nav.buy_payment_instant') }}</p>
             </div>
           </div>
-          <div class="payMethodsLi-right" v-if="cardCheck === index"><img src="../../../assets/images/cardCheckIcon.png"></div>
+          <div class="payMethodsLi-right" v-if="cardCheck === index">
+            <img src="../../../assets/images/cardCheckIcon.png">
+          </div>
+          <div class="payMethodsLi-right" v-if="editCardInfo_state===true">
+            <img class="editIcon" src="../../../assets/images/edit-icon.png" alt="">
+          </div>
         </div>
       </div>
       <!-- 选择新的支付方式 -->
@@ -68,6 +78,8 @@ export default {
     return{
       buyParams: {},
 
+      editCardInfo_state: false,
+
       cardCheck: '',
       savedCard: [],
 
@@ -89,7 +101,7 @@ export default {
   },
   computed: {
     disabled(){
-      if((JSON.stringify(this.payMethod) !== '{}' && this.request_loading === false) || (this.paymethodCheck !== ''&&this.request_loading === false)){
+      if(((JSON.stringify(this.payMethod) !== '{}' && this.request_loading === false) || (this.paymethodCheck !== ''&&this.request_loading === false)) && !this.editCardInfo_state){
         return false;
       }else{
         return true;
@@ -98,7 +110,8 @@ export default {
   },
   beforeRouteEnter(to,from,next){
     next(vm => {
-      if(to.path === '/paymentMethod' && from.path === '/receivingMode'){
+      vm.editCardInfo_state = false;
+      if((to.path === '/paymentMethod' && from.path === '/receivingMode') || (to.path === '/paymentMethod' && from.path === '/modifyCardInfo')){
         vm.InitializationData();
       }
     })
@@ -205,6 +218,12 @@ export default {
 
     //选择历史支付方式
     choiseSavedCard(item,index){
+      if(this.editCardInfo_state === true){
+        this.$store.state.buyRouterParams.submitForm = item;
+        let goUrl = `/modifyCardInfo?submitForm=${JSON.stringify(item)}&configPaymentFrom=userPayment`
+        this.$router.replace(goUrl)
+        return
+      }
       this.cardCheck = index;
       this.paymethodCheck = "";
       this.payMethod = item;
@@ -214,13 +233,39 @@ export default {
 
     //选择支付方式
     choisePayMethods(item,index){
+      if(this.editCardInfo_state === true){
+        return
+      }
       this.paymethodCheck = index;
       this.cardCheck = "";
       this.payMethod = item;
     },
 
+    //开放修改卡信息
+    editCardInfo(){
+      this.editCardInfo_state = this.editCardInfo_state === false ? true : false;
+      if(!this.editCardInfo_state){
+        if(this.$store.state.goHomeState && this.savedCard.length !== 0 ){
+          this.choiseSavedCard(this.savedCard[0],0)
+        }
+      }else{
+        this.cardCheck = "";
+        this.paymethodCheck = "";
+        this.payMethod = "";
+      }
+    },
+
     //确认支付方式
     async confirm(){
+      //最多添加5张卡
+      if(this.paymethodCheck !== '' && this.payMethod.payWayCode === '10001' && this.savedCard.length > 5){
+        this.$toast({
+          duration: 3000,
+          message: "Add 5 cards at most"
+        });
+        return;
+      }
+
       //接入商户模式不需要创建订单
       if(!this.$store.state.goHomeState){
         this.$store.state.buyRouterParams.orderNo = this.$route.query.merchant_orderNo;
@@ -285,7 +330,7 @@ export default {
       }
 
       //选择新填写支付方式
-      if(this.paymethodCheck !== '' && this.payMethod.payWayCode === '10001'){ //USD
+      if(this.paymethodCheck !== '' && this.payMethod.payWayCode === '10001' && this.savedCard.length <= 5){ //USD
         this.$router.push(`/creditCardForm-cardInfo?merchant_orderNo=${this.$route.query.merchant_orderNo}`);
         return;
       }
@@ -332,6 +377,13 @@ export default {
         font-family: "GeoRegular", GeoRegular;
         font-weight: normal;
         color: #707070;
+        display: flex;
+        align-items: center;
+        .edit{
+          margin-left: auto;
+          color: #0059DA;
+          cursor: pointer;
+        }
       }
       .payMethodsLi{
         min-height: 0.56rem;
@@ -378,6 +430,10 @@ export default {
         .payMethodsLi-right{
           margin-left: auto;
           display: flex;
+          .editIcon{
+            width: 0.24rem;
+            height: 0.24rem;
+          }
           img{
             width: 0.14rem;
           }
