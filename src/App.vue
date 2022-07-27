@@ -37,7 +37,7 @@
         <!-- 账号风险提示无法进行下一步 -->
         <div class="kycToast" v-show="AccountisShow">
           <div>
-            <i class="el-icon-warning" ></i>
+            <img src="@/assets/images/kycDisable.png" alt="">
               <div>
              This account is at risk and cannot be traded now.
               </div>
@@ -295,11 +295,14 @@ html,body,#app,#viewBox{
     // height: 2.5rem;
     background: #FFFFFF;
     border-radius: .18rem;
-    padding: .32rem .16rem .32rem;
+    padding: .28rem .16rem .32rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-
+    >img{
+      height: .36rem;
+      margin-bottom: .12rem;
+    }
     div:nth-of-type(1){
       font-family: SFProDisplayRegular;
       font-style: normal;
@@ -312,7 +315,7 @@ html,body,#app,#viewBox{
     div:nth-of-type(2){
       width: 100%;
       height: .5rem;
-      background:  linear-gradient(88.06deg, #0059DA 0%, #1BB2F2 100%);
+      background:  #E55643;
       font-family: SFProDisplayMedium;
       color: #FFFFFF;
       text-align: center;
@@ -322,12 +325,7 @@ html,body,#app,#viewBox{
       cursor: pointer;
     }
   }
-  .el-icon-warning{
-    display: inline-block;
-    color: #FF2F2F;
-    font-size: .4rem;
-    margin-bottom: .1rem;
-  }
+  
 }
 .buyCrypto_iframe_view_pc{
   padding: 0.26rem 0.30rem 0.26rem 0.30rem !important;

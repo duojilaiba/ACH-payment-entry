@@ -46,11 +46,14 @@
         <div><img src="../assets/images/slices/right_icon.png"></div>
       </div>
     </div>
-    <div class="routerMenu_line" @click="loginOutIsShow" v-if="email !== ''">
-      <div class="lineIcon"><img src="../assets/images/slices/logOut.png"></div>
-      <div class="lineName">{{ $t('nav.menu_logOut') }}</div>
-      <div class="lineRight">
-        <div class="email" style="display:flex;align-items: center;">{{ emailSlice }} <i v-if="disAbled" class="el-icon-warning" style="color:red;margin:0 0 0 .05rem"></i> </div>
+    <div class="routerMenu_line" @click="loginOutIsShow" v-if="email !== ''" style="display:flex;justify-content: space-between;">
+      <div style="display:flex;align-items: center;">
+        <div class="lineIcon"><img src="../assets/images/slices/logOut.png"></div>
+        <div class="lineName">{{ $t('nav.menu_logOut') }}</div>
+      </div>
+      <div class="lineRight" style="margin:0">
+        
+        <div class="email" style="width:1.3rem; overflow: hidden;text-overflow:ellipsis;white-space: nowrap;line-height:.2rem;display:flex;justify-content: space-between;  align-items: center;"><img style="margin-right:.02rem" :src="disAbled===true?kycError:disAbled===false?kycSess:''"   alt="">{{ emailSlice   }} </div>
         <div><img src="../assets/images/slices/right_icon.png"></div>
       </div>
     </div>
@@ -91,7 +94,9 @@ export default {
      
       finished:false,
       newVal:'',
-      disAbled:false
+      disAbled:false,
+      kycError:require('@/assets/images/AccountRisk.png'),
+      kycSess:require('@/assets/images/kycScuss.png'),
       
     }
   },
@@ -241,21 +246,33 @@ export default {
     },
     //查看用户是否为风险用户
     is_kycDisabled(){
+      let _this = this
       this.$axios.post(this.$api.post_kycDisabled,'').then(res=>{
         if(res && res.returnCode === '0000'){
           if(res.data){
-            this.disAbled = true
+            this.disAbled = res.data
+            return
           }else{
-            this.disAbled = false
+             _this.$axios.post(_this.$api.post_getKycStatus,'').then(_res=>{
+              if(_res && _res.returnCode === '0000'){
+                if(_res.data===false){
+                  _this.disAbled = false
+                  return
+                }else{
+                  _this.disAbled = ''
+                }
+              }
+            })
           }
         }
       })
-    }
+    },
+  
   },
   computed:{
     emailSlice(){
       let email = this.email
-      let email1 = email.slice(0,3)+' *** '+ email.slice(email.indexOf('@'),email.length)
+      let email1 = email.slice(0,3)+' *** '+ email.slice(email.indexOf('@'),email.indexOf('@')+6)  + '...'
       return email1
     },
    
@@ -275,8 +292,8 @@ export default {
          if(newVal === true && localStorage.getItem("token")){
 
            this.token===true?this.transationsList():''
+           //用户是否为风险用户
            this.is_kycDisabled()
-          //  console.log(this.finished);
          }
       }
     },
@@ -298,6 +315,7 @@ export default {
     font-weight: normal;
     color: #063376;
     font-weight: 500;
+    
   img{
     width: .2rem;
     cursor: pointer;
@@ -346,7 +364,7 @@ export default {
       img{
         // width: 0.6rem;
         // height: ;
-        height: .2rem;
+        height: .25rem;
       }
     }
     &:nth-of-type(1){
