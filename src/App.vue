@@ -37,8 +37,9 @@
         <!-- 账号风险提示无法进行下一步 -->
         <div class="kycToast" v-show="AccountisShow">
           <div>
+            <i class="el-icon-warning" ></i>
               <div>
-              Account risk alerts cannot proceed to the next step
+             This account is at risk and cannot be traded now.
               </div>
             <div @click="goHome">Confirm</div>
           </div>
@@ -295,6 +296,10 @@ html,body,#app,#viewBox{
     background: #FFFFFF;
     border-radius: .18rem;
     padding: .32rem .16rem .32rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
     div:nth-of-type(1){
       font-family: SFProDisplayRegular;
       font-style: normal;
@@ -316,6 +321,12 @@ html,body,#app,#viewBox{
       margin-top: .32rem;
       cursor: pointer;
     }
+  }
+  .el-icon-warning{
+    display: inline-block;
+    color: red;
+    font-size: .4rem;
+    margin-bottom: .1rem;
   }
 }
 .buyCrypto_iframe_view_pc{
