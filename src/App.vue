@@ -324,7 +324,7 @@ html,body,#app,#viewBox{
   }
   .el-icon-warning{
     display: inline-block;
-    color: red;
+    color: #FF2F2F;
     font-size: .4rem;
     margin-bottom: .1rem;
   }

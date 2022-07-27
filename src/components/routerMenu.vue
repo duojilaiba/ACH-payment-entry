@@ -237,6 +237,18 @@ export default {
     //语言切换的显示隐藏
     LanguageIsShow(){
       this.$store.state.LanguageIsShow = true
+    },
+    //查看用户是否为风险用户
+    is_kycDisabled(){
+      this.$axios.post(this.$api.post_kycDisabled,'').then(res=>{
+        if(res && res.returnCode === '0000'){
+          if(res.data){
+            this.disAbled = true
+          }else{
+            this.disAbled = false
+          }
+        }
+      })
     }
   },
   computed:{
@@ -262,6 +274,7 @@ export default {
          if(newVal === true && localStorage.getItem("token")){
 
            this.token===true?this.transationsList():''
+           this.is_kycDisabled()
           //  console.log(this.finished);
          }
       }
