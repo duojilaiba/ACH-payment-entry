@@ -124,7 +124,7 @@
                   <div class="cryptoCurrencyName">{{ item.cryptocurrency }}</div>
                 </div>
                 <div class="historyLi_header_right">
-                  <p class="time">{{ item.orderTime }}</p>
+                  <p class="time">{{ item.orderDate }}</p>
                   <p class="righticon"><img src="../../assets/images/slices/right_icon.svg" alt=""></p>
                 </div>
               </div>
@@ -170,7 +170,7 @@
                     <div class="state_name">In Transfer</div>
                   </div>
                 </div>
-                <div v-else-if="item.orderStatus === 5" class="state_failed">
+                <div v-else-if="item.orderStatus === 5" class="state_success">
                   <div class="orderState-line1">
                     <div class="state_circular"></div>
                     <div class="state_name">Completed</div>
