@@ -50,7 +50,7 @@
       <div class="lineIcon"><img src="../assets/images/slices/logOut.png"></div>
       <div class="lineName">{{ $t('nav.menu_logOut') }}</div>
       <div class="lineRight">
-        <div class="email">{{ emailSlice }}</div>
+        <div class="email" style="display:flex;align-items: center;">{{ emailSlice }} <i v-if="disAbled" class="el-icon-warning" style="color:red;margin:0 0 0 .05rem"></i> </div>
         <div><img src="../assets/images/slices/right_icon.png"></div>
       </div>
     </div>
@@ -91,6 +91,7 @@ export default {
      
       finished:false,
       newVal:'',
+      disAbled:false
       
     }
   },
