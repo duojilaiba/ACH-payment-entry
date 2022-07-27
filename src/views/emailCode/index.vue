@@ -183,7 +183,7 @@ export default {
         })
         axios(config).then(function (response) {
           if(response.data.status && response.returnCode === '0000'){
-            this.login_loading = false
+            _this.login_loading = false
             localStorage.setItem('token',localStorage.getItem('fin_token'))
             localStorage.setItem('email',localStorage.getItem('login_email'))
             if(_this.$store.state.routerQueryPath === true){
