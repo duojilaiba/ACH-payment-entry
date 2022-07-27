@@ -118,7 +118,7 @@
         <div class="amountInfo-line">
           <div class="left">Order ID:</div>
           <div class="right">
-            <div class="copyView">
+            <div class="copyView" :data-clipboard-text="detailsData.orderId" @click="copy">
               <div class="copyValue">{{ detailsData.orderId }}</div>
               <div class="icon"><img src="@/assets/images/copy_history.svg" alt=""></div>
             </div>
@@ -162,7 +162,7 @@
         <div class="amountInfo-line">
           <div class="left">Address:</div>
           <div class="right">
-            <div class="copyView">
+            <div class="copyView" :data-clipboard-text="detailsData.orderId" @click="copy">
               <div class="copyValue">{{ detailsData.address }}</div>
               <div class="icon"><img src="@/assets/images/copy_history.svg" alt=""></div>
             </div>
@@ -171,7 +171,7 @@
         <div class="amountInfo-line">
           <div class="left">TxID:</div>
           <div class="right">
-            <div class="copyView">
+            <div class="copyView" :data-clipboard-text="detailsData.orderId" @click="copy">
               <div class="copyValue">{{ detailsData.txID }}</div>
               <div class="icon"><img src="@/assets/images/copy_history.svg" alt=""></div>
             </div>
@@ -200,6 +200,8 @@
 </template>
 
 <script>
+import Clipboard from "clipboard";
+
 export default {
   name: "tradeHistory-details",
   data(){
@@ -241,6 +243,21 @@ export default {
     },
     refund(){
       this.$router.replace(`/Refund?orderId=${this.orderId}`);
+    },
+
+    copy(){
+      //copy bank code
+      let clipboard = new Clipboard('.copyView');
+      clipboard.on('success', () => {
+        this.$toast({
+          duration: 3000,
+          message: this.$t('nav.copyTips')
+        });
+        clipboard.destroy()
+      })
+      clipboard.on('error', () => {
+        clipboard.destroy()
+      })
     }
   }
 }
