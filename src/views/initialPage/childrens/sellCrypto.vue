@@ -300,6 +300,7 @@ export default {
       // this.$store.state.sellRouterParams = JSON.parse(JSON.stringify(routerParams));
       //跳转填写卡信息
       this.$store.state.homeTabstate = 'sellCrypto';
+      
       this.$store.state.cardInfoFromPath = 'configSell';
       delete this.$store.state.sellForm;
       delete this.$store.state.sellRouterParams.cardInfoList;
@@ -318,7 +319,8 @@ export default {
         })
         
       }else{
-        this.$router.replace('/emailCode');
+        this.$store.state.emailFromPath = 'sellCrypto';
+        this.$router.push('/emailCode');
       }
     },
   },

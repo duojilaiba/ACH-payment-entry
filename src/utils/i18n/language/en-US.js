@@ -59,7 +59,7 @@ module.exports = {
      * 登陆
      */
     login: 'Login',
-    login_required: '*necessary.',
+    login_required: '*Required.',
     loginOut: 'Login out',
     loginOut_title: 'Are you sure you want to logout?',
     loginOut_Dismiss: 'Dismiss',
