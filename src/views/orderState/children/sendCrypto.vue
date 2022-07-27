@@ -194,10 +194,8 @@ export default {
     confirmSell(){
      
       this.transferredShow = false
-      // if(this.confirmSecondary){
-      //   this.$router.replace('/')
-      //   return
-      // }
+      
+      
       this.$store.state.nextOrderState = 2
     },
     //复制

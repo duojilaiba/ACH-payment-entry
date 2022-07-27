@@ -186,7 +186,24 @@ export default {
             this.login_loading = false
             localStorage.setItem('token',localStorage.getItem('fin_token'))
             localStorage.setItem('email',localStorage.getItem('login_email'))
-            this.$router.push('/')
+            if(_this.$store.state.routerQueryPath === true){
+              _this.$router.push('/');
+              return
+            }
+            if(_this.$route.query.fromName === 'tradeList'){
+              _this.$router.replace('/tradeHistory');
+            }else{
+              //登陆跳转路径根据router.from的路由跳转不同页面
+              if(_this.$store.state.emailFromPath === 'buyCrypto'){
+                _this.$router.push(`/receivingMode`);
+              }else if(_this.$store.state.emailFromPath === 'sellCrypto'){
+                  // _this.$router.push('/')
+                  _this.$router.push('/sell-formUserInfo')
+                
+              }else{
+                _this.$router.push('/');
+              }
+            }
           }
         })
         
