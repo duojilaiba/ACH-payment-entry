@@ -22,7 +22,7 @@
                 </div>
               </div>
               <div class="state">
-                <span v-if="item.orderState === 1 || item.orderState === 2" class="state_loading">{{ $t('nav.history_state_Processing') }}</span>
+                <span v-if="item.orderState === 2" class="state_loading">{{ $t('nav.history_state_Processing') }}</span>
                 <span v-if="item.orderState === 3 || item.orderState === 4" class="state_loading">{{ $t('nav.history_state_Transfer') }}</span>
                 <span v-if="item.orderState === 5" class="state_success">{{ $t('nav.history_state_Complete') }}</span>
                 <!--                <span v-if="item.orderState === 0" class="state_error">fail</span>-->
