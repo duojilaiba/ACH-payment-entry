@@ -119,7 +119,7 @@ export const constantRoutes = [
   {
     path: "/creditCardForm-cardInfo",
     name: 'creditCardForm-cardInfo',
-    component: resolve => require(['../views/buyCurrency/payments/creditCard/payForm-cardInfo.vue'], resolve),
+    component: resolve => require(['../views/buyCurrency/payments/creditCard/newCardInfo.vue'], resolve),
     meta: {
       requireAuth: true,
       // fromPage: 'basisIdAuth',

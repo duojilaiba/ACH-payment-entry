@@ -44,7 +44,13 @@
         {{ $t('nav.Continue') }}
         <img class="rightIcon" src="../../../assets/images/button-right-icon.svg" alt="">
       </button>
-      {{ $t('nav.home_Tips') }}
+      <p class="cookieTips">{{ $t('nav.home_Tips') }}</p>
+      <div class="footer_logoView">
+        <p class="logoText">Powered By</p>
+        <div class="logo">
+          <img src="../../../assets/images/homePageLogo.jpg" alt="">
+        </div>
+      </div>
     </footer>
   </div>
 </template>
@@ -304,19 +310,19 @@ export default {
       delete this.$store.state.sellForm;
       delete this.$store.state.sellRouterParams.cardInfoList;
       //是否为风险
-    
+
       if(localStorage.getItem("token")){
         this.$axios.post(this.$api.post_kycDisabled).then(res=>{
           if(res && res.returnCode === '0000'){
             if(res.data){
               this.$parent.$parent.AccountisShow = true
-              
+
             }else{
               this.$router.push('/sell-formUserInfo');
             }
           }
         })
-        
+
       }else{
         this.$router.replace('/emailCode');
       }
@@ -481,9 +487,36 @@ html,body,#buyCrypto{
 
 
 footer{
-  text-align: center;
-  font-size: 0.13rem;
-  font-family: "GeoRegular", GeoRegular;
+  .cookieTips{
+    font-family: SFProDisplayRegular;
+    font-weight: 400;
+    font-size: 0.13rem;
+    color: #C2C2C2;
+    text-align: center;
+  }
+  .footer_logoView{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0.08rem;
+    font-family: SFProDisplayRegular;
+    font-weight: 400;
+    font-size: 0.13rem;
+    color: #C2C2C2;
+    .logoText{
+      margin-right: 0.12rem;
+      margin-top: 0.02rem;
+    }
+    .logo{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 0.8rem;
+      img{
+        width: 0.8rem;
+      }
+    }
+  }
 }
 .continue{
   width: 100%;
@@ -498,7 +531,7 @@ footer{
   cursor: no-drop;
   border: none;
   position: relative;
-  margin-bottom: 0.16rem;
+  margin-bottom: 0.12rem;
   .rightIcon{
     position: absolute;
     top: 0.17rem;

@@ -23,17 +23,13 @@ import "./utils/UI-ClassLibrary.js";
 
 //fingerprint - 设备指纹 ｜ 设备唯一id
 import FingerprintJS from '@fingerprintjs/fingerprintjs-pro'
-// Initialize an agent at application startup.
 const fpPromise = FingerprintJS.load({
   apiKey: 'TmQIZTEjFuNxiJxuyg4m'
 })
-//加密设备ID
-import {AES_Decrypt, AES_Encrypt} from './utils/encryp'
-// Get the visitor identifier when you need it.
+import { AES_Encrypt } from './utils/encryp'
 fpPromise.then(fp => fp.get()).then(result => {
-  console.log(result.visitorId,"----指纹id")
-  console.log(AES_Decrypt("uaMrsp8XE+vlVQItrhTHbTk5ujiHDJ/1MPekZVymwyk="))
-  console.log(AES_Decrypt("wpJlljRP4T6KoHBvejdTFngoqDRVCgR0Kvs/3vGwbb0="))
+  //加密设备ID
+  console.log('获取设备唯一标识：',result.visitorId);
   window.localStorage.setItem("fingerprint_id",AES_Encrypt(result.visitorId));
 });
 

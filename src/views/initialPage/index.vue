@@ -54,15 +54,14 @@ export default {
       choiseItem: {},
     }
   },
-  beforeRouteLeave(to,from,next){
-    console.log(to,from)
-    next(vm=>{
-      console.log(vm)
+  // beforeRouteLeave(to,from,next){
+  //   console.log(to,from)
+  //   next(vm=>{
       // if(from.path === '/tradeHistory') {
       //   vm.merchantDocking()
       // }
-    });
-  },
+  //   });
+  // },
   mounted(){
     this.merchantDocking();
   },

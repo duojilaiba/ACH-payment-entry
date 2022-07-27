@@ -242,7 +242,7 @@ export default {
       this.$router.push(`/sell-formUserInfo?cardInfoFromPath=sellOrder?sellOrderId=${this.orderId}`);
     },
     refund(){
-      this.$router.replace(`/Refund?orderId=${this.orderId}`);
+      this.$router.push(`/Refund?orderId=${this.orderId}`);
     },
 
     copy(){

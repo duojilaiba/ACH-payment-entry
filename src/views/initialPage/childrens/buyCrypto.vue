@@ -8,9 +8,8 @@
           <van-field class="pay_input" :type="youPaytype" @input="inputChange" v-model.number="payAmount" pattern="[0-9]*" inputmode="decimal" @blur="youPayBlur" @focus="inputFocus=true" :disabled="payAmountState" placeholder="0.00"/>
         </div>
         <div class="get_company" @click="openSearch('payCurrency')">
-          <div class="getImg networkImg">
+          <div class="getImg">
             <img :src="positionData.positionImg">
-            <div class="networkIcon"><img src="../../../assets/images/hk.svg"></div>
           </div>
           <div class="getText">{{ payCommission.code }}</div>
           <div class="rightIcon"><img src="@/assets/images/blackDownIcon.png"></div>
@@ -27,7 +26,10 @@
           </div>
         </div>
         <div class="get_company" @click="openSearch('currency')">
-          <div class="getImg"><img :src="currencyData.icon"></div>
+          <div class="getImg networkImg">
+            <img :src="currencyData.icon">
+            <div class="networkIcon"><img src="../../../assets/images/hk.svg"></div>
+          </div>
           <div class="getText">{{ currencyData.name }}</div>
           <div class="rightIcon"><img src="@/assets/images/blackDownIcon.png"></div>
         </div>
@@ -44,7 +46,13 @@
         {{ $t('nav.Continue') }}
         <img class="rightIcon" src="../../../assets/images/button-right-icon.svg" alt="">
       </button>
-      {{ $t('nav.home_Tips') }}
+      <p class="cookieTips">{{ $t('nav.home_Tips') }}</p>
+      <div class="footer_logoView">
+        <p class="logoText">Powered By</p>
+        <div class="logo">
+          <img src="../../../assets/images/homePageLogo.jpg" alt="">
+        </div>
+      </div>
     </footer>
   </div>
 </template>
@@ -419,7 +427,7 @@ export default {
         positionData: this.positionData
       }
       this.$store.state.buyRouterParams = routerParams;
-     
+
       // Login information
       if(!localStorage.getItem('token') || localStorage.getItem('token')===''){
         this.$store.state.emailFromPath = 'buyCrypto';
@@ -437,7 +445,7 @@ export default {
           }
         }
       })
-      
+
     },
   }
 }
@@ -628,9 +636,36 @@ html,body,#buyCrypto{
 }
 
 footer{
-  text-align: center;
-  font-size: 0.13rem;
-  font-family: "GeoRegular", GeoRegular;
+  .cookieTips{
+    font-family: SFProDisplayRegular;
+    font-weight: 400;
+    font-size: 0.13rem;
+    color: #C2C2C2;
+    text-align: center;
+  }
+  .footer_logoView{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0.08rem;
+    font-family: SFProDisplayRegular;
+    font-weight: 400;
+    font-size: 0.13rem;
+    color: #C2C2C2;
+    .logoText{
+      margin-right: 0.12rem;
+      margin-top: 0.02rem;
+    }
+    .logo{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 0.8rem;
+      img{
+        width: 0.8rem;
+      }
+    }
+  }
 }
 .continue{
   width: 100%;
@@ -645,7 +680,7 @@ footer{
   cursor: no-drop;
   border: none;
   position: relative;
-  margin-bottom: 0.16rem;
+  margin-bottom: 0.12rem;
   .rightIcon{
     position: absolute;
     top: 0.17rem;

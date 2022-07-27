@@ -330,7 +330,7 @@ html,body,#app,#viewBox{
   }
 }
 .buyCrypto_iframe_view_pc{
-  padding: 0.40rem 0.30rem 0.40rem 0.30rem !important;
+  padding: 0.26rem 0.30rem 0.26rem 0.30rem !important;
 }
 .viewTab_logo{
   display: flex;
@@ -356,7 +356,7 @@ html,body,#app,#viewBox{
   background: #FFFFFF;
   border-radius: 0.25rem;
   position: relative;
-  padding: 0.26rem 0.22rem;
+  padding: 0.2rem 0.22rem;
   display: flex;
   justify-content: center;
   margin-top: -0.6rem;
