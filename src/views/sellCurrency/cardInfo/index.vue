@@ -3,14 +3,14 @@
     <div id="sell-form" ref="box_ref" @scroll="handleScroll">
       <div class="sellForm-content" ref="form_ref">
         <!-- 历史表单信息 -->
-        <div class="cardInfo-history">
+        <div class="cardInfo-history" v-if="oldCardInfo.length > 0">
           <div class="line1">
             <div class="line1-1"><el-checkbox class="checkbox" size="medium" v-model="isOldCardInfo" @change="assignmentOldCardInfo"></el-checkbox></div>
             <div class="line1-2">Use this Information</div>
             <div class="more" @click="openCardInfo">More</div>
           </div>
           <div class="info">
-            <span>Bank name:</span> HSBC  Account number: {{ oldCardInfo.accountNumber }}
+            <span></span>  Account number: {{ oldCardInfo[0].accountNumber }}
           </div>
         </div>
 
@@ -98,7 +98,7 @@ export default {
 
       //历史卡信息
       isOldCardInfo: false,
-      oldCardInfo: {},
+      oldCardInfo: [],
     }
   },
   //首页进入卖币卡表单页面清空缓存
@@ -357,7 +357,7 @@ export default {
             sellForm.idNumber = this.encrypt(sellForm.idNumber);
             this.$store.state.sellForm = sellForm;
             this.$store.state.sellOrderId = res.data.orderId;
-             this.$store.state.nextOrderState =1
+            this.$store.state.nextOrderState = 1;
             //跳转状态
             if(this.$store.state.cardInfoFromPath === 'configSell'){
               this.isKyc(val);
@@ -375,14 +375,14 @@ export default {
       // let params = {
       //   amount: this.$store.state.sellRouterParams.amount * this.$store.state.sellRouterParams.currencyData.price
       // }
-      this.$axios.post(this.$api.post_getKycStatus).then(res=>{
+      this.$axios.post(this.$api.post_getKycStatus,'','').then(res=>{
         // console.log(res);
         if(res && res.returnCode === '0000'){
           if(res.data === true){
             this.$store.state.sellRouterParams.fullName = val.name;
             this.$router.push('/kycVerification');
           }else{
-               this.$router.push('/sellOrder');
+            this.$router.push('/sellOrder');
           }
         }
       })
@@ -463,7 +463,7 @@ export default {
             oldCardInfo = JSON.parse(JSON.stringify(res.data[0]));
             oldCardInfo.accountNumber = AES_Decrypt(oldCardInfo.accountNumber);
           }
-          this.oldCardInfo = oldCardInfo;
+          this.oldCardInfo[0] = oldCardInfo;
         }
       })
     },
@@ -731,6 +731,7 @@ export default {
   text-align: justify;
   letter-spacing: 0.5px;
   color: #C2C2C2;
+  margin-top: 0.24rem;
   span{
     color: #949EA4;
     font-weight: 600;

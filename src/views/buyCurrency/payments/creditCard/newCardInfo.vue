@@ -355,25 +355,25 @@ export default {
       queryParams.lastname = AES_Encrypt(queryParams.lastname.trim());
       queryParams.email = localStorage.getItem("email");
       queryParams.source = 0;
-      
+
       let _this = this
       this.$axios.post(this.$api.post_saveCardInfo,queryParams,'').then(res=>{
         this.request_loading = false;
-       
+
 
 
         if(res && res.returnCode === '0000'){
-         
+
           queryParams.cardNumber = queryParams.cardNumber.replace(/ /g,'');
           queryParams.userCardId = res.data.userCardId;
 
           this.$store.state.buyRouterParams.userCardId = res.data.userCardId;
-          
+
           this.$store.state.sellRouterParams.fullName = AES_Decrypt(res.data.firstName) + ' '+ AES_Decrypt(res.data.lastName)
           this.$store.state.sellRouterParams.fullName = AES_Encrypt(this.$store.state.sellRouterParams.fullName)
           //是否验证过baseId
           _this.$axios.post(this.$api.post_getKycThrough).then(_res=>{
-          
+
               if(_res && _res.returnCode === '0000'){
                 if(_res.data ===true){
                   _this.$store.state.WhichPage = `/creditCardConfig?submitForm=${JSON.stringify(queryParams)}&merchant_orderNo=${this.$route.query.merchant_orderNo}`
@@ -520,7 +520,6 @@ export default {
   .downTips-icon img{
     animation: jumpBoxHandler 1.8s infinite;/* 1.8s 事件完成时间周期 infinite无限循环 */
   }
-
   .v-enter-active,.v-leave-active{
     transition: all 1s;
   }
