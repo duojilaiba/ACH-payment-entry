@@ -170,7 +170,7 @@
                     <div class="state_name">In Transfer</div>
                   </div>
                 </div>
-                <div v-else-if="item.orderStatus === 5" class="state_success">
+                <div v-else-if="item.orderStatus === 5" class="state_success">fadsfasdfadsf
                   <div class="orderState-line1">
                     <div class="state_circular"></div>
                     <div class="state_name">Completed</div>
@@ -350,7 +350,7 @@ export default {
         return
       }
       //退款
-      this.$router.replace(`/Refund?orderId=${val.orderId}`);
+      this.$router.push(`/Refund?orderId=${val.orderId}&cryptocurrency=${val.cryptocurrency}`);
     }
 
   }
