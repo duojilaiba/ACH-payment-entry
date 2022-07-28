@@ -304,6 +304,7 @@ export default {
       //   positionData: this.positionData
       // }
       // this.$store.state.sellRouterParams = JSON.parse(JSON.stringify(routerParams));
+      this.positionData.enCommonName = this.positionData.positionValue;
       this.$store.state.sellRouterParams.formPositionData = this.positionData;
 
       //跳转填写卡信息

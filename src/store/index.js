@@ -59,7 +59,9 @@ const store = new Vuex.Store({
             },
             cardInfoList: [],
             //国家币种 - 表单
-            formPositionData: {},
+            formPositionData: {
+                enCommonName: '',
+            },
         },
 
         sellForm: {},

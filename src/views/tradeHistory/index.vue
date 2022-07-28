@@ -157,6 +157,9 @@
                     <div class="state_circular"></div>
                     <div class="state_name">Block Confirmed ({{ item.confirmBlock }}/{{ item.totalBlock }}) </div>
                   </div>
+                  <div class="options" v-if="item.confirmBlock === 0" @click.stop="optionsPath(item,'payNow')">
+                    <div class="optionsView state_loading_payNow curror" @click.stop="optionsPath(item,'refund')">Pay Now</div>
+                  </div>
                 </div>
                 <div v-else-if="item.orderStatus === 3" class="state_loading">
                   <div class="orderState-line1">
@@ -345,9 +348,17 @@ export default {
 
     //退款、修改银行卡信息
     optionsPath(val,state){
+      //修改银行卡信息
       if(state === 'bankInfo'){
         this.$router.push(`/sell-formUserInfo?cardInfoFromPath=sellOrder?sellOrderId=${val.orderId}`);
         return
+      }
+      //状态为2 - 区块链确认中、确认数量为0
+      if(state === 'payNow'){
+        this.$store.state.sellOrderId = val.orderId;
+        this.$store.state.nextOrderState = 1;
+        this.$router.push(`/sellOrder`);
+        return;
       }
       //退款
       this.$router.push(`/Refund?orderId=${val.orderId}&cryptocurrency=${val.cryptocurrency}`);
@@ -586,6 +597,11 @@ html,body,#tradeHistory,.historyList,.van-list{
           background: #FFE8E8;
           border: 1px solid #FFBBBB;
           color: #FF2F2F;
+        }
+        .state_loading_payNow{
+          background: #E8F1FF;
+          border: 1px solid #9FC6FF;
+          color: #0059DA;
         }
       }
       .state_error{

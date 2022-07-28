@@ -37,7 +37,7 @@
           </div>
           <div class="value">
             <span class="minText">{{ $t('nav.home_feeRampFeeTips') }}</span>
-            - {{ feeInfo.fiatSymbol }} {{ rampFee }}
+             {{ feeInfo.fiatSymbol }} {{ rampFee }}
           </div>
         </div>
       </div>
@@ -83,7 +83,7 @@
           </div>
           <div class="value">
             <span class="minText">{{ $t('nav.home_feeRampFeeTips') }}</span>
-            - {{ orderState.feeUnit }}{{ orderState.fee }}
+            {{ orderState.feeUnit }}{{ orderState.fee }}
           </div>
         </div>
       </div>

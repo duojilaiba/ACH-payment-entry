@@ -106,10 +106,11 @@
         </div>
         <div class="speed-progress">
           <div class="percentage" :style="{width: percentage + '%'}"
-               :class="{'completed': detailsData.orderStatus >= 2 && detailsData.orderStatus <= 5,
-               'failed': detailsData.orderStatus === 6,
-               'timeOut': detailsData.orderStatus === 7,
-               'refunded': detailsData.orderStatus === 8 || detailsData.orderStatus === 9 }"></div>
+               :class="{
+                'completed': (detailsData.orderStatus === 2 && detailsData.confirmBlock !== 0) || (detailsData.orderStatus >= 3 && detailsData.orderStatus <= 5),
+                'failed': detailsData.orderStatus === 6,
+                'timeOut': detailsData.orderStatus === 7,
+                'refunded': detailsData.orderStatus === 8 || detailsData.orderStatus === 9 }"></div>
           <div class="all"></div>
         </div>
       </div>
@@ -130,21 +131,21 @@
             <span class="value">{{ detailsData.orderTime }}</span>
           </div>
         </div>
-        <div class="amountInfo-line" v-if="detailsData.orderStatus !== 7">
+        <div class="amountInfo-line" v-if="detailsData.orderStatus !== 7 && (detailsData.orderStatus === 2 && detailsData.confirmBlock !== 0)">
           <div class="left">Confirmed Time:</div>
           <div class="right">
             <span class="value">{{ detailsData.confirmedTime }}</span>
           </div>
         </div>
         <!-- Completed -->
-        <div class="amountInfo-line" v-if="detailsData.orderStatus === 5 ||  detailsData.orderStatus === 6 || detailsData.orderStatus === 8 || detailsData.orderStatus === 9">
+        <div class="amountInfo-line" v-if="detailsData.orderStatus === 5 || detailsData.orderStatus === 6 || detailsData.orderStatus === 8 || detailsData.orderStatus === 9 ||(detailsData.orderStatus === 2 && detailsData.confirmBlock !== 0)">
           <div class="left">Transfer Time:</div>
           <div class="right">
             <span class="value">{{ detailsData.transferTime }}</span>
           </div>
         </div>
         <!-- Failed - 2 -->
-        <div class="amountInfo-line" v-if="detailsData.orderStatus === 9">
+        <div class="amountInfo-line" v-if="detailsData.orderStatus === 9 || (detailsData.orderStatus === 2 && detailsData.confirmBlock !== 0)">
           <div class="left">Refund Time:</div>
           <div class="right">
             <span class="value">{{ detailsData.refundTime }}</span>
@@ -152,7 +153,7 @@
         </div>
       </div>
 
-      <div class="orderInfo" v-if="detailsData.orderStatus !== 7">
+      <div class="orderInfo" v-if="detailsData.orderStatus !== 7 && (detailsData.orderStatus === 2 && detailsData.confirmBlock !== 0)">
         <div class="amountInfo-line">
           <div class="left">Network:</div>
           <div class="right">
@@ -187,14 +188,18 @@
     </div>
 
     <!-- failed - 1 -->
-    <footer v-if="detailsData.orderStatus === 6 || detailsData.orderStatus === 8">
-      <button @click="updateCardInfo" v-if="detailsData.orderStatus === 6">
+    <footer v-if="detailsData.orderStatus === 6 || detailsData.orderStatus === 8 || (detailsData.orderStatus === 2 && detailsData.confirmBlock === 0)">
+      <!-- 重新购买 -->
+      <button class="update-card-info" @click="updateCardInfo" v-if="detailsData.orderStatus === 6">
         Update Information
         <span class="witchBank">Mastercard</span>
         <span class="bankCard">****8111</span>
         <img src="@/assets/images/right_icon_orange.svg" alt="">
       </button>
+      <!-- 退款 -->
       <p @click="refund" v-if="detailsData.orderStatus === 8 || detailsData.orderStatus === 6">Request Refund of USDT</p>
+      <!-- 去购买 -->
+      <button class="pay-now" @click="payNow">Pay Now</button>
     </footer>
   </div>
 </template>
@@ -243,6 +248,11 @@ export default {
     },
     refund(){
       this.$router.push(`/Refund?orderId=${this.orderId}&cryptocurrency=${this.detailsData.cryptocurrency}`);
+    },
+    payNow(){
+      this.$store.state.sellOrderId = this.detailsData.orderId;
+      this.$store.state.nextOrderState = 1;
+      this.$router.push(`/sellOrder`);
     },
 
     copy(){
@@ -476,7 +486,7 @@ export default {
   footer{
     padding-top: 0.16rem;
     box-shadow: 0 0 0.35rem rgba(89, 153, 248, 0.1);
-    button{
+    .update-card-info{
       width: 100%;
       height: 0.56rem;
       background: #FFEEDE;
@@ -508,6 +518,20 @@ export default {
         width: 0.16rem;
         margin-left: 0.08rem;
       }
+    }
+    .pay-now{
+      cursor: pointer;
+      width: 100%;
+      height: 0.56rem;
+      line-height: 0.56rem;
+      text-align: center;
+      background: #E8F1FF;
+      border: 1px solid #9FC6FF;
+      border-radius: 0.28rem;
+      font-family: SFProDisplayMedium;
+      font-weight: 500;
+      font-size: 0.16rem;
+      color: #0059DA;
     }
     p{
       min-height: 0.14rem;
