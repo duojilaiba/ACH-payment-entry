@@ -58,7 +58,6 @@ const store = new Vuex.Store({
                 name: '',
             },
             cardInfoList: [],
-            cacheForm: false,
         },
 
         sellForm: {},
