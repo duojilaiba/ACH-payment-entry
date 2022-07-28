@@ -450,7 +450,7 @@ export default {
     p{
       font-size: .13rem;
       color: #949EA4;
-      margin: .15rem 0 .2rem 0;
+      margin: .2rem 0 .16rem 0;
       text-align: center;
       display: flex;
       align-items: center;
