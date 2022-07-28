@@ -2,7 +2,7 @@
   <!-- Payment information -->
   <div class="paymentInformation" v-if="orderState===null">
     <div class="feeTitle">
-      <div class="feeTitle-name">1 USDT ≈ 29,000 USD</div>
+      <div class="feeTitle-name">{{ routerParams.amount }} {{ currencyData.name }} ≈  {{ routerParams.getAmount }} {{ positionData.code }}</div>
       <div class="feeTitle-value">
         <div class="loading-svg">
 <!--          <img src="../assets/images/countDownIcon.png" alt="">-->

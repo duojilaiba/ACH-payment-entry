@@ -178,11 +178,11 @@ export default {
       cursor: pointer;
       display: flex;
       img {
-        height: 0.18rem;
+        height: 0.22rem;
       }
     }
     .linkName {
-      margin-left: 0.15rem;
+      margin: .01rem 0 0 0.08rem;
       display: flex;
       .currency{
         margin-left: 0.06rem;
