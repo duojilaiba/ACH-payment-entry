@@ -262,6 +262,9 @@ export default {
       if(this.email === ''){
         this.emailError = '*necessary'
         this.emailErrorState = true
+      }else{
+        this.emailError = ''
+        this.emailErrorState = false
       }
     }
   },
