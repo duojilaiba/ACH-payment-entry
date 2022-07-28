@@ -29,7 +29,7 @@
     </div>
     <div class="sendCrypto_qrcode">
       <p :style="{color:transferredShow?'#063376 !important':''}">{{ $t('nav.Sellorder_transfer') }} {{orderStateData.cryptoCurrency}} {{ $t('nav.Sellorder_within') }} <span>{{ turnMinute(orderStateData.expirationTime) }}</span></p>
-      <div ref="qrCodeUrl" class="qrCodeUrl" style="width:1.4rem;height:1.4rem;"></div>
+      <div ref="qrCodeUrl" class="qrCodeUrl"></div>
     </div>
     <div class="sendCrypto_content" style=" align-items: center;">
       <div class="title">{{ $t('nav.Sellorder_Address') }} ({{orderStateData.cryptocurrency}})</div>
@@ -445,12 +445,12 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-bottom: .3rem;
+    padding-bottom: .2rem;
     font-family: SFProDisplayRegular;
     p{
       font-size: .13rem;
       color: #949EA4;
-      margin: .15rem 0 .2rem 0;
+      margin: .2rem 0 .16rem 0;
       text-align: center;
       display: flex;
       align-items: center;
