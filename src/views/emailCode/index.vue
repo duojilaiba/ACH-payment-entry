@@ -190,11 +190,11 @@ export default {
 
     goProtocol(name){
       if(name === 'privacyPolicy'){
-        window.location = 'https://alchemypay.org/privacy-policy/';
+        window.location = 'https://www.paysopay.com/static/html/app/privacyAgreement.html';
         return;
       }
       if(name === 'termsUse'){
-        window.location = 'https://alchemypay.org/terms-of-use/';
+        window.location = 'https://www.paysopay.com/static/html/app/serviceAgreement.html';
         return;
       }
     }

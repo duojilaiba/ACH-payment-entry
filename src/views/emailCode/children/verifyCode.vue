@@ -191,11 +191,11 @@ import { AES_Encrypt } from '@/utils/encryp.js';
     },
     openView(name){
       if(name==='Privacy'){
-        window.location = 'https://alchemypay.org/privacy-policy/'
+        window.location = 'https://www.paysopay.com/static/html/app/privacyAgreement.html'
         return
       }
       if(name === 'Terms'){
-         window.location = 'https://alchemypay.org/terms-of-use/';
+         window.location = 'https://www.paysopay.com/static/html/app/serviceAgreement.html';
         return;
       }
     }

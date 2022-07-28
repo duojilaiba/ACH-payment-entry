@@ -16,30 +16,25 @@ import i18n from './utils/i18n/index'
 
 //ui类库、公共组件
 import "./utils/UI-ClassLibrary.js";
+import { AES_Encrypt } from "./utils/encryp";
 
-//fingerprint - 设备指纹 ｜ 设备唯一id
-import FingerprintJS from '@fingerprintjs/fingerprintjs-pro'
-// Initialize an agent at application startup.
-const fpPromise = FingerprintJS.load({
-  apiKey: 'tj43GDmCqsLyYSJYmaMc'
-})
-// Get the visitor identifier when you need it.
-fpPromise.then(fp => fp.get()).then(result => {
-  window.localStorage.setItem("fingerprint_id",result.visitorId);
-});
+localStorage.setItem("token","/5SQXRwnCGu63P1Hq4/plJxyUrckPlT2S7ayAaUHG2dueTyLd/7HjFjDZiYzXvcGAT6LurAqoABcwJ13ka5GOQ==");
+localStorage.setItem("userNo","52846");
+localStorage.setItem("userId","352");
+localStorage.setItem("email",AES_Encrypt("wil07007@jeoce.com"));
 
 //阿里云接口埋点
-new Promise(()=>{
-  if(process.env.NODE_ENV !== 'development'){
-    const BrowserLogger = require('alife-logger');
-    const __bl = BrowserLogger.singleton({
-      pid: process.env.VUE_APP_Aliyun_pid,
-      imgUrl: 'https://arms-retcode.aliyuncs.com/r.png?',
-      enableLinkTrace:true,
-      behavior:true
-    });
-  }
-});
+// new Promise(()=>{
+//   if(process.env.NODE_ENV !== 'development'){
+//     const BrowserLogger = require('alife-logger');
+//     const __bl = BrowserLogger.singleton({
+//       pid: process.env.VUE_APP_Aliyun_pid,
+//       imgUrl: 'https://arms-retcode.aliyuncs.com/r.png?',
+//       enableLinkTrace:true,
+//       behavior:true
+//     });
+//   }
+// });
 
 Vue.prototype.$api = api;
 Vue.prototype.$axios = axios;

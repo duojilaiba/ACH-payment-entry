@@ -1,22 +1,22 @@
 <template>
   <div id="routerMenu">
-    <div class="routerMenu_isLogo" v-if="token===false">
-        <img src="../assets/images/slices/pay.png" alt="">
-        <h2>{{ $t('nav.RouterMenu_Welcome') }}</h2>
-        <p>{{ $t('nav.RouterMenu_experience') }}</p>
-        <div @click="goLogin" :style="{background:loading?'#0059DA80':''}">{{ $t('nav.login') }} <img class="icon" src="../assets/images/slices/rightIcon.png" alt="" v-if="!loading">
-        <van-loading  class="icon" type="spinner" color="#fff" v-else/></div>
-    </div>
-    <div class="routerMenu_history" @click="goView('/tradeHistory')" v-else >
-      <div class="lineIcon"><img src="../assets/images/slices/histry.png"></div>
-      <div class="lineName">
-        <p>{{ $t('nav.menu_transactions') }}</p>
-        <p><span v-if="finished">{{ $t('nav.RouterMenu_history') }}</span></p>
-      </div>
-      <div class="lineRight">
-        <div><img src="../assets/images/slices/right_icon.png"></div>
-      </div>
-    </div>
+<!--    <div class="routerMenu_isLogo" v-if="token===false">-->
+<!--        <img src="../assets/images/slices/pay.png" alt="">-->
+<!--        <h2>{{ $t('nav.RouterMenu_Welcome') }}</h2>-->
+<!--        <p>{{ $t('nav.RouterMenu_experience') }}</p>-->
+<!--        <div @click="goLogin" :style="{background:loading?'#0059DA80':''}">{{ $t('nav.login') }} <img class="icon" src="../assets/images/slices/rightIcon.png" alt="" v-if="!loading">-->
+<!--        <van-loading  class="icon" type="spinner" color="#fff" v-else/></div>-->
+<!--    </div>-->
+<!--    <div class="routerMenu_history" @click="goView('/tradeHistory')" v-else >-->
+<!--      <div class="lineIcon"><img src="../assets/images/slices/histry.png"></div>-->
+<!--      <div class="lineName">-->
+<!--        <p>{{ $t('nav.menu_transactions') }}</p>-->
+<!--        <p><span v-if="finished">{{ $t('nav.RouterMenu_history') }}</span></p>-->
+<!--      </div>-->
+<!--      <div class="lineRight">-->
+<!--        <div><img src="../assets/images/slices/right_icon.png"></div>-->
+<!--      </div>-->
+<!--    </div>-->
     <div class="routerMenu_line" style="margin-top:.32rem" @click="LanguageIsShow">
       <div class="lineIcon"><img src="../assets/images/slices/iconLang.png"></div>
       <div class="lineName">{{ $t('nav.menu_language') }}</div>
@@ -40,21 +40,21 @@
         <div><img src="../assets/images/slices/right_icon.png"></div>
       </div>
     </div>
-    <div class="routerMenu_line" @click="show=!show" v-if="email !== ''">
-      <div class="lineIcon"><img src="../assets/images/slices/logOut.png"></div>
-      <div class="lineName">{{ $t('nav.menu_logOut') }}</div>
-      <div class="lineRight">
-        <div class="email">{{ emailSlice }}</div>
-        <div><img src="../assets/images/slices/right_icon.png"></div>
-      </div>
-    </div>
-    <div class="routerMenu_loginOut" v-show="show" @click="show=false">
-      <div class="content" @click.stop="show=true">
-        <h2>{{ $t('nav.loginOut_title') }}</h2>
-        <div @click.stop="outLogin">{{ $t('nav.loginOut') }} <img src="../assets/images/slices/rightIcon.png" alt=""></div>
-        <p @click.stop="show=false">{{ $t('nav.loginOut_Dismiss') }}</p>
-      </div>
-    </div>
+<!--    <div class="routerMenu_line" @click="show=!show" v-if="email !== ''">-->
+<!--      <div class="lineIcon"><img src="../assets/images/slices/logOut.png"></div>-->
+<!--      <div class="lineName">{{ $t('nav.menu_logOut') }}</div>-->
+<!--      <div class="lineRight">-->
+<!--        <div class="email">{{ emailSlice }}</div>-->
+<!--        <div><img src="../assets/images/slices/right_icon.png"></div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div class="routerMenu_loginOut" v-show="show" @click="show=false">-->
+<!--      <div class="content" @click.stop="show=true">-->
+<!--        <h2>{{ $t('nav.loginOut_title') }}</h2>-->
+<!--        <div @click.stop="outLogin">{{ $t('nav.loginOut') }} <img src="../assets/images/slices/rightIcon.png" alt=""></div>-->
+<!--        <p @click.stop="show=false">{{ $t('nav.loginOut_Dismiss') }}</p>-->
+<!--      </div>-->
+<!--    </div>-->
   </div>
 </template>
 
@@ -141,7 +141,7 @@ export default {
     outLogin(){
 
       if(this.email){
-        
+
         this.$axios.post(this.$api.post_outLogin,'','').then(res=>{
           if(res && res.returnCode === "0000"){
             // this.$parent.routerViewState = true;
@@ -160,7 +160,7 @@ export default {
               this.$parent.routerViewState = true;
               setTimeout(()=>{
                 this.$parent.routerViewState = false
-             
+
               },200)
               this.$router.replace('/')
             return
@@ -174,11 +174,11 @@ export default {
     },
     goProtocol(name){
       if(name === 'privacyPolicy'){
-        window.location = 'https://alchemypay.org/privacy-policy/';
+        window.location = 'https://www.paysopay.com/static/html/app/privacyAgreement.html';
         return;
       }
       if(name === 'termsUse'){
-        window.location = 'https://alchemypay.org/terms-of-use/';
+        window.location = 'https://www.paysopay.com/static/html/app/serviceAgreement.html';
         return;
       }
     },

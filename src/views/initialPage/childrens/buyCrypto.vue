@@ -265,15 +265,7 @@ export default {
 
       //获取定位的国家信息
       var worldData = {};
-      worldData = this.basicData.worldList.filter((item)=> {
-        if(item.alpha2 === this.basicData.param.areaCode){
-          return item;
-        }
-      })
-      //商家配置的法币没有默认国家的法币，默认商家配置币种第一个
-      if(worldData[0].buyEnable === 0){
-        worldData = this.basicData.worldList.filter(item=>{return item.buyEnable === 1});
-      }
+      worldData = this.basicData.worldList.filter(item=>{return item.buyEnable === 1});
       this.handlePayWayList(worldData[0],1);
 
       //接入商户信息处理
@@ -318,10 +310,11 @@ export default {
       //There is no merchant information in the address column - Copy local cache
       //Obtain merchant order information in the address bar
       let merchantParams = {};
-      JSON.stringify(this.$route.query) !== "{}" ? merchantParams = this.$route.query : merchantParams = JSON.parse(sessionStorage.getItem("accessMerchantInfo"));
+      merchantParams = JSON.parse(sessionStorage.getItem("accessMerchantInfo"));
       merchantParams === null ? merchantParams = {} : '';
       merchantParams.networkDefault = false;
       merchantParams.addressDefault = false;
+      merchantParams.merchantParam = '?appId=zen0o30y08uq2x71';
 
       sessionStorage.setItem("accessMerchantInfo",JSON.stringify(merchantParams));
       let cryptoValue = (merchantParams.crypto!== ''&& merchantParams.crypto!==undefined) ? merchantParams.crypto : "ACH";

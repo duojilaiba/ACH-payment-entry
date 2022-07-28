@@ -17,7 +17,7 @@ module.exports = {
         networkAddress_components_title: '地址',
         //协议组件
         agreement_components_text1: '兹授權',
-        agreement_components_text2: 'AlchemyPay ',
+        agreement_components_text2: 'PaysoPay ',
         agreement_components_text3: '當日從我選擇的付款方式中扣除上述金額，我充分瞭解此操作不能取消、召回或退款。',
         //查询订单状态提示
         orderTips_title: '系統沒有檢索到付款資訊',

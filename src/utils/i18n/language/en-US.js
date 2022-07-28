@@ -17,7 +17,7 @@ module.exports = {
     networkAddress_components_title: 'Address',
     //协议组件
     agreement_components_text1: 'I authorise ',
-    agreement_components_text2: 'AlchemyPay ',
+    agreement_components_text2: 'PaysoPay ',
     agreement_components_text3: 'to debit my chosen payment method for the amount above on today’s date and understand that this can not be cancelled, recalled or refunded. ',
     //查询订单状态提示
     orderTips_title: 'Please wait on this page',

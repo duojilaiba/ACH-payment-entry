@@ -51,7 +51,7 @@ module.exports = {
         config
             .plugin('html')
             .tap(args => {
-                args[0].title= 'Alchemy Pay Ramp'
+                args[0].title= 'Payso'
                 return args
             })
         // 它可以提高第一个屏幕的速度，建议打开预加载
@@ -83,7 +83,7 @@ module.exports = {
             .loader('svg-sprite-loader')
             .options({
                 symbolId: 'icon-[name]',
-                title:'Alchemy Pay Ramp'
+                title:'Payso'
             })
             .end()
     },
