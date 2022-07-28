@@ -171,6 +171,14 @@ import { AES_Encrypt } from '@/utils/encryp.js';
         return false
       }
     }
+  },
+  watch:{
+    //验证码输入完成直接登陆
+    value(newVal){
+      if(newVal.length >= 6){
+        this.toLogin()
+      }
+    }
   }
   }
 </script>

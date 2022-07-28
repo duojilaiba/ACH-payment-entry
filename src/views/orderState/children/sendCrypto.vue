@@ -32,7 +32,7 @@
       <div ref="qrCodeUrl" class="qrCodeUrl" style="width:1.4rem;height:1.4rem;"></div>
     </div>
     <div class="sendCrypto_content" style=" align-items: center;">
-      <div class="title">{{ $t('nav.Sellorder_Address') }} (ACH)</div>
+      <div class="title">{{ $t('nav.Sellorder_Address') }} ({{orderStateData.cryptocurrency}})</div>
       <div class="content order-con" @click="copy" :data-clipboard-text="orderStateData.address">
         <p style="max-width:2.5rem;white-space: normal;overflow:hidden;overflow:hidden;font-style: normal;text-overflow: ellipsis; " :style="{color:transferredShow?'#063376 !important':''}">{{ orderStateData.address }}</p>
         <img style="height:.2rem" src="@/assets/images/copySell.png" alt="">
