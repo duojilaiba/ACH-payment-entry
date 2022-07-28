@@ -137,8 +137,6 @@ export default {
       this.$parent.routerViewState === true ? this.$parent.routerViewState = false : this.$parent.routerViewState = true;
     },
     sellFormBack(){
-      // this.$store.state.sellRouterParams.cacheForm = true;
-      // this.$router.replace("/");
       this.changeCountry_state = true;
       this.$parent.$refs.routerView.changeCountry_state = true;
     },
@@ -151,16 +149,11 @@ export default {
   computed:{
     //导航的显示隐藏
     navigationBarIsShow(){
-
       // if((this.tabState  &&  this.$route.name !== 'sellOrder' && !this.$parent.routerViewState && this.$route.name !== 'KycVerification') || this.tabState&& this.$route.path !== '/'&&  this.$route.name !== 'sellOrder'&& this.$route.name !== 'KycVerification' ){
-
-      //(this.tabState && this.$route.path === '/sell-formUserInfo' && !this.changeCountry_state) ||
-      if(
+      if((this.tabState && this.$route.path === '/sell-formUserInfo' && !this.changeCountry_state) ||
           (this.tabState  &&  this.$route.path !== '/sellOrder' && !this.$parent.routerViewState && this.$route.path !== '/kycVerification') ||
-          (this.tabState && this.$route.path !== '/'&&  this.$route.path !== '/sellOrder'&& this.$route.path !== '/kycVerification')
-          // (this.tabState && this.$route.path !== '/sell-formUserInfo' && this.changeCountry_state)
+          (this.tabState && this.$route.path !== '/' && this.$route.path !== '/sell-formUserInfo' &&  this.$route.path !== '/sellOrder'&& this.$route.path !== '/kycVerification')
       ){
-
         return true
       }
       return false
