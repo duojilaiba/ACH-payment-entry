@@ -66,7 +66,7 @@ export default {
   //买币是否要kyc验证
   "post_getKycThrough":'/kyc/buyKycThrough',
   //卖币是否要kyc验证
-  "post_getKycStatus":'/kyc/getKycStatus',
+  "post_getKycStatus":'/kyc/getSellKycStatus',
   //用户一键登陆接口
   "getUserLogin":'/login/free/certification',
   //用户是否是风险账号

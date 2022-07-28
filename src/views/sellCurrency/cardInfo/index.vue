@@ -372,11 +372,13 @@ export default {
     },
 
     isKyc(val){
-      // let params = {
-      //   amount: this.$store.state.sellRouterParams.amount * this.$store.state.sellRouterParams.currencyData.price
-      // }
-      this.$axios.post(this.$api.post_getKycStatus,'','').then(res=>{
-        // console.log(res);
+      let params = {
+        amount: this.$store.state.sellRouterParams.amount * this.$store.state.sellRouterParams.currencyData.price
+      }
+      var FormData = require('form-data');
+        var data = new FormData();
+         data.append('amount', params.amount);
+      this.$axios.post(this.$api.post_getKycStatus,data).then(res=>{
         if(res && res.returnCode === '0000'){
           if(res.data === true){
             this.$store.state.sellRouterParams.fullName = val.name;

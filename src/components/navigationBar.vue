@@ -150,7 +150,7 @@ export default {
   computed:{
     //导航的显示隐藏
     navigationBarIsShow(){
-      if((this.tabState  &&  this.$route.path !== '/sellOrder' && !this.$parent.routerViewState && this.$route.path !== '/kycVerification') || this.tabState&& this.$route.path !== '/'&&  this.$route.path !== '/sellOrder'&& this.$route.path !== '/kycVerification' ){
+      if((this.tabState  &&  this.$route.name !== 'sellOrder' && !this.$parent.routerViewState && this.$route.name !== 'KycVerification') || this.tabState&& this.$route.path !== '/'&&  this.$route.name !== 'sellOrder'&& this.$route.name !== 'KycVerification' ){
         return true
       }
       return false
