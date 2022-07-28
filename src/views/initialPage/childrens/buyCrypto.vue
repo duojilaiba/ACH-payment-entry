@@ -310,12 +310,10 @@ export default {
       //There is no merchant information in the address column - Copy local cache
       //Obtain merchant order information in the address bar
       let merchantParams = {};
-      merchantParams = JSON.parse(sessionStorage.getItem("accessMerchantInfo"));
-      merchantParams === null ? merchantParams = {} : '';
       merchantParams.networkDefault = false;
       merchantParams.addressDefault = false;
-      merchantParams.merchantParam = '?appId=zen0o30y08uq2x71';
-
+      merchantParams.merchantParam = 'appId=zen0o30y08uq2x71';
+      console.log(merchantParams)
       sessionStorage.setItem("accessMerchantInfo",JSON.stringify(merchantParams));
       let cryptoValue = (merchantParams.crypto!== ''&& merchantParams.crypto!==undefined) ? merchantParams.crypto : "ACH";
       //如果匹配到ACH币并且可以买(purchaseSupported===1)赋值,没有则赋值可以买(purchaseSupported===1)列表第一个币种
@@ -329,57 +327,6 @@ export default {
         serviceFee: cryptoDate.serviceFee,
       }
       this.$store.state.buyRouterParams.cryptoCurrency = cryptoDate.name;
-      let params = merchantParams;
-      delete params.networkDefault;
-      delete params.addressDefault;
-      delete params.merchantParam_state;
-      this.$axios.get(this.$api.get_orderVerification, params).then(res=>{
-        //商户信息接口success创建订单添加merchantParam参数
-        if(res && res.returnCode === "0000"){
-          this.cryptoSate = merchantParams.crypto ? false : true;
-          merchantParams.merchantParam = JSON.stringify(this.$route.query) !== "{}" ? this.$route.fullPath.substring(2,this.$route.fullPath.length) : JSON.parse(sessionStorage.getItem("accessMerchantInfo")).merchantParam;
-          merchantParams.merchantParam_state = true;
-          sessionStorage.setItem("accessMerchantInfo",JSON.stringify(merchantParams));
-          //network address All passed the verification
-          if(res.success === true && res.data === null){
-            merchantParams.addressDefault = false;
-            merchantParams.networkDefault = false;
-            sessionStorage.setItem("accessMerchantInfo",JSON.stringify(merchantParams));
-            return;
-          }
-
-          //Judge whether a network｜address has passed
-          if(res.success === true && res.data !== null){
-            //you pay currency - address: false - Address is not brought out by default
-            if(res.data.address === false || res.data.address === undefined){ //No parameter defaults
-              merchantParams.addressDefault = false;
-            }else{
-              merchantParams.addressDefault = true;
-            }
-
-            //network: false - The network is not brought out by default
-            if(res.data.network === false || res.data.network === undefined) {
-              merchantParams.networkDefault = false;
-            }else{
-              merchantParams.networkDefault = true;
-            }
-            sessionStorage.setItem("accessMerchantInfo",JSON.stringify(merchantParams));
-            return;
-          }
-        }else{
-          //Verification failed. Release all permissions
-          this.cryptoSate = true;
-          merchantParams.merchantParam_state = false;
-          merchantParams.addressDefault = false;
-          merchantParams.networkDefault = false;
-          sessionStorage.setItem("accessMerchantInfo",JSON.stringify(merchantParams));
-        }
-      }).catch(()=>{
-        this.cryptoSate = true;
-        merchantParams.addressDefault = false;
-        merchantParams.networkDefault = false;
-        sessionStorage.setItem("accessMerchantInfo",JSON.stringify(merchantParams));
-      })
     },
 
     nextStep(){

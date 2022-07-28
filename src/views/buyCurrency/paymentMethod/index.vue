@@ -236,6 +236,7 @@ export default {
         this.buyParams = this.$store.state.placeOrderQuery;
         this.buyParams.payWayCode = this.payMethod.payWayCode;
         this.buyParams.cryptoCurrencyVolume = this.$store.state.buyRouterParams.getAmount;
+        this.buyParams.merchantParam = JSON.parse(sessionStorage.getItem("accessMerchantInfo")).merchantParam;
         //存在商户信息将信息带入请求地址
         let urlQuery = '';
         if(JSON.parse(sessionStorage.getItem("accessMerchantInfo")).merchantParam){
