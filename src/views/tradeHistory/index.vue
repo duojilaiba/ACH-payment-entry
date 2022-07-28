@@ -152,7 +152,7 @@
 
               <!-- 订单状态 -->
               <div class="orderState">
-                <div v-if="item.orderStatus === 2" class="state_loading">
+                <div v-if="item.orderStatus === 2 || item.orderStatus === 1" class="state_loading">
                   <div class="orderState-line1">
                     <div class="state_circular"></div>
                     <div class="state_name">Block Confirmed ({{ item.confirmBlock }}/{{ item.totalBlock }}) </div>

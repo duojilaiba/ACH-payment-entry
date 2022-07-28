@@ -4,7 +4,7 @@
       <div class="line-height1">
         <div class="left">Sell {{ detailsData.cryptocurrency }}</div>
         <div class="right">
-          <div class="statusView" v-if="detailsData.orderStatus === 2">
+          <div class="statusView" v-if="detailsData.orderStatus === 2 || detailsData.orderStatus === 1">
             <div></div>
             <div>Block Confirmed ({{ detailsData.confirmBlock }}/{{ detailsData.totalBlock }}) </div>
           </div>
@@ -94,7 +94,7 @@
         <div class="title">
           <div class="left">Status</div>
           <div class="right">
-            <span v-if="detailsData.orderStatus === 2">Block Confirmed</span>
+            <span v-if="detailsData.orderStatus === 2 || detailsData.orderStatus === 1">Block Confirmed</span>
             <span v-if="detailsData.orderStatus === 3">Confirm Order</span>
             <span v-if="detailsData.orderStatus === 4">In Transfer</span>
             <span class="completed" v-else-if="detailsData.orderStatus === 5">Completed</span>
@@ -131,21 +131,21 @@
             <span class="value">{{ detailsData.orderTime }}</span>
           </div>
         </div>
-        <div class="amountInfo-line" v-if="detailsData.orderStatus !== 7 && (detailsData.orderStatus === 2 && detailsData.confirmBlock !== 0)">
+        <div class="amountInfo-line" v-if="(detailsData.orderStatus >= 3 && detailsData.orderStatus <= 9 && detailsData.orderStatus !== 7) || (detailsData.orderStatus === 2 && detailsData.confirmBlock !== 0)">
           <div class="left">Confirmed Time:</div>
           <div class="right">
             <span class="value">{{ detailsData.confirmedTime }}</span>
           </div>
         </div>
         <!-- Completed -->
-        <div class="amountInfo-line" v-if="detailsData.orderStatus === 5 || detailsData.orderStatus === 6 || detailsData.orderStatus === 8 || detailsData.orderStatus === 9 ||(detailsData.orderStatus === 2 && detailsData.confirmBlock !== 0)">
+        <div class="amountInfo-line" v-if="(detailsData.orderStatus >= 5 && detailsData.orderStatus <= 9 && detailsData.orderStatus !== 7)">
           <div class="left">Transfer Time:</div>
           <div class="right">
             <span class="value">{{ detailsData.transferTime }}</span>
           </div>
         </div>
         <!-- Failed - 2 -->
-        <div class="amountInfo-line" v-if="detailsData.orderStatus === 9 || (detailsData.orderStatus === 2 && detailsData.confirmBlock !== 0)">
+        <div class="amountInfo-line" v-if="detailsData.orderStatus === 8 || detailsData.orderStatus === 9">
           <div class="left">Refund Time:</div>
           <div class="right">
             <span class="value">{{ detailsData.refundTime }}</span>
@@ -153,7 +153,7 @@
         </div>
       </div>
 
-      <div class="orderInfo" v-if="detailsData.orderStatus !== 7 && (detailsData.orderStatus === 2 && detailsData.confirmBlock !== 0)">
+      <div class="orderInfo" v-if="(detailsData.orderStatus >= 3 && detailsData.orderStatus <= 9 && detailsData.orderStatus !== 7) || (detailsData.orderStatus === 2 && detailsData.confirmBlock !== 0)">
         <div class="amountInfo-line">
           <div class="left">Network:</div>
           <div class="right">
@@ -188,7 +188,7 @@
     </div>
 
     <!-- failed - 1 -->
-    <footer v-if="detailsData.orderStatus === 6 || detailsData.orderStatus === 8 || (detailsData.orderStatus === 2 && detailsData.confirmBlock === 0)">
+    <footer v-if="detailsData.orderStatus === 6 || detailsData.orderStatus === 8 || (detailsData.orderStatus === 2 && detailsData.confirmBlock === 0) || detailsData.orderStatus === 1">
       <!-- 重新购买 -->
       <button class="update-card-info" @click="updateCardInfo" v-if="detailsData.orderStatus === 6">
         Update Information
@@ -199,7 +199,7 @@
       <!-- 退款 -->
       <p @click="refund" v-if="detailsData.orderStatus === 8 || detailsData.orderStatus === 6">Request Refund of USDT</p>
       <!-- 去购买 -->
-      <button class="pay-now" @click="payNow">Pay Now</button>
+      <button class="pay-now" @click="payNow" v-if="detailsData.orderStatus === 2 && detailsData.confirmBlock === 0">Pay Now</button>
     </footer>
   </div>
 </template>
