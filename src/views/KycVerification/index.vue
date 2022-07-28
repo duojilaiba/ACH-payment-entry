@@ -91,16 +91,14 @@ export default {
           }
           //正在处理
           if(type.reviewStatus === 'pending'){
-            // this.status = 0
-            // this.kycVerState = 2
             return false
              //重新验证
-          }else if(type.reviewStatus === "completed" && type.reviewResult.reviewAnswer === 'RED' && type.reviewResult.reviewRejectType==='RETRY'){
+          }else if(type.reviewStatus !== 'pending' && type.reviewResult.reviewAnswer === 'RED' && type.reviewResult.reviewRejectType==='RETRY'){
             // this.status = 0
             // this.kycVerState = 2
             return
             //成功
-          }else if(type.reviewStatus === "completed" && type.reviewResult.reviewAnswer === 'GREEN'){
+          }else if(type.reviewStatus !== 'pending' && type.reviewResult.reviewAnswer === 'GREEN'){
             this.status = 0
             this.kycVerState = 1
             return

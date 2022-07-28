@@ -254,7 +254,7 @@ export default {
             this.disAbled = res.data
             return
           }else{
-             _this.$axios.post(_this.$api.post_getKycStatus,'').then(_res=>{
+             _this.$axios.post(_this.$api.post_getKycThrough,'').then(_res=>{
               if(_res && _res.returnCode === '0000'){
                 if(_res.data===false){
                   _this.disAbled = false
