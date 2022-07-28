@@ -1,6 +1,6 @@
 <template>
   <div id="box">
-    <div id="sell-form" ref="box_ref" @scroll="handleScroll">
+    <div id="sell-form" ref="box_ref" @scroll="handleScroll" v-if="!changeCountry_state">
       <div class="sellForm-content" ref="form_ref">
         <!-- 历史表单信息 -->
         <div class="cardInfo-history" v-if="oldCardInfo.length > 0">
@@ -53,6 +53,9 @@
       </button>
     </div>
 
+    <!-- 修改国家 -->
+    <search viewName="payCurrency-sell-cardForm" :allBasicData="allBasicData" v-else/>
+
     <!-- tips icon -->
     <transition>
       <div class="downTips-icon" v-show="goDown_state" @click="goDown"><img src="@/assets/images/downIcon.svg" ref="downTips_ref" alt=""></div>
@@ -76,9 +79,11 @@
 <script>
 import allFormJson from "@/assets/json/currencyPurchaseFormRules.json";
 import { AES_Decrypt, AES_Encrypt } from "../../../utils/encryp";
+import Search from "../../../components/search";
 
 export default {
   name: "testForm",
+  components: {Search},
   data(){
     return{
       formJson: [],
@@ -99,6 +104,9 @@ export default {
       //历史卡信息
       isOldCardInfo: false,
       oldCardInfo: [],
+      changeCountry_state: false,
+
+      allBasicData: {},
     }
   },
   //首页进入卖币卡表单页面清空缓存
@@ -106,12 +114,10 @@ export default {
     next(vm => {
       //初始化选中最近一次历史卡信息状态
       vm.isOldCardInfo = false;
-      if(to.path === '/sell-formUserInfo' && from.path === '/'){
-        console.log("chufa1")
-        vm.assignmentForm();
-      }
-      if ((to.path === '/sell-formUserInfo' && from.path === '/' && vm.$store.state.sellRouterParams.cacheForm === false)&& vm.$store.state.cardInfoFromPath !== 'sellOrder') {
-        console.log("chufa2")
+      // if(to.path === '/sell-formUserInfo' && from.path === '/'){
+      //   vm.assignmentForm();
+      // }
+      if ((to.path === '/sell-formUserInfo' && from.path === '/')&& vm.$store.state.cardInfoFromPath !== 'sellOrder') {
         vm.formJson = [];
       }
     })
@@ -123,6 +129,21 @@ export default {
     next();
   },
   activated(){
+
+    let basicData = JSON.parse(window.localStorage.getItem('allBasicData'));
+    basicData.worldList.forEach((item,index)=>{
+      if(item.sellFiatList){
+        item.sellFiatList.forEach((item2,index2)=>{
+          basicData.fiatCurrencyList.forEach(item3=>{
+            if(item3.code === item2){
+              basicData.worldList[index].sellFiatList[index2] = item3;
+            }
+          })
+        })
+      }
+    })
+    this.allBasicData = basicData;
+
     //初始化根据可视高度控制向下提示按钮状态
     setTimeout(()=>{
       if(this.$refs.box_ref.offsetHeight + 4 < document.getElementById("sell-form").scrollHeight - 50){
@@ -132,22 +153,11 @@ export default {
       }
     })
 
-    //恢复卡信息
-    this.assignmentForm();
+    //初始化表单
+    this.initializeForm(1);
 
     //加载卡信息列表
-    this.queryCardInfoList();
-
-    //根据货币类型来过滤不同表单
-    this.currency = this.$store.state.sellRouterParams.positionData.code;
-    this.formJson = JSON.parse(JSON.stringify(allFormJson.filter(item=>{return item.currency.includes(this.currency)})[0].form));
-
-    //PHP - 金额大于500000地址必输
-    if(this.currency === 'PHP' && this.$store.state.sellRouterParams.getAmount > 500000){
-      this.formJson.filter(item=>{ return item.paramsName === "address" })[0].required = true;
-    }else if(this.currency === 'PHP' && this.$store.state.sellRouterParams.getAmount <= 500000){
-      this.formJson.filter(item=>{ return item.paramsName === "address" })[0].required = false;
-    }
+    this.queryCardInfoList(1);
   },
   computed: {
     //动态表单判空、正则校验
@@ -187,9 +197,6 @@ export default {
       requiredArray.length === 0 ? this.formJson.forEach((item,index)=>{this.formJson[index].tipsState = false}) : '';
       return requiredArray.length === 0 && this.request_loading === false ? false : true;
     },
-    // sellForm(){
-    //   return this.$store.state.sellForm;
-    // },
   },
   methods: {
     // 正则校验 展示提示信息
@@ -326,7 +333,6 @@ export default {
     },
     //确认订单 - 处理请求参数
     submit(){
-      this.$store.state.sellRouterParams.cacheForm = false;
       let params = this.paramsFormData();
       this.processRequest(params);
     },
@@ -432,13 +438,22 @@ export default {
     },
 
     //点击tab栏返回首页修改卖币信息再次进入赋值表单信息
-    assignmentForm(){
-      let sellForm = {};
-      window.sessionStorage.getItem("sellForm") ? sellForm = JSON.parse(window.sessionStorage.getItem("sellForm")) : '';
-      if(this.$store.state.sellRouterParams.cacheForm === true && sellForm.fiatCode === this.$store.state.sellRouterParams.positionData.code){
-        setTimeout(()=>{
-          this.decryptCardInfo(JSON.parse(window.sessionStorage.getItem("sellForm")));
-        },500)
+    initializeForm(state,val){
+      //根据货币类型来过滤不同表单
+
+      if(state === 1){
+        this.currency = this.$store.state.sellRouterParams.positionData.code;
+      }else{
+        this.currency = val.sellFiatList[0].code;
+      }
+
+      this.formJson = JSON.parse(JSON.stringify(allFormJson.filter(item=>{return item.currency.includes(this.currency)})[0].form));
+
+      //PHP - 金额大于500000地址必输
+      if(this.currency === 'PHP' && this.$store.state.sellRouterParams.getAmount > 500000){
+        this.formJson.filter(item=>{ return item.paramsName === "address" })[0].required = true;
+      }else if(this.currency === 'PHP' && this.$store.state.sellRouterParams.getAmount <= 500000){
+        this.formJson.filter(item=>{ return item.paramsName === "address" })[0].required = false;
       }
     },
 
@@ -448,10 +463,18 @@ export default {
     },
 
     //加载历史卡信息列表
-    queryCardInfoList(){
-      let params = {
-        country: this.$store.state.sellRouterParams.positionData.alpha2,
-        fiatName: this.$store.state.sellRouterParams.payCommission.code,
+    queryCardInfoList(state,val){
+      let params = {};
+      if(state === 1){
+        params = {
+          country: this.$store.state.sellRouterParams.positionData.alpha2,
+          fiatName: this.$store.state.sellRouterParams.payCommission.code,
+        }
+      }else{
+        params = { //val
+          country: '',
+          fiatName: '',
+        }
       }
       this.$axios.get(this.$api.get_cardList,params).then(res=>{
         if(res && res.returnCode === '0000'){

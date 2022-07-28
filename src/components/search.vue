@@ -13,12 +13,12 @@
     </div>
     <div class="search_core">
       <!-- 选择国家和法币  -->
-      <ul v-if="viewName === 'payCurrency' || viewName === 'payCurrency-sell'">
+      <ul v-if="viewName === 'payCurrency' || viewName === 'payCurrency-sell' || viewName === 'payCurrency-sell-cardForm'">
         <div v-if="searchText===''">
           <div class="screen_title" v-if="recent_payCurrency.length">Recent</div>
           <li class="payCurrencyLi" v-for="(item,index) in recent_payCurrency" :key="'recent_payCurrency'+index" @click="choiseItem('payCurrency',item)">
             <p class="seach_li_text">
-              <img :src="item.flag" :key="item.flag"> <!--  :onload="loadImg(item.flag)" :onerror="errorImg()" -->
+              <img :src="item.flag" :key="item.flag">
               <span class="allName">{{ item.enCommonName }} -</span>
               <span class="abbreviationName"> {{ item.code }}</span> <!--  v-if="viewName === 'payCurrency'" -->
               <!-- <span class="abbreviationName" v-if="viewName === 'payCurrency-sell'">{{ item.fiatCode }}</span> -->
@@ -30,7 +30,7 @@
           <div class="screen_title">Available now</div>
           <li class="payCurrencyLi" v-for="(item,index) in basicData" :key="'basicData'+index" @click="choiseItem('payCurrency',item)">
             <p class="seach_li_text">
-              <img :src="item.flag" :key="item.flag"> <!--  :onload="loadImg(item.flag)" :onerror="errorImg()" -->
+              <img :src="item.flag" :key="item.flag">
               <span class="allName">{{ item.enCommonName }} -</span>
               <span class="abbreviationName"> {{ item.code }}</span> <!--  v-if="viewName === 'payCurrency'" -->
               <!-- <span class="abbreviationName" v-if="viewName === 'payCurrency-sell'">{{ item.fiatCode }}</span> -->
@@ -43,7 +43,7 @@
         <div v-else>
           <li class="payCurrencyLi" v-for="(item,index) in searchData" :key="'searchData'+index" @click="choiseItem('payCurrency',item)">
             <p class="seach_li_text">
-              <img :src="item.flag" :key="item.flag"> <!--  :onload="loadImg(item.flag)" :onerror="errorImg()" -->
+              <img :src="item.flag" :key="item.flag">
               <span class="allName">{{ item.enCommonName }} -</span>
               <span class="abbreviationName"> {{ item.code }}</span> <!--  v-if="viewName === 'payCurrency'" -->
               <!-- <span class="abbreviationName" v-if="viewName === 'payCurrency-sell'">{{ item.fiatCode }}</span> -->
@@ -187,7 +187,7 @@ export default {
     //Fuzzy search
     searchData(){
       //选择国家和法币
-      if(this.searchText && (this.viewName === 'payCurrency' || this.viewName === 'payCurrency-sell')) { //country
+      if(this.searchText && (this.viewName === 'payCurrency' || this.viewName === 'payCurrency-sell' || this.viewName === 'payCurrency-sell-cardForm')) { //country
         let resultArray_country1 = [],resultArray_country2 = [],resultArray_country3 = [],resultArray_country4 = [],all_resultArray_country = [];
         //根据国家名称筛选
         resultArray_country1 = this.basicData.filter((value,index) => {
@@ -285,16 +285,9 @@ export default {
     this.customComponentTitle();
   },
   methods: {
-    // loadImg(val){
-    //   return `this.onload=null;this.src="${val}"`;
-    // },
-    // errorImg(){
-    //   return 'this.onload=null;this.src='+'"../../static/img/10004-icon.png";'
-    // },
-
     //Judge title name
     customComponentTitle(){
-      if(this.viewName === 'payCurrency' || this.viewName === 'payCurrency-sell'){
+      if(this.viewName === 'payCurrency' || this.viewName === 'payCurrency-sell' || this.viewName === 'payCurrency-sell-cardForm'){
         this.viewTitle = this.$t('nav.search_components_countryTitle');
         return;
       }
@@ -311,7 +304,7 @@ export default {
     //Get and call component path, processing data
     initializationData(){
       if(this.viewName === 'currency'){
-        this.basicData = this.allBasicData;
+        this.basicData = JSON.parse(JSON.stringify(this.allBasicData));
         this.$nextTick(()=>{
           let newCurrencyList = [];
           let newPopularList = [];
@@ -367,7 +360,7 @@ export default {
       }
       if(this.viewName === 'network'){
         this.basicData = [];
-        this.basicData = this.allBasicData;
+        this.basicData = JSON.parse(JSON.stringify(this.allBasicData));
         return;
       }
       if(this.viewName === 'payCurrency'){
@@ -407,13 +400,14 @@ export default {
         this.basicData = newWorldList;
         return;
       }
-      if(this.viewName === 'payCurrency-sell'){
+      if(this.viewName === 'payCurrency-sell' || this.viewName === 'payCurrency-sell-cardForm'){
+        let allBasicData = JSON.parse(JSON.stringify(this.allBasicData));
         this.basicData = [];
         this.recent_payCurrency = [];
         let newWorldList = [];
         let recent_newWorldList = [];
-        if(this.allBasicData.worldList){
-          this.allBasicData.worldList.forEach(item=>{
+        if(allBasicData.worldList){
+          allBasicData.worldList.forEach(item=>{
             if(item.sellFiatList){
               item.sellFiatList.forEach(item2=>{
                 let fiat = {
@@ -426,10 +420,12 @@ export default {
           });
           newWorldList = newWorldList.filter(item=>{return item.sellEnable === 1});
         }
-        if(this.allBasicData.buyRecentWorldList){
-          this.allBasicData.buyRecentWorldList.forEach(item=>{
-            if(item.buyFiatList){
-              item.buyFiatList.forEach(item2=>{
+        this.basicData = newWorldList;
+        //上次购买过的国家和法币
+        if(allBasicData.buyRecentWorldList){
+          allBasicData.buyRecentWorldList.forEach(item=>{
+            if(item.sellFiatList){
+              item.sellFiatList.forEach(item2=>{
                 let fiat = {
                   code: item2.code,
                 }
@@ -441,11 +437,10 @@ export default {
           recent_newWorldList = recent_newWorldList.filter(item=>{return item.buyEnable === 1});
         }
         this.recent_payCurrency = recent_newWorldList;
-        this.basicData = newWorldList;
         return;
       }
       if(this.viewName === 'currency-sell'){
-        this.basicData = this.allBasicData;
+        this.basicData = JSON.parse(JSON.stringify(this.allBasicData));
         if(this.basicData.cryptoCurrencyResponse){
           let newCurrencyList = [];
           let newPopularList = [];
@@ -511,6 +506,10 @@ export default {
         this.$parent.searchViewState = false;
         return;
       }
+      if(this.$route.path === '/sell-formUserInfo' && this.viewName === "payCurrency-sell-cardForm"){
+        this.$parent.$parent.$refs.viewTab.changeCountry_state = false;
+        this.$parent.changeCountry_state = false;
+      }
     },
 
     //Select data
@@ -565,12 +564,19 @@ export default {
         if(type === 'payCurrency'){
           if(this.viewName === 'payCurrency'){ //买币
             this.$parent.$refs.buyCrypto_ref.handlePayWayList(item,2);
+            this.$parent.searchState = true;
             // this.$parent.$refs.buyCrypto_ref.amountControl();
           }else if(this.viewName === 'payCurrency-sell'){ //卖币
             this.$parent.$refs.sellCrypto_ref.handlePayWayList(item,2);
             this.$parent.$refs.sellCrypto_ref.amountControl();
+            this.$parent.searchState = true;
+          }else if(this.viewName === 'payCurrency-sell-cardForm'){
+            // console.log(item)
+            this.$parent.initializeForm(2,item);
+            // this.$parent.initializeForm(2,item);
+            this.$parent.$parent.$refs.viewTab.changeCountry_state = false;
+            this.$parent.changeCountry_state = false;
           }
-          this.$parent.searchState = true;
           return;
         }
       })

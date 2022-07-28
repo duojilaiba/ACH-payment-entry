@@ -37,7 +37,9 @@ export default {
       routerName: "",
       tabState: false,
       routerPath: '',
-      routerCrypto:''
+      routerCrypto:'',
+
+      changeCountry_state: false,
     };
   },
   watch: {
@@ -129,17 +131,16 @@ export default {
         return;
       }
 
-      //修改卖币表单默认赋值状态
-      this.$store.state.sellRouterParams.cacheForm = false;
-
       this.$router.go(-1);
     },
     openMenu(){
       this.$parent.routerViewState === true ? this.$parent.routerViewState = false : this.$parent.routerViewState = true;
     },
     sellFormBack(){
-      this.$store.state.sellRouterParams.cacheForm = true;
-      this.$router.replace("/");
+      // this.$store.state.sellRouterParams.cacheForm = true;
+      // this.$router.replace("/");
+      this.changeCountry_state = true;
+      this.$parent.$refs.routerView.changeCountry_state = true;
     },
 
     //删除买币表单
@@ -150,7 +151,10 @@ export default {
   computed:{
     //导航的显示隐藏
     navigationBarIsShow(){
-      if((this.tabState  &&  this.$route.path !== '/sellOrder' && !this.$parent.routerViewState && this.$route.path !== '/kycVerification') || this.tabState&& this.$route.path !== '/'&&  this.$route.path !== '/sellOrder'&& this.$route.path !== '/kycVerification' ){
+      if((this.tabState && this.$route.path === '/sell-formUserInfo' && !this.changeCountry_state) ||
+          (this.tabState  &&  this.$route.path !== '/sellOrder' && !this.$parent.routerViewState && this.$route.path !== '/kycVerification') ||
+          (this.tabState && this.$route.path !== '/'&&  this.$route.path !== '/sellOrder'&& this.$route.path !== '/kycVerification'&& this.$route.path !== '/sell-formUserInfo' && this.changeCountry_state)
+      ){
         return true
       }
       return false
