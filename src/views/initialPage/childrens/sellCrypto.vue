@@ -304,26 +304,26 @@ export default {
       //   positionData: this.positionData
       // }
       // this.$store.state.sellRouterParams = JSON.parse(JSON.stringify(routerParams));
+      this.$store.state.sellRouterParams.formPositionData = this.positionData;
+
       //跳转填写卡信息
       this.$store.state.homeTabstate = 'sellCrypto';
-      
+
       this.$store.state.cardInfoFromPath = 'configSell';
       delete this.$store.state.sellForm;
       delete this.$store.state.sellRouterParams.cardInfoList;
       //是否为风险
-
       if(localStorage.getItem("token")){
-        this.$axios.post(this.$api.post_kycDisabled).then(res=>{
+        this.$axios.post(this.$api.post_kycDisabled,'','').then(res=>{
           if(res && res.returnCode === '0000'){
+            //KYC失败次数过多 此账号为风险账号
             if(res.data){
               this.$parent.$parent.AccountisShow = true
-
             }else{
               this.$router.push('/sell-formUserInfo');
             }
           }
         })
-
       }else{
         this.$store.state.emailFromPath = 'sellCrypto';
         this.$router.push('/emailCode');

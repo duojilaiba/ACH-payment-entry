@@ -290,7 +290,6 @@ export default {
           urlQuery = `?${JSON.parse(sessionStorage.getItem("accessMerchantInfo")).merchantParam}`;
         }
         this.$axios.post(this.$api.post_buy + urlQuery,this.buyParams,'submitToken').then(res=>{
-          this.request_loading = false;
           if(res && res.returnCode === '0000'){
             this.$store.state.buyRouterParams.orderNo = res.data.orderNo;
             this.$store.state.buyRouterParams.kyc = res.data.kyc;
@@ -298,6 +297,8 @@ export default {
             this.$store.state.buyRouterParams.payWayCode = this.payMethod.payWayCode;
             this.$store.state.buyRouterParams.payWayName = this.payMethod.payWayName;
             this.JumpRouter();
+          }else{
+            this.request_loading = false;
           }
         }).catch(()=>{
           this.request_loading = false;
@@ -331,15 +332,18 @@ export default {
 
       //选择新填写支付方式
       if(this.paymethodCheck !== '' && this.payMethod.payWayCode === '10001' && this.savedCard.length <= 5){ //USD
+        this.request_loading = false;
         this.$router.push(`/creditCardForm-cardInfo?merchant_orderNo=${this.$route.query.merchant_orderNo}`);
         return;
       }
       if(this.paymethodCheck !== ''  && this.payMethod.payWayCode !== '10001'){ //IDR | 10008
         if(this.payMethod.payWayCode === '10003' || this.payMethod.payWayCode === '10008'){
+          this.request_loading = false;
           this.$router.push(`/otherWays-VA`);
           return;
         }
         if(this.payMethod.payWayCode === '10004' || this.payMethod.payWayCode === '10005' || this.payMethod.payWayCode === '10006'){ //QRIS DANA OVO
+          this.request_loading = false;
           this.$router.push(`/otherWayPay`);
         }
       }
@@ -348,16 +352,18 @@ export default {
     //第一个参数是需要跳转的地址  第二个参数是kyc验证之后我要跳转的地址
     isKyc(Url){
        this.$axios.post(this.$api.post_getKycThrough).then(res=>{
-          if(res && res.returnCode === '0000'){
+         this.request_loading = false;
+         if(res && res.returnCode === '0000'){
             if(res.data===true){
               this.$store.state.WhichPage = Url
               this.$router.push('/kycVerification')
               return
-            }else{
-              this.$router.push(Url)
             }
+            this.$router.push(Url)
           }
-        })
+        }).catch(()=>{
+         this.request_loading = false;
+       })
     }
   }
 }

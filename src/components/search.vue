@@ -571,9 +571,10 @@ export default {
             this.$parent.$refs.sellCrypto_ref.amountControl();
             this.$parent.searchState = true;
           }else if(this.viewName === 'payCurrency-sell-cardForm'){
-            // console.log(item)
-            this.$parent.initializeForm(2,item);
-            // this.$parent.initializeForm(2,item);
+            this.$store.state.sellRouterParams.formPositionData = item;
+            this.$parent.initializeForm();
+            this.$parent.queryCardInfoList();
+            this.$parent.initializeGoDown();
             this.$parent.$parent.$refs.viewTab.changeCountry_state = false;
             this.$parent.changeCountry_state = false;
           }

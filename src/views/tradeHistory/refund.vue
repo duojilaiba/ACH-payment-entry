@@ -2,10 +2,11 @@
   <div id="refund">
     <p class="title">Enter your Tron ({{ $store.state.sellRouterParams.currencyData.name }}) address </p>
     <div class="walletAddress">
-      <input type="text" v-model="walletAddress" placeholder="Enter your wallet address">
+      <input type="text" v-model="walletAddress" placeholder="Enter your wallet address" @input="addressChange">
       <img src="@/assets/images/scanCode_icon.svg" alt="" @click="scanCode_state=true">
+      <p class="errorMessage" v-if="errorState">Invalid address</p>
     </div>
-    <p class="exchangeRate">1 USD ≈ {{ $store.state.sellRouterParams.currencyData.price }} {{ $store.state.sellRouterParams.currencyData.name }}</p>
+    <p class="exchangeRate">1 USD ≈ {{ refundInfo.price }} {{ $store.state.sellRouterParams.currencyData.name }}</p>
     <!-- 扫码 -->
     <div class="scanCode" v-if="scanCode_state">
       <qrcode-stream @decode="onDecode" @init="onInit" />
@@ -30,11 +31,16 @@ export default {
       walletAddress: "",
       scanCode_state: false,
       error: '',
+      errorState: false,
+      refundInfo: {
+        price: '',
+        addressRegex: '',
+      }
     }
   },
   computed: {
     disabled(){
-      if(this.walletAddress === ''){
+      if(this.walletAddress === '' || this.errorState){
         return true
       }else{
         return false
@@ -44,8 +50,17 @@ export default {
 
   activated(){
     this.orderId = this.$route.query.orderId;
+    this.queryRefundInfo();
   },
   methods: {
+    addressChange(){
+      if(!new RegExp(this.refundInfo.addressRegex).test(this.walletAddress)){
+        this.errorState = true
+      }else{
+        this.errorState = false
+      }
+    },
+
     //扫码获取到的数据
     onDecode(result) {
       if(result){
@@ -78,6 +93,18 @@ export default {
       }
     },
 
+    queryRefundInfo(){
+      let params = {
+        cryptocurrency: this.$route.query.cryptocurrency
+      }
+      this.$axios.get(this.$api.get_sellRefundInfo, params).then(res=>{
+        if(res && res.returnCode === "0000"){
+          this.refundInfo.price = res.data.price;
+          this.refundInfo.addressRegex = res.data.addressRegex;
+        }
+      })
+    },
+
     confirmRefund(){
       let params = {
         orderId: this.orderId,
@@ -85,7 +112,7 @@ export default {
       }
       this.$axios.get(this.$api.get_sellRefund,params).then(res=>{
         if(res && res.returnCode === '0000'){
-          this.$router.back(-1);
+          this.$router.go(-1);
         }
       })
     }
@@ -131,6 +158,13 @@ export default {
       top: 0.18rem;
       cursor: pointer;
     }
+    .errorMessage{
+      font-size: 0.1rem;
+      font-family: "GeoLight", GeoLight;
+      font-weight: 400;
+      color: #E55643;
+      margin: 0.04rem 0.2rem 0 0.16rem;
+    }
   }
   .exchangeRate{
     height: 0.14rem;
@@ -139,7 +173,7 @@ export default {
     font-weight: 400;
     font-size: 0.13rem;
     color: #949EA4;
-    margin-top: 0.08rem;
+    margin-top: 0.18rem;
     text-align: center;
   }
 

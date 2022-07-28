@@ -2,7 +2,7 @@
   <div id="tradeHistory-details">
     <div class="content">
       <div class="line-height1">
-        <div class="left">Sell USDT</div>
+        <div class="left">Sell {{ detailsData.fiatName }}</div>
         <div class="right">
           <div class="statusView" v-if="detailsData.orderStatus === 2">
             <div></div>
@@ -242,7 +242,7 @@ export default {
       this.$router.push(`/sell-formUserInfo?cardInfoFromPath=sellOrder?sellOrderId=${this.orderId}`);
     },
     refund(){
-      this.$router.push(`/Refund?orderId=${this.orderId}`);
+      this.$router.push(`/Refund?orderId=${this.orderId}&cryptocurrency=${this.detailsData.cryptocurrency}`);
     },
 
     copy(){

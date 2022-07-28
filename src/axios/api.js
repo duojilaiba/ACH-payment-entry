@@ -52,6 +52,8 @@ export default {
   "post_sellSelectNet":'/trade/sell/order/switching/network',
   //卖币查询费率接口
   "get_sellRampfee":'/crypto/sell/fee/v2',
+  //卖币退款信息
+  "get_sellRefundInfo": '/trade/sell/refund/page/data',
   // 卖币申请退款
   "get_sellRefund": '/trade/sell/order/refund',
   //是否需要kyc验证
