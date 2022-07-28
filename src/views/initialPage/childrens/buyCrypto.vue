@@ -699,7 +699,7 @@ footer{
 }
 
 .calculationProcess{
-  margin-top: 0.32rem;
+  margin-top: 0.08rem;
   margin-bottom: 0.1rem;
 }
 
