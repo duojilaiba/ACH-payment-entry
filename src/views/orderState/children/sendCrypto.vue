@@ -77,14 +77,14 @@
     <!-- 二次确认弹框-->
     <div v-else></div>
     <div class="sendCrypto_confing" v-show="transferredShow" >
-      <div class="content" v-if="confirmSecondary" key="goback">
+      <!-- <div class="content" v-if="confirmSecondary" key="goback">
         <p style="height:.5rem">If you leave the current page, this order will be automatically closed. Are you sure to stop this order?</p>
         <div>
           <p @click.stop="confirmSell">{{ $t('nav.Confirm') }}</p>
           <p @click.stop="transferredShow = false">Cancel</p>
         </div>
-      </div>
-      <div class="content" v-else key="next">
+      </div> -->
+      <div class="content" key="next">
         <p style="height:.5rem">{{ $t('nav.Sell_Order_transferred') }}</p>
         <div>
           <p @click.stop="confirmSell">{{ $t('nav.Confirm') }}</p>
@@ -194,10 +194,8 @@ export default {
     confirmSell(){
      
       this.transferredShow = false
-      if(this.confirmSecondary){
-        this.$router.replace('/')
-        return
-      }
+      
+      
       this.$store.state.nextOrderState = 2
     },
     //复制
@@ -299,15 +297,13 @@ export default {
     },
     //进行返回首页或者下一步的显示隐藏
     buttonNext(val){
-       if(this.orderStateData.orderStatus == 7&&val === 'goHome'){
+      
+      
+      if(val === 'goHome'){
         this.$router.replace('/')
         return
-      }
-      this.transferredShow = true
-      if(val === 'goHome'){
-        this.confirmSecondary = true
-        return
       }else{
+        this.transferredShow = true
         this.confirmSecondary =false
       }
     }

@@ -432,7 +432,9 @@ export default {
       if(!localStorage.getItem('token') || localStorage.getItem('token')===''){
         this.$store.state.emailFromPath = 'buyCrypto';
         this.$store.state.homeTabstate = 'buyCrypto';
+        
         this.$router.push(`/emailCode`);
+        
         return;
       }
       this.$axios.post(this.$api.post_kycDisabled).then(res=>{

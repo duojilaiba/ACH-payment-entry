@@ -115,12 +115,13 @@ import { AES_Encrypt } from '@/utils/encryp.js';
             _this.$store.state.isLogin = true
             _this.$store.state.menuState = 'login'
             localStorage.setItem('login_email',_this.$store.state.userEmail)
-            // debugger
-            // console.log(_this.$store.state.routerQueryPath);
-        if(_this.$store.state.routerQueryPath === true){
-          _this.$router.push('/');
-          return
-        }
+            
+            // console.log(this.$store.state.emailFromPath);
+            // return
+            if(_this.$store.state.routerQueryPath === true){
+              _this.$router.push('/');
+              return
+            }
             if(_this.$route.query.fromName === 'tradeList'){
               _this.$router.replace('/tradeHistory');
             }else{
@@ -131,8 +132,6 @@ import { AES_Encrypt } from '@/utils/encryp.js';
                   // _this.$router.push('/')
                   _this.$router.push('/sell-formUserInfo')
                 
-              }else if(_this.$store.state.emailFromPath === 'sellOrder'){
-                _this.$router.push('/sellOrder');
               }else{
                 _this.$router.push('/');
               }

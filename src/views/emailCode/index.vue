@@ -33,7 +33,7 @@
         <p v-else>{{ $t('nav.enterEmail1') }}</p>
         <img src="@/assets/images/slices/emailIcon.png" alt="">
         
-        <input type="text"  v-model="email"  :style="{cursor: loggedIn?'not-allowed':''}" :disabled="loggedIn" placeholder="john.doe@example.com">
+        <input type="text"  v-model="email" @focus="emailFocus" @blur="emailBlur" :style="{cursor: loggedIn?'not-allowed':''}" :disabled="loggedIn" placeholder="john.doe@example.com">
       </div>
       <div class="errorMessage" v-if="emailErrorState" v-html="emailError"></div>
       <div class="emailCode_content_title" v-if="loggedIn">Not you? <span @click="signAddress">{{ $t('nav.emailanother') }}</span></div>
@@ -44,7 +44,7 @@
           <el-checkbox class="checkbox" size="medium"  v-model="checked"></el-checkbox>
           <div> {{ $t('nav.code_text') }} <span @click="openView('Terms')" style="cursor: pointer;">{{ $t('nav.code_name') }}</span> {{ $t('nav.code_and') }} <span style="cursor: pointer" @click="openView('Privacy')">{{ $t('nav.code_name2') }}.</span></div>
         </div>
-        <div class="emailCode_button" :style="{opacity: (email!=='' && email!==undefined && login_loading=== true && checked === true)?'1':''}" @click="getCode">
+        <div class="emailCode_button" :style="{opacity: (emailRep && login_loading=== true  )?'1':''}" @click="getCode">
           {{ $t('nav.Proceed') }}
           <img class="icon" src="@/assets/images/rightIconSell.png" alt="" v-if="login_loading">
           <van-loading class="icon" type="spinner" color="#fff" v-if="login_loading===false"/>
@@ -134,13 +134,16 @@ export default {
     getCode:debounce(function () {
       this.getCode_state = false;
       // this.emailErrorState = false;
+      if(this.email === ''){
+        return
+      }
       var reg = new RegExp(".+@.+\\..+");
       if(!reg.test(this.email)){
         this.emailErrorState = true
         // this.emailError = "Not a valid email address.";
         this.emailError = this.$t('nav.login_required');
         // this.login_loading = false
-        // this.$refs.emailInput.style = 'border:1px solid #D92D20'
+        this.$refs.emailInput.style = 'border:1px solid #D92D20'
         return;
       }else if(!this.checked){
         this.$toast({
@@ -180,10 +183,27 @@ export default {
         })
         axios(config).then(function (response) {
           if(response.data.status && response.returnCode === '0000'){
-            this.login_loading = false
+            _this.login_loading = false
             localStorage.setItem('token',localStorage.getItem('fin_token'))
             localStorage.setItem('email',localStorage.getItem('login_email'))
-            this.$router.push('/')
+            if(_this.$store.state.routerQueryPath === true){
+              _this.$router.push('/');
+              return
+            }
+            if(_this.$route.query.fromName === 'tradeList'){
+              _this.$router.replace('/tradeHistory');
+            }else{
+              //登陆跳转路径根据router.from的路由跳转不同页面
+              if(_this.$store.state.emailFromPath === 'buyCrypto'){
+                _this.$router.push(`/receivingMode`);
+              }else if(_this.$store.state.emailFromPath === 'sellCrypto'){
+                  // _this.$router.push('/')
+                  _this.$router.push('/sell-formUserInfo')
+                
+              }else{
+                _this.$router.push('/');
+              }
+            }
           }
         })
         
@@ -228,8 +248,34 @@ export default {
          window.location = 'https://alchemypay.org/terms-of-use/';
         return;
       }
+    },
+    //输入框选择状态样式
+    emailFocus(){
+      let Input = document.querySelector('.emailCode_content')
+      Input.style = `border: 1px solid #D0ECFC;
+      box-shadow: 0px 0px 35px rgba(89, 153, 248, 0.1);`
+    },
+    //输入框失去焦点时样式
+    emailBlur(){
+      let Input = document.querySelector('.emailCode_content')
+      Input.style = ``
+      if(this.email === ''){
+        this.emailError = '*necessary'
+        this.emailErrorState = true
+      }
     }
   },
+  computed:{
+    //计算邮箱输入并且勾选协议时按钮高亮
+    emailRep(){
+      let status = false
+      let  reg = new RegExp(".+@.+\\..+");
+      if(this.checked && reg.test(this.email)){
+        status =  true
+      }
+      return status
+    }
+  }
   
 }
 </script>
