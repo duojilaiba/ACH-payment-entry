@@ -9,7 +9,7 @@
         {{ $t(routerName) }}
         <!-- 卖币表单页展示修改卖币信息入口 -->
         <div class="sellChangeForm" v-if="this.$store.state.cardInfoFromPath === 'configSell' && $route.path === '/sell-formUserInfo'" @click="sellFormBack">
-          <p>· {{ this.$store.state.sellRouterParams.formPositionData.positionValue }}</p>
+          <p>· {{ this.$store.state.sellRouterParams.formPositionData.enCommonName }}</p>
           <p><img src="../assets/images/changeIcon.svg" alt=""></p>
         </div>
         <!-- 退款页面标题添加币种 -->

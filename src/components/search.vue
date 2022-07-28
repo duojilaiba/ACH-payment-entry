@@ -23,9 +23,9 @@
               <span class="abbreviationName"> {{ item.code }}</span> <!--  v-if="viewName === 'payCurrency'" -->
               <!-- <span class="abbreviationName" v-if="viewName === 'payCurrency-sell'">{{ item.fiatCode }}</span> -->
             </p>
-            <p class="seach_li_rightIcon">
-              <img src="../assets/images/rightIcon.png">
-            </p>
+<!--            <p class="seach_li_rightIcon">-->
+<!--              <img src="../assets/images/rightIcon.png">-->
+<!--            </p>-->
           </li>
           <div class="screen_title">Available now</div>
           <li class="payCurrencyLi" v-for="(item,index) in basicData" :key="'basicData'+index" @click="choiseItem('payCurrency',item)">
@@ -35,9 +35,9 @@
               <span class="abbreviationName"> {{ item.code }}</span> <!--  v-if="viewName === 'payCurrency'" -->
               <!-- <span class="abbreviationName" v-if="viewName === 'payCurrency-sell'">{{ item.fiatCode }}</span> -->
             </p>
-            <p class="seach_li_rightIcon">
-              <img src="../assets/images/rightIcon.png">
-            </p>
+<!--            <p class="seach_li_rightIcon">-->
+<!--              <img src="../assets/images/rightIcon.png">-->
+<!--            </p>-->
           </li>
         </div>
         <div v-else>
@@ -48,9 +48,9 @@
               <span class="abbreviationName"> {{ item.code }}</span> <!--  v-if="viewName === 'payCurrency'" -->
               <!-- <span class="abbreviationName" v-if="viewName === 'payCurrency-sell'">{{ item.fiatCode }}</span> -->
             </p>
-            <p class="seach_li_rightIcon">
-              <img src="../assets/images/rightIcon.png">
-            </p>
+<!--            <p class="seach_li_rightIcon">-->
+<!--              <img src="../assets/images/rightIcon.png">-->
+<!--            </p>-->
           </li>
         </div>
       </ul>
@@ -65,7 +65,7 @@
               <p class="networkIcon"><img src="../assets/images/hk.svg" alt=""></p>
             </div>
             <p class="seach_li_text currencyCopywriting">{{ item.name }} <span class="seach_li_allText" v-if="item.buyNetwork"> - {{ item.buyNetwork.networkName }}</span></p>
-            <p class="seach_li_rightIcon"><img src="../assets/images/rightIcon.png"></p>
+<!--            <p class="seach_li_rightIcon"><img src="../assets/images/rightIcon.png"></p>-->
           </li>
           <div class="screen_title" v-if="popularList.length > 0">{{ $t('nav.search_components_Popular') }}</div>
           <li v-for="(item,index) in popularList" :key="'popularList'+index" @click="choiseItem('currency',item)">
@@ -74,7 +74,7 @@
               <p class="networkIcon"><img src="../assets/images/hk.svg" alt=""></p>
             </div>
             <p class="seach_li_text currencyCopywriting">{{ item.name }} <span class="seach_li_allText" v-if="item.buyNetwork"> - {{ item.buyNetwork.networkName }}</span></p>
-            <p class="seach_li_rightIcon"><img src="../assets/images/rightIcon.png"></p>
+<!--            <p class="seach_li_rightIcon"><img src="../assets/images/rightIcon.png"></p>-->
           </li>
           <div class="screen_title">{{ $t('nav.search_components_All') }}</div>
           <li :class="{'allCurrencyLi': index===0}" v-for="(item,index) in cryptoCurrencyVOList" :key="'cryptoCurrencyVOList'+index" @click="choiseItem('currency',item)">
@@ -83,7 +83,7 @@
               <p class="networkIcon"><img src="../assets/images/hk.svg" alt=""></p>
             </div>
             <p class="seach_li_text currencyCopywriting">{{ item.name }} <span class="seach_li_allText" v-if="item.buyNetwork"> - {{ item.buyNetwork.networkName }}</span></p>
-            <p class="seach_li_rightIcon"><img src="../assets/images/rightIcon.png"></p>
+<!--            <p class="seach_li_rightIcon"><img src="../assets/images/rightIcon.png"></p>-->
           </li>
         </div>
         <div v-else>
@@ -93,7 +93,7 @@
               <p class="networkIcon"><img src="../assets/images/hk.svg" alt=""></p>
             </div>
             <p class="seach_li_text currencyCopywriting">{{ item.name }} <span class="seach_li_allText" v-if="item.buyNetwork"> - {{ item.buyNetwork.networkName }}</span></p>
-            <p class="seach_li_rightIcon"><img src="../assets/images/rightIcon.png"></p>
+<!--            <p class="seach_li_rightIcon"><img src="../assets/images/rightIcon.png"></p>-->
           </li>
         </div>
       </ul>
@@ -134,7 +134,7 @@
               <p class="networkIcon"><img src="../assets/images/hk.svg" alt=""></p>
             </div>
             <p class="seach_li_text currencyCopywriting">{{ item.name }} <span class="seach_li_allText" v-if="item.sellNetwork"> - {{ item.sellNetwork.networkName }}</span></p>
-            <p class="seach_li_rightIcon"><img src="../assets/images/rightIcon.png"></p>
+<!--            <p class="seach_li_rightIcon"><img src="../assets/images/rightIcon.png"></p>-->
           </li>
         </div>
         <div v-else>
@@ -144,7 +144,7 @@
               <p class="networkIcon"><img src="../assets/images/hk.svg" alt=""></p>
             </div>
             <p class="seach_li_text currencyCopywriting">{{ item.name }} <span class="seach_li_allText"> - {{ item.sellNetwork.networkName }}</span></p>
-            <p class="seach_li_rightIcon"><img src="../assets/images/rightIcon.png"></p>
+<!--            <p class="seach_li_rightIcon"><img src="../assets/images/rightIcon.png"></p>-->
           </li>
         </div>
       </ul>

@@ -304,12 +304,14 @@ export default {
       //   positionData: this.positionData
       // }
       // this.$store.state.sellRouterParams = JSON.parse(JSON.stringify(routerParams));
+      this.positionData.enCommonName = this.positionData.positionValue;
       this.$store.state.sellRouterParams.formPositionData = this.positionData;
 
       //跳转填写卡信息
       this.$store.state.homeTabstate = 'sellCrypto';
 
       this.$store.state.cardInfoFromPath = 'configSell';
+
       delete this.$store.state.sellForm;
       delete this.$store.state.sellRouterParams.cardInfoList;
       //是否为风险

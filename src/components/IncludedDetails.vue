@@ -332,7 +332,7 @@ export default {
   .fee-content{
     background: #F7F8FA;
     border-radius: 0.12rem;
-    margin-top: 0.6rem;
+    margin-top: 0.36rem;
     padding: 0 0.2rem .2rem;
     .fee-content-title{
       padding:.2rem 0rem .0rem;

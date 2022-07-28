@@ -39,7 +39,7 @@
           </div>
           <div class="value">
             <span class="minText">{{ $t('nav.home_feeRampFeeTips') }}</span>
-            - {{ feeInfo.fiatSymbol }} {{ rampFee }}
+             {{ feeInfo.fiatSymbol }} {{ rampFee }}
           </div>
         </div>
       </div>
@@ -85,7 +85,7 @@
           </div>
           <div class="value">
             <span class="minText">{{ $t('nav.home_feeRampFeeTips') }}</span>
-            - {{ orderState.feeUnit }}{{ orderState.fee }}
+            {{ orderState.feeUnit }}{{ orderState.fee }}
           </div>
         </div>
       </div>
@@ -276,7 +276,6 @@ export default {
     font-size: .13rem;
     font-weight: normal;
     color: #949EA4;
-    line-height: 15px;
     display: flex;
     align-items: center;
     padding: 0 .2rem 0;
@@ -309,12 +308,10 @@ export default {
   }
 
   .fee-content {
-
     background: #F7F8FA;
     border-radius: 0.12rem;
-    margin-top: 0.6rem;
+    margin-top: 0.36rem;
     padding: .2rem;
-
     .fee-content-title {
       // padding: 0.2rem 0  .2rem;
       display: flex;
