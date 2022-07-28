@@ -32,17 +32,17 @@
       <div ref="qrCodeUrl" class="qrCodeUrl" style="width:1.4rem;height:1.4rem;"></div>
     </div>
     <div class="sendCrypto_content" style=" align-items: center;">
-      <div class="title">{{ $t('nav.Sellorder_Address') }} (ACH)</div>
+      <div class="title">{{ $t('nav.Sellorder_Address') }} ({{orderStateData.cryptocurrency}})</div>
       <div class="content order-con" @click="copy" :data-clipboard-text="orderStateData.address">
         <p style="max-width:2.5rem;white-space: normal;overflow:hidden;overflow:hidden;font-style: normal;text-overflow: ellipsis; " :style="{color:transferredShow?'#063376 !important':''}">{{ orderStateData.address }}</p>
-        <img src="@/assets/images/copySell.png" alt="">
+        <img style="height:.2rem" src="@/assets/images/copySell.png" alt="">
       </div>
     </div>
     <div class="sendCrypto_content">
       <div class="title">{{  $t('nav.Sellorder_Network') }}</div>
       <div class="content" @click="Network_show = true">
         <p :style="{color:transferredShow?'#063376 !important':''}">{{ orderStateData.networkName }}</p>
-        <img style="height:.15rem" src="@/assets/images/SelectNetwork.png" alt="">
+        <img style="height:.2rem" src="@/assets/images/SelectNetwork.png" alt="">
       </div>
     </div>
     <div class="sendCrypto_bottom_title">{{ $t('nav.sell_Order_network_selected') }}</div>
@@ -387,7 +387,7 @@ export default {
    align-items: center;
    position:sticky;
    top:0;
-   img{
+   >img{
        width: .19rem;
        cursor: pointer;
      }
@@ -395,15 +395,16 @@ export default {
      display: flex;
      cursor: pointer;
      img{
-       width: .12rem;
-       height: .2rem;
-       
+      //  width: .12rem;
+       height: .22rem;
+      //  margin-top: .01rem;
      }
      p{
-       margin-left: .15rem;
+       margin-left: .04rem;
        font-size: .18rem;
        color: #063376;
        font-family: SFProDisplaybold;
+       margin-top: .01rem;
      }
    }
  }

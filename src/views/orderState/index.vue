@@ -2,7 +2,7 @@
   <div class="order-container" >
     <!-- {{ $store.state.nextOrderState }} -->
     <sendCrypto v-if="[0,1,7].includes(orderStateData.orderStatus) && $store.state.nextOrderState ===1 " :orderStateData="orderStateData"/>
-   
+    <div v-else-if="!orderStateData.orderStatus"></div>
     <sellState v-else :orderStateData="orderStateData"/>
     
   </div>

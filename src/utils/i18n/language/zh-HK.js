@@ -167,7 +167,7 @@ module.exports = {
         Sellorder_within:'至本地址',
         Sellorder_will:'將',
         Sellorder_get:'獲取',
-        Sellorder_for:'  為',
+        Sellorder_for:'  從',
         Sellorder_details:'請修改您銀行卡的詳細信息',
         Sellorder_page:'若繼續賣幣，請返回首頁',
         Sellorder_Crypto:'發送幣',
