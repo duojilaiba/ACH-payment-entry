@@ -311,6 +311,7 @@ export default {
       this.$store.state.homeTabstate = 'sellCrypto';
 
       this.$store.state.cardInfoFromPath = 'configSell';
+
       delete this.$store.state.sellForm;
       delete this.$store.state.sellRouterParams.cardInfoList;
       //是否为风险

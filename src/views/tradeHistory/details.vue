@@ -2,7 +2,7 @@
   <div id="tradeHistory-details">
     <div class="content">
       <div class="line-height1">
-        <div class="left">Sell {{ detailsData.fiatName }}</div>
+        <div class="left">Sell {{ detailsData.cryptocurrency }}</div>
         <div class="right">
           <div class="statusView" v-if="detailsData.orderStatus === 2">
             <div></div>
