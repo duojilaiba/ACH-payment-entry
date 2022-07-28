@@ -2,7 +2,7 @@
   <!-- Payment information -->
   <div class="paymentInformation">
     <div class="feeTitle">
-      <div class="feeTitle-name">1 USDT ≈ 29,000 USD</div>
+      <div class="feeTitle-name">1 {{ payCommission.code }} ≈ {{ price }} {{ routerParams.cryptoCurrency }}</div>
       <div class="feeTitle-value">
         <div class="loading-svg">
          <img src="@/assets/images/SellTime.png" alt="">
@@ -13,7 +13,7 @@
     <div class="fee-content">
       <div class="fee-content-title" @click="expandCollapse">
         <div class="left">
-          {{ $t('nav.home_youBuyGet') }} <span>{{ routerParams.getAmount }} {{ routerParams.cryptoCurrency }}</span> {{ $t('nav.home_buyFee_title2') }} <span>{{ payCommission.symbol }} {{ routerParams.amount }}</span>
+          {{ $t('nav.home_youBuyGet') }} <span>{{ routerParams.getAmount }} {{ routerParams.cryptoCurrency }}</span> {{ $t('nav.home_buyFee_title2') }} <span>{{ routerParams.amount }} {{ payCommission.code }}</span>
         </div>
         <!-- 商户接入模式禁止点击 -->
         <div class="right" v-if="this.$store.state.goHomeState">
@@ -21,10 +21,10 @@
         </div>
       </div>
       <div class="fee-content-details" v-if="detailsState">
-        <div class="fee-content-details-line">
-          <div class="title">{{ $t('nav.fee_listTitle_price') }}</div>
-          <div class="value">{{ payCommission.symbol }} {{ price }}</div>
-        </div>
+<!--        <div class="fee-content-details-line">-->
+<!--          <div class="title">{{ $t('nav.fee_listTitle_price') }}</div>-->
+<!--          <div class="value">{{ payCommission.symbol }} {{ price }}</div>-->
+<!--        </div>-->
         <div class="fee-content-details-line">
           <div class="title">
             {{ $t('nav.home_buyFee_rampFee') }}
@@ -311,7 +311,7 @@ export default {
       margin-left: auto;
       .loading-svg{
         margin-right: 0.04rem;
-        
+
         margin-top: 0.02rem;
         img{
           height: 0.14rem;
@@ -320,7 +320,7 @@ export default {
       .feeTitle-value-text{
         color: #949EA4;
         span{
-          
+
           display: inline-block;
           width: 0.15rem;
           text-align: center;

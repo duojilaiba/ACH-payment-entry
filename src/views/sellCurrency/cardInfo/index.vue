@@ -114,9 +114,6 @@ export default {
     next(vm => {
       //初始化选中最近一次历史卡信息状态
       vm.isOldCardInfo = false;
-      // if(to.path === '/sell-formUserInfo' && from.path === '/'){
-      //   vm.assignmentForm();
-      // }
       if ((to.path === '/sell-formUserInfo' && from.path === '/')&& vm.$store.state.cardInfoFromPath !== 'sellOrder') {
         vm.formJson = [];
       }
@@ -145,13 +142,7 @@ export default {
     this.allBasicData = basicData;
 
     //初始化根据可视高度控制向下提示按钮状态
-    setTimeout(()=>{
-      if(this.$refs.box_ref.offsetHeight + 4 < document.getElementById("sell-form").scrollHeight - 50){
-        this.goDown_state = true;
-      }else{
-        this.goDown_state = false;
-      }
-    })
+    this.initializeGoDown();
 
     //初始化表单
     this.initializeForm();
@@ -199,6 +190,17 @@ export default {
     },
   },
   methods: {
+    //初始化根据可视高度控制向下提示按钮状态
+    initializeGoDown(){
+      setTimeout(()=>{
+        if(this.$refs.box_ref.offsetHeight + 4 < document.getElementById("sell-form").scrollHeight - 50){
+          this.goDown_state = true;
+        }else{
+          this.goDown_state = false;
+        }
+      })
+    },
+
     // 正则校验 展示提示信息
     inputChange(val,index){
       //BDT - Swift code不是以DBBLBDDH开头的时候branch name必输
@@ -213,7 +215,6 @@ export default {
       }else{
         this.formJson[index].tipsState = false;
       }
-
     },
 
     //表单 - 单选框

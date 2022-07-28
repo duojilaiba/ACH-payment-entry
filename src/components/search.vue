@@ -574,6 +574,7 @@ export default {
             this.$store.state.sellRouterParams.formPositionData = item;
             this.$parent.initializeForm();
             this.$parent.queryCardInfoList();
+            this.$parent.initializeGoDown();
             this.$parent.$parent.$refs.viewTab.changeCountry_state = false;
             this.$parent.changeCountry_state = false;
           }

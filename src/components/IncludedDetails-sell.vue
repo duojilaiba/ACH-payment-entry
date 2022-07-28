@@ -2,10 +2,9 @@
   <!-- Payment information -->
   <div class="paymentInformation" v-if="orderState===null">
     <div class="feeTitle">
-      <div class="feeTitle-name">1 USDT ≈ 29,000 USD</div>
+      <div class="feeTitle-name">1 {{ currencyData.name }} ≈ {{ price }} {{ positionData.code }}</div>
       <div class="feeTitle-value">
         <div class="loading-svg">
-<!--          <img src="../assets/images/countDownIcon.png" alt="">-->
           <img src="@/assets/images/SellTime.png" alt="">
         </div>
         <div class="feeTitle-value-text"><span>{{ timeDownNumber }}</span>{{ $t('nav.codeSecond') }}</div>
@@ -14,17 +13,17 @@
     <div class="fee-content">
       <div class="fee-content-title" @click="expandFee">
         <div class="left">
-          {{ $t('nav.home_sellFee_title1') }} <span>{{ routerParams.amount }} {{ currencyData.name }}</span> {{ $t('nav.home_sellFee_title2') }} <span>{{ positionData.code }} {{ routerParams.getAmount }}</span>
+          {{ $t('nav.home_sellFee_title1') }} <span>{{ routerParams.amount }} {{ currencyData.name }}</span> {{ $t('nav.home_sellFee_title2') }} <span>{{ routerParams.getAmount }} {{ positionData.code }}</span>
         </div>
         <div class="right">
          <img src="@/assets/images/blackDownIcon1.png">
         </div>
       </div>
       <div class="fee-content-details" v-if="feeState">
-        <div class="fee-content-details-line">
-          <div class="title">{{ $t('nav.fee_listTitle_price') }}</div>
-          <div class="value">{{ feeInfo.fiatSymbol }} {{ price }}</div>
-        </div>
+<!--        <div class="fee-content-details-line">-->
+<!--          <div class="title">{{ $t('nav.fee_listTitle_price') }}</div>-->
+<!--          <div class="value">{{ feeInfo.fiatSymbol }} {{ price }}</div>-->
+<!--        </div>-->
         <div class="fee-content-details-line">
           <div class="title">
             {{ $t('nav.home_sellFee_rampFee') }}
@@ -155,7 +154,7 @@ export default {
     //选择国家后刷新数据
     '$store.state.sellRouterParams.payCommission.fiatCode': {
       deep: true,
-      handler(val){
+      handler(){
         this.timingSetting();
       }
     },
@@ -308,7 +307,7 @@ export default {
   }
 
   .fee-content {
-    
+
     background: #F7F8FA;
     border-radius: 0.12rem;
     margin-top: 0.6rem;
