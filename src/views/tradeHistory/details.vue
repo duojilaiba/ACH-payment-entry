@@ -77,7 +77,7 @@
         <div class="amountInfo-line" v-if="detailsData.orderStatus === 6 || detailsData.orderStatus === 8 || detailsData.orderStatus === 9">
           <div class="left">Return fee ({{ detailsData.fiatName }})</div>
           <div class="right">
-            <span class="value" v-if="detailsData.returnFee !== '' && detailsData.returnFee !== null">{{ detailsData.returnFee }}<span class="fee" v-if="detailsData.fiatName !== 'USD'">({{ detailsData.returnFee }} USD)</span></span>
+            <span class="value" v-if="detailsData.returnFee !== '' && detailsData.returnFee !== null">{{ detailsData.returnFee }}<span class="fee" v-if="detailsData.fiatName !== 'USD'">({{ 25 * detailsData.confirmBlock }} USD)</span></span>
             <span class="empty" v-else>-- </span>
           </div>
         </div>
