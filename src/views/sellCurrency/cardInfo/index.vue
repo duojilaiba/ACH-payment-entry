@@ -718,7 +718,7 @@ export default {
       color: #232323;
       border: 1px solid #EEEEEE;
       .rightIcon{
-        margin-left: 0.08rem;
+        margin-left: auto;
         display: flex;
         align-items: center;
         img{

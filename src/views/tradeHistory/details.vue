@@ -212,11 +212,15 @@ export default {
   data(){
     return{
       detailsData: {},
+      timeOut: null
     }
   },
   activated(){
     this.orderId = this.$route.query.orderId;
     this.detailsInfo();
+    this.timeOut = setInterval(()=>{
+      this.detailsInfo();
+    },1000)
   },
   computed: {
     percentage(){
@@ -270,7 +274,11 @@ export default {
         clipboard.destroy()
       })
     }
-  }
+  },
+  deactivated(){
+    window.clearInterval(this.timeOut);
+    this.timeOut = null;
+  },
 }
 </script>
 

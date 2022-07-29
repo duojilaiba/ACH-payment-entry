@@ -213,6 +213,9 @@ html,body,#homePage,.homePage_view,.homePage_content{
   .navigationBar_view_right {
     padding: .06rem;
     display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.1rem 0 0.1rem 0.1rem;
     margin-left: auto;
     cursor: pointer;
     img {
