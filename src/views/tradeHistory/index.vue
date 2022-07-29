@@ -350,7 +350,8 @@ export default {
     optionsPath(val,state){
       //修改银行卡信息
       if(state === 'bankInfo'){
-        this.$router.push(`/sell-formUserInfo?cardInfoFromPath=sellOrder?sellOrderId=${val.orderId}`);
+        this.$store.state.cardInfoFromPath = 'sellOrder';
+        this.$router.push(`/sell-formUserInfo?sellOrderId=${val.orderId}`);
         return
       }
       //状态为2 - 区块链确认中、确认数量为0

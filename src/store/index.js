@@ -56,6 +56,7 @@ const store = new Vuex.Store({
             },
             currencyData: {
                 name: '',
+                price: '', //kyc验证需要
             },
             cardInfoList: [],
             //国家币种 - 表单
