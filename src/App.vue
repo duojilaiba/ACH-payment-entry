@@ -3,11 +3,11 @@
     <div class="buyCrypto_iframe_view" :class="{'buyCrypto_iframe_view_pc': logoState===true}"  >
         <div id="App" >
           <!-- 顶部logo -->
-          <div class="viewTab_logo" v-if="$route.path!=='/kycVerification'">
-            <img src="@/assets/images/achLogo.svg" alt="" @click="goHome">
+          <!-- <div class="viewTab_logo" v-if="$route.path!=='/kycVerification'">
+            <img src="@/assets/images/achLogo.svg" alt="" @click="goHome"> -->
             <!-- this.$store.state.goHomeState 商户订单状态不展示菜单 -->
-            <img src="@/assets/images/rightMeun.png" alt="" @click="routerViewState=!routerViewState" v-show="routerViewState && $route.path!=='/emailCode' && $route.path!=='/verifyCode'  && this.$store.state.goHomeState === true">
-          </div>
+            <!-- <img src="@/assets/images/rightMeun.png" alt="" @click="routerViewState=!routerViewState" v-show="routerViewState && $route.path!=='/emailCode' && $route.path!=='/verifyCode'  && this.$store.state.goHomeState === true">
+          </div> -->
           <!-- 导航栏 -->
           <tab ref="viewTab"/>
           <!-- 页面内容 -->
@@ -328,7 +328,7 @@ html,body,#app,#viewBox{
 
 }
 .buyCrypto_iframe_view_pc{
-  padding: 0.26rem 0.30rem 0.26rem 0.30rem !important;
+  padding: 0.56rem 0.30rem 0.26rem 0.30rem !important;
 }
 .viewTab_logo{
   display: flex;

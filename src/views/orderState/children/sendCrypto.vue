@@ -5,9 +5,9 @@
         <img src="@/assets/images/goBack.png" alt="">
         <p>Sell {{orderStateData.cryptocurrency}}</p>
       </div>
-          <!-- <div class="sendCrypto_nav_right" >
-            <img class="menu" src="@/assets/images/rightMeun.png" v-if="this.$parent.$parent.routerViewState" @click="openMenu">
-          </div> -->
+          <div class="sendCrypto_nav_right" >
+            <img class="menu" style="height:.18rem;cursor: pointer;" src="@/assets/images/rightMeun.png" v-if="this.$parent.$parent.routerViewState" @click="openMenu">
+          </div>
       </div>
     <div v-if="[0,1].includes(orderStateData.orderStatus)">
       <div>
