@@ -85,6 +85,7 @@ export default {
     }
   },
   activated(){
+    this.$parent.routerViewState = true
     this.login_loading= true
     this.code = "";
     this.timeDown = 60;
@@ -115,6 +116,7 @@ export default {
     this.timeVal = null;
   },
   mounted(){
+    this.$parent.routerViewState = true
    setTimeout(()=>{
      if(localStorage.getItem('login_email')){
         this.email = AES_Decrypt(localStorage.getItem('login_email'))
