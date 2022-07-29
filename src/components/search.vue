@@ -101,7 +101,8 @@
       <!-- 选择网络 -->
       <ul v-else-if="viewName === 'network'">
         <li v-for="(item,index) in basicData" :key="'basicData'+index" @click="choiseItem('network',item)">
-          <p class="seach_li_text">{{ item.network }} - <span class="seach_li_allText">{{ item.networkName }}</span></p>
+          <!-- {{ item.network }} -->
+          <p class="seach_li_text"><span class="seach_li_allText">{{ item.networkName }}</span></p>
           <p class="seach_li_rightIcon"><img src="../assets/images/rightIcon.png"></p>
         </li>
       </ul>
@@ -218,6 +219,7 @@ export default {
         all_resultArray_country = all_resultArray_country.concat(resultArray_country4).concat(resultArray_country3).concat(resultArray_country2).concat(resultArray_country1);
         all_resultArray_country = [...new Set(all_resultArray_country)];
         all_resultArray_country.sort((a,b)=>{return a.indexOfNum-b.indexOfNum});
+        console.log(all_resultArray_country)
         return all_resultArray_country;
       }
 
@@ -225,24 +227,37 @@ export default {
       if(this.searchText && this.viewName === 'currency'){
         let resultArray1 = [],resultArray2 = [],resultArray3 = [],resultArray4 = [],all_resultArray = [];
         //Match full name
-        resultArray1 = this.cryptoCurrencyVOList.filter((value) => {
-          return value.fullName.includes(this.searchText)
+        resultArray1 = this.cryptoCurrencyVOList.filter((value,index) => {
+          if(value.fullName.includes(this.searchText)){
+            this.cryptoCurrencyVOList[index].indexOfNum = value.fullName.includes(this.searchText);
+            return value;
+          }
         })
         //Match full name - Initial to capital
-        resultArray2 = this.cryptoCurrencyVOList.filter((value) => {
-          // let text =
-          return value.fullName.includes(this.searchText.replace(/^\S/, s => s['toUpperCase']()))
+        resultArray2 = this.cryptoCurrencyVOList.filter((value,index) => {
+          if(value.fullName.includes(this.searchText.replace(/^\S/, s => s['toUpperCase']()))){
+            this.cryptoCurrencyVOList[index].indexOfNum = value.fullName.includes(this.searchText.replace(/^\S/, s => s['toUpperCase']()));
+            return value
+          }
         })
         //Matching abbreviations - Capitalize
-        resultArray3 = this.cryptoCurrencyVOList.filter((value) => {
-          return value.name.includes(this.searchText.toUpperCase())
+        resultArray3 = this.cryptoCurrencyVOList.filter((value,index) => {
+          if(value.name.includes(this.searchText.toUpperCase())){
+            this.cryptoCurrencyVOList[index].indexOfNum = value.name.includes(this.searchText.toUpperCase());
+            return value
+          }
         })
         //Matching abbreviations
-        resultArray4 = this.cryptoCurrencyVOList.filter((value) => {
-          return value.name.includes(this.searchText)
+        resultArray4 = this.cryptoCurrencyVOList.filter((value,index) => {
+          if(value.name.includes(this.searchText)){
+            this.cryptoCurrencyVOList[index].indexOfNum = value.name.includes(this.searchText);
+            return value;
+          }
         })
         all_resultArray = all_resultArray.concat(resultArray1).concat(resultArray2).concat(resultArray3).concat(resultArray4);
         all_resultArray = [...new Set(all_resultArray)];
+        all_resultArray.sort((a,b)=>{return b.indexOfNum-a.indexOfNum});
+        console.log(all_resultArray)
         return all_resultArray;
       }
 
@@ -250,24 +265,36 @@ export default {
       if(this.searchText && this.viewName === 'currency-sell'){
         let resultArray1 = [],resultArray2 = [],resultArray3 = [],resultArray4 = [],all_resultArray = [];
         //Match full name
-        resultArray1 = this.cryptoCurrencyVOList.filter((value) => {
-          return value.fullName.includes(this.searchText)
+        resultArray1 = this.cryptoCurrencyVOList.filter((value,index) => {
+          if(value.fullName.includes(this.searchText)){
+            this.cryptoCurrencyVOList[index].indexOfNum = value.fullName.includes(this.searchText);
+            return value
+          }
         })
         //Match full name - Initial to capital
-        resultArray2 = this.cryptoCurrencyVOList.filter((value) => {
-          // let text =
-          return value.fullName.includes(this.searchText.replace(/^\S/, s => s['toUpperCase']()))
+        resultArray2 = this.cryptoCurrencyVOList.filter((value,index) => {
+          if(value.fullName.includes(this.searchText.replace(/^\S/, s => s['toUpperCase']()))){
+            this.cryptoCurrencyVOList[index].indexOfNum = value.fullName.includes(this.searchText.replace(/^\S/, s => s['toUpperCase']()))
+            return value
+          }
         })
         //Matching abbreviations - Capitalize
-        resultArray3 = this.cryptoCurrencyVOList.filter((value) => {
-          return value.name.includes(this.searchText.toUpperCase())
+        resultArray3 = this.cryptoCurrencyVOList.filter((value,index) => {
+          if(value.name.includes(this.searchText.toUpperCase())){
+            this.cryptoCurrencyVOList[index].indexOfNum = value.name.includes(this.searchText.toUpperCase())
+            return value
+          }
         })
         //Matching abbreviations
-        resultArray4 = this.cryptoCurrencyVOList.filter((value) => {
-          return value.name.includes(this.searchText)
+        resultArray4 = this.cryptoCurrencyVOList.filter((value,index) => {
+          if(value.name.includes(this.searchText)){
+            this.cryptoCurrencyVOList[index].indexOfNum = value.name.includes(this.searchText)
+            return value
+          }
         })
         all_resultArray = all_resultArray.concat(resultArray1).concat(resultArray2).concat(resultArray3).concat(resultArray4);
         all_resultArray = [...new Set(all_resultArray)];
+        all_resultArray.sort((a,b)=>{return b.indexOfNum-a.indexOfNum});
         return all_resultArray;
       }
     }

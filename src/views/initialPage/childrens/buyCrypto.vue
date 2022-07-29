@@ -28,7 +28,7 @@
         <div class="get_company" @click="openSearch('currency')">
           <div class="getImg networkImg">
             <img :src="currencyData.icon">
-            <div class="networkIcon"><img src="../../../assets/images/hk.svg"></div>
+            <div class="networkIcon" v-if="currencyData.buyNetwork && currencyData.buyNetwork.logo"><img :src="currencyData.buyNetwork.logo"></div>
           </div>
           <div class="getText">{{ currencyData.name }}</div>
           <div class="rightIcon"><img src="@/assets/images/blackDownIcon.png"></div>
@@ -432,9 +432,9 @@ export default {
       if(!localStorage.getItem('token') || localStorage.getItem('token')===''){
         this.$store.state.emailFromPath = 'buyCrypto';
         this.$store.state.homeTabstate = 'buyCrypto';
-        
+
         this.$router.push(`/emailCode`);
-        
+
         return;
       }
       this.$axios.post(this.$api.post_kycDisabled).then(res=>{

@@ -244,7 +244,8 @@ export default {
     },
 
     updateCardInfo(){
-      this.$router.push(`/sell-formUserInfo?cardInfoFromPath=sellOrder?sellOrderId=${this.orderId}`);
+      this.$store.state.cardInfoFromPath = 'sellOrder';
+      this.$router.push(`/sell-formUserInfo?sellOrderId=${this.orderId}`);
     },
     refund(){
       this.$router.push(`/Refund?orderId=${this.orderId}&cryptocurrency=${this.detailsData.cryptocurrency}`);

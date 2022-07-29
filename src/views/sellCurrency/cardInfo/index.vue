@@ -127,6 +127,7 @@ export default {
   },
   activated(){
 
+    //选择国家和法币
     let basicData = JSON.parse(window.localStorage.getItem('allBasicData'));
     basicData.worldList.forEach((item,index)=>{
       if(item.sellFiatList){
@@ -340,7 +341,6 @@ export default {
     //确认订单 - 请求服务
     processRequest(val){
       if(this.request_loading === false){
-
         this.request_loading = true;
         let params = {
           sellCardDTO: val,
@@ -350,7 +350,6 @@ export default {
           network: this.$store.state.sellRouterParams.currencyData.sellNetwork.network,
         }
         this.$axios.post(this.$api.post_sellForm,params,'').then(res=>{
-          this.request_loading = false;
           if(res && res.returnCode === '0000'){
             //存储数据 加密字段
             let sellForm = {};
@@ -369,8 +368,11 @@ export default {
             if(this.$store.state.cardInfoFromPath === 'configSell'){
               this.isKyc(val);
             }else{
+              this.request_loading = false;
               this.$router.push(`/sellOrder?sellOrderId=${this.$route.query.orderId}`)
             }
+          }else {
+            this.request_loading = false;
           }
         }).catch(()=>{
           this.request_loading = false;
@@ -387,6 +389,7 @@ export default {
          data.append('amount', params.amount);
       this.$axios.post(this.$api.post_getKycStatus,data,'').then(res=>{
         if(res && res.returnCode === '0000'){
+          this.request_loading = false;
           if(res.data === true){
             this.$store.state.sellRouterParams.positionData = this.$store.state.sellRouterParams.formPositionData;
             this.$store.state.sellRouterParams.fullName = val.name;
@@ -715,7 +718,7 @@ export default {
       color: #232323;
       border: 1px solid #EEEEEE;
       .rightIcon{
-        margin-left: auto;
+        margin-left: 0.08rem;
         display: flex;
         align-items: center;
         img{
@@ -796,5 +799,11 @@ export default {
 .checkbox ::v-deep .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
   background: #0059DA;
   border-color:#0059DA ;
+}
+
+//loading icon
+.van-loading__spinner{
+  width: 0.2rem;
+  height: 0.2rem;
 }
 </style>
