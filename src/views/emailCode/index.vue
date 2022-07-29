@@ -197,10 +197,10 @@ export default {
             }else{
               //登陆跳转路径根据router.from的路由跳转不同页面
               if(_this.$store.state.emailFromPath === 'buyCrypto'){
-                _this.$router.push(`/receivingMode`);
+                _this.$router.replace(`/receivingMode`);
               }else if(_this.$store.state.emailFromPath === 'sellCrypto'){
                   // _this.$router.push('/')
-                  _this.$router.push('/sell-formUserInfo')
+                  _this.$router.replace('/sell-formUserInfo')
                 
               }else{
                 _this.$router.push('/');
