@@ -389,13 +389,14 @@ export default {
          data.append('amount', params.amount);
       this.$axios.post(this.$api.post_getKycStatus,data,'').then(res=>{
         if(res && res.returnCode === '0000'){
-          this.request_loading = false;
           if(res.data === true){
             this.$store.state.sellRouterParams.positionData = this.$store.state.sellRouterParams.formPositionData;
             this.$store.state.sellRouterParams.fullName = val.name;
+            this.request_loading = false;
             this.$router.push('/kycVerification');
           }else{
             this.$store.state.sellRouterParams.positionData = this.$store.state.sellRouterParams.formPositionData;
+            this.request_loading = false;
             this.$router.push('/sellOrder');
           }
         }

@@ -22,7 +22,7 @@
   <!-- </div> -->
   <div class="emailCode-container" ref="emailCode">
     <div>
-      
+
       <div class="emailCode-container_top">
         <img src="@/assets/images/slices/pay.png" alt="">
         <h2>{{ $t('nav.loginTitle1') }}</h2>
@@ -32,13 +32,13 @@
         <p v-if="!loggedIn">{{ $t('nav.enterEmail') }}</p>
         <p v-else>{{ $t('nav.enterEmail1') }}</p>
         <img src="@/assets/images/slices/emailIcon.png" alt="">
-        
+
         <input type="text"  v-model="email" @focus="emailFocus" @blur="emailBlur" :style="{cursor: loggedIn?'not-allowed':''}" :disabled="loggedIn" placeholder="john.doe@example.com">
       </div>
       <div class="errorMessage" v-if="emailErrorState" v-html="emailError"></div>
       <div class="emailCode_content_title" v-if="loggedIn">Not you? <span @click="signAddress">{{ $t('nav.emailanother') }}</span></div>
     </div>
-      
+
       <div>
         <div class="emailCode_checke" v-if="!loggedIn">
           <el-checkbox class="checkbox" size="medium"  v-model="checked"></el-checkbox>
@@ -105,9 +105,9 @@ export default {
       this.email = JSON.parse(sessionStorage.getItem("accessMerchantInfo")).mail;
       return
     }
-   
- 
- 
+
+
+
   },
 
 
@@ -128,8 +128,8 @@ export default {
         this.email = ''
       }
     },300)
-      
-   
+
+
 },
 
   methods: {
@@ -175,7 +175,7 @@ export default {
             'Content-Type': 'application/json',
             timezone: moment.tz.guess(),
           },
-          
+
         };
         axios.interceptors.response.use(function (config) {
           return config;
@@ -201,14 +201,16 @@ export default {
               }else if(_this.$store.state.emailFromPath === 'sellCrypto'){
                   // _this.$router.push('/')
                   _this.$router.replace('/sell-formUserInfo')
-                
+
+              }else if(_this.$store.state.emailFromPath === '/Refund'){
+                _this.$router.replace('/Refund')
               }else{
                 _this.$router.push('/');
               }
             }
           }
         })
-        
+
         return
       }
       this.emailErrorState = false;
@@ -239,7 +241,7 @@ export default {
       this.email = ''
       localStorage.removeItem('login_email')
     },
-    
+
 
    openView(name){
       if(name==='Privacy'){
@@ -281,7 +283,7 @@ export default {
       return status
     }
   }
-  
+
 }
 </script>
 
@@ -429,7 +431,7 @@ export default {
   .checkbox{
     margin-right: .08rem;
     ::v-deep .el-checkbox__inner{
-      border-radius: 100% !important;   
+      border-radius: 100% !important;
     }
   }
  .checkbox ::v-deep .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{

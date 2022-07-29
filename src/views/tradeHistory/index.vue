@@ -157,8 +157,8 @@
                     <div class="state_circular"></div>
                     <div class="state_name">Block Confirmed ({{ item.confirmBlock }}/{{ item.totalBlock }}) </div>
                   </div>
-                  <div class="options" v-if="item.confirmBlock === 0" @click.stop="optionsPath(item,'payNow')">
-                    <div class="optionsView state_loading_payNow curror" @click.stop="optionsPath(item,'refund')">Pay Now</div>
+                  <div class="options" v-if="item.orderStatus === 2 && item.confirmBlock === 0">
+                    <div class="optionsView state_loading_payNow curror" @click.stop="optionsPath(item,'payNow')">Pay Now</div>
                   </div>
                 </div>
                 <div v-else-if="item.orderStatus === 3" class="state_loading">

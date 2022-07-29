@@ -225,7 +225,6 @@ export default {
         all_resultArray_country = all_resultArray_country.concat(resultArray_country4).concat(resultArray_country3).concat(resultArray_country2).concat(resultArray_country1);
         all_resultArray_country = [...new Set(all_resultArray_country)];
         all_resultArray_country.sort((a,b)=>{return a.indexOfNum-b.indexOfNum});
-        console.log(all_resultArray_country)
         return all_resultArray_country;
       }
 
@@ -236,7 +235,6 @@ export default {
         resultArray1 = this.cryptoCurrencyVOList.filter((value,index) => {
           if(value.fullName.includes(this.searchText)){
             this.cryptoCurrencyVOList[index].indexOfNum = value.fullName.indexOf(this.searchText);
-            console.log(this.cryptoCurrencyVOList[index].indexOfNum)
             return value;
           }
         })
@@ -264,7 +262,6 @@ export default {
         all_resultArray = all_resultArray.concat(resultArray1).concat(resultArray2).concat(resultArray3).concat(resultArray4);
         all_resultArray = [...new Set(all_resultArray)];
         all_resultArray.sort((a,b)=>{return a.indexOfNum-b.indexOfNum});
-        console.log(all_resultArray)
         return all_resultArray;
       }
 
@@ -803,7 +800,7 @@ export default {
     border-radius: 10px;
     border: 1px solid #EEEEEE;
     display: flex;
-    margin-top: 0.4rem;
+    margin-top: 0.3rem;
     position: relative;
     border-radius: .3rem;
     overflow: hidden;

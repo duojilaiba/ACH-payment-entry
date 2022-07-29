@@ -455,4 +455,9 @@ export default {
     transform: translate(0px, 0px);
   }
 }
+
+//二维码
+.QRISCode:hover{
+  pointer-events: none;
+}
 </style>

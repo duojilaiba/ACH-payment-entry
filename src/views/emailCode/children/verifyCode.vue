@@ -10,7 +10,7 @@
       <div class="verifyCode_title" v-else style="margin-top:.4rem;text-align: center;" >{{ $t('nav.codeTitle2') }}  <span @click="getEmailCode">{{ $t('nav.login_getCode') }} </span></div>
       </div>
       <div style="position:relative;">
-        
+
       <div class="verifyCode_button" @click="toLogin" :style="{background:netActive && !showLoading?'#0059DAFF':''}">
         {{ $t('nav.Proceed') }}
         <img class="icon" src="@/assets/images/rightIconSell.png" alt="" v-if="!showLoading">
@@ -115,7 +115,7 @@ import { AES_Encrypt } from '@/utils/encryp.js';
             _this.$store.state.isLogin = true
             _this.$store.state.menuState = 'login'
             localStorage.setItem('login_email',_this.$store.state.userEmail)
-            
+
             // console.log(this.$store.state.emailFromPath);
             // return
             if(_this.$store.state.routerQueryPath === true){
@@ -131,7 +131,9 @@ import { AES_Encrypt } from '@/utils/encryp.js';
               }else if(_this.$store.state.emailFromPath === 'sellCrypto'){
                   // _this.$router.push('/')
                   _this.$router.replace('/sell-formUserInfo')
-                
+
+              }if(_this.$store.state.emailFromPath === '/Refund'){
+                _this.$router.replace('/Refund')
               }else{
                 _this.$router.push('/');
               }
@@ -159,7 +161,7 @@ import { AES_Encrypt } from '@/utils/encryp.js';
      }
 
     },
-    
+
   },
   computed:{
     netActive(){

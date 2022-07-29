@@ -33,7 +33,7 @@
         <div><img src="./assets/images/pcLogo.png"></div>
       </div>
       <!-- 版本号 -->
-      <span class="version">V: {{ version }}</span>
+<!--      <span class="version">V: {{ version }}</span>-->
         <!-- 账号风险提示无法进行下一步 -->
         <div class="kycToast" v-show="AccountisShow">
           <div>

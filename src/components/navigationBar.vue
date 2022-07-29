@@ -169,6 +169,8 @@ export default {
   display: flex;
   align-items: center;
   padding-bottom: 0.08rem;
+  //border-bottom: 1px solid #D0ECFC;
+  //box-shadow: 0.35rem 0.35rem 0.35rem 0 rgba(89, 153, 248, 0.1); //
   .navigationBar_view_left {
     display: flex;
     align-items: center;
@@ -182,7 +184,7 @@ export default {
       position: relative;
       img {
         height: 0.22rem;
-        
+
       }
     }
     .linkName {

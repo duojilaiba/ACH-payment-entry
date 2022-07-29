@@ -77,7 +77,7 @@
         <div class="amountInfo-line" v-if="detailsData.orderStatus === 6 || detailsData.orderStatus === 8 || detailsData.orderStatus === 9">
           <div class="left">Return fee ({{ detailsData.fiatName }})</div>
           <div class="right">
-            <span class="value" v-if="detailsData.returnFee !== '' && detailsData.returnFee !== null">{{ detailsData.returnFee }}</span>
+            <span class="value" v-if="detailsData.returnFee !== '' && detailsData.returnFee !== null">{{ detailsData.returnFee }}<span class="fee" v-if="detailsData.fiatName !== 'USD'">({{ detailsData.returnFee }} USD)</span></span>
             <span class="empty" v-else>-- </span>
           </div>
         </div>
@@ -242,6 +242,10 @@ export default {
       }
       this.$axios.get(this.$api.get_sellOrderDetails,params).then(res=>{
         if(res && res.returnCode === '0000'){
+          if([5,6,7,8,9].includes(res.data.orderStatus)){
+            window.clearInterval(this.timeOut);
+            this.timeOut = null;
+          }
           this.detailsData = res.data;
         }
       })
@@ -378,6 +382,9 @@ export default {
           font-weight: 500;
           font-size: 0.13rem;
           color: #063376;
+        }
+        .fee{
+          color: #949EA4;
         }
         .copyView{
           display: flex;

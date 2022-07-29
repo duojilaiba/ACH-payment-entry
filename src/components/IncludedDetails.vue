@@ -2,7 +2,7 @@
   <!-- Payment information -->
   <div class="paymentInformation">
     <div class="feeTitle">
-      <div class="feeTitle-name">1 {{ payCommission.code }} ≈ {{ price }} {{ routerParams.cryptoCurrency }}</div>
+      <div class="feeTitle-name">1 {{ routerParams.cryptoCurrency }} ≈ {{ price }} {{ payCommission.code }}</div>
       <div class="feeTitle-value">
         <div class="loading-svg">
          <img src="@/assets/images/SellTime.png" alt="">

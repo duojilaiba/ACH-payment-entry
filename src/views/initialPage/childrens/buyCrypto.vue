@@ -5,7 +5,9 @@
       <div class="methods_select cursor" :class="{'inputFocus': inputFocus}">
         <div class="methods_select-left">
           <div class="form_title pay_title">{{ $t('nav.home_youPay') }}</div>
-          <van-field class="pay_input" :type="youPaytype" @input="inputChange" v-model.number="payAmount" pattern="[0-9]*" inputmode="decimal" @blur="youPayBlur" @focus="inputFocus=true" :disabled="payAmountState" placeholder="0.00"/>
+          <van-field class="pay_input" :type="youPaytype" @input="inputChange"
+                     v-model.number="payAmount" pattern="[0-9]*" inputmode="decimal" @blur="youPayBlur"
+                     @focus="inputFocus=true" :disabled="payAmountState" placeholder="0.00"/>
         </div>
         <div class="get_company" @click="openSearch('payCurrency')">
           <div class="getImg">
@@ -88,6 +90,8 @@ export default {
       payAmount: '',
       youPaytype: 'number', // Number | digit
       getAmount: '',
+      payAmount_Default: true,
+      payAmount_index: 0,
 
       //Expense information
       feeInfo: {},
@@ -186,6 +190,8 @@ export default {
     },
     //法币币种为USD限制只能输入两位小数
     inputChange(val){
+      this.payAmount_index += 1;
+      this.payAmount_index >= 1 ? this.payAmount_Default = false : '';
       if(val.indexOf('.') > 0 && this.payCommission.code === 'USD'){
         this.payAmount = val.substr(0,val.indexOf('.')+3);
       }
@@ -291,6 +297,7 @@ export default {
       if(worldData[0].buyEnable === 0){
         worldData = this.basicData.worldList.filter(item=>{return item.buyEnable === 1});
       }
+
       this.handlePayWayList(worldData[0],1);
 
       //接入商户信息处理
@@ -305,17 +312,29 @@ export default {
       this.positionData.positionImg = data.flag;
       this.positionData.alpha2 = data.alpha2;
       this.$store.state.buyRouterParams.positionData = this.positionData;
+
+      let payCommission = {};
+
       //根据国家对应的币种处理数据
       //state - 1页面初始化数据处理 state - 2选择国家后数据处理
       if(state === 1){
-        this.payCommission = data.buyFiatList[0];
+        payCommission = data.buyFiatList[0];
       }else{
         data.buyFiatList.forEach(item=>{
           if(item.code === data.code){
-            this.payCommission = item;
+            payCommission = item;
           }
         })
       }
+
+      //页面初始化 - 买币预设初始法币金额是300刀等值法币
+      if(this.payAmount_Default === true){
+        let exchangeRate = this.basicData.usdToEXR[payCommission.code];
+        this.payAmount = 300 * exchangeRate;
+      }
+
+      this.payCommission = payCommission;
+
       // this.allPayCommission = data.buyFiatList;
       //根据you pay币种类过滤费用
       this.exchangeRate = this.basicData.usdToEXR[this.payCommission.code];
@@ -325,6 +344,9 @@ export default {
       this.payCommission.payCommission.forEach(item=>{maxNumList.push(item.payMax);minNumList.push(item.payMin)});
       this.payCommission.payMax = Math.min(...maxNumList);
       this.payCommission.payMin = Math.max(...minNumList);
+
+      //
+
       this.$store.state.buyRouterParams.exchangeRate = this.exchangeRate;
       this.$store.state.buyRouterParams.payCommission = this.payCommission;
       this.amountControl();
