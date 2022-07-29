@@ -468,7 +468,7 @@ export default {
       let _this = this;
       let params = {
         country: this.$store.state.sellRouterParams.formPositionData.alpha2,
-        fiatName: this.$store.state.sellRouterParams.payCommission.code,
+        fiatName: this.$store.state.sellRouterParams.formPositionData.code,
       }
       this.$axios.get(this.$api.get_cardList,params).then(res=>{
         if(res && res.returnCode === '0000'){

@@ -61,6 +61,8 @@ const store = new Vuex.Store({
             //国家币种 - 表单
             formPositionData: {
                 enCommonName: '',
+                alpha2: '',
+                code: '',
             },
         },
 
