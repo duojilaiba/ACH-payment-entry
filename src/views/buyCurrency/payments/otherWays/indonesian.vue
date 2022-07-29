@@ -400,7 +400,7 @@ export default {
 }
 
 .IncludedDetails{
-  margin-top: 0.32rem;
+  margin-top: 0.1rem;
 }
 
 .AuthorizationInfo{

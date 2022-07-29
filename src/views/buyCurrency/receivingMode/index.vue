@@ -368,7 +368,7 @@ export default {
   }
 
   .includedDetails_view{
-    margin-top: 0.36rem;
+    margin-top: 0.1rem;
     margin-bottom: 0.2rem;
   }
 

@@ -5,7 +5,7 @@
       <div class="payMethodsUl" v-if="savedCard.length !== 0 && $store.state.goHomeState">
         <div class="title">
           <div>{{ $t('nav.buy_payment_savedTitle') }}</div>
-          <div class="edit" @click="editCardInfo">
+          <div class="edit" @click="editCardInfo" v-if="!$route.query.merchant_orderNo">
             <span>{{ editCardInfo_state===false ? 'Edit' : 'Cancel' }}</span>
           </div>
         </div>
@@ -485,7 +485,7 @@ export default {
   }
 }
 .IncludedDetails{
-  margin-top: 0.32rem;
+  margin-top: 0.1rem;
   padding-bottom: 0.2rem;
 }
 </style>

@@ -7,7 +7,7 @@
           <div class="line1">
             <div class="line1-1"><el-checkbox class="checkbox" size="medium" v-model="isOldCardInfo" @change="assignmentOldCardInfo"></el-checkbox></div>
             <div class="line1-2">Use this Information</div>
-            <div class="more" @click="openCardInfo">More</div>
+            <div class="more" @click="openCardInfo" v-if="oldCardInfo.length > 1">More</div>
           </div>
           <div class="info">
             <span></span>  Account number: {{ oldCardInfo[0].accountNumber }}
@@ -126,24 +126,32 @@ export default {
     next();
   },
   activated(){
-
     //选择国家和法币
-    let basicData = JSON.parse(window.localStorage.getItem('allBasicData'));
-    basicData.worldList.forEach((item,index)=>{
-      if(item.sellFiatList){
-        item.sellFiatList.forEach((item2,index2)=>{
-          basicData.fiatCurrencyList.forEach(item3=>{
-            if(item3.code === item2){
-              basicData.worldList[index].sellFiatList[index2] = item3;
-            }
+    if(window.localStorage.getItem('allBasicData')){
+      let basicData = JSON.parse(window.localStorage.getItem('allBasicData'));
+      basicData.worldList.forEach((item,index)=>{
+        if(item.sellFiatList){
+          item.sellFiatList.forEach((item2,index2)=>{
+            basicData.fiatCurrencyList.forEach(item3=>{
+              if(item3.code === item2){
+                basicData.worldList[index].sellFiatList[index2] = item3;
+              }
+            })
           })
-        })
-      }
-    })
-    this.allBasicData = basicData;
+        }
+      })
+      this.allBasicData = basicData;
+    }
 
     //初始化根据可视高度控制向下提示按钮状态
     this.initializeGoDown();
+
+    //email跳转接入
+    if(this.$route.query.emailAccess){
+      this.$store.state.sellRouterParams.formPositionData.alpha2 = this.$route.query.position_alpha2;
+      this.$store.state.sellRouterParams.formPositionData.code = this.$route.query.position_code;
+      this.$store.state.sellRouterParams.getAmount = this.$route.query.getAmount;
+    }
 
     //初始化表单
     this.initializeForm();

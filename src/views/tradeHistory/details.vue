@@ -67,7 +67,7 @@
             <span class="empty" v-else>-- </span>
           </div>
         </div>
-        <div class="amountInfo-line">
+        <div class="amountInfo-line" v-if="detailsData.orderStatus !== 8 && detailsData.failureNumber < 2">
           <div class="left">Ramp Fee ({{ detailsData.fiatName }})</div>
           <div class="right">
             <span class="value" v-if="detailsData.rampFee !== '' && detailsData.rampFee !== null">{{ detailsData.rampFee }}</span>
@@ -77,7 +77,7 @@
         <div class="amountInfo-line" v-if="detailsData.orderStatus === 6 || detailsData.orderStatus === 8 || detailsData.orderStatus === 9">
           <div class="left">Return fee ({{ detailsData.fiatName }})</div>
           <div class="right">
-            <span class="value" v-if="detailsData.returnFee !== '' && detailsData.returnFee !== null">{{ detailsData.returnFee }}<span class="fee" v-if="detailsData.fiatName !== 'USD'">({{ 25 * detailsData.confirmBlock }} USD)</span></span>
+            <span class="value" v-if="detailsData.returnFee !== '' && detailsData.returnFee !== null">{{ detailsData.returnFee }}<span class="fee" v-if="detailsData.fiatName !== 'USD'">({{ 25 * detailsData.failureNumber }} USD)</span></span>
             <span class="empty" v-else>-- </span>
           </div>
         </div>
@@ -256,7 +256,7 @@ export default {
       this.$router.push(`/sell-formUserInfo?sellOrderId=${this.orderId}`);
     },
     refund(){
-      this.$router.push(`/Refund?orderId=${this.orderId}&cryptocurrency=${this.detailsData.cryptocurrency}`);
+      this.$router.push(`/Refund?orderId=${this.orderId}&cryptocurrency=${this.detailsData.cryptocurrency}&fiatName=${this.detailsData.fiatName}`);
     },
     payNow(){
       this.$store.state.sellOrderId = this.detailsData.orderId;

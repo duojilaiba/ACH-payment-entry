@@ -4,7 +4,7 @@
       <div class="cardConfigPayment-content" ref="form_ref">
         <div class="formLine">
           <div class="formTitle">{{ $t('nav.buy_configPay_title1') }}</div>
-          <div class="formContent cardInfo"> <!--  @click="goPayForm" -->
+          <div class="formContent cardInfo" @click="goPayForm">
             <div class="formContent-left">
               <div class="card-icon">
                 <img src="../../../../assets/images/visaText.svg" v-if="cardName==='visa'">
@@ -12,7 +12,7 @@
               </div>
               <div class="card-info">{{ cardData.payWayName }}<span>{{ $t('nav.buy_payment_ending') }} {{ cardData.cardNumber ? cardData.cardNumber.substring(cardData.cardNumber.length-4) : '' }}</span></div>
             </div>
-<!--            <div class="formContent-right"><img src="../../../../assets/images/rightBlackIcon.png"></div>-->
+            <div class="formContent-right" v-if="$route.query.merchant_orderNo"><img src="../../../../assets/images/rightBlackIcon.png"></div>
           </div>
         </div>
         <!-- 选择支付方式页选择的是之间交易过的卡信息需要重新填写CVV -->
@@ -184,7 +184,9 @@ export default {
 
     //跳转修改卡信息页面
     goPayForm(){
-      this.submitState === true ? this.$router.push(`/creditCardForm-cardInfo?submitForm=${this.wishCardData}&configPaymentFrom=userPayment&merchant_orderNo=${this.$route.query.merchant_orderNo}`) : '';
+      if(this.$route.query.merchant_orderNo){
+        this.submitState === true ? this.$router.push(`/creditCardForm-cardInfo?submitForm=${this.wishCardData}&configPaymentFrom=userPayment&merchant_orderNo=${this.$route.query.merchant_orderNo}`) : '';
+      }
     },
 
     /**
@@ -397,7 +399,7 @@ export default {
   }
 }
 .includedDetails{
-  margin-top: 0.32rem;
+  margin-top: 0.1rem;
 }
 .AuthorizationInfo{
   margin-bottom: 0.2rem;

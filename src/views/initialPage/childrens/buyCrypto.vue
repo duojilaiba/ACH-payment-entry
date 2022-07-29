@@ -30,7 +30,7 @@
         <div class="get_company" @click="openSearch('currency')">
           <div class="getImg networkImg">
             <img :src="currencyData.icon">
-            <div class="networkIcon" v-if="currencyData.buyNetwork && currencyData.buyNetwork.logo"><img :src="currencyData.buyNetwork.logo"></div>
+<!--            <div class="networkIcon" v-if="currencyData.buyNetwork && currencyData.buyNetwork.logo"><img :src="currencyData.buyNetwork.logo"></div>-->
           </div>
           <div class="getText">{{ currencyData.name }}</div>
           <div class="rightIcon"><img src="@/assets/images/blackDownIcon.png"></div>

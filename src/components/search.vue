@@ -644,6 +644,7 @@ export default {
             this.$parent.initializeGoDown();
             this.$parent.$parent.$refs.viewTab.changeCountry_state = false;
             this.$parent.changeCountry_state = false;
+            this.$parent.isOldCardInfo = false;
           }
           return;
         }

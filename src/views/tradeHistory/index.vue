@@ -362,7 +362,7 @@ export default {
         return;
       }
       //退款
-      this.$router.push(`/Refund?orderId=${val.orderId}&cryptocurrency=${val.cryptocurrency}`);
+      this.$router.push(`/Refund?orderId=${val.orderId}&cryptocurrency=${val.cryptocurrency}&fiatName=${val.fiatName}`);
     }
 
   }
@@ -573,7 +573,7 @@ html,body,#tradeHistory,.historyList,.van-list{
         justify-content: flex-end;
         flex-wrap: wrap;
         .optionsView{
-          width: 1.43rem;
+          width: 48%;
           height: 0.28rem;
           border-radius: 0.14rem;
           font-family: SFProDisplayRegular;

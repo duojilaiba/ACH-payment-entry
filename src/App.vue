@@ -26,6 +26,8 @@
           <QueryOrderStatusTips v-if="tipsState"/>
           <!-- 卖币 - 历史卡信息 -->
           <HistoricalCardInfoSell v-if="historicalCardInfoSell_state"/>
+          <!-- 卖币 - 扫码识别网络 -->
+          <ScanCode v-if="scanCode_state"/>
         </div>
       <!-- pc端展示logo -->
       <div class="logoView" v-if="logoState">
@@ -56,10 +58,11 @@ import Language from './components/Language.vue'
 import common from "./utils/common";
 import remSize from './utils/remSize';
 import HistoricalCardInfoSell from "./components/HistoricalCardInfo-sell";
+import ScanCode from "./components/ScanCode";
 
 export default {
   name: 'App',
-  components: {HistoricalCardInfoSell, tab, routerMenu, QueryOrderStatusTips ,Language},
+  components: {ScanCode, HistoricalCardInfoSell, tab, routerMenu, QueryOrderStatusTips ,Language},
   data(){
     return{
       routerViewState: true,
@@ -68,7 +71,8 @@ export default {
       version: '',
       LanguageShow: true,
       historicalCardInfoSell_state: false,
-      AccountisShow:false
+      AccountisShow: false,
+      scanCode_state: false,
     }
   },
   computed:{

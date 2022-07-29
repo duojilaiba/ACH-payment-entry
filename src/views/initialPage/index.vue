@@ -63,6 +63,8 @@ export default {
   //   });
   // },
   mounted(){
+    // this.$axios.get("/mail/templateSendSell?address=bc1qsyfgzjlwyyhrjk4u79rnx88qaw8s4d3phnlk2p&message=5","").then(()=>{
+    // })
     this.merchantDocking();
   },
   computed: {

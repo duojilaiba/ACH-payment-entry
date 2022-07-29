@@ -259,7 +259,7 @@ export default {
   }
 
   .includedDetails{
-    margin-top: 0.32rem;
+    margin-top: 0.1rem;
   }
   .authorizationInfo{
     margin-bottom: 0.2rem;
