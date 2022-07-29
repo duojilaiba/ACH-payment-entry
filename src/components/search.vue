@@ -4,7 +4,7 @@
     <div class="searchHeader">
       <div class="searchHeader_view1">
         <div class="text">{{ viewTitle }}</div>
-        <div class="icon"><img style="width:.22rem" src="../assets/images/ShutDown.png" @click="closeView"></div>
+        <div class="icon"><img src="../assets/images/ShutDown.png" @click="closeView"></div>
       </div>
       <div class="searchHeader_view2" v-if="viewName !== 'network'">
         <input type="text" :placeholder="$t('nav.search_components_placeHolder')" v-model="searchText">
@@ -15,18 +15,22 @@
       <!-- 选择国家和法币  -->
       <ul v-if="viewName === 'payCurrency' || viewName === 'payCurrency-sell' || viewName === 'payCurrency-sell-cardForm'">
         <div v-if="searchText===''">
-          <div class="screen_title" v-if="recent_payCurrency.length">Recent</div>
+          <div class="screen_title" v-if="recent_payCurrency.length > 0">Recent</div>
           <li class="payCurrencyLi" v-for="(item,index) in recent_payCurrency" :key="'recent_payCurrency'+index" @click="choiseItem('payCurrency',item)">
             <p class="seach_li_text">
               <img :src="item.flag" :key="item.flag">
               <span class="allName">{{ item.enCommonName }} -</span>
-              <span class="abbreviationName"> {{ item.code }}</span> <!--  v-if="viewName === 'payCurrency'" -->
-              <!-- <span class="abbreviationName" v-if="viewName === 'payCurrency-sell'">{{ item.fiatCode }}</span> -->
+              <span class="abbreviationName"> {{ item.code }}</span>
             </p>
-<!--            <p class="seach_li_rightIcon">-->
-<!--              <img src="../assets/images/rightIcon.png">-->
-<!--            </p>-->
           </li>
+<!--          <div class="screen_title" v-if="poplar_payCurrency.length > 0">Popular</div>-->
+<!--          <li class="payCurrencyLi" v-for="(item,index) in poplar_payCurrency" :key="'poplar_payCurrency'+index" @click="choiseItem('payCurrency',item)">-->
+<!--            <p class="seach_li_text">-->
+<!--              <img :src="item.flag" :key="item.flag">-->
+<!--              <span class="allName">{{ item.enCommonName }} -</span>-->
+<!--              <span class="abbreviationName"> {{ item.code }}</span>-->
+<!--            </p>-->
+<!--          </li>-->
           <div class="screen_title">Available now</div>
           <li class="payCurrencyLi" v-for="(item,index) in basicData" :key="'basicData'+index" @click="choiseItem('payCurrency',item)">
             <p class="seach_li_text">
@@ -173,6 +177,8 @@ export default {
 
       //国家法币上次交易数据
       recent_payCurrency: [],
+      //热门国家法币
+      poplar_payCurrency: [],
 
       cryptoCurrency_recentList: [],
       //Recommended digital currency list
@@ -229,34 +235,35 @@ export default {
         //Match full name
         resultArray1 = this.cryptoCurrencyVOList.filter((value,index) => {
           if(value.fullName.includes(this.searchText)){
-            this.cryptoCurrencyVOList[index].indexOfNum = value.fullName.includes(this.searchText);
+            this.cryptoCurrencyVOList[index].indexOfNum = value.fullName.indexOf(this.searchText);
+            console.log(this.cryptoCurrencyVOList[index].indexOfNum)
             return value;
           }
         })
         //Match full name - Initial to capital
         resultArray2 = this.cryptoCurrencyVOList.filter((value,index) => {
           if(value.fullName.includes(this.searchText.replace(/^\S/, s => s['toUpperCase']()))){
-            this.cryptoCurrencyVOList[index].indexOfNum = value.fullName.includes(this.searchText.replace(/^\S/, s => s['toUpperCase']()));
+            this.cryptoCurrencyVOList[index].indexOfNum = value.fullName.indexOf(this.searchText.replace(/^\S/, s => s['toUpperCase']()));
             return value
           }
         })
         //Matching abbreviations - Capitalize
         resultArray3 = this.cryptoCurrencyVOList.filter((value,index) => {
           if(value.name.includes(this.searchText.toUpperCase())){
-            this.cryptoCurrencyVOList[index].indexOfNum = value.name.includes(this.searchText.toUpperCase());
+            this.cryptoCurrencyVOList[index].indexOfNum = value.name.indexOf(this.searchText.toUpperCase());
             return value
           }
         })
         //Matching abbreviations
         resultArray4 = this.cryptoCurrencyVOList.filter((value,index) => {
           if(value.name.includes(this.searchText)){
-            this.cryptoCurrencyVOList[index].indexOfNum = value.name.includes(this.searchText);
+            this.cryptoCurrencyVOList[index].indexOfNum = value.name.indexOf(this.searchText);
             return value;
           }
         })
         all_resultArray = all_resultArray.concat(resultArray1).concat(resultArray2).concat(resultArray3).concat(resultArray4);
         all_resultArray = [...new Set(all_resultArray)];
-        all_resultArray.sort((a,b)=>{return b.indexOfNum-a.indexOfNum});
+        all_resultArray.sort((a,b)=>{return a.indexOfNum-b.indexOfNum});
         console.log(all_resultArray)
         return all_resultArray;
       }
@@ -267,34 +274,34 @@ export default {
         //Match full name
         resultArray1 = this.cryptoCurrencyVOList.filter((value,index) => {
           if(value.fullName.includes(this.searchText)){
-            this.cryptoCurrencyVOList[index].indexOfNum = value.fullName.includes(this.searchText);
+            this.cryptoCurrencyVOList[index].indexOfNum = value.fullName.indexOf(this.searchText);
             return value
           }
         })
         //Match full name - Initial to capital
         resultArray2 = this.cryptoCurrencyVOList.filter((value,index) => {
           if(value.fullName.includes(this.searchText.replace(/^\S/, s => s['toUpperCase']()))){
-            this.cryptoCurrencyVOList[index].indexOfNum = value.fullName.includes(this.searchText.replace(/^\S/, s => s['toUpperCase']()))
+            this.cryptoCurrencyVOList[index].indexOfNum = value.fullName.indexOf(this.searchText.replace(/^\S/, s => s['toUpperCase']()))
             return value
           }
         })
         //Matching abbreviations - Capitalize
         resultArray3 = this.cryptoCurrencyVOList.filter((value,index) => {
           if(value.name.includes(this.searchText.toUpperCase())){
-            this.cryptoCurrencyVOList[index].indexOfNum = value.name.includes(this.searchText.toUpperCase())
+            this.cryptoCurrencyVOList[index].indexOfNum = value.name.indexOf(this.searchText.toUpperCase())
             return value
           }
         })
         //Matching abbreviations
         resultArray4 = this.cryptoCurrencyVOList.filter((value,index) => {
           if(value.name.includes(this.searchText)){
-            this.cryptoCurrencyVOList[index].indexOfNum = value.name.includes(this.searchText)
+            this.cryptoCurrencyVOList[index].indexOfNum = value.name.indexOf(this.searchText)
             return value
           }
         })
         all_resultArray = all_resultArray.concat(resultArray1).concat(resultArray2).concat(resultArray3).concat(resultArray4);
         all_resultArray = [...new Set(all_resultArray)];
-        all_resultArray.sort((a,b)=>{return b.indexOfNum-a.indexOfNum});
+        all_resultArray.sort((a,b)=>{return a.indexOfNum-b.indexOfNum});
         return all_resultArray;
       }
     }
@@ -393,8 +400,10 @@ export default {
       if(this.viewName === 'payCurrency'){
         this.basicData = [];
         this.recent_payCurrency = [];
+        this.poplar_payCurrency = [];
         let newWorldList = [];
         let recent_newWorldList = [];
+        let poplar_newWorldList = [];
         if(this.allBasicData.worldList){
           this.allBasicData.worldList.forEach(item=>{
             if(item.buyFiatList){
@@ -423,16 +432,34 @@ export default {
           });
           recent_newWorldList = recent_newWorldList.filter(item=>{return item.buyEnable === 1});
         }
+        if(this.allBasicData.buyPoplarWorldFiat){
+          this.allBasicData.buyPoplarWorldFiat.forEach(item=>{
+            if(item.buyFiatList){
+              item.buyFiatList.forEach(item2=>{
+                let fiat = {
+                  code: item2.code,
+                }
+                fiat = {...fiat,...item};
+                poplar_newWorldList.push(fiat);
+              })
+            }
+          });
+          poplar_newWorldList = poplar_newWorldList.filter(item=>{return item.buyEnable === 1});
+        }
+
         this.recent_payCurrency = recent_newWorldList;
         this.basicData = newWorldList;
+        this.poplar_payCurrency = poplar_newWorldList;
         return;
       }
       if(this.viewName === 'payCurrency-sell' || this.viewName === 'payCurrency-sell-cardForm'){
         let allBasicData = JSON.parse(JSON.stringify(this.allBasicData));
         this.basicData = [];
         this.recent_payCurrency = [];
+        this.poplar_payCurrency = [];
         let newWorldList = [];
         let recent_newWorldList = [];
+        let poplar_newWorldList = [];
         if(allBasicData.worldList){
           allBasicData.worldList.forEach(item=>{
             if(item.sellFiatList){
@@ -464,6 +491,22 @@ export default {
           recent_newWorldList = recent_newWorldList.filter(item=>{return item.buyEnable === 1});
         }
         this.recent_payCurrency = recent_newWorldList;
+        //热门的
+        if(this.allBasicData.buyPoplarWorldFiat){
+          this.allBasicData.buyPoplarWorldFiat.forEach(item=>{
+            if(item.buyFiatList){
+              item.buyFiatList.forEach(item2=>{
+                let fiat = {
+                  code: item2.code,
+                }
+                fiat = {...fiat,...item};
+                poplar_newWorldList.push(fiat);
+              })
+            }
+          });
+          poplar_newWorldList = poplar_newWorldList.filter(item=>{return item.buyEnable === 1});
+        }
+        this.poplar_payCurrency = poplar_newWorldList;
         return;
       }
       if(this.viewName === 'currency-sell'){
@@ -735,16 +778,21 @@ export default {
     color: #232323;
     display: flex;
     align-items: center;
+    justify-content: center;
+    padding: 0.1rem 0 0.1rem 0.1rem;
     .text{
       font-size: .18rem;
       color: #063376;
     }
     .icon{
       display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.1rem;
       margin-left: auto;
       cursor: pointer;
       img{
-        width: 0.11rem;
+        width: 0.22rem
       }
     }
   }
