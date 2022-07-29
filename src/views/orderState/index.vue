@@ -136,7 +136,7 @@ export default{
       this.$axios.get(this.$api.get_PlayCurrencyStatus,parmas).then(res=>{
         if(res && res.data){
           // res.data.expirationTime=1000
-          // res.data.orderStatus=  6
+          // res.data.orderStatus=  9
           this.orderStateData = res.data
           this.$store.state.orderStatus = res.data
           this.playMoneyState = res.data.orderStatus

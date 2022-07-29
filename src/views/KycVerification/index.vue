@@ -371,7 +371,7 @@ export default {
       
       
       >img{
-        height: .14rem;
+        height: .22rem;
         cursor: pointer;
         position: absolute;
         right: 0rem;

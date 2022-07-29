@@ -262,7 +262,7 @@ export default {
       let Input = document.querySelector('.emailCode_content')
       Input.style = ``
       if(this.email === ''){
-        this.emailError = '*necessary'
+        this.emailError = 'necessary'
         this.emailErrorState = true
       }else{
         this.emailError = ''
