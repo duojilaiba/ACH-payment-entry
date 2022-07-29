@@ -4,7 +4,7 @@
     <div class="Verification_content" v-if="status==0" :key="0">
       <div class="kyc_nav">
         <!-- {{ kycVerState }} -->
-      <img v-if="kycVerState==0" src="@/assets/images/ShutDown.png" @click="goHome" alt="">
+     <div style="padding:.1rem;float:right;cursor: pointer;margin-right:-.05rem" @click="goHome"> <img v-if="kycVerState==0" src="@/assets/images/ShutDown.png"  alt=""></div>
     </div>
     <!-- 点击进行kyc验证 -->
         <div class="content" v-if="kycVerState==0">
@@ -48,7 +48,7 @@
     <!-- kyc验证页面 -->
     
     <div class="verif_kyc" v-else :key="1">
-          <div class="verif_kyc_nav"><img src="@/assets/images/ShutDown.png" @click="removeItemKyv" alt="" ></div>
+          <div class="verif_kyc_nav"><div @click="removeItemKyv"><img src="@/assets/images/ShutDown.png"  alt="" ></div></div>
      
       <div id="sumsub-websdk-container" ></div>
     </div>
@@ -370,12 +370,16 @@ export default {
       top: 0;
       
       
-      >img{
-        height: .22rem;
-        cursor: pointer;
-        position: absolute;
-        right: 0rem;
-        top: .0rem;
+      >div{
+        padding: .07rem;
+         cursor: pointer;
+          position: absolute;
+          right: 0rem;
+          top: .0rem;
+        >img{
+          height: .22rem;
+         
+        }
       }
     }
    

@@ -114,6 +114,8 @@ export default {
   deactivated(){
     window.clearInterval(this.timeVal);
     this.timeVal = null;
+    this.emailError = ''
+        this.emailErrorState = false
   },
   mounted(){
     this.$parent.routerViewState = true

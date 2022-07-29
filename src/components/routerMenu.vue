@@ -2,8 +2,8 @@
   <div id="routerMenu">
     <div class="router_nav" v-if="$route.path==='/sellOrder'">
       <div class="navigationBar_view_left" style="color:#063376">{{ $t('nav.menu') }}</div>
-      <div class="navigationBar_view_right" >
-        <img class="closeIcon" style="width:.22rem" src="../assets/images/ShutDown.png" @click="$parent.routerViewState=true">
+      <div class="navigationBar_view_right" style="padding:.1rem">
+        <img class="closeIcon" style="width:.22rem;" src="../assets/images/ShutDown.png" @click="$parent.routerViewState=true">
       </div>
     </div>
     <div class="routerMenu_isLogo" v-if="token===false">
@@ -94,7 +94,7 @@ export default {
      
       finished:false,
       newVal:'',
-      disAbled:false,
+      disAbled:'',
       kycError:require('@/assets/images/AccountRisk.png'),
       kycSess:require('@/assets/images/kycScuss.png'),
       

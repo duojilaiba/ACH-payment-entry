@@ -176,6 +176,7 @@ import { AES_Encrypt } from '@/utils/encryp.js';
     //验证码输入完成直接登陆
     value(newVal){
       if(newVal.length >= 6){
+        this.showLoading = true
         this.toLogin()
       }
     }

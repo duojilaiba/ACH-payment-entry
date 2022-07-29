@@ -23,8 +23,8 @@
       <div v-show="menuState">
         <div class="navigationBar_view">
           <div class="navigationBar_view_left">{{ $t('nav.menu') }}</div>
-          <div class="navigationBar_view_right">
-            <img src="@/assets/images/ShutDown.png" @click="openMenu">
+          <div class="navigationBar_view_right" @click="openMenu">
+            <img src="@/assets/images/ShutDown.png" style="margin-right:-.05rem" >
           </div>
         </div>
         <routerMenu/>
@@ -211,11 +211,14 @@ html,body,#homePage,.homePage_view,.homePage_content{
     color: #063376;
   }
   .navigationBar_view_right {
+    padding: .06rem;
     display: flex;
     margin-left: auto;
+    cursor: pointer;
     img {
       width: 0.22rem;
       cursor: pointer;
+      margin-right: -.2rem;
     }
   }
 }
