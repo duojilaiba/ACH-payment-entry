@@ -118,7 +118,7 @@ axios.interceptors.response.use(function (response) {
     // localStorage.removeItem("kycStatus");
     // store.commit("clearToken"); //取消请求
     // store.commit("emptyToken");
-    router.replace(`/emailCode`);
+    router.push(`/emailCode`);
       return;
   }
   //no login info
