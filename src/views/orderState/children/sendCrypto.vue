@@ -97,8 +97,7 @@
      
    </div>
    <div :class="!Network_show?'sendCrypto_bottomContent':'sendCrypto_bottomContent sendCrypto_bottomContentActive'" >
-       <div class="Network-title">{{ $t('nav.Sellorder_Network') }} <img @click="Network_show = false" src="@/assets/images/ShutDown.png" alt=""></div>
-       
+       <div class="Network-title" >{{ $t('nav.Sellorder_Network') }} <img style="width:.22rem;" @click="Network_show = false" src="@/assets/images/ShutDown.png" alt=""></div>
        <div class="Network-content" v-for="item in Sellorder_NetworkList?Sellorder_NetworkList:''" :key="item.id" @click="networkSelect(item)">{{ item.networkName }} <img :src="item.networkName==orderStateData.networkName?NetworkCheck:''" alt=""></div>
      </div>
   </div>
@@ -405,6 +404,7 @@ export default {
        color: #063376;
        font-family: SFProDisplaybold;
        margin-top: .01rem;
+       white-space: nowrap;
      }
    }
  }
@@ -612,7 +612,7 @@ export default {
         width: .12rem;
         position: absolute;
         right: .0rem;
-        top: .05rem;
+        top: .0rem;
         cursor: pointer;
       }
     }

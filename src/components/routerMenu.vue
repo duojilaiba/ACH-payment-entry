@@ -3,7 +3,7 @@
     <div class="router_nav" v-if="$route.path==='/sellOrder'">
       <div class="navigationBar_view_left" style="color:#063376">{{ $t('nav.menu') }}</div>
       <div class="navigationBar_view_right" >
-        <img class="closeIcon" style="width:.12rem" src="../assets/images/ShutDown.png" @click="$parent.routerViewState=true">
+        <img class="closeIcon" style="width:.22rem" src="../assets/images/ShutDown.png" @click="$parent.routerViewState=true">
       </div>
     </div>
     <div class="routerMenu_isLogo" v-if="token===false">
@@ -61,7 +61,7 @@
       <div class="content" ref="loginOutView" @click.stop="show=true">
         <h2>{{ $t('nav.loginOut_title') }}</h2>
        <div>
-          <div @click.stop="outLogin">{{ $t('nav.loginOut') }} </div>
+          <div @click.stop="outLogin">{{ $t('nav.menu_logOut') }} </div>
           <p @click.stop="show=false">{{ $t('nav.loginOut_Dismiss') }}</p>
        </div>
       </div>

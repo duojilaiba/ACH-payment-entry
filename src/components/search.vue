@@ -4,7 +4,7 @@
     <div class="searchHeader">
       <div class="searchHeader_view1">
         <div class="text">{{ viewTitle }}</div>
-        <div class="icon"><img src="../assets/images/ShutDown.png" @click="closeView"></div>
+        <div class="icon"><img style="width:.22rem" src="../assets/images/ShutDown.png" @click="closeView"></div>
       </div>
       <div class="searchHeader_view2" v-if="viewName !== 'network'">
         <input type="text" :placeholder="$t('nav.search_components_placeHolder')" v-model="searchText">

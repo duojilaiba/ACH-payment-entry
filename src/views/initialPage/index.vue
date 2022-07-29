@@ -214,7 +214,7 @@ html,body,#homePage,.homePage_view,.homePage_content{
     display: flex;
     margin-left: auto;
     img {
-      width: 0.11rem;
+      width: 0.22rem;
       cursor: pointer;
     }
   }

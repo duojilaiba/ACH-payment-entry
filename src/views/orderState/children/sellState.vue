@@ -112,7 +112,7 @@ export default {
       font-family: SFProDisplaybold;
     }
     img{
-      height: .11rem;
+      height: .22rem;
       cursor: pointer;
     }
   }

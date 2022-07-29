@@ -3,7 +3,8 @@
     <!-- 展示成功失败等待状态页面 -->
     <div class="Verification_content" v-if="status==0" :key="0">
       <div class="kyc_nav">
-      <img v-if=" kycVerState===0" src="@/assets/images/ShutDown.png" @click="goHome" alt="">
+        <!-- {{ kycVerState }} -->
+      <img v-if="kycVerState==0" src="@/assets/images/ShutDown.png" @click="goHome" alt="">
     </div>
     <!-- 点击进行kyc验证 -->
         <div class="content" v-if="kycVerState==0">
@@ -203,7 +204,7 @@ export default {
          if(!res){
            this.status=0
             this.nextKyc = true
-            this.$toast('未知错误')
+            // this.$toast('未知错误')
             return
          }
            
@@ -242,7 +243,7 @@ export default {
   mounted(){
     //保存页面状态
     
-   sessionStorage.getItem('kycVerState')?this.kycVerState = sessionStorage.getItem('kycVerState'):''
+   sessionStorage.getItem('kycVerState')?this.kycVerState = sessionStorage.getItem('kycVerState'):this.kycVerState = 0
    if(sessionStorage.getItem('sellState') && sessionStorage.getItem('getToken')){
      this.status = sessionStorage.getItem('sellState') 
       this.getToken = sessionStorage.getItem('getToken')
@@ -253,7 +254,7 @@ export default {
       },200)
    }else{
     //  this.status=0
-    //     this.kycVerState = 2
+    //     this.kycVerState = 0
      return false
    }
 
@@ -283,7 +284,7 @@ export default {
     // margin-bottom: .65rem;
     img{
       float: right;
-      height: .15rem;
+      height: .22rem;
       cursor: pointer;
     }
   }

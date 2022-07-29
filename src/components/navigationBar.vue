@@ -21,7 +21,7 @@
     <div class="navigationBar_view_right">
       <!-- 买币修改表单页面 - 删除表单icon -->
       <div class="buy_deleteCardInfo" v-if="$route.path === '/modifyCardInfo'" @click="deleteForm"><img src="../assets/images/delete-icon.png" alt=""></div>
-      <img class="closeIcon" style="width:.11rem" src="../assets/images/ShutDown.png" v-if="!this.$parent.routerViewState" @click="openMenu">
+      <img class="closeIcon" style="width:.22rem" src="../assets/images/ShutDown.png" v-if="!this.$parent.routerViewState" @click="openMenu">
       <img class="closeIcon" style="width:.18rem" src="../assets/images/rightMeun.png" v-else @click="openMenu">
     </div>
   </div>
@@ -179,8 +179,10 @@ export default {
     .icon {
       cursor: pointer;
       display: flex;
+      position: relative;
       img {
         height: 0.22rem;
+        
       }
     }
     .linkName {
