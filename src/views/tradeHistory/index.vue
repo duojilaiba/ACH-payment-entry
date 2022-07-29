@@ -99,7 +99,7 @@ export default {
       let _this = this;
       this.$axios.get(this.$api.get_transactionHistory,this.query).then(res=>{
         if(res.data){
-          let newArray = res.data.result.filter(item=>{return item.orderState !== 0 && item.orderState !== 6});
+          let newArray = res.data.result.filter(item=>{return item.orderState !== 0 && item.orderState !== 1 && item.orderState !== 6});
           _this.historyList = _this.historyList.concat(newArray);
           _this.loading = false;
           if ((_this.query.pageIndex * _this.query.pageSize) > res.data.total || _this.historyList.length === res.data.total){
