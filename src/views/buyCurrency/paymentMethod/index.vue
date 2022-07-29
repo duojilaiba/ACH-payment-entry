@@ -58,7 +58,8 @@
       <IncludedDetails class="IncludedDetails" ref="includedDetails_ref" :useFee="true" :isLoading="isLoading" :network="$store.state.buyRouterParams.network"/>
     </div>
     <button class="continue" :disabled="disabled" @click="confirm">
-      {{ $t('nav.Continue') }}
+<!--      {{ $t('nav.Continue') }}-->
+      Completed
       <img class="rightIcon" src="../../../assets/images/button-right-icon.svg" alt="" v-if="!request_loading">
       <van-loading class="icon rightIcon loadingIcon" type="spinner" color="#fff" v-else/>
     </button>

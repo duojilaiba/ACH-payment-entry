@@ -62,7 +62,7 @@
           <li v-for="(item,index) in cryptoCurrency_recentList" :key="'cryptoCurrency_recentList'+index" @click="choiseItem('currency',item)">
             <div class="seach_li_img">
               <img :src="item.logoUrl">
-              <p class="networkIcon"><img src="../assets/images/hk.svg" alt=""></p>
+              <p class="networkIcon" v-if="item.buyNetwork.logo"><img :src="item.buyNetwork.logo" alt=""></p>
             </div>
             <p class="seach_li_text currencyCopywriting">{{ item.name }} <span class="seach_li_allText" v-if="item.buyNetwork"> - {{ item.buyNetwork.networkName }}</span></p>
 <!--            <p class="seach_li_rightIcon"><img src="../assets/images/rightIcon.png"></p>-->
@@ -71,7 +71,7 @@
           <li v-for="(item,index) in popularList" :key="'popularList'+index" @click="choiseItem('currency',item)">
             <div class="seach_li_img">
               <img :src="item.logoUrl">
-              <p class="networkIcon"><img src="../assets/images/hk.svg" alt=""></p>
+              <p class="networkIcon" v-if="item.buyNetwork.logo"><img :src="item.buyNetwork.logo" alt=""></p>
             </div>
             <p class="seach_li_text currencyCopywriting">{{ item.name }} <span class="seach_li_allText" v-if="item.buyNetwork"> - {{ item.buyNetwork.networkName }}</span></p>
 <!--            <p class="seach_li_rightIcon"><img src="../assets/images/rightIcon.png"></p>-->
@@ -80,7 +80,7 @@
           <li :class="{'allCurrencyLi': index===0}" v-for="(item,index) in cryptoCurrencyVOList" :key="'cryptoCurrencyVOList'+index" @click="choiseItem('currency',item)">
             <div class="seach_li_img">
               <img :src="item.logoUrl">
-              <p class="networkIcon"><img src="../assets/images/hk.svg" alt=""></p>
+              <p class="networkIcon" v-if="item.buyNetwork.logo"><img :src="item.buyNetwork.logo" alt=""></p>
             </div>
             <p class="seach_li_text currencyCopywriting">{{ item.name }} <span class="seach_li_allText" v-if="item.buyNetwork"> - {{ item.buyNetwork.networkName }}</span></p>
 <!--            <p class="seach_li_rightIcon"><img src="../assets/images/rightIcon.png"></p>-->
@@ -90,7 +90,7 @@
           <li v-for="(item,index) in searchData" :key="'searchData'+index" @click="choiseItem('currency',item)">
             <div class="seach_li_img">
               <img :src="item.logoUrl">
-              <p class="networkIcon"><img src="../assets/images/hk.svg" alt=""></p>
+              <p class="networkIcon" v-if="item.buyNetwork.logo"><img :src="item.buyNetwork.logo" alt=""></p>
             </div>
             <p class="seach_li_text currencyCopywriting">{{ item.name }} <span class="seach_li_allText" v-if="item.buyNetwork"> - {{ item.buyNetwork.networkName }}</span></p>
 <!--            <p class="seach_li_rightIcon"><img src="../assets/images/rightIcon.png"></p>-->
@@ -131,7 +131,7 @@
           <li :class="{'allCurrencyLi': index===0}" v-for="(item,index) in cryptoCurrencyVOList" :key="'cryptoCurrencyVOList'+index" @click="choiseItem('currency-sell',item)">
             <div class="seach_li_img">
               <img :src="item.logoUrl">
-              <p class="networkIcon"><img src="../assets/images/hk.svg" alt=""></p>
+              <p class="networkIcon" v-if="item.sellNetwork.logo"><img :src="item.sellNetwork.logo" alt=""></p>
             </div>
             <p class="seach_li_text currencyCopywriting">{{ item.name }} <span class="seach_li_allText" v-if="item.sellNetwork"> - {{ item.sellNetwork.networkName }}</span></p>
 <!--            <p class="seach_li_rightIcon"><img src="../assets/images/rightIcon.png"></p>-->
@@ -141,7 +141,7 @@
           <li v-for="(item,index) in searchData" :key="'search_'+index" @click="choiseItem('currency-sell',item)">
             <div class="seach_li_img">
               <img :src="item.logoUrl">
-              <p class="networkIcon"><img src="../assets/images/hk.svg" alt=""></p>
+              <p class="networkIcon" v-if="item.sellNetwork.logo"><img :src="item.sellNetwork.logo" alt=""></p>
             </div>
             <p class="seach_li_text currencyCopywriting">{{ item.name }} <span class="seach_li_allText"> - {{ item.sellNetwork.networkName }}</span></p>
 <!--            <p class="seach_li_rightIcon"><img src="../assets/images/rightIcon.png"></p>-->
