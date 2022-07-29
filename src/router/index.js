@@ -181,7 +181,7 @@ export const constantRoutes = [
     //卖币路由
   {
     path: "/sell-formUserInfo",
-    name: 'testForm',
+    name: 'sellCardInfo',
     component: resolve => require(['../views/sellCurrency/cardInfo'], resolve),
     meta: {
       requireAuth: true,

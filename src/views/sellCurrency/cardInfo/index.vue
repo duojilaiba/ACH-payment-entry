@@ -82,7 +82,7 @@ import { AES_Decrypt, AES_Encrypt } from "../../../utils/encryp";
 import Search from "../../../components/search"
 
 export default {
-  name: "testForm",
+  name: "sellCardInfo",
   components: {Search},
   data(){
     return{

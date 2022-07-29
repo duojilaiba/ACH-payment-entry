@@ -8,7 +8,7 @@
       <div class="linkName">
         {{ $t(routerName) }}
         <!-- 卖币表单页展示修改卖币信息入口 -->
-        <div class="sellChangeForm" v-if="this.$store.state.cardInfoFromPath === 'configSell' && $route.path === '/sell-formUserInfo'" @click="sellFormBack">
+        <div class="sellChangeForm" v-if="this.$store.state.cardInfoFromPath === 'configSell' && $route.name === 'sellCardInfo'" @click="sellFormBack">
           <p>· {{ this.$store.state.sellRouterParams.formPositionData.enCommonName }}</p>
           <p><img src="../assets/images/changeIcon.svg" alt=""></p>
         </div>
@@ -152,9 +152,9 @@ export default {
     //导航的显示隐藏
     navigationBarIsShow(){
       // if((this.tabState  &&  this.$route.name !== 'sellOrder' && !this.$parent.routerViewState && this.$route.name !== 'KycVerification') || this.tabState&& this.$route.path !== '/'&&  this.$route.name !== 'sellOrder'&& this.$route.name !== 'KycVerification' ){
-      if((this.tabState && this.$route.path === '/sell-formUserInfo' && !this.changeCountry_state) ||
+      if((this.tabState && this.$route.name === 'sellCardInfo' && !this.changeCountry_state) ||
           (this.tabState  &&  this.$route.name !== 'sellOrder' && !this.$parent.routerViewState && this.$route.name !== 'KycVerification') ||
-          (this.tabState && this.$route.path !== '/' && this.$route.path !== '/sell-formUserInfo' &&  this.$route.name !== 'sellOrder'&& this.$route.name !== 'KycVerification')
+          (this.tabState && this.$route.path !== '/' && this.$route.name !== 'sellCardInfo' &&  this.$route.name !== 'sellOrder'&& this.$route.name !== 'KycVerification')
       ){
         return true
       }

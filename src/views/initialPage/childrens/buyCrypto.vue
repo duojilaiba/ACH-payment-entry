@@ -45,7 +45,7 @@
 
     <footer>
       <button class="continue" @click="nextStep" :disabled="!continueState" :class="{'continue_true': continueState}">
-        {{ $t('nav.Continue') }}
+        Proceed · Buy {{ currencyData.name }}
         <img class="rightIcon" src="../../../assets/images/button-right-icon.svg" alt="">
       </button>
       <p class="cookieTips">{{ $t('nav.home_Tips') }}</p>
@@ -701,15 +701,15 @@ footer{
   font-weight: normal;
   color: #FFFFFF;
   margin-top: 0.16rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: no-drop;
   border: none;
-  position: relative;
   margin-bottom: 0.12rem;
   .rightIcon{
-    position: absolute;
-    top: 0.17rem;
-    right: 0.32rem;
     width: 0.24rem;
+    margin-left: 0.08rem;
   }
 }
 .continue_true{

@@ -67,7 +67,7 @@
             <span class="empty" v-else>-- </span>
           </div>
         </div>
-        <div class="amountInfo-line" v-if="detailsData.orderStatus !== 8 && detailsData.failureNumber < 2">
+        <div class="amountInfo-line" v-if="detailsData.failureNumber < 2">
           <div class="left">Ramp Fee ({{ detailsData.fiatName }})</div>
           <div class="right">
             <span class="value" v-if="detailsData.rampFee !== '' && detailsData.rampFee !== null">{{ detailsData.rampFee }}</span>
