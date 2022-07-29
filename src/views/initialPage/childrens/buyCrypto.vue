@@ -87,7 +87,7 @@ export default {
         serviceFee: '',
         price: '',
       },
-      cryptoSate: false,
+      // cryptoSate: false,
 
       //Payment methods
       allPayMethods: [],
@@ -155,10 +155,10 @@ export default {
   methods: {
     //选择法币或加密货币
     openSearch(view){
-      //地址栏携带商户加密货币种禁止选择加密货币
-      if(view === 'currency' && this.cryptoSate === false){
-        return;
-      }
+      // //地址栏携带商户加密货币种禁止选择加密货币
+      // if(view === 'currency' && this.cryptoSate === false){
+      //   return;
+      // }
       this.$parent.openSearch(view,this.allPayCommission);
     },
     //法币币种为USD如果少于两位小数，将自动添加0
