@@ -2,7 +2,7 @@
   <div id="paymentMethod">
     <div class="paymentMethod-content">
       <!-- 历史支付的方式 -->
-      <div class="payMethodsUl" v-if="savedCard.length !== 0 && $store.state.goHomeState">
+      <div class="payMethodsUl" v-if="savedCard.length !== 0 && $store.state.customized_orderMerchant">
         <div class="title">
           <div>{{ $t('nav.buy_payment_savedTitle') }}</div>
           <div class="edit" @click="editCardInfo" v-if="!$route.query.merchant_orderNo">
@@ -54,7 +54,7 @@
           </div>
         </div>
       </div>
-      <CryptoCurrencyAddress v-if="$store.state.goHomeState"/>
+      <CryptoCurrencyAddress v-if="$store.state.customized_orderMerchant"/>
       <IncludedDetails class="IncludedDetails" ref="includedDetails_ref" :useFee="true" :isLoading="isLoading" :network="$store.state.buyRouterParams.network"/>
     </div>
     <button class="continue" :disabled="disabled" @click="confirm">
@@ -119,7 +119,7 @@ export default {
   },
   mounted(){
     //接入商户逻辑
-    if(!this.$store.state.goHomeState){
+    if(!this.$store.state.customized_orderMerchant){
       this.buyOrderInfo();
       return;
     }
@@ -205,11 +205,11 @@ export default {
               return item.payWayCode === '10001';
             })
             //只有信用卡开放历史卡信息功能
-            if(_this.$store.state.goHomeState && _this.savedCard.length !== 0 ){
+            if(_this.$store.state.customized_orderMerchant && _this.savedCard.length !== 0 ){
               _this.choiseSavedCard(_this.savedCard[0],0)
             }
             //商户接入模式展示国际卡
-            if(!_this.$store.state.goHomeState){
+            if(!_this.$store.state.customized_orderMerchant){
               _this.choisePayMethods(_this.paymethodList[0],0)
             }
           })
@@ -246,7 +246,7 @@ export default {
     editCardInfo(){
       this.editCardInfo_state = this.editCardInfo_state === false ? true : false;
       if(!this.editCardInfo_state){
-        if(this.$store.state.goHomeState && this.savedCard.length !== 0 ){
+        if(this.$store.state.customized_orderMerchant && this.savedCard.length !== 0 ){
           this.choiseSavedCard(this.savedCard[0],0)
         }
       }else{
@@ -268,7 +268,7 @@ export default {
       }
 
       //接入商户模式不需要创建订单
-      if(!this.$store.state.goHomeState){
+      if(!this.$store.state.customized_orderMerchant){
         this.$store.state.buyRouterParams.orderNo = this.$route.query.merchant_orderNo;
         this.$store.state.buyRouterParams.payWayCode = this.payMethod.payWayCode;
         this.$store.state.buyRouterParams.payWayName = this.payMethod.payWayName;

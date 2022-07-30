@@ -345,45 +345,43 @@ export default {
     submit(){
       let params = this.paramsFormData();
       this.isKyc(params)
-      
-      
+
+
     },
     //确认订单 - 请求服务
     processRequest(val){
-      if(this.request_loading === false){
-        this.request_loading = true;
-        let params = {
-          sellCardDTO: val,
-          orderId: this.$store.state.cardInfoFromPath === 'configSell' ? '' : this.$store.state.sellOrderId, // 不传为新增卡信息，传为修改卡信息
-          cryptoCurrency: this.$store.state.sellRouterParams.currencyData.name,
-          sellVolume: this.$store.state.sellRouterParams.amount,
-          network: this.$store.state.sellRouterParams.currencyData.sellNetwork.network,
-        }
-        this.$axios.post(this.$api.post_sellForm,params,'').then(res=>{
-          if(res && res.returnCode === '0000'){
-            //存储数据 加密字段
-            let sellForm = {};
-            this.formJson.forEach(item => {
-              sellForm[item.paramsName] = item.model;
-            })
-            sellForm.contactNumber = this.encrypt(sellForm.contactNumber);
-            sellForm.name = this.encrypt(sellForm.name);
-            sellForm.email = this.encrypt(sellForm.email);
-            sellForm.accountNumbe = this.encrypt(sellForm.accountNumber);
-            sellForm.idNumber = this.encrypt(sellForm.idNumber);
-            this.$store.state.sellForm = sellForm;
-            this.$store.state.sellOrderId = res.data.orderId;
-            this.$store.state.nextOrderState = 1;
-            //跳转状态
-            this.request_loading = false;
-              this.$router.push(`/sellOrder?sellOrderId=${this.$route.query.orderId}`)
-          }else {
-            this.request_loading = false;
-          }
-        }).catch(()=>{
-          this.request_loading = false;
-        })
+      console.log("下单")
+      let params = {
+        sellCardDTO: val,
+        orderId: this.$store.state.cardInfoFromPath === 'configSell' ? '' : this.$store.state.sellOrderId, // 不传为新增卡信息，传为修改卡信息
+        cryptoCurrency: this.$store.state.sellRouterParams.currencyData.name,
+        sellVolume: this.$store.state.sellRouterParams.amount,
+        network: this.$store.state.sellRouterParams.currencyData.sellNetwork.network,
       }
+      this.$axios.post(this.$api.post_sellForm,params,'').then(res=>{
+        if(res && res.returnCode === '0000'){
+          //存储数据 加密字段
+          let sellForm = {};
+          this.formJson.forEach(item => {
+            sellForm[item.paramsName] = item.model;
+          })
+          sellForm.contactNumber = this.encrypt(sellForm.contactNumber);
+          sellForm.name = this.encrypt(sellForm.name);
+          sellForm.email = this.encrypt(sellForm.email);
+          sellForm.accountNumbe = this.encrypt(sellForm.accountNumber);
+          sellForm.idNumber = this.encrypt(sellForm.idNumber);
+          this.$store.state.sellForm = sellForm;
+          this.$store.state.sellOrderId = res.data.orderId;
+          this.$store.state.nextOrderState = 1;
+          //跳转状态
+          this.request_loading = false;
+          this.$router.push(`/sellOrder?sellOrderId=${this.$route.query.orderId}`)
+        }else {
+          this.request_loading = false;
+        }
+      }).catch(()=>{
+        this.request_loading = false;
+      })
     },
 
     isKyc(val){
@@ -420,16 +418,16 @@ export default {
             this.request_loading = false;
 
             this.$router.push('/kycVerification');
-            
+
           }else{
             this.$store.state.sellRouterParams.positionData = this.$store.state.sellRouterParams.formPositionData;
 
+            console.log("false")
             this.processRequest(val);
-            // 
+            //
 
             this.$store.state.sellRouterParams.historyBack = 'back';
 
-            this.request_loading = false;
           }
         }
       })

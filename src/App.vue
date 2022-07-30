@@ -5,8 +5,8 @@
           <!-- 顶部logo -->
           <!-- <div class="viewTab_logo" v-if="$route.path!=='/kycVerification'">
             <img src="@/assets/images/achLogo.svg" alt="" @click="goHome"> -->
-            <!-- this.$store.state.goHomeState 商户订单状态不展示菜单 -->
-            <!-- <img src="@/assets/images/rightMeun.png" alt="" @click="routerViewState=!routerViewState" v-show="routerViewState && $route.path!=='/emailCode' && $route.path!=='/verifyCode'  && this.$store.state.goHomeState === true">
+            <!-- this.$store.state.customized_orderMerchant 商户订单状态不展示菜单 -->
+            <!-- <img src="@/assets/images/rightMeun.png" alt="" @click="routerViewState=!routerViewState" v-show="routerViewState && $route.path!=='/emailCode' && $route.path!=='/verifyCode'  && this.$store.state.customized_orderMerchant === true">
           </div> -->
           <!-- 导航栏 -->
           <tab ref="viewTab"/>
@@ -150,7 +150,7 @@ export default {
     },
     goHome(){
       //存在商户订单禁止点击logo跳转
-      if(this.$store.state.goHomeState === false){
+      if(this.$store.state.customized_orderMerchant === false){
         return;
       }
       this.AccountisShow = false

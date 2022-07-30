@@ -4,7 +4,7 @@
     <!-- open menu view -->
     <div class="navigationBar_view_left" v-if="this.$parent.routerViewState">
       <!-- merchant_orderNo 地址栏存在商户订单隐藏返回按钮 -->
-      <div class="icon" v-if="$store.state.goHomeState" @click="goBack"><img src="../assets/images/goBack.png"></div>
+      <div class="icon" @click="goBack"><img src="../assets/images/goBack.png"></div>
       <div class="linkName">
         {{ $t(routerName) }}
         <!-- 卖币表单页展示修改卖币信息入口 -->
@@ -21,8 +21,10 @@
     <div class="navigationBar_view_right">
       <!-- 买币修改表单页面 - 删除表单icon -->
       <div class="buy_deleteCardInfo" v-if="$route.path === '/modifyCardInfo'" @click="deleteForm"><img src="../assets/images/delete-icon.png" alt=""></div>
-      <div style="padding:.06rem;cursor: pointer;" v-if="!this.$parent.routerViewState" @click="openMenu"><img class="closeIcon" style="width:.22rem;margin-right:-.05rem" src="../assets/images/ShutDown.png" ></div>
-      <img class="closeIcon" style="width:.18rem" src="../assets/images/rightMeun.png" v-else @click="openMenu">
+      <div v-if="$route.name !== 'modifyCardInfo'">
+        <div style="padding:.06rem;cursor: pointer;" v-if="!this.$parent.routerViewState" @click="openMenu"><img class="closeIcon" style="width:.22rem;margin-right:-.05rem" src="../assets/images/ShutDown.png" ></div>
+        <img class="closeIcon" style="width:.18rem" src="../assets/images/rightMeun.png" v-else @click="openMenu">
+      </div>
     </div>
   </div>
 </template>

@@ -1,6 +1,6 @@
 <template>
   <div id="refund">
-    <p class="title">Enter your Tron ({{ $route.query.cryptocurrency }}) address </p>
+    <p class="title">Enter your Tron (USDT) address </p>
     <div class="walletAddress">
       <input type="text" v-model="walletAddress" placeholder="Enter your wallet address" @input="addressChange">
       <img src="@/assets/images/scanCode_icon.svg" alt="" @click="openScanCode">

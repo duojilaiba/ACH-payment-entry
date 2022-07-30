@@ -111,7 +111,7 @@ export default {
     this.cvvDisabled = false;
     this.AuthorizationInfo_state = true;
     //接入商户逻辑
-    if(!this.$store.state.goHomeState){
+    if(!this.$store.state.customized_orderMerchant){
       this.newCvvState = (this.$route.query.configPaymentFrom && this.$route.query.configPaymentFrom === 'userPayment') ? true : false;
       this.buyOrderInfo();
       return
@@ -388,14 +388,14 @@ export default {
         }
       }
     }
-    //.formContent-right{
-    //  display: flex;
-    //  align-items: center;
-    //  margin-left: auto;
-    //  img{
-    //    width: 0.24rem;
-    //  }
-    //}
+    .formContent-right{
+      display: flex;
+      align-items: center;
+      margin-left: auto;
+      img{
+        width: 0.24rem;
+      }
+    }
   }
 }
 .includedDetails{

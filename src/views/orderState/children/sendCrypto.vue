@@ -14,7 +14,7 @@
         <div class="sendCrypto_title">
       <p>{{ $t('nav.Sellorder_You') }} {{ $t('nav.Sellorder_will') }} {{ $t('nav.Sellorder_get') }}  <span> {{ feeInfo.fiatSymbol }} {{ amountFee }}</span>  {{ $t('nav.Sellorder_for') }} <span>  {{ $store.state.sellRouterParams.amount }} {{ $store.state.sellRouterParams.cryptoCurrency }} </span> </p>
       <p style="display:flex;justify-content:space-between;width:.37rem"><img  src="@/assets/images/timeSell.svg" alt=""><span >{{ timerNumber }} </span> s</p>
-      
+
     </div>
     <div class="sendCrypto_title" style="margin-top:.16rem">
       <p>{{ $t('nav.home_buyFee_rampFee') }} </p>
@@ -54,7 +54,7 @@
       </div>
     </div>
     </div>
-    
+
     <div v-else-if="orderStateData.orderStatus == 7 || orderStateData.expirationTime == 0" class="sendCrypto_timeError">
       <div class="sendCrypto_title" style="margin-top:.42rem">
       <p >{{ $t('nav.Sellorder_Id') }}</p>
@@ -94,7 +94,7 @@
     </div>
 
    <div class="sendCrypto_bottom" v-show="Network_show" @click.stop="Network_show = false">
-     
+
    </div>
    <div :class="!Network_show?'sendCrypto_bottomContent':'sendCrypto_bottomContent sendCrypto_bottomContentActive'" >
        <div class="Network-title" >{{ $t('nav.Sellorder_Network') }} <img style="width:.22rem;" @click="Network_show = false" src="@/assets/images/ShutDown.png" alt=""></div>
@@ -106,7 +106,7 @@
 import Clipboard from 'clipboard'
 import QRCode from 'qrcodejs2';
 export default {
-  
+
   name:'sendCrypto',
   props:{
     orderStateData:{
@@ -128,7 +128,7 @@ export default {
     }
   },
   mounted(){
-    // this.$parent.routerViewState = true 
+    // this.$parent.routerViewState = true
     setTimeout(() => {
       if(this.orderStateData.orderStatus == 7 || this.orderStateData.expirationTime == 0){
         return false
@@ -151,15 +151,15 @@ export default {
           }
         },1000)
       }
-     
-    
+
+
   },
 
   activated(){
-  
+
     //网络列表延迟请求
     setTimeout(() => {
-    
+
       this.getNetworkList()
     }, 1000);
     this.queryFee()
@@ -186,15 +186,15 @@ export default {
   },
   destroyed(){
     clearInterval(this.timeOut)
-    
+
   },
   methods:{
     //确认切换
     confirmSell(){
-     
+
       this.transferredShow = false
-      
-      
+
+
       this.$store.state.nextOrderState = 2
     },
     //复制
@@ -226,7 +226,7 @@ export default {
       })
       return
     }
-      
+
     },
     //获取网络列表
      async  getNetworkList(){
@@ -243,7 +243,7 @@ export default {
       if(value >= 0){
         var num = value;
         return '0'.repeat(2 - String(Math.floor(num / 3600)).length) + Math.floor(num / 3600) + ':' + '0'.repeat(2 - String(Math.floor((num%3600) / 60)).length) + Math.floor((num%3600) / 60) + ':' + '0'.repeat(2 - String(Math.floor((num%3600) % 60)).length) + Math.floor((num%3600) % 60)
-        
+
       }
     },
     //确认网络
@@ -274,12 +274,12 @@ export default {
         }
       })
     } ,
-  
+
      //费率刷新
     queryFee(){
-      
-      let patams = JSON.parse(JSON.stringify(this.$store.state.feeParams))
-     
+
+      let patams = JSON.parse(JSON.stringify(this.$store.state.feeParams_order))
+
        this.$axios.get(this.$api.get_sellRampfee,patams).then(res=>{
          if(res && res.returnCode === "0000"){
           this.feeInfo = res.data;
@@ -301,16 +301,16 @@ export default {
         this.confirmSecondary =false
         return
       }
-      
+
       if(val === 'goHome'){
         this.$router.replace('/')
         return
       }else  if(this.$store.state.sellRouterParams.historyBack == 'back'){
          this.$router.go(-1)
          this.$store.state.sellRouterParams.historyBack = ''
-      } 
+      }
     }
-  
+
   },
   watch:{
     'orderStateData.address':{
@@ -333,6 +333,7 @@ export default {
       resultValue >= 1 ? decimalDigits = 2 : decimalDigits = 6;
       let rampFee = resultValue.toFixed(decimalDigits);
       isNaN(resultValue) || rampFee <= 0 ? rampFee = 0 : '';
+
       return rampFee
     },
     //卖币手续费
@@ -342,7 +343,7 @@ export default {
       resultValue >= 1 ? decimalDigits = 2 : decimalDigits = 6;
       let rampFee = resultValue.toFixed(decimalDigits);
       isNaN(resultValue) || rampFee <= 0 ? rampFee = 0 : '';
-    
+
       return rampFee
     }
   },
@@ -424,7 +425,7 @@ export default {
     margin-top: .35rem;
     font-family: SFProDisplayRegular;
     p:first-child{
-      
+
       font-style: normal;
       span{
         color: #063376;
@@ -517,7 +518,7 @@ export default {
       align-items: center;
       cursor: pointer;
     }
-   
+
     position: absolute;
     bottom: .2rem;
     left: 5%;
@@ -542,7 +543,7 @@ export default {
       background: #FFFFFF;
       border-radius: .18rem;
       padding: .32rem .16rem;
-      
+
       >p{
         text-align: center;
         color: #949EA4;
@@ -588,7 +589,7 @@ export default {
     left: 0;
     top: 0;
     z-index: 1;
-   
+
   }
   .sendCrypto_bottomContent{
     width: 100%;
@@ -603,7 +604,7 @@ export default {
     box-shadow: 0px -8px 20px rgba(0, 89, 218, 0.08);
     z-index: 2;
     transition: .5s ;
-    
+
     .Network-title{
       font-size: .18rem;
       color: #063376;
@@ -642,6 +643,6 @@ export default {
     transform: translate(0,0rem) !important;
     transition: .5s;
   }
- 
+
 }
 </style>

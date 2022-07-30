@@ -136,8 +136,8 @@ export default {
       //通过订单id的获取订单信息
       let orderNo = this.$route.query.orderNo ? this.$route.query.orderNo : '';
       //存在商户订单禁止点击logo跳转
-      this.$store.state.goHomeState = orderNo !== "" ? false : true;
-      this.$store.state.goHomeState ? this.queryInfo() : '';
+      this.$store.state.customized_orderMerchant = orderNo !== "" ? false : true;
+      this.$store.state.customized_orderMerchant ? this.queryInfo() : '';
       //填写表单状态 - true填写过 false未填写
       if(this.$route.query.cardFlag && this.$route.query.cardFlag=='true' && orderNo !== ""){
         this.$router.push(`/creditCardConfig?merchant_orderNo=${orderNo}&configPaymentFrom=userPayment`);

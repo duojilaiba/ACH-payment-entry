@@ -597,7 +597,9 @@ export default {
         if(type === 'network'){
           this.$nextTick(()=>{
             this.$parent.buyParams.network = item.network;
+            this.$parent.network_fullName = item.networkName;
             this.$store.state.buyRouterParams.network = item.network;
+            this.$store.state.buyRouterParams.network_fullName = item.network;
             this.$parent.networkRegular = item.addressRegex;
             this.$parent.$parent.$refs.viewTab.tabState = true;
             this.$parent.searchViewState = false;
@@ -623,6 +625,7 @@ export default {
           this.$store.state.sellRouterParams.currencyData = currencyData;
           this.$store.state.sellRouterParams.cryptoCurrency = item.name;
           this.$store.state.feeParams.symbol = item.symbol;
+          this.$store.state.feeParams_order.symbol = item.symbol;
           this.$parent.$refs.sellCrypto_ref.amountControl();
           this.$parent.searchState = true;
           return;
@@ -642,6 +645,10 @@ export default {
             this.$parent.initializeForm();
             this.$parent.queryCardInfoList();
             this.$parent.initializeGoDown();
+            // this.$store.state.feeParams.fiatCode = item.code;
+            // this.$store.state.feeParams.alpha2 = item.alpha2;
+            this.$store.state.feeParams_order.alpha2 = item.alpha2;
+            this.$store.state.feeParams_order.fiatCode = item.code;
             this.$parent.$parent.$refs.viewTab.changeCountry_state = false;
             this.$parent.changeCountry_state = false;
             this.$parent.isOldCardInfo = false;

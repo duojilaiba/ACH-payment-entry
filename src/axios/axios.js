@@ -78,7 +78,7 @@ function requestPrompt(response){
           message: response.returnMsg
         });
         break;
-        
+
     }
   }
 }

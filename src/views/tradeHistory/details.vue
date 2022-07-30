@@ -32,9 +32,13 @@
             <div></div>
             <div>Failed</div>
           </div>
-          <div class="statusView failed2" v-else-if="detailsData.orderStatus === 9">
+          <div class="statusView timeout" v-else-if="detailsData.orderStatus === 9">
             <div></div>
-            <div>Failed</div>
+            <div>Refunding</div>
+          </div>
+          <div class="statusView failed2" v-else-if="detailsData.orderStatus === 10">
+            <div></div>
+            <div>Refunded</div>
           </div>
         </div>
       </div>
@@ -74,7 +78,7 @@
             <span class="empty" v-else>-- </span>
           </div>
         </div>
-        <div class="amountInfo-line" v-if="detailsData.orderStatus === 6 || detailsData.orderStatus === 8 || detailsData.orderStatus === 9">
+        <div class="amountInfo-line" v-if="detailsData.orderStatus === 6 || detailsData.orderStatus === 11 || detailsData.orderStatus === 8 || detailsData.orderStatus === 10">
           <div class="left">Return fee ({{ detailsData.fiatName }})</div>
           <div class="right">
             <span class="value" v-if="detailsData.returnFee !== '' && detailsData.returnFee !== null">{{ detailsData.returnFee }}<span class="fee" v-if="detailsData.fiatName !== 'USD'">({{ 25 * detailsData.failureNumber }} USD)</span></span>
@@ -98,19 +102,20 @@
             <span v-if="detailsData.orderStatus === 3">Confirm Order</span>
             <span v-if="detailsData.orderStatus === 4">In Transfer</span>
             <span class="completed" v-else-if="detailsData.orderStatus === 5">Completed</span>
-            <span class="failed1" v-else-if="detailsData.orderStatus === 6">Failed</span>
+            <span class="failed1" v-else-if="detailsData.orderStatus === 6 || detailsData.orderStatus === 11">Failed</span>
             <span class="timeout" v-else-if="detailsData.orderStatus === 7">Closed</span>
             <span class="failed3" v-else-if="detailsData.orderStatus === 8">Failed</span>
-            <span class="failed2" v-else-if="detailsData.orderStatus === 9">Failed</span>
+            <span class="failed2" v-else-if="detailsData.orderStatus === 10">Failed</span>
+            <span class="timeout" v-else-if="detailsData.orderStatus === 9">Refunding</span>
           </div>
         </div>
         <div class="speed-progress">
           <div class="percentage" :style="{width: percentage + '%'}"
                :class="{
                 'completed': (detailsData.orderStatus === 2 && detailsData.confirmBlock !== 0) || (detailsData.orderStatus >= 3 && detailsData.orderStatus <= 5),
-                'failed': detailsData.orderStatus === 6,
-                'timeOut': detailsData.orderStatus === 7,
-                'refunded': detailsData.orderStatus === 8 || detailsData.orderStatus === 9 }"></div>
+                'failed': detailsData.orderStatus === 6 || detailsData.orderStatus === 11,
+                'timeOut': detailsData.orderStatus === 7 || detailsData.orderStatus === 9,
+                'refunded': detailsData.orderStatus === 8 || detailsData.orderStatus === 10 }"></div>
           <div class="all"></div>
         </div>
       </div>
@@ -128,27 +133,31 @@
         <div class="amountInfo-line">
           <div class="left">Order Time:</div>
           <div class="right">
-            <span class="value">{{ detailsData.orderTime }}</span>
+            <span class="value" v-if="detailsData.orderTime && detailsData.orderTime !== '' && detailsData.orderTime !== null">{{ detailsData.orderTime }}</span>
+            <span class="empty" v-else>-- </span>
           </div>
         </div>
         <div class="amountInfo-line" v-if="(detailsData.orderStatus >= 3 && detailsData.orderStatus <= 9 && detailsData.orderStatus !== 7) || (detailsData.orderStatus === 2 && detailsData.confirmBlock !== 0)">
           <div class="left">Confirmed Time:</div>
           <div class="right">
-            <span class="value">{{ detailsData.confirmedTime }}</span>
+            <span class="value" v-if="detailsData.confirmedTime && detailsData.confirmedTime !== '' && detailsData.confirmedTime !== null">{{ detailsData.confirmedTime }}</span>
+            <span class="empty" v-else>-- </span>
           </div>
         </div>
         <!-- Completed -->
         <div class="amountInfo-line" v-if="(detailsData.orderStatus >= 5 && detailsData.orderStatus <= 9 && detailsData.orderStatus !== 7)">
           <div class="left">Transfer Time:</div>
           <div class="right">
-            <span class="value">{{ detailsData.transferTime }}</span>
+            <span class="value" v-if="detailsData.transferTime && detailsData.transferTime !== '' && detailsData.transferTime !== null">{{ detailsData.transferTime }}</span>
+            <span class="empty" v-else>-- </span>
           </div>
         </div>
         <!-- Failed - 2 -->
-        <div class="amountInfo-line" v-if="detailsData.orderStatus === 8 || detailsData.orderStatus === 9">
+        <div class="amountInfo-line" v-if="detailsData.orderStatus === 8 || detailsData.orderStatus === 10">
           <div class="left">Refund Time:</div>
           <div class="right">
-            <span class="value">{{ detailsData.refundTime }}</span>
+            <span class="value" v-if="detailsData.refundTime && detailsData.refundTime !== '' && detailsData.refundTime !== null">{{ detailsData.refundTime }}</span>
+            <span class="empty" v-else>-- </span>
           </div>
         </div>
       </div>
@@ -157,7 +166,8 @@
         <div class="amountInfo-line">
           <div class="left">Network:</div>
           <div class="right">
-            <span class="value">{{ detailsData.network }}</span>
+            <span class="value" v-if="detailsData.network && detailsData.network !== '' && detailsData.network !== null">{{ detailsData.network }}</span>
+            <span class="empty" v-else>-- </span>
           </div>
         </div>
         <div class="amountInfo-line">

@@ -16,7 +16,7 @@
           {{ $t('nav.home_youBuyGet') }} <span>{{ routerParams.getAmount }} {{ routerParams.cryptoCurrency }}</span> {{ $t('nav.home_buyFee_title2') }} <span>{{ routerParams.amount }} {{ payCommission.code }}</span>
         </div>
         <!-- 商户接入模式禁止点击 -->
-        <div class="right" v-if="this.$store.state.goHomeState">
+        <div class="right" v-if="this.$store.state.customized_orderMerchant">
           <img src="@/assets/images/blackDownIcon1.png">
         </div>
       </div>
@@ -109,7 +109,7 @@ export default {
       deep: true,
       immediate: true,
       handler(val,oldVal){
-        if(this.$store.state.goHomeState && val !== null && val !== '' && oldVal !== undefined && val !== oldVal){ // && (this.isHome === false || this.isHome === null)
+        if(this.$store.state.customized_orderMerchant && val !== null && val !== '' && oldVal !== undefined && val !== oldVal){ // && (this.isHome === false || this.isHome === null)
           this.queryFee();
           this.timingSetting();
         }
@@ -158,7 +158,7 @@ export default {
       deep: true,
       immediate: true,
       handler(val,oldVal){
-        if(this.$store.state.buyRouterParams.cryptoCurrency !== '' && this.$store.state.goHomeState === true && val !== oldVal){
+        if(this.$store.state.buyRouterParams.cryptoCurrency !== '' && this.$store.state.customized_orderMerchant === true && val !== oldVal){
           this.queryFee();
           this.timingSetting();
         }
@@ -274,7 +274,7 @@ export default {
     //Control details display status
     expandCollapse(){
       //商户接入模式禁止点击
-      if(!this.$store.state.goHomeState){
+      if(!this.$store.state.customized_orderMerchant){
         return;
       }
 

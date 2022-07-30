@@ -43,6 +43,7 @@ const store = new Vuex.Store({
                 code: '',
             },
             network: '',
+            network_fullName: '',
             networkDefault: '',
             addressDefault: '',
             feeRate: '',
@@ -76,7 +77,17 @@ const store = new Vuex.Store({
 
         sellForm: {},
 
-        feeParams: {}, //卖币费用请求参数
+        //卖币费用请求参数
+        feeParams: {
+            symbol: '',
+            fiatCode: '',
+            alpha2: '',
+        },
+        feeParams_order: {
+            symbol: '',
+            fiatCode: '',
+            alpha2: '',
+        },
         sellOrderId: '',
 
         cancelTokenArr: [], //ajax请求队列
@@ -87,8 +98,8 @@ const store = new Vuex.Store({
         menuState:false,
         isLogin:false,
         kycStatus:0,
-        //移动端点击logo返回首页
-        goHomeState: true,
+        //商户定制 - 订单商户
+        customized_orderMerchant: true,
     },
     getters: {
         del_item({commit},id) {

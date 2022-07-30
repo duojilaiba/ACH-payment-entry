@@ -262,6 +262,7 @@ export default {
               sellNetwork: item.sellNetworkList[0]
             }
             this.$store.state.feeParams.symbol = item.symbol; //name -- popularList币种
+            this.$store.state.feeParams_order.symbol = item.symbol; //name -- popularList币种
             this.$store.state.sellRouterParams.cryptoCurrency = item.name;
             this.$store.state.sellRouterParams.currencyData = this.currencyData;
           }
@@ -286,6 +287,8 @@ export default {
       this.$store.state.sellRouterParams.payCommission = this.payCommission;
       this.$store.state.feeParams.fiatCode = this.payCommission.code;
       this.$store.state.feeParams.alpha2 = data.alpha2;
+      this.$store.state.feeParams_order.fiatCode = this.payCommission.code;
+      this.$store.state.feeParams_order.alpha2 = data.alpha2;
       this.positionData.worldId = data.worldId;
       this.$store.state.sellRouterParams.positionData = this.positionData;
       this.amountControl();

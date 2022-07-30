@@ -10,7 +10,7 @@
         <div class="content" v-if="kycVerState==0">
           <img src="@/assets/images/kycIcon1.svg" alt="">
             <p>Please verify your identity.
-            It usually takes about 2 minutes.</p> 
+            It usually takes about 2 minutes.</p>
             <div>
               · Prepare your ID
             </div>
@@ -22,7 +22,7 @@
         <div class="content" v-else-if="kycVerState==1">
           <img src="@/assets/images/kycIcon2.svg" alt="">
             <p style="text-align:center">Congrats! Your verification completed.</p>
-            
+
         </div>
         <!-- kyc验证失败 -->
         <div class="content" v-else>
@@ -46,10 +46,10 @@
         </div>
     </div>
     <!-- kyc验证页面 -->
-    
+
     <div class="verif_kyc" v-else :key="1">
           <div class="verif_kyc_nav"><div @click="removeItemKyv"><img src="@/assets/images/ShutDown.png"  alt="" ></div></div>
-     
+
       <div id="sumsub-websdk-container" ></div>
     </div>
   </div>
@@ -81,10 +81,10 @@ export default {
         .withConf({
             lang: sessionStorage.getItem('language') &&sessionStorage.getItem('language') === 'zh-HK'?'zh':'en-US', //language of WebSDK texts and comments (ISO 639-1 format)
         })
-        
+
         .withOptions({ addViewportTag: false, adaptIframeHeight: true})
        //获取成功或失败或等待状态
-      
+
         .on('idCheck.applicantStatus', (type,) => {
            console.log(type);
           if(!type){
@@ -109,9 +109,9 @@ export default {
             this.kycVerState = 2
             return
           }
-            
+
         })
-       
+
        //获取kyc高度
         .on('idCheck.onResize', () => {
            let innerHeight = document.querySelector('.verif_kyc')
@@ -123,7 +123,7 @@ export default {
             console.log(type);
         })
         .build();
-  
+
     //kyc容器
     snsWebSdkInstance.launch('#sumsub-websdk-container')
 },
@@ -147,7 +147,7 @@ export default {
         this.getUserToken()
         // this.$router.push('/sellOrder')
         },1000)
-        return 
+        return
       //成功下一步
       }else if(val === 1  && this.nextKyc){
         this.nextKyc = false
@@ -162,13 +162,13 @@ export default {
         this.$axios.post(this.$api.post_sellForm,params,'').then(res=>{
             if(res && res.returnCode === '0000'){
             //存储数据 加密字段
-           
+
               this.$store.state.sellOrderId = res.data.orderId;
               this.$store.state.nextOrderState = 1;
               sessionStorage.removeItem('getToken')
               sessionStorage.removeItem('sellState')
               this.nextKyc = true
-              
+
               this.$router.push('/sellOrder')
               this.status=0
                 this.kycVerState = 0
@@ -182,19 +182,19 @@ export default {
           // console.log(this.$store.state.WhichPage);
           this.$router.push(this.$store.state.WhichPage)
         }
-        
-        
-        
+
+
+
         return
       }else if(val === 2){
         this.status = 0
          this.kycVerState = 0
         this.$router.replace('/')
-        
+
       }else{
         return false
       }
-      
+
     },
     //关闭页面
     goHome(){
@@ -204,7 +204,7 @@ export default {
           this.kycVerState = 0
         sessionStorage.setItem('kycVerState',this.kycVerState)
         })
-       sessionStorage.removeItem('sellState') 
+       sessionStorage.removeItem('sellState')
        sessionStorage.removeItem('getToken')
       this.$router.go('-1')
     },
@@ -212,7 +212,7 @@ export default {
     removeItemKyv(){
       this.status = 0;
       this.kycVerState = 0
-       sessionStorage.removeItem('sellState') 
+       sessionStorage.removeItem('sellState')
        sessionStorage.removeItem('getToken')
       //  this.$router.replace('/')
     },
@@ -221,7 +221,7 @@ export default {
       var FormData = require('form-data');
         var data = new FormData();
          data.append('fullName',this.$store.state.sellRouterParams.fullName);
-     
+
        this.$axios.post(this.$api.post_getKycToken,data).then(res=>{
          if(!res){
            this.status=0
@@ -229,7 +229,7 @@ export default {
             // this.$toast('未知错误')
             return
          }
-           
+
           if(res.data && res.returnCode === '0000'){
             this.getToken =  res.data
             this.nextKyc = true
@@ -240,7 +240,7 @@ export default {
               // console.log(this.getToken);
               this.launchWebSdk(this.getToken)
             },1000)
-            return 
+            return
           }else if(res.data && res.returnCode === '110'){
             this.status = 0
             this.kycVerState = 2
@@ -249,7 +249,7 @@ export default {
             return
           }
         })
-        
+
     }
   },
   watch:{
@@ -259,15 +259,15 @@ export default {
         sessionStorage.setItem('kycVerState',newVal)
       }
     },
-   
+
   },
-  
+
   mounted(){
     //保存页面状态
-    
+
    sessionStorage.getItem('kycVerState')?this.kycVerState = sessionStorage.getItem('kycVerState'):this.kycVerState = 0
    if(sessionStorage.getItem('sellState') && sessionStorage.getItem('getToken')){
-     this.status = sessionStorage.getItem('sellState') 
+     this.status = sessionStorage.getItem('sellState')
       this.getToken = sessionStorage.getItem('getToken')
       clearTimeout(this.timeOut)
         this.timeOut = setTimeout(()=>{
@@ -275,8 +275,8 @@ export default {
         this.launchWebSdk(this.getToken)
       },200)
    }else{
-     this.status=0
-        this.kycVerState = 1
+     // this.status=0
+     //    this.kycVerState = 1
      return false
    }
 
@@ -289,7 +289,7 @@ export default {
     sessionStorage.removeItem('sellState')
     sessionStorage.removeItem('getToken')
   }
-  
+
 }
 </script>
 
@@ -322,7 +322,7 @@ export default {
       display: flex;
       flex-direction: column;
       align-items: center;
-      
+
       >img{
         width: 1.75rem;
       }
@@ -350,7 +350,7 @@ export default {
         color: #949EA4;
         line-height: .16rem;
         margin-top: .2rem;
-        
+
         li{
           margin-top: .06rem;
           font-family: SFProDisplayRegular;
@@ -377,7 +377,7 @@ export default {
       img{
         height: .12rem;
         margin-left: .12rem;
-        
+
       }
     }
   }
@@ -391,8 +391,8 @@ export default {
       background: #FFFFFF;
       position: sticky;
       top: 0;
-      
-      
+
+
       >div{
         padding: .07rem;
          cursor: pointer;
@@ -401,11 +401,11 @@ export default {
           top: .0rem;
         >img{
           height: .22rem;
-         
+
         }
       }
     }
-   
+
  #sumsub-websdk-container{
   height: 100%;
   padding-top: .1rem;

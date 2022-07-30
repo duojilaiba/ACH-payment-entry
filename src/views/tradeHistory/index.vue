@@ -205,7 +205,13 @@
                     <div class="optionsView state_error_refund curror" @click.stop="optionsPath(item,'refund')">Request Refund in USDT</div>
                   </div>
                 </div>
-                <div v-else-if="item.orderStatus === 9" class="state_refunded">
+                <div v-else-if="item.orderStatus === 9" class="state_timeOut"> <!--  && item.failureNumber >= 2 -->
+                  <div class="orderState-line1">
+                    <div class="state_circular"></div>
+                    <div class="state_name">Refunding</div>
+                  </div>
+                </div>
+                <div v-else-if="item.orderStatus === 10" class="state_refunded">
                   <div class="orderState-line1">
                     <div class="state_circular"></div>
                     <div class="state_name">Refunded</div>
