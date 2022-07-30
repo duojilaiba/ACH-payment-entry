@@ -401,7 +401,6 @@ export default {
 
             this.$store.state.sellRouterParams.fullName = val.name
             this.$store.state.sellRouterParams.confirmParams = val;
-            console.log(this.$store.state.sellRouterParams.confirmParams,val)
               //存储数据 加密字段
               let sellForm = {};
               this.formJson.forEach(item => {
