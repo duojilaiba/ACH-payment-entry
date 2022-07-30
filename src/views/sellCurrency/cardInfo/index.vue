@@ -344,7 +344,9 @@ export default {
     //确认订单 - 处理请求参数
     submit(){
       let params = this.paramsFormData();
-      this.processRequest(params);
+      this.isKyc(params)
+      
+      
     },
     //确认订单 - 请求服务
     processRequest(val){
@@ -373,12 +375,8 @@ export default {
             this.$store.state.sellOrderId = res.data.orderId;
             this.$store.state.nextOrderState = 1;
             //跳转状态
-            if(this.$store.state.cardInfoFromPath === 'configSell'){
-              this.isKyc(val);
-            }else{
-              this.request_loading = false;
+            this.request_loading = false;
               this.$router.push(`/sellOrder?sellOrderId=${this.$route.query.orderId}`)
-            }
           }else {
             this.request_loading = false;
           }
@@ -389,6 +387,7 @@ export default {
     },
 
     isKyc(val){
+      this.request_loading = true;
       let params = {
         amount: this.$store.state.sellRouterParams.amount * this.$store.state.sellRouterParams.currencyData.price
       }
@@ -399,13 +398,29 @@ export default {
         if(res && res.returnCode === '0000'){
           if(res.data === true){
             this.$store.state.sellRouterParams.positionData = this.$store.state.sellRouterParams.formPositionData;
-            this.$store.state.sellRouterParams.fullName = val.name;
-            this.request_loading = false;
+            this.$store.state.sellRouterParams.fullName = val.name
+            this.$store.state.sellRouterParams.confirmParams = val;
+            console.log(this.$store.state.sellRouterParams.confirmParams,val)
+              //存储数据 加密字段
+              let sellForm = {};
+              this.formJson.forEach(item => {
+                sellForm[item.paramsName] = item.model;
+              })
+              sellForm.contactNumber = this.encrypt(sellForm.contactNumber);
+              sellForm.name = this.encrypt(sellForm.name);
+              sellForm.email = this.encrypt(sellForm.email);
+              sellForm.accountNumbe = this.encrypt(sellForm.accountNumber);
+              sellForm.idNumber = this.encrypt(sellForm.idNumber);
+              this.$store.state.sellForm = sellForm;
+              this.$store.state.sellOrderId = res.data.orderId;
+              this.request_loading = false;
             this.$router.push('/kycVerification');
+            
           }else{
             this.$store.state.sellRouterParams.positionData = this.$store.state.sellRouterParams.formPositionData;
+            this.processRequest(val);
+            // 
             this.request_loading = false;
-            this.$router.push('/sellOrder');
           }
         }
       })

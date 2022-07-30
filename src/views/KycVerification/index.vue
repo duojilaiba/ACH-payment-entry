@@ -149,13 +149,34 @@ export default {
         },1000)
         return 
       //成功下一步
-      }else if(val === 1){
-        this.status=0
-        this.kycVerState = 0
+      }else if(val === 1  && this.nextKyc){
+        
         if(this.$store.state.homeTabstate ==='sellCrypto'){
-          sessionStorage.removeItem('getToken')
-            sessionStorage.removeItem('sellState')
-            this.$router.push('/sellOrder')
+           let params = {
+          sellCardDTO: this.$store.state.sellRouterParams.confirmParams,
+          orderId: this.$store.state.cardInfoFromPath === 'configSell' ? '' : this.$store.state.sellOrderId, // 不传为新增卡信息，传为修改卡信息
+          cryptoCurrency: this.$store.state.sellRouterParams.currencyData.name,
+          sellVolume: this.$store.state.sellRouterParams.amount,
+          network: this.$store.state.sellRouterParams.currencyData.sellNetwork.network,
+        }
+        this.$axios.post(this.$api.post_sellForm,params,'').then(res=>{
+            if(res && res.returnCode === '0000'){
+            //存储数据 加密字段
+           
+              this.$store.state.sellOrderId = res.data.orderId;
+              this.$store.state.nextOrderState = 1;
+              sessionStorage.removeItem('getToken')
+              sessionStorage.removeItem('sellState')
+              this.nextKyc = false
+              this.status=0
+                this.kycVerState = 0
+              this.$router.push('/sellOrder')
+            }else{
+              // this.status=0
+              // this.kycVerState = 0
+              this.nextKyc = false
+            }
+        })
         }else{
           // console.log(this.$store.state.WhichPage);
           this.$router.push(this.$store.state.WhichPage)
@@ -254,7 +275,7 @@ export default {
       },200)
    }else{
     //  this.status=0
-    //     this.kycVerState = 0
+    //     this.kycVerState = 1
      return false
    }
 

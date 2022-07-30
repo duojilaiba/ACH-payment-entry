@@ -65,6 +65,7 @@ const store = new Vuex.Store({
                 alpha2: '',
                 code: '',
             },
+            confirmParams: {},
         },
 
         sellForm: {},
