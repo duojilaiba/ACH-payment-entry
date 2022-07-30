@@ -400,10 +400,12 @@ export default {
           if(res.data === true){
             this.$store.state.sellRouterParams.positionData = this.$store.state.sellRouterParams.formPositionData;
             this.$store.state.sellRouterParams.fullName = val.name;
+            this.$store.state.sellRouterParams.historyBack = 'back';
             this.request_loading = false;
             this.$router.push('/kycVerification');
           }else{
             this.$store.state.sellRouterParams.positionData = this.$store.state.sellRouterParams.formPositionData;
+            this.$store.state.sellRouterParams.historyBack = 'back';
             this.request_loading = false;
             this.$router.push('/sellOrder');
           }

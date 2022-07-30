@@ -356,25 +356,9 @@ export default {
       }
       //状态为2 - 区块链确认中、确认数量为0
       if(state === 'payNow'){
-        let params = {
-          amount: val.orderAmount * val.price
-        }
-        var FormData = require('form-data');
-        var data = new FormData();
-        data.append('amount', params.amount);
-        this.$axios.post(this.$api.post_getKycStatus,data,'').then(res=>{
-          if(res && res.returnCode === '0000'){
-            if(res.data === true){
-              this.$store.state.sellRouterParams.fullName = val.cardHolderName;
-              this.$store.state.sellOrderId = val.orderId;
-              this.$router.push('/kycVerification');
-            }else{
-              this.$store.state.sellOrderId = val.orderId;
-              this.$store.state.nextOrderState = 1;
-              this.$router.push(`/sellOrder`);
-            }
-          }
-        })
+        this.$store.state.sellOrderId = val.orderId;
+        this.$store.state.nextOrderState = 1;
+        this.$router.push(`/sellOrder`);
         return;
       }
       //退款

@@ -65,6 +65,9 @@ const store = new Vuex.Store({
                 alpha2: '',
                 code: '',
             },
+
+            //交易历史跳转订单订单状态返回
+            historyBack: '',
         },
 
         sellForm: {},
