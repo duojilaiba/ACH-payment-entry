@@ -61,7 +61,7 @@
 <!--      {{ $t('nav.Continue') }}-->
       Completed
       <img class="rightIcon" src="../../../assets/images/button-right-icon.svg" alt="" v-if="!request_loading">
-      <van-loading class="icon rightIcon loadingIcon" type="spinner" color="#fff" v-else/>
+      <i class="el-icon-loading rightIcon loadingIcon" v-else></i>
     </button>
   </div>
 </template>
@@ -476,7 +476,8 @@ export default {
       font-size: 0.12rem;
     }
     .loadingIcon{
-      top: 0.15rem;
+      //top: 0.15rem;
+      font-size: 0.24rem;
     }
   }
   .continue:disabled{

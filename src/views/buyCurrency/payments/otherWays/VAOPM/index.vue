@@ -35,6 +35,7 @@
       </button>
       <!-- I confirm that the payment has been completed.-->
       <Button :buttonData="buttonData" :disabled="payState" @click.native="submit" ref="button_ref" v-else></Button>
+      <div class="companyAddress">Alchemy GPS Europe UAB, Laisvés pr. 60, LT-05120 Vilnius</div>
     </div>
   </div>
 </template>
@@ -358,6 +359,15 @@ export default {
   .continue:disabled{
     background: rgba(0, 89, 218, 0.5);
     cursor: no-drop;
+  }
+  .companyAddress{
+    width: 100%;
+    font-size: 0.13rem;
+    font-family: "GeoLight", GeoLight;
+    font-weight: normal;
+    color: #c2c2c2c2;
+    text-align: center;
+    margin-top: 0.12rem;
   }
 }
 

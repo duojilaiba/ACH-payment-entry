@@ -205,6 +205,12 @@ export default {
         color: #0059DA;
         margin-left: 0.08rem;
         cursor: pointer;
+        p:first-child{
+          max-width: 0.9rem;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
         p:last-child{
           display: flex;
           justify-content: center;

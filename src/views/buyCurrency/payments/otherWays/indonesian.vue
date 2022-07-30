@@ -32,6 +32,7 @@
         </transition>
       </div>
       <Button :buttonData="buttonData" :disabled="disabled" ref="button_ref" @click.native="submit"></Button>
+      <div class="companyAddress">Alchemy GPS Europe UAB, Laisvés pr. 60, LT-05120 Vilnius</div>
     </div>
   </div>
 </template>
@@ -459,5 +460,15 @@ export default {
 //二维码
 .QRISCode:hover{
   pointer-events: none;
+}
+
+.companyAddress{
+  width: 100%;
+  font-size: 0.13rem;
+  font-family: "GeoLight", GeoLight;
+  font-weight: normal;
+  color: #c2c2c2c2;
+  text-align: center;
+  margin-top: 0.12rem;
 }
 </style>
