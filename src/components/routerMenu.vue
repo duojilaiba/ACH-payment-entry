@@ -52,7 +52,7 @@
         <div class="lineName">{{ $t('nav.menu_logOut') }}</div>
       </div>
       <div class="lineRight" style="margin:0">
-        
+
         <div class="email" style="width:1.3rem; overflow: hidden;text-overflow:ellipsis;white-space: nowrap;line-height:.2rem;display:flex;justify-content: space-between;  align-items: center;"><img style="margin-right:.02rem" :src="disAbled===true?kycError:disAbled===false?kycSess:''"   alt="">{{ emailSlice   }} </div>
         <div><img src="../assets/images/slices/right_icon.png"></div>
       </div>
@@ -89,22 +89,22 @@ export default {
         pageIndex: 1,
         pageSize: 5,
         historyList:[],
-        
+
       },
-     
+
       finished:false,
       newVal:'',
       disAbled:'',
       kycError:require('@/assets/images/AccountRisk.png'),
       kycSess:require('@/assets/images/kycScuss.png'),
-      
+
     }
   },
   activated(){
     localStorage.getItem("token") ? this.token = true : this.token =false;
     localStorage.getItem("email") ? this.email = AES_Decrypt(localStorage.getItem("email")) :this.email = '';
- 
-    
+
+
     // this.transationsList()
   },
   deactivated(){
@@ -155,7 +155,7 @@ export default {
     },
     //Exit the login hidden menu and clear the login information
     outLogin(){
-      
+
       if(this.email){
         this.$axios.post(this.$api.post_outLogin,'','').then(res=>{
           if(res && res.returnCode === "0000"){
@@ -174,7 +174,7 @@ export default {
               this.$parent.routerViewState = true
               setTimeout(()=>{
                 this.$parent.routerViewState = false
-             
+
               },200)
               this.$router.replace('/')
             return
@@ -182,7 +182,7 @@ export default {
                 this.token = false
                 this.email = ''
             }
-             
+
           }
         })
       }
@@ -206,14 +206,13 @@ export default {
           message: this.$t('nav.login_Youlogged')
         });
       }else{
-        
+
         setTimeout(() => {
           this.loading = false
           this.$store.state.routerQueryPath = true
-        this.$parent.routerViewState = true;
-        //是否是从菜单进入
-        
-        this.$router.push('/emailCode')
+          this.$parent.routerViewState = true;
+          //是否是从菜单进入
+          this.$router.push('/emailCode')
         }, 200);
       }
     },
@@ -226,7 +225,7 @@ export default {
         this.$refs.loginOutView.style = 'left:50%;top:30%;tannsfrom:translate(-50%,-30%)'
       }
       this.show = true
-      
+
     },
     //是否有历史记录
     transationsList(){
@@ -268,7 +267,7 @@ export default {
         }
       })
     },
-  
+
   },
   computed:{
     emailSlice(){
@@ -276,8 +275,8 @@ export default {
       let email1 = email.slice(0,3)+' *** '+ email.slice(email.indexOf('@'),email.indexOf('@')+6)  + '...'
       return email1
     },
-   
-  
+
+
   },
   watch:{
     //打开菜单栏并且已经登陆以后才会获取有没有历史记录
@@ -288,7 +287,7 @@ export default {
         if(newVal  === true){
           localStorage.getItem("token") ? this.token = true :this.token = false;
           localStorage.getItem("email") ? this.email = AES_Decrypt(localStorage.getItem("email")) :this.email = '';
-       
+
         }
          if(newVal === true && localStorage.getItem("token")){
 
@@ -298,7 +297,7 @@ export default {
          }
       }
     },
-    
+
   }
 }
 </script>
@@ -316,7 +315,7 @@ export default {
     font-weight: normal;
     color: #063376;
     font-weight: 500;
-    
+
   img{
     width: .2rem;
     cursor: pointer;
@@ -442,7 +441,7 @@ export default {
     cursor: pointer;
     margin-top: .3rem;
     .lineName{
-      
+
       margin-left: .16rem;
       flex: 1;
       p:first-child{
@@ -482,7 +481,7 @@ export default {
     left: 0;
     top: 0;
     .content{
-     
+
       max-width: 3.5rem;
       background: #FFFFFF;
       border-radius: 16px;
@@ -495,7 +494,7 @@ export default {
       align-items: center;
       padding: .32rem .16rem .32rem;
       box-sizing: border-box;
-      
+
       h2{
         text-align: center;
         font-style: normal;
@@ -542,7 +541,7 @@ export default {
         }
       }
     }
-   
+
   }
 }
 </style>

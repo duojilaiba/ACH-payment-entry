@@ -259,9 +259,25 @@ export default {
       this.$router.push(`/Refund?orderId=${this.orderId}&cryptocurrency=${this.detailsData.cryptocurrency}&fiatName=${this.detailsData.fiatName}`);
     },
     payNow(){
-      this.$store.state.sellOrderId = this.detailsData.orderId;
-      this.$store.state.nextOrderState = 1;
-      this.$router.push(`/sellOrder`);
+      let params = {
+        amount: this.detailsData.orderAmount * this.detailsData.price
+      }
+      var FormData = require('form-data');
+      var data = new FormData();
+      data.append('amount', params.amount);
+      this.$axios.post(this.$api.post_getKycStatus,data,'').then(res=>{
+        if(res && res.returnCode === '0000'){
+          if(res.data === true){
+            this.$store.state.sellRouterParams.fullName = this.detailsData.cardHolderName;
+            this.$store.state.sellOrderId = this.detailsData.orderId;
+            this.$router.push('/kycVerification');
+          }else{
+            this.$store.state.sellOrderId = this.detailsData.orderId;
+            this.$store.state.nextOrderState = 1;
+            this.$router.push(`/sellOrder`);
+          }
+        }
+      })
     },
 
     copy(){

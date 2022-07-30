@@ -116,8 +116,6 @@ import { AES_Encrypt } from '@/utils/encryp.js';
             _this.$store.state.menuState = 'login'
             localStorage.setItem('login_email',_this.$store.state.userEmail)
 
-            // console.log(this.$store.state.emailFromPath);
-            // return
             if(_this.$store.state.routerQueryPath === true){
               _this.$router.push('/');
               return
@@ -129,17 +127,14 @@ import { AES_Encrypt } from '@/utils/encryp.js';
               if(_this.$store.state.emailFromPath === 'buyCrypto'){
                 _this.$router.replace(`/receivingMode`);
               }else if(_this.$store.state.emailFromPath === 'sellCrypto'){
-                  // _this.$router.push('/')
-                  _this.$router.replace('/sell-formUserInfo')
-
-              }if(_this.$store.state.emailFromPath === '/Refund'){
+                _this.$router.replace('/sell-formUserInfo')
+              }else if(_this.$store.state.emailFromPath === '/Refund'){
                 _this.$router.replace('/Refund')
               }else{
                 _this.$router.push('/');
               }
             }
           }else if(response.returnCode === "10002" || response.returnCode === "10003" || response.returnCode === "1026" || response.returnCode === "1027" || response.returnCode === "1025"){
-            // console.log(111);
             _this.codeErrorState = false;
             _this.showLoading = false
             _this.$toast({
