@@ -141,7 +141,7 @@ export default{
           this.$store.state.orderStatus = res.data
           this.playMoneyState = res.data.orderStatus
           this.network1 = res.data.networkName
-          if(this.orderStateData.orderStatus==2 && this.$store.state.nextOrderState == 1 && res.data.expirationTime>0){
+          if(this.orderStateData.orderStatus==2 && this.$store.state.nextOrderState == 1 && res.data.expirationTime>0 && res.data.confirmBlock > 0){
             this.$store.state.nextOrderState = 2
           }
           if(this.playMoneyState==7){

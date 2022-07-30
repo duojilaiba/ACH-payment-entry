@@ -40,6 +40,7 @@ export default {
 
   activated(){
     this.orderId = this.$route.query.orderId;
+    this.$store.state.emailFromPath = '/Refund'
     this.queryRefundInfo();
   },
   methods: {
