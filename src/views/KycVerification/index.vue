@@ -150,7 +150,7 @@ export default {
         return 
       //成功下一步
       }else if(val === 1  && this.nextKyc){
-        
+        this.nextKyc = false
         if(this.$store.state.homeTabstate ==='sellCrypto'){
            let params = {
           sellCardDTO: this.$store.state.sellRouterParams.confirmParams,
@@ -167,14 +167,15 @@ export default {
               this.$store.state.nextOrderState = 1;
               sessionStorage.removeItem('getToken')
               sessionStorage.removeItem('sellState')
-              this.nextKyc = false
+              this.nextKyc = true
+              
+              this.$router.push('/sellOrder')
               this.status=0
                 this.kycVerState = 0
-              this.$router.push('/sellOrder')
             }else{
               // this.status=0
               // this.kycVerState = 0
-              this.nextKyc = false
+              this.nextKyc = true
             }
         })
         }else{
@@ -274,14 +275,15 @@ export default {
         this.launchWebSdk(this.getToken)
       },200)
    }else{
-    //  this.status=0
-    //     this.kycVerState = 1
+     this.status=0
+        this.kycVerState = 1
      return false
    }
 
   //  console.log(this.kycVerState=2);
   },
   deactivated(){
+    this.$store.state.emailFromPath = 'kyc'
     clearTimeout(this.timeOut)
     sessionStorage.removeItem('kycVerState')
     sessionStorage.removeItem('sellState')
