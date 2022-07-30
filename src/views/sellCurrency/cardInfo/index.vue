@@ -398,6 +398,7 @@ export default {
         if(res && res.returnCode === '0000'){
           if(res.data === true){
             this.$store.state.sellRouterParams.positionData = this.$store.state.sellRouterParams.formPositionData;
+
             this.$store.state.sellRouterParams.fullName = val.name
             this.$store.state.sellRouterParams.confirmParams = val;
             console.log(this.$store.state.sellRouterParams.confirmParams,val)
@@ -414,12 +415,21 @@ export default {
               this.$store.state.sellForm = sellForm;
               this.$store.state.sellOrderId = res.data.orderId;
               this.request_loading = false;
+
+            this.$store.state.sellRouterParams.fullName = val.name;
+            this.$store.state.sellRouterParams.historyBack = 'back';
+            this.request_loading = false;
+
             this.$router.push('/kycVerification');
             
           }else{
             this.$store.state.sellRouterParams.positionData = this.$store.state.sellRouterParams.formPositionData;
+
             this.processRequest(val);
             // 
+
+            this.$store.state.sellRouterParams.historyBack = 'back';
+
             this.request_loading = false;
           }
         }
