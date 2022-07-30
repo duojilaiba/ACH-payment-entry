@@ -83,7 +83,11 @@ export default {
   },
   methods:{
     goSellOrder(){
-    
+      if(this.$store.state.sellRouterParams.historyBack == 'back'){
+         this.$router.go(-1)
+         this.$store.state.sellRouterParams.historyBack = ''
+         return
+      }
       setTimeout(() => {
         this.$store.state.nextOrderState = 1
       }, 1000);

@@ -296,7 +296,11 @@ export default {
     },
     //进行返回首页或者下一步的显示隐藏
     buttonNext(val){
-      
+      if(this.$store.state.sellRouterParams.historyBack == 'back'){
+         this.$router.go(-1)
+         this.$store.state.sellRouterParams.historyBack = ''
+         return
+      }
       
       if(val === 'goHome'){
         this.$router.replace('/')
