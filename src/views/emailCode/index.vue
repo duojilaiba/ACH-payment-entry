@@ -201,9 +201,7 @@ export default {
               if(_this.$store.state.emailFromPath === 'buyCrypto'){
                 _this.$router.replace(`/receivingMode`);
               }else if(_this.$store.state.emailFromPath === 'sellCrypto'){
-                  // _this.$router.push('/')
-                  _this.$router.replace('/sell-formUserInfo')
-
+                _this.$router.replace('/sell-formUserInfo')
               }else if(_this.$store.state.emailFromPath === '/Refund'){
                 _this.$router.replace('/Refund')
               }else{
