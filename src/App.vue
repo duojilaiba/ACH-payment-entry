@@ -2,15 +2,19 @@
   <div id="viewBox" ref="viewApp">
     <div class="buyCrypto_iframe_view" :class="{'buyCrypto_iframe_view_pc': logoState===true}"  >
         <div id="App" >
-          <!-- logo view for phone -->
-          <div class="logoView_phone"><img src="./assets/images/phoneLogo.svg" @click="goHome"></div>
+          <!-- 顶部logo -->
+          <!-- <div class="viewTab_logo" v-if="$route.path!=='/kycVerification'">
+            <img src="@/assets/images/achLogo.svg" alt="" @click="goHome"> -->
+            <!-- this.$store.state.customized_orderMerchant 商户订单状态不展示菜单 -->
+            <!-- <img src="@/assets/images/rightMeun.png" alt="" @click="routerViewState=!routerViewState" v-show="routerViewState && $route.path!=='/emailCode' && $route.path!=='/verifyCode'  && this.$store.state.customized_orderMerchant === true">
+          </div> -->
           <!-- 导航栏 -->
           <tab ref="viewTab"/>
           <!-- 页面内容 -->
           <div class="routerView_box" v-show="routerViewState">
             <div class="routerView">
               <keep-alive class="keepAlive" :exclude="keepAlive">
-                <router-view/>
+                <router-view ref="routerView"/>
               </keep-alive>
             </div>
           </div>
@@ -18,8 +22,12 @@
           <routerMenu v-if="!routerViewState"/>
           <!-- 语言切换 -->
           <Language v-if="LanguageShow"/>
-          <!-- 确认支付后查询支付状态提示框 -->
+          <!-- 买币 - 确认支付后查询支付状态提示框 -->
           <QueryOrderStatusTips v-if="tipsState"/>
+          <!-- 卖币 - 历史卡信息 -->
+          <HistoricalCardInfoSell v-if="historicalCardInfoSell_state"/>
+          <!-- 卖币 - 扫码识别网络 -->
+          <ScanCode v-if="scanCode_state"/>
         </div>
       <!-- pc端展示logo -->
       <div class="logoView" v-if="logoState">
@@ -28,6 +36,16 @@
       </div>
       <!-- 版本号 -->
 <!--      <span class="version">V: {{ version }}</span>-->
+        <!-- 账号风险提示无法进行下一步 -->
+        <div class="kycToast" v-show="AccountisShow">
+          <div>
+            <img src="@/assets/images/kycDisable.png" alt="">
+              <div>
+             This account is at risk and cannot be traded now.
+              </div>
+            <div @click="goHome">Confirm</div>
+          </div>
+        </div>
     </div>
   </div>
 </template>
@@ -39,17 +57,22 @@ import QueryOrderStatusTips from "./components/QueryOrderStatusTips";
 import Language from './components/Language.vue'
 import common from "./utils/common";
 import remSize from './utils/remSize';
+import HistoricalCardInfoSell from "./components/HistoricalCardInfo-sell";
+import ScanCode from "./components/ScanCode";
 
 export default {
   name: 'App',
-  components: { tab, routerMenu, QueryOrderStatusTips ,Language},
+  components: {ScanCode, HistoricalCardInfoSell, tab, routerMenu, QueryOrderStatusTips ,Language},
   data(){
     return{
       routerViewState: true,
       logoState: true,
       tipsState: false,
       version: '',
-      LanguageShow:true
+      LanguageShow: true,
+      historicalCardInfoSell_state: false,
+      AccountisShow: false,
+      scanCode_state: false,
     }
   },
   computed:{
@@ -127,9 +150,10 @@ export default {
     },
     goHome(){
       //存在商户订单禁止点击logo跳转
-      if(this.$store.state.goHomeState === false){
+      if(this.$store.state.customized_orderMerchant === false){
         return;
       }
+      this.AccountisShow = false
       if(this.$route.path === '/' && this.LanguageShow === true){
         this.$children[1].menuState = false;
         this.$store.state.LanguageIsShow = false;
@@ -181,6 +205,13 @@ export default {
   font-weight: normal;
   font-style: normal;
 }
+
+@font-face {
+  font-family: "SFProDisplaybold";
+  src: url('./assets/fonts/Fieldwork/SF-Pro-Display-Semibold的副本.otf');
+  font-weight: normal;
+  font-style: normal;
+}
 @font-face {
   font-family: "GeoBold";
   src: url('./assets/fonts/Fieldwork/Fieldwork16-GeoBold.otf');
@@ -196,6 +227,25 @@ export default {
 @font-face {
   font-family: "GeoRegular";
   src: url('./assets/fonts/Fieldwork/Fieldwork10-GeoRegular.otf');
+  font-weight: normal;
+  font-style: normal;
+}
+// 新增字体包
+@font-face {
+  font-family: "SFProDisplaybold";
+  src: url('./assets/fonts/Fieldwork/SF-Pro-Display-Medium的副本.otf');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "SFProDisplayRegular";
+  src: url('./assets/fonts/Fieldwork/SF-Pro-Display-Regular的副本.otf');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "SFProDisplayMedium";
+  src: url('./assets/fonts/Fieldwork/SF-Pro-Display-Medium的副本.otf');
   font-weight: normal;
   font-style: normal;
 }
@@ -233,8 +283,74 @@ html,body,#app,#viewBox{
   justify-content: center;
   align-items: center;
 }
+.kycToast{
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.15);
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  >div{
+    width: 90%;
+    max-width: 3.5rem;
+    // height: 2.5rem;
+    background: #FFFFFF;
+    border-radius: .18rem;
+    padding: .28rem .16rem .32rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    >img{
+      height: .36rem;
+      margin-bottom: .12rem;
+    }
+    div:nth-of-type(1){
+      font-family: SFProDisplayRegular;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 24px;
+      text-align: center;
+      color: #949EA4;
+    }
+    div:nth-of-type(2){
+      width: 100%;
+      height: .5rem;
+      background:  #E55643;
+      font-family: SFProDisplayMedium;
+      color: #FFFFFF;
+      text-align: center;
+      line-height: .5rem;
+      border-radius: .3rem;
+      margin-top: .32rem;
+      cursor: pointer;
+    }
+  }
+
+}
 .buyCrypto_iframe_view_pc{
-  padding: 0.40rem 0.30rem 0.40rem 0.30rem !important;
+  padding: 0.56rem 0.30rem 0.26rem 0.30rem !important;
+}
+.viewTab_logo{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: .35rem;
+  position: relative;
+  img:nth-of-type(1){
+    height: .15rem;
+    cursor: pointer;
+  }
+  img:nth-of-type(2){
+    // width: .16rem;
+   height: .16rem;
+   position: absolute;
+   right: 0;
+   cursor: pointer;
+  }
 }
 .buyCrypto_iframe_view{
   width: 375px;
@@ -242,7 +358,7 @@ html,body,#app,#viewBox{
   background: #FFFFFF;
   border-radius: 0.25rem;
   position: relative;
-  padding: 0.26rem 0.22rem;
+  padding: 0.2rem 0.22rem;
   display: flex;
   justify-content: center;
   margin-top: -0.6rem;
@@ -261,15 +377,6 @@ html,body,#app,#viewBox{
     img{
       width: 1.4rem;
       margin-left: 0.26rem;
-    }
-  }
-  .logoView_phone{
-    display: flex;
-    align-items: center;
-    padding-bottom: 0.24rem;
-    img{
-      width: 1.3rem;
-      cursor: pointer;
     }
   }
   .version{

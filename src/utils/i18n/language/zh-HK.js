@@ -9,6 +9,7 @@ module.exports = {
         ConfirmPayment: '確認付款',
         queryOderState: '我已經完成付款',
         orderRsult: '返回首頁',
+        Proceed:'進行',
 
         /**
          * 组件
@@ -53,11 +54,13 @@ module.exports = {
         loginOut: '退出',
         loginOut_title: '確定退出?',
         loginOut_Dismiss: '取消',
-        enterEmail: '輸入email地址',
+        enterEmail: '你的電子郵件地址是什麼？',
+        enterEmail1: '這是您的電子郵件位址嗎？',
+        emailanother:'使用其他電子郵件地址登錄',
         loginTitle1: '通過Alchemy Pay結算',
         loginTitle2: '在數以百計的加密幣APP中最快捷、安全的結算方式。',
-        codeTitle1: '已將確認碼發送至您的郵箱。',
-        codeTitle2: '如果您未收到確認碼',
+        codeTitle1: '輸入您剛剛收到的登錄代碼',
+        codeTitle2: '未收到？',
         codeTitle3: '將發送新的確認碼',
         codeSecond: 's',
         code_: ' 我同意Alchemy Pay之',
@@ -164,7 +167,7 @@ module.exports = {
         Sellorder_within:'至本地址',
         Sellorder_will:'將',
         Sellorder_get:'獲取',
-        Sellorder_for:'  為',
+        Sellorder_for:'  從',
         Sellorder_details:'請修改您銀行卡的詳細信息',
         Sellorder_page:'若繼續賣幣，請返回首頁',
         Sellorder_Crypto:'發送幣',
@@ -284,9 +287,12 @@ module.exports = {
         result_stateTo5: '已轉至您的錢包地址。',
         result_returnText_merchant: ' 返回',
         buy_configPayIDR_ovo_title: 'OVO電話',
-        login_getCode: '重新發送',
+        login_getCode: '重新發送驗證碼',
         login_VerifyCode:'請輸入六位數驗證碼',
-        login_Agreement:'請勾選用戶協定'
+        login_Agreement:'請勾選用戶協定',
+        sell_Order_network_selected:'請確保所選網路正確無誤，以免資產損失。',
+        Sell_Order_haveSent:'我已發送',
+        Sell_Order_transferred:'我已將加密貨幣轉移到指定的位址和網路。'
 
     }
 }

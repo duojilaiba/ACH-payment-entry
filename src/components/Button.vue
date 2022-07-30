@@ -1,9 +1,9 @@
 <template>
-  <button class="button" :disabled="disabled" @click="submit" :class="{'loadingDisabled': this.buttonData.triggerNum >= 1 && loadingDisabled}">
+  <button class="button" :disabled="disabled" @click="submit" :class="{'loadingDisabled': this.buttonData.triggerNum >= 1 && loadingDisabled}" ref="buttonChild_ref">
     <slot v-if="buttonData.customName"/>
     <div v-else>{{ $t(buttonName) }}</div>
     <i v-if="buttonData.loading" class="el-icon-loading loadingIcon"></i>
-    <img v-else class="rightIcon" src="../assets/images/button-right-icon.png" alt="">
+    <img v-else class="rightIcon" src="../assets/images/button-right-icon.svg" alt="">
   </button>
 </template>
 

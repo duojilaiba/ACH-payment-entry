@@ -2,27 +2,33 @@
   <div id="buyCrypto">
     <!-- 买币功能模块 -->
     <div class="buyCrypto_content">
-      <div class="form_title pay_title">{{ $t('nav.home_youSell') }}</div>
-      <div class="methods_select cursor">
-        <!-- @blur="youPayBlur" -->
-        <van-field class="pay_input" type="number" v-model.number="payAmount" @input="inputChange" :disabled="payAmountState" pattern="[0-9]*" inputmode="decimal" placeholder="0.00"/>
+      <div class="methods_select cursor" :class="{'inputFocus': inputFocus}">
+        <div class="methods_select-left">
+          <div class="form_title pay_title">{{ $t('nav.home_youSell') }}</div>
+          <van-field class="pay_input" type="number" v-model.number="payAmount" @focus="inputFocus=true" @blur="inputFocus=false" @input="inputChange" :disabled="payAmountState" pattern="[0-9]*" inputmode="decimal" placeholder="0.00"/>
+        </div>
         <div class="get_company" @click="openSearch('currency-sell')">
-          <div class="getImg"><img :src="currencyData.icon"></div>
+          <div class="getImg networkImg">
+            <img :src="currencyData.icon">
+            <div class="networkIcon" v-if="currencyData.sellNetwork && currencyData.sellNetwork.logo"><img :src="currencyData.sellNetwork.logo"></div>
+          </div>
           <div class="getText">{{ currencyData.name }}</div>
           <div class="rightIcon"><img src="@/assets/images/blackDownIcon.png"></div>
         </div>
+        <div class="warning_text" v-if="warningTextState" v-html="payAmount_tips"></div>
       </div>
-      <div class="warning_text" v-if="warningTextState" v-html="payAmount_tips"></div>
 
-      <div class="form_title get_title">{{ $t('nav.home_buyFee_title1') }}</div>
       <div class="methods_select cursor">
-        <div class="get_input">
-          <span v-if="getAmount!==''">{{ getAmount }}</span>
-          <span class="no_getAmount" v-else>0.00</span>
+        <div class="methods_select-left">
+          <div class="form_title">{{ $t('nav.home_buyFee_title1') }}</div>
+          <div class="get_input">
+            <span v-if="getAmount!==''">{{ getAmount }}</span>
+            <span class="no_getAmount" v-else>0.00</span>
+          </div>
         </div>
-        <div class="pay_company" @click="openSearch('payCurrency-sell')">
-          <div class="countryIcon"><img :src="positionData.positionImg"></div>
-          <div>{{ payCommission.code }}</div>
+        <div class="get_company" @click="openSearch('payCurrency-sell')">
+          <div class="getImg"><img :src="positionData.positionImg"></div>
+          <div class="getText">{{ payCommission.code }}</div>
           <img class="rightIcon" src="@/assets/images/blackDownIcon.png">
         </div>
       </div>
@@ -35,17 +41,23 @@
 
     <footer>
       <button class="continue" @click="nextStep" :disabled="!continueState" :class="{'continue_true': continueState}">
-        {{ $t('nav.Continue') }}
-        <img class="rightIcon" src="../../../assets/images/button-right-icon.png" alt="">
+        Proceed · Sell {{ currencyData.name }}
+        <img class="rightIcon" src="../../../assets/images/button-right-icon.svg" alt="">
       </button>
-      {{ $t('nav.home_Tips') }}
+      <p class="cookieTips">{{ $t('nav.home_Tips') }}</p>
+      <div class="footer_logoView">
+        <p class="logoText">Powered By</p>
+        <div class="logo">
+          <img src="../../../assets/images/homePageLogo.jpg" alt="">
+        </div>
+      </div>
     </footer>
   </div>
 </template>
 
 <script>
 import common from "../../../utils/common";
-import IncludedDetailsSell from '../../../components/IncludedDetailsSell';
+import IncludedDetailsSell from '../../../components/IncludedDetails-sell';
 
 export default {
   name: "buyCrypto",
@@ -89,6 +101,8 @@ export default {
       allPayCommission: [],
 
       triggerType: "hover",
+
+      inputFocus: false,
     }
   },
   computed: {
@@ -151,11 +165,6 @@ export default {
         this.payAmount = val.substr(0,val.indexOf('.')+7);
       }
     },
-    // youPayBlur(){
-    //   if(this.payAmount > 0){
-    //     this.payAmount = (Math.round(this.payAmount*100)/100).toFixed(2);
-    //   }
-    // },
 
     //Process the quantity and display status of received legal currency
     amountControl(){
@@ -247,11 +256,13 @@ export default {
             this.currencyData = {
               icon: item.logoUrl,
               name: item.name,
-              maxSell: item.maxSell,
-              minSell: item.minSell,
-              cryptoCurrencyNetworkId: item.cryptoCurrencyNetworkId
+              maxSell: item.sellNetworkList[0].maxSell,
+              minSell: item.sellNetworkList[0].minSell,
+              cryptoCurrencyNetworkId: item.cryptoCurrencyNetworkId,
+              sellNetwork: item.sellNetworkList[0]
             }
-            this.$store.state.feeParams.symbol = item.name; //name -- popularList币种
+            this.$store.state.feeParams.symbol = item.symbol; //name -- popularList币种
+            this.$store.state.feeParams_order.symbol = item.symbol; //name -- popularList币种
             this.$store.state.sellRouterParams.cryptoCurrency = item.name;
             this.$store.state.sellRouterParams.currencyData = this.currencyData;
           }
@@ -275,7 +286,9 @@ export default {
       //费用所需参数
       this.$store.state.sellRouterParams.payCommission = this.payCommission;
       this.$store.state.feeParams.fiatCode = this.payCommission.code;
-      this.$store.state.feeParams.worldId = data.worldId;
+      this.$store.state.feeParams.alpha2 = data.alpha2;
+      this.$store.state.feeParams_order.fiatCode = this.payCommission.code;
+      this.$store.state.feeParams_order.alpha2 = data.alpha2;
       this.positionData.worldId = data.worldId;
       this.$store.state.sellRouterParams.positionData = this.positionData;
       this.amountControl();
@@ -284,7 +297,6 @@ export default {
     nextStep(){
       //是否是从菜单进入
       this.$store.state.routerQueryPath = false
-
       // this.payCommission.symbol = this.$store.state.feeParams.symbol;
       // let routerParams = {
       //   amount: this.payAmount,
@@ -295,27 +307,32 @@ export default {
       //   positionData: this.positionData
       // }
       // this.$store.state.sellRouterParams = JSON.parse(JSON.stringify(routerParams));
-      //获取用户卡信息
-      let params = {
-        country: this.positionData.alpha2,
-        fiatName: this.positionData.code,
-      };
-      // Login information
-      this.$store.state.emailFromPath = 'sellCrypto';
-      this.$axios.get(this.$api.get_userSellCardInfo,params).then(res=>{
-        //data - null 没有填写过表单,跳转到表单页
-        //data - !null 有填写过表单,跳转到确认订单页
-        if(res && res.returnCode === "0000" && res.data === null){
-          this.$store.state.homeTabstate = 'sellCrypto';
-          this.$store.state.cardInfoFromPath = 'configSell';
-          delete this.$store.state.sellForm;
-          this.$router.push('/sell-formUserInfo')
-        }else if(res && res.returnCode === "0000" && res.data !== null){
-          this.$store.state.sellForm = res.data;
-          this.$store.state.homeTabstate = 'sellCrypto';
-          this.$router.push('/configSell')
-        }
-      })
+      this.positionData.enCommonName = this.positionData.positionValue;
+      this.$store.state.sellRouterParams.formPositionData = this.positionData;
+
+      //跳转填写卡信息
+      this.$store.state.homeTabstate = 'sellCrypto';
+
+      this.$store.state.cardInfoFromPath = 'configSell';
+
+      delete this.$store.state.sellForm;
+      delete this.$store.state.sellRouterParams.cardInfoList;
+      //是否为风险
+      if(localStorage.getItem("token")){
+        this.$axios.post(this.$api.post_kycDisabled,'','').then(res=>{
+          if(res && res.returnCode === '0000'){
+            //KYC失败次数过多 此账号为风险账号
+            if(res.data){
+              this.$parent.$parent.AccountisShow = true
+            }else{
+              this.$router.push('/sell-formUserInfo');
+            }
+          }
+        })
+      }else{
+        this.$store.state.emailFromPath = 'sellCrypto';
+        this.$router.push('/emailCode');
+      }
     },
   },
 }
@@ -336,132 +353,139 @@ html,body,#buyCrypto{
 }
 
 .form_title{
-  font-size: 0.14rem;
-  font-family: "GeoRegular", GeoRegular;
-  font-weight: 500;
-  color: #707070;
-  padding-bottom: 0.08rem;
+  font-family: 'SFProDisplayRegular',SFProDisplayRegular;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 0.13rem;
+  color: #949EA4;
 }
 
 .methods_title{
   margin-top: 0.2rem;
 }
 .methods_select{
-  min-height: 0.56rem;
-  background: #F3F4F5;
-  border-radius: 0.12rem;
-  font-size: 0.16rem;
-  font-family: "GeoDemibold", GeoDemibold;
-  font-weight: 500;
-  color: #232323;
-  line-height: 0.56rem;
+  min-height: 1.05rem;
+  background: #FFFFFF;
+  border: 1px solid #EEEEEE;
+  border-radius: 0.06rem;
   padding: 0 0.16rem;
   cursor: pointer;
+  display: flex;
+  align-items: center;
   position: relative;
+  &:nth-of-type(2){
+    margin-top: 0.12rem;
+  }
+}
+.inputFocus{
+  border: 1px solid #D0ECFC;
+  box-shadow: 0 0 0.35rem rgba(89, 153, 248, 0.1);
 }
 
 .pay_input{
-  width: 100%;
-  height: 100%;
+  width: 1.4rem;
   border: none;
   outline: none;
-  background: #F3F4F5;
-  font-size: 0.16rem;
-  font-family: "GeoRegular", GeoRegular;
+  font-family: 'SFProDisplayMedium',SFProDisplayMedium;
   font-weight: 500;
-  color: #232323;
-  padding: 0 0.56rem 0 0;
+  font-size: 0.2rem;
+  color: #0059DA;
+  padding: 0;
+  margin-top: 0.06rem;
   &::placeholder{
-    color: #999999 !important;
+    color: #C2C2C2 !important;
   }
-}
-.pay_company{
-  height: 100%;
-  position: absolute;
-  top: 0;
-  right: 0;
-  min-width: 1.44rem;
-  border-radius: 0 0.12rem 0.12rem 0;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.16rem;
-  font-family: "GeoRegular", GeoRegular;
-  font-weight: normal;
-  color: #232323;
-  background: #EDEDEF;
-  .countryIcon{
-    display: flex;
-    margin-right: 0.1rem;
-    height: 0.288rem;
-    img{
-      width: 0.3rem;
-      border-radius: 50%;
-      background: #E0E0E0;
-    }
-  }
-  .rightIcon{
-    width: 0.24rem;
-    margin-left: 0.18rem;
-  }
-}
-.warning_text{
-  position: absolute;
-  font-size: 0.13rem;
-  font-family: "GeoLight", GeoLight;
-  font-weight: 400;
-  color: #E55643;
-  margin: 0.06rem 0.2rem 0 0.16rem;
 }
 
-.get_title{
-  margin-top: 0.4rem;
+.warning_text{
+  position: absolute;
+  bottom: 0.08rem;
+  left: 0.18rem;
+  font-family: 'SFProDisplayRegular',SFProDisplayRegular;
+  font-weight: 400;
+  font-size: 0.1rem;
+  color: #FF3333;
+  line-height: 0.12rem;
+}
+
+.methods_select-left{
+  margin-top: -0.1rem;
 }
 .get_input{
-  width: 100%;
-  height: 0.56rem;
-  padding: 0 1.5rem 0 0;
-  background: #F3F4F5;
-  font-size: 0.16rem;
-  font-family: "GeoRegular", GeoRegular;
+  width: 1.4rem;
+  height: 0.26rem;
+  overflow: auto;
+  font-family: SFProDisplayMedium;
   font-weight: 500;
-  color: #232323;
+  font-size: 0.2rem;
+  line-height: 0.24rem;
+  color: #063376;
+  margin-top: 0.06rem;
   .no_getAmount{
-    color: #999999;
+    color: #C2C2C2;
   }
 }
 .get_company{
-  position: absolute;
-  top: 0;
-  right: 0;
-  min-width: 1.44rem;
-  height: 100%;
-  border-radius: 0 0.12rem 0.12rem 0;
+  margin-left: auto;
+  margin-top: -0.1rem;
+  padding: 0 0.12rem;
+  min-width: 1.2rem;
+  height: 0.46rem;
+  background: #F7F8FA;
+  border: 1px solid #EEEEEE;
+  border-radius: 54px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "GeoRegular", GeoRegular;
-  background: #EDEDEF;
+  font-family: "SFProDisplayRegular", SFProDisplayRegular;
   cursor: pointer;
+  .networkImg{
+    margin-right: 0.12rem!important;
+  }
   .getImg{
     display: flex;
-    margin-right: 0.1rem;
+    margin-right: 0.06rem;
+    width: 0.24rem;
+    min-height: 0.24rem;
+    background: #94ACBA;
+    border-radius: 50%;
+    position: relative;
     img{
-      width: 0.3rem;
+      width: 0.24rem;
       border-radius: 50%;
+    }
+    .networkIcon{
+      background: #FFFFFF;
+      width: 0.16rem;
+      height: 0.16rem;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      bottom: 0;
+      right: -0.06rem;
+      img{
+        width: 0.12rem;
+        height: 0.12rem;
+        border-radius: 50%;
+      }
     }
   }
   .getText{
     display: flex;
-    font-size: 0.16rem;
-    font-family: 'GeoRegular', GeoRegular;
-    color: #232323;
-    margin-right: 0.18rem;
+    font-family: 'SFProDisplayRegular',SFProDisplayRegular;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 0.13rem;
+    color: #063376;
+    min-width: 0.28rem;
   }
   .rightIcon{
     display: flex;
     align-items: center;
+    width: 0.24rem;
+    margin-left: auto;
     img{
       width: 0.24rem;
     }
@@ -470,9 +494,36 @@ html,body,#buyCrypto{
 
 
 footer{
-  text-align: center;
-  font-size: 0.13rem;
-  font-family: "GeoRegular", GeoRegular;
+  .cookieTips{
+    font-family: SFProDisplayRegular;
+    font-weight: 400;
+    font-size: 0.13rem;
+    color: #C2C2C2;
+    text-align: center;
+  }
+  .footer_logoView{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0.08rem;
+    font-family: SFProDisplayRegular;
+    font-weight: 400;
+    font-size: 0.13rem;
+    color: #C2C2C2;
+    .logoText{
+      margin-right: 0.12rem;
+      margin-top: 0.02rem;
+    }
+    .logo{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 0.8rem;
+      img{
+        width: 0.8rem;
+      }
+    }
+  }
 }
 .continue{
   width: 100%;
@@ -486,13 +537,13 @@ footer{
   margin-top: 0.16rem;
   cursor: no-drop;
   border: none;
-  position: relative;
-  margin-bottom: 0.16rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0.12rem;
   .rightIcon{
-    position: absolute;
-    top: 0.17rem;
-    right: 0.32rem;
-    width: 0.24rem;
+    width: 0.2rem;
+    margin-left: 0.08rem;
   }
 }
 .continue_true{
@@ -504,69 +555,9 @@ footer{
   cursor: auto;
 }
 
-.feeViewBtn{
-  text-align: right;
-  font-size: 0.14rem;
-  font-family: 'Jost', sans-serif;
-  font-weight: 500;
-  color: #4479D9;
-  margin-top: 0.1rem;
-  cursor: pointer;
-}
-
 .calculationProcess{
-  margin-top: 0.32rem;
+  margin-top: 0.08rem;
   margin-bottom: 0.1rem;
-  .calculationProcess_line{
-    display: flex;
-    align-items: center;
-    margin-top: 0.13rem;
-    .line_name{
-      font-size: 0.14rem;
-      font-family: "GeoDemibold", GeoDemibold;
-      font-weight: 400;
-      color: #232323;
-      display: flex;
-      align-items: center;
-      .tipsIcon{
-        width: 0.14rem;
-        height: 0.14rem;
-        margin-left: 0.1rem;
-        display: flex;
-        img{
-          width: 100%;
-          height: 100%;
-        }
-      }
-    }
-    .line_number{
-      margin-left: auto;
-      font-size: 0.14rem;
-      font-family: 'Jost', sans-serif;
-      font-weight: bold;
-      color: #232323;
-      display: flex;
-      align-items: center;
-      .minText{
-        font-size: 0.14rem;
-        font-weight: 400;
-        color: #666666;
-        margin-right: 0.2rem;
-      }
-      .line_number_icon{
-        margin-right: 0.05rem;
-        img{
-          width: 0.12rem;
-        }
-      }
-      .line_number_red{
-        font-size: 0.14rem;
-        font-family: 'Jost', sans-serif;
-        font-weight: 500;
-        color: #FF0000;
-      }
-    }
-  }
 }
 
 @keyframes loadingIcon {
@@ -584,20 +575,18 @@ footer{
 }
 
 .pay_input ::v-deep .van-cell__value--alone{
-  min-height: 0.56rem;
+  min-height: 0.26rem;
 }
 .pay_input ::v-deep .van-field__control{
-  min-height: 0.56rem;
+  min-height: 0.26rem;
   border: none;
   outline: none;
-  background: #F3F4F5;
-  font-size: 0.16rem !important;
-  font-family: 'GeoRegular', GeoRegular;
+  font-size: 0.2rem !important;
+  font-family: 'SFProDisplayMedium',SFProDisplayMedium;
   font-weight: 500;
-  color: #232323 !important;
-  padding: 0 0.56rem 0 0;
+  color: #0059DA !important;
   &::placeholder{
-    color: #999999 !important;
+    color: #C2C2C2 !important;
   }
 }
 </style>

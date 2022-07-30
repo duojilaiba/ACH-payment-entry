@@ -2,29 +2,29 @@
   <!-- Payment information -->
   <div class="paymentInformation">
     <div class="feeTitle">
-      <div class="feeTitle-name">{{ $t('nav.home_feeTimeDownTitle') }}</div>
+      <div class="feeTitle-name">1 {{ routerParams.cryptoCurrency }} ≈ {{ price }} {{ payCommission.code }}</div>
       <div class="feeTitle-value">
         <div class="loading-svg">
-          <van-icon name="clock-o" />
+         <img src="@/assets/images/SellTime.png" alt="">
         </div>
-        <div class="feeTitle-value-text">{{ $t('nav.home_feeTimeDown') }}<span>{{ timeDownNumber }}</span>{{ $t('nav.codeSecond') }}</div>
+        <div class="feeTitle-value-text"><span>{{ timeDownNumber }}</span>{{ $t('nav.codeSecond') }}</div>
       </div>
     </div>
     <div class="fee-content">
       <div class="fee-content-title" @click="expandCollapse">
         <div class="left">
-          {{ $t('nav.home_youBuyGet') }} <span>{{ routerParams.getAmount }} {{ routerParams.cryptoCurrency }}</span> {{ $t('nav.home_buyFee_title2') }} <span>{{ payCommission.symbol }} {{ routerParams.amount }}</span>
+          {{ $t('nav.home_youBuyGet') }} <span>{{ routerParams.getAmount }} {{ routerParams.cryptoCurrency }}</span> {{ $t('nav.home_buyFee_title2') }} <span>{{ routerParams.amount }} {{ payCommission.code }}</span>
         </div>
         <!-- 商户接入模式禁止点击 -->
-        <div class="right" v-if="this.$store.state.goHomeState">
-          <img src="@/assets/images/blackDownIcon.png">
+        <div class="right" v-if="this.$store.state.customized_orderMerchant">
+          <img src="@/assets/images/blackDownIcon1.png">
         </div>
       </div>
       <div class="fee-content-details" v-if="detailsState">
-        <div class="fee-content-details-line">
-          <div class="title">{{ $t('nav.fee_listTitle_price') }}</div>
-          <div class="value">{{ payCommission.symbol }} {{ price }}</div>
-        </div>
+<!--        <div class="fee-content-details-line">-->
+<!--          <div class="title">{{ $t('nav.fee_listTitle_price') }}</div>-->
+<!--          <div class="value">{{ payCommission.symbol }} {{ price }}</div>-->
+<!--        </div>-->
         <div class="fee-content-details-line">
           <div class="title">
             {{ $t('nav.home_buyFee_rampFee') }}
@@ -109,7 +109,7 @@ export default {
       deep: true,
       immediate: true,
       handler(val,oldVal){
-        if(this.$store.state.goHomeState && val !== null && val !== '' && oldVal !== undefined && val !== oldVal){ // && (this.isHome === false || this.isHome === null)
+        if(this.$store.state.customized_orderMerchant && val !== null && val !== '' && oldVal !== undefined && val !== oldVal){ // && (this.isHome === false || this.isHome === null)
           this.queryFee();
           this.timingSetting();
         }
@@ -158,7 +158,7 @@ export default {
       deep: true,
       immediate: true,
       handler(val,oldVal){
-        if(this.$store.state.buyRouterParams.cryptoCurrency !== '' && this.$store.state.goHomeState === true && val !== oldVal){
+        if(this.$store.state.buyRouterParams.cryptoCurrency !== '' && this.$store.state.customized_orderMerchant === true && val !== oldVal){
           this.queryFee();
           this.timingSetting();
         }
@@ -274,7 +274,7 @@ export default {
     //Control details display status
     expandCollapse(){
       //商户接入模式禁止点击
-      if(!this.$store.state.goHomeState){
+      if(!this.$store.state.customized_orderMerchant){
         return;
       }
 
@@ -295,28 +295,32 @@ export default {
   .feeTitle{
     font-size: 13px;
     font-weight: normal;
-    color: #707070;
+    color: #949EA4;
     line-height: 15px;
     display: flex;
     align-items: center;
+    padding: 0 .2rem 0;
     .feeTitle-name{
-      font-family: "GeoRegular", GeoRegular;
+      font-family: SFProDisplayRegular;
+      color: #949EA4;
     }
     .feeTitle-value{
-      font-family: "GeoLight", GeoLight;
+      font-family: SFProDisplayRegular;
       display: flex;
       align-items: center;
       margin-left: auto;
       .loading-svg{
         margin-right: 0.04rem;
-        font-size: 0.15rem;
+
         margin-top: 0.02rem;
         img{
-          height: 0.12rem;
+          height: 0.14rem;
         }
       }
       .feeTitle-value-text{
+        color: #949EA4;
         span{
+
           display: inline-block;
           width: 0.15rem;
           text-align: center;
@@ -326,30 +330,31 @@ export default {
   }
 
   .fee-content{
-    background: #F3F4F5;
+    background: #F7F8FA;
     border-radius: 0.12rem;
-    margin-top: 0.08rem;
-    padding: 0 0.16rem;
+    margin-top: 0.36rem;
+    padding: 0 0.2rem .2rem;
     .fee-content-title{
-      padding: 0.19rem 0;
+      padding:.2rem 0rem .0rem;
       display: flex;
       align-items: center;
       font-size: 0.16rem;
-      font-family: Fieldwork-GeoLight, Fieldwork;
+      font-family: SFProDisplayRegular;
       font-weight: normal;
-      color: #232323;
+      color: #949EA4;
       cursor: pointer;
       span{
         font-weight: bold;
       }
       .left{
         word-break: break-all;
-        font-size: 0.16rem;
-        font-family: "GeoLight", GeoLight;
+        font-size: 0.13rem;
+        font-family: SFProDisplayRegular;
         font-weight: normal;
-        color: #232323;
+        color: #949EA4;
         span{
-          font-family: "GeoDemibold",GeoDemibold;
+          color: #063376;
+          font-family: SFProDisplayRegular;
         }
       }
       .right {
@@ -361,22 +366,22 @@ export default {
     }
 
     .fee-content-details{
-      border-top: 1px solid #E6E6E6;
-      padding: 0.04rem 0 0.16rem 0;
+      // border-top: 1px solid #E6E6E6;
+      padding: 0.0rem 0 0.0 0;
       .fee-content-details-line{
         display: flex;
         align-items: center;
-        margin-top: 0.12rem;
+        margin-top: 0.16rem;
         .title{
           display: flex;
           align-items: center;
-          font-size: 0.15rem;
+          font-size: 0.13rem;
           font-family: "GeoLight", GeoLight;
           font-weight: normal;
-          color: #232323;
+          color: #949EA4;
           .tipsIcon{
-            width: 0.16rem;
-            height: 0.16rem;
+            width: 0.12rem;
+            height: 0.12rem;
             margin-left: 0.08rem;
             display: flex;
             img{
@@ -389,14 +394,14 @@ export default {
           margin-left: auto;
           display: flex;
           align-items: center;
-          font-size: 0.15rem;
-          font-family: "GeoDemibold",GeoDemibold;
-          color: #232323;
+          font-size: 0.13rem;
+          font-family: SFProDisplayRegular;
+          color: #063376;
           font-weight: normal;
           .minText{
-            font-family: "GeoLight", GeoLight;
+            font-family: SFProDisplayRegular;
             font-weight: normal;
-            color: #848484;
+            color: #949EA4;
             margin-right: 0.04rem;
             margin-top: -0.02rem;
           }

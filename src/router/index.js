@@ -30,7 +30,7 @@ export const constantRoutes = [
     name: 'emailCode',
     component: resolve => require(['../views/emailCode/index.vue'], resolve),
     meta: {
-      title: 'nav.routerName_email',
+      title: ' ',
       keepAlive: true,
     }
   },
@@ -40,11 +40,21 @@ export const constantRoutes = [
     name: 'verifyCode',
     component: resolve => require(['../views/emailCode/children/verifyCode.vue'], resolve),
     meta: {
-      title: 'nav.routerName_emailCode',
+      title: ' ',
       keepAlive: true,
     }
   },
-  //切换语言的路由
+  //kyc验证
+  {
+    path: "/kycVerification",
+    name: 'KycVerification',
+    component: resolve => require(['../views/KycVerification/index'], resolve),
+    meta: {
+      title: ' ',
+      keepAlive: true,
+    }
+  },
+  //交易历史列表
   {
     path: "/tradeHistory",
     name: 'tradeHistory',
@@ -52,6 +62,27 @@ export const constantRoutes = [
     meta: {
       requireAuth: true,
       title: 'nav.routerName_Transactions',
+      keepAlive: true,
+    }
+  },
+  //交易历史详情
+  {
+    path: "/tradeHistory-details",
+    name: 'tradeHistory-details',
+    component: resolve => require(['../views/tradeHistory/details.vue'], resolve),
+    meta: {
+      requireAuth: true,
+      title: 'nav.routerName_Transactions_details',
+      keepAlive: true,
+    }
+  },
+  {
+    path: "/Refund",
+    name: 'Refund',
+    component: resolve => require(['../views/tradeHistory/refund.vue'], resolve),
+    meta: {
+      requireAuth: true,
+      title: 'nav.routerName_Refund',
       keepAlive: true,
     }
   },
@@ -88,10 +119,21 @@ export const constantRoutes = [
   {
     path: "/creditCardForm-cardInfo",
     name: 'creditCardForm-cardInfo',
-    component: resolve => require(['../views/buyCurrency/payments/creditCard/payForm-cardInfo.vue'], resolve),
+    component: resolve => require(['../views/buyCurrency/payments/creditCard/newCardInfo.vue'], resolve),
     meta: {
       requireAuth: true,
       // fromPage: 'basisIdAuth',
+      title: 'nav.routerName_buyForm',
+      keepAlive: true,
+    }
+  },
+    //修改卡信息
+  {
+    path: "/modifyCardInfo",
+    name: 'modifyCardInfo',
+    component: resolve => require(['../views/buyCurrency/payments/creditCard/modifyCardInfo.vue'], resolve),
+    meta: {
+      requireAuth: true,
       title: 'nav.routerName_buyForm',
       keepAlive: true,
     }
@@ -139,8 +181,8 @@ export const constantRoutes = [
     //卖币路由
   {
     path: "/sell-formUserInfo",
-    name: 'testForm',
-    component: resolve => require(['../views/sellCurrency/cardInfo/testForm.vue'], resolve),
+    name: 'sellCardInfo',
+    component: resolve => require(['../views/sellCurrency/cardInfo'], resolve),
     meta: {
       requireAuth: true,
       title: 'nav.routerName_sellForm',
@@ -167,6 +209,7 @@ export const constantRoutes = [
     meta: {
       requireAuth: true,
       title: 'nav.routerName_sellOrder',
+      title1:'',
       keepAlive: true,
     }
   },

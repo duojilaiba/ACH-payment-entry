@@ -1,35 +1,42 @@
 <template>
-  <div class="cardConfigPayment">
-    <div class="cardConfigPayment-content">
-      <div class="formLine">
-        <div class="formTitle">{{ $t('nav.buy_configPay_title1') }}</div>
-        <div class="formContent cardInfo" @click="goPayForm">
-          <div class="formContent-left">
-            <div class="card-icon">
-              <img src="../../../../assets/images/visaText.svg" v-if="cardName==='visa'">
-              <img src="../../../../assets/images/masterIcon.svg" v-else>
+  <div id="configPayment">
+    <div id="cardConfigPayment" ref="box_ref" @scroll="handleScroll">
+      <div class="cardConfigPayment-content" ref="form_ref">
+        <div class="formLine">
+          <div class="formTitle">{{ $t('nav.buy_configPay_title1') }}</div>
+          <div class="formContent cardInfo" @click="goPayForm">
+            <div class="formContent-left">
+              <div class="card-icon">
+                <img src="../../../../assets/images/visaText.svg" v-if="cardName==='visa'">
+                <img src="../../../../assets/images/masterIcon.svg" v-else>
+              </div>
+              <div class="card-info">{{ cardData.payWayName }}<span>{{ $t('nav.buy_payment_ending') }} {{ cardData.cardNumber ? cardData.cardNumber.substring(cardData.cardNumber.length-4) : '' }}</span></div>
             </div>
-            <div class="card-info">{{ cardData.payWayName }}<span>{{ $t('nav.buy_payment_ending') }} {{ cardData.cardNumber ? cardData.cardNumber.substring(cardData.cardNumber.length-4) : '' }}</span></div>
+            <div class="formContent-right" v-if="$route.query.merchant_orderNo"><img src="../../../../assets/images/rightBlackIcon.png"></div>
           </div>
-          <div class="formContent-right"><img src="../../../../assets/images/rightBlackIcon.png"></div>
         </div>
-      </div>
-      <!-- 选择支付方式页选择的是之间交易过的卡信息需要重新填写CVV -->
-      <div class="formLine" v-if="newCvvState">
-        <div class="formTitle">{{ $t('nav.buy_configPay_title2') }}</div>
-        <div class="formContent">
-          <input type="text" v-model="newCvv" :disabled="cvvDisabled" oninput ="value=value.replace(/[^0-9]/g,'')" maxlength="3" >
-          <img class="rightIcon" src="../../../../assets/images/cvv-icon.png">
+        <!-- 选择支付方式页选择的是之间交易过的卡信息需要重新填写CVV -->
+        <div class="formLine" v-if="newCvvState">
+          <div class="formTitle">{{ $t('nav.buy_configPay_title2') }}</div>
+          <div class="formContent">
+            <input type="text" v-model="newCvv" :disabled="cvvDisabled" oninput ="value=value.replace(/[^0-9]/g,'')" maxlength="3" >
+            <img class="rightIcon" src="../../../../assets/images/cvv-icon.png">
+          </div>
         </div>
+        <!-- 选择接收方式的网络地址和名称 -->
+        <CryptoCurrencyAddress/>
+        <!-- 费用模块 -->
+        <IncludedDetails class="includedDetails" ref="includedDetails_ref" :useFee="true" :isLoading="isLoading" :network="$store.state.buyRouterParams.networkDefault"/>
+        <!-- 支付后隐藏协议模块 -->
+        <AuthorizationInfo class="AuthorizationInfo" :childData="childData" v-if="AuthorizationInfo_state"/>
+        <!-- tips icon -->
+        <transition>
+          <div class="downTips-icon" v-show="goDown_state" @click="goDown"><img src="@/assets/images/downIcon.svg" ref="downTips_ref" alt=""></div>
+        </transition>
       </div>
-      <!-- 选择接收方式的网络地址和名称 -->
-      <CryptoCurrencyAddress/>
-      <!-- 支付后隐藏协议模块 -->
-      <IncludedDetails class="includedDetails" ref="includedDetails_ref" :useFee="true" :isLoading="isLoading" :network="$store.state.buyRouterParams.networkDefault"/>
-      <AuthorizationInfo class="AuthorizationInfo" :childData="childData" v-if="AuthorizationInfo_state"/>
+      <Button :buttonData="buttonData" :disabled="disabled" :loadingDisabled="true" @click.native="submit" ref="button_ref"></Button>
+      <div class="companyAddress">Alchemy GPS Europe UAB, Laisvés pr. 60, LT-05120 Vilnius</div>
     </div>
-    <Button :buttonData="buttonData" :disabled="disabled" :loadingDisabled="true" @click.native="submit"></Button>
-    <div class="companyAddress">Alchemy GPS Europe UAB, Laisvés pr. 60, LT-05120 Vilnius</div>
   </div>
 </template>
 
@@ -38,8 +45,7 @@ import IncludedDetails from "../../../../components/IncludedDetails";
 import CryptoCurrencyAddress from "../../../../components/CryptoCurrencyAddress";
 import AuthorizationInfo from "../../../../components/AuthorizationInfo";
 import { querySubmitToken } from "../../../../utils/publicRequest";
-import { AES_Encrypt } from '@/utils/encryp.js';
-import {AES_Decrypt} from "../../../../utils/encryp";
+import { AES_Encrypt,AES_Decrypt } from '@/utils/encryp.js';
 
 export default {
   name: "configPayment",
@@ -72,6 +78,10 @@ export default {
         triggerNum: 0,
       },
 
+      goDown_state: false,
+      oldOffsetTop: 0,
+      scrollTimeDown: null,
+
       //商户信息加载完 加载费用数据
       isLoading: false,
     }
@@ -84,6 +94,15 @@ export default {
     })
   },
   activated(){
+    //初始化根据可视高度控制向下提示按钮状态
+    setTimeout(()=>{
+      if(this.$refs.box_ref.offsetHeight + 4 < document.getElementById("cardConfigPayment").scrollHeight - 50){
+        this.goDown_state = true;
+      }else{
+        this.goDown_state = false;
+      }
+    })
+
     //恢复页面默认状态
     this.buttonData = {
       loading: false,
@@ -93,7 +112,7 @@ export default {
     this.cvvDisabled = false;
     this.AuthorizationInfo_state = true;
     //接入商户逻辑
-    if(!this.$store.state.goHomeState){
+    if(!this.$store.state.customized_orderMerchant){
       this.newCvvState = (this.$route.query.configPaymentFrom && this.$route.query.configPaymentFrom === 'userPayment') ? true : false;
       this.buyOrderInfo();
       return
@@ -166,7 +185,9 @@ export default {
 
     //跳转修改卡信息页面
     goPayForm(){
-      this.submitState === true ? this.$router.push(`/creditCardForm-cardInfo?submitForm=${this.wishCardData}&configPaymentFrom=userPayment&merchant_orderNo=${this.$route.query.merchant_orderNo}`) : '';
+      if(this.$route.query.merchant_orderNo){
+        this.submitState === true ? this.$router.push(`/creditCardForm-cardInfo?submitForm=${this.wishCardData}&configPaymentFrom=userPayment&merchant_orderNo=${this.$route.query.merchant_orderNo}`) : '';
+      }
     },
 
     /**
@@ -245,6 +266,36 @@ export default {
         }
       })
     },
+
+    //按钮进入可视区域，隐藏滚动到底部按钮
+    handleScroll(val){
+      window.clearTimeout(this.scrollTimeDown);
+      this.scrollTimeDown = null;
+      let offset = this.$refs.button_ref.$refs.buttonChild_ref.getBoundingClientRect();
+
+      //滚动的像素+容器的高度>可滚动的总高度-50像素
+      if(this.oldOffsetTop !== offset.top && (val.srcElement.scrollTop+val.srcElement.offsetHeight<val.srcElement.scrollHeight - 50)){
+        this.goDown_state = false;
+        window.clearTimeout(this.scrollTimeDown);
+        this.scrollTimeDown = null;
+        this.scrollTimeDown = setTimeout(()=>{
+          this.goDown_state = true;
+        },1000)
+      }
+
+      if(val.srcElement.scrollTop+val.srcElement.offsetHeight>val.srcElement.scrollHeight - 50) {
+        window.clearTimeout(this.scrollTimeDown);
+        this.scrollTimeDown = null;
+        this.goDown_state = false;
+      }
+      this.oldOffsetTop = offset.top;
+    },
+    goDown(){
+      setTimeout(()=>{
+        this.$refs.button_ref.$refs.buttonChild_ref.scrollIntoView({behavior: "smooth", block: "end", inline: 'end'})
+        this.goDown_state = false;
+      })
+    },
   },
   deactivated(){
     this.$store.commit("clearToken"); //取消请求
@@ -256,13 +307,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.cardConfigPayment{
-display: flex;
-flex-direction: column;
-.cardConfigPayment-content{
-  flex: 1;
-  overflow: auto;
-}
+#cardConfigPayment{
+  height: 100%;
+  overflow-y: auto;
+  //position: relative;
 }
 
 .formLine{
@@ -352,12 +400,13 @@ flex-direction: column;
   }
 }
 .includedDetails{
-  margin-top: 0.32rem;
+  margin-top: 0.1rem;
 }
 .AuthorizationInfo{
   margin-bottom: 0.2rem;
 }
-.companyAddress{
+
+.companyAddress {
   width: 100%;
   font-size: 0.13rem;
   font-family: "GeoLight", GeoLight;
@@ -365,5 +414,46 @@ flex-direction: column;
   color: #c2c2c2c2;
   text-align: center;
   margin-top: 0.12rem;
+}
+
+.downTips-icon{
+  position: absolute;
+  bottom: 1.1rem;
+  right: 0.3rem;
+  width: 0.58rem;
+  height: 0.58rem;
+  border-radius: 50%;
+  //background: #0059DA;
+  background: rgba(131,179,249,1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  img{
+    width: 0.3rem;
+  }
+}
+.downTips-icon img{
+  animation: jumpBoxHandler 1.8s infinite;/* 1.8s 事件完成时间周期 infinite无限循环 */
+}
+.v-enter-active,.v-leave-active{
+  transition: all 1s;
+}
+.v-enter,.v-leave-to{
+  opacity: 0;
+}
+.v-enter-to,.v-leave{
+  opacity: 0.8;
+}
+@keyframes jumpBoxHandler { /* css事件 */
+  0% {
+    transform: translate(0px, 0);
+  }
+  50% {
+    transform: translate(0px, 0.06rem); /* 可配置跳动方向 */
+  }
+  100% {
+    transform: translate(0px, 0px);
+  }
 }
 </style>

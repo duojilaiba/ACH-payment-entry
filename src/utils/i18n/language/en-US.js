@@ -9,6 +9,7 @@ module.exports = {
     ConfirmPayment: 'Confirm Payment',
     queryOderState: 'I have completed the payment',
     orderRsult: 'Continue to buy crypto',
+    Proceed:'Proceed',
 
     /**
      * 组件
@@ -39,7 +40,9 @@ module.exports = {
     routerName_sell: 'Sell Crypto',
     routerName_email: 'Enter Email Address',
     routerName_emailCode: 'Verification code',
-    routerName_Transactions: 'Transactions',
+    routerName_Transactions: 'Order History',
+    routerName_Transactions_details: 'Order History',
+    routerName_Refund: 'Request Refund of ',
     routerName_receivingMode: 'Receive coins',
     routerName_paymentMethod: 'Choose payment method',
     routerName_basisIdAuth: 'basis-Id-Auth',
@@ -48,7 +51,7 @@ module.exports = {
     routerName_buyPayment: 'Payment',
     routerName_buyOtherWayPay: 'Confirm Payment',
     routerName_paymentResult: 'Payment Result',
-    routerName_sellForm: 'Enter Information',
+    routerName_sellForm: 'Add Bank Account',
     routerName_configSell: 'Confirm',
     routerName_sellOrder: 'Order',
 
@@ -56,18 +59,20 @@ module.exports = {
      * 登陆
      */
     login: 'Login',
-    login_required: 'Required.',
+    login_required: 'Format Error.',
     loginOut: 'Login out',
     loginOut_title: 'Are you sure you want to logout?',
     loginOut_Dismiss: 'Dismiss',
-    enterEmail: 'Enter email',
+    enterEmail: 'What is your email address?',
+    enterEmail1: 'Is this your email address?',
+    emailanother:'Sign in with another email address',
     loginTitle1: 'Checkout with Alchemy Pay',
     loginTitle2: 'The fastest and safest way to checkout on hundreds of crypto apps.',
-    codeTitle1: 'We’ve sent a confirmation code to your email.',
-    codeTitle2: 'If your code doesn\'t arrive shortly. ',
+    codeTitle1: 'Enter the login code you just received',
+    codeTitle2: 'Not received? ',
     codeTitle3: 'New verification code sent ',
     codeSecond: 's',
-    code_text: ' I agree with Alchemy Pay\'s ',
+    code_text: " I have read and agree to Alchemy pay's ",
     code_name: 'Terms of Service',
     code_and: 'and',
     code_name2: 'Privacy Policy',
@@ -173,7 +178,7 @@ module.exports = {
     Sellorder_fail:'fail',
     Sellorder_Transfer:'In Transfer',
     Sellorder_Id:'Order ID',
-    Sellorder_Network:'Network',
+    Sellorder_Network:'Choose Network',
     Sellorder_Address:'Address',
     Sellorder_Card:'Card',
     Sellorder_Fail:'Fail Reason',
@@ -181,6 +186,7 @@ module.exports = {
     Sellorder_QRCode:'Scan QR Code',
     Sellorder_You:'You',
     SellOrder_modified:'Card information cannot be modified at this time',
+    SellOrder_title:'Sell ',
     //菜单栏语言
     RouterMenu_Welcome:'Welcome to Alchemy Pay!',
     RouterMenu_experience:'Login to unlock the full experience',
@@ -264,6 +270,9 @@ module.exports = {
     sell_form_bankSwiftTips: 'Swift code and location id cannot be empty at the same time',
     sell_form_bankSwiftCodeTips: 'Bank code and swift code cannot be empty at the same time',
     // sell_form_bankCodeLocationIdTips: 'Bank code and location id cannot be empty at the same time',
+    sell_Order_network_selected:'Please ensure the network selected is correct to avoid loss of assets.',
+    Sell_Order_haveSent:'I have sent the ',
+    Sell_Order_transferred:'I have transferred the crypto to the indicated address and network.',
 
     // 后增
     history_noListButton: 'Buy crypto now',
@@ -287,7 +296,7 @@ module.exports = {
     result_stateTo5: 'has transfered to your wallt address.',
     result_returnText_merchant: 'Return back',
     buy_configPayIDR_ovo_title: 'OVO Phone',
-    login_getCode: 'Resend',
+    login_getCode: 'Resend code',
     login_VerifyCode:'Please enter the six-digit verification code',
     login_Agreement:'Please tick the User Agreement',
 

@@ -1,34 +1,38 @@
 <template>
   <div id="confirmPayment">
-    <div class="confirmPayment-content">
-      <div class="payTips" v-if="startPayment">{{ $t('nav.buy_configPayIDR_timeDownTips') }} <span>{{ paymentCountDownMinute }}</span></div>
-      <div class="payAmountInfo-title">{{ $t('nav.buy_configPay_title1') }}</div>
-      <div class="payAmountInfo-box">{{ parameter.payWayName }}</div>
-      <!-- QRIS -->
-      <div class="QRISView" v-show="parameter.payWayCode === '10004' && qrCodeState">
-        <div class="QRISCode" ref="qrCodeUrl"></div>
-        <div class="QRISText">{{ $t('nav.buy_configPayIDR_codeTips') }}</div>
-      </div>
-      <!-- OVO -->
-      <div class="OVOView"  v-if="parameter.payWayCode === '10006'">
-        <div class="payAmountInfo-title">{{ $t('nav.buy_configPayIDR_ovo_title') }}</div>
-        <div class="payAmountInfo-box ovoPhone">
-          <div class="region">+ 62</div>
-          <div class="input">
-            <van-field class="number_input" type="digit" v-model="phone" :disabled="ovoLoading" maxlength="12"/>
-            <sapn class="loading" v-if="ovoLoading"><van-loading color="#1989fa" /></sapn>
+    <div id="confirmPayment-box" ref="box_ref" @scroll="handleScroll">
+      <div class="confirmPayment-content" ref="form_ref">
+        <div class="payTips" v-if="startPayment">{{ $t('nav.buy_configPayIDR_timeDownTips') }} <span>{{ paymentCountDownMinute }}</span></div>
+        <div class="payAmountInfo-title">{{ $t('nav.buy_configPay_title1') }}</div>
+        <div class="payAmountInfo-box">{{ parameter.payWayName }}</div>
+        <!-- QRIS -->
+        <div class="QRISView" v-show="parameter.payWayCode === '10004' && qrCodeState">
+          <div class="QRISCode" ref="qrCodeUrl"></div>
+          <div class="QRISText">{{ $t('nav.buy_configPayIDR_codeTips') }}</div>
+        </div>
+        <!-- OVO -->
+        <div class="OVOView"  v-if="parameter.payWayCode === '10006'">
+          <div class="payAmountInfo-title">{{ $t('nav.buy_configPayIDR_ovo_title') }}</div>
+          <div class="payAmountInfo-box ovoPhone">
+            <div class="region">+ 62</div>
+            <div class="input">
+              <van-field class="number_input" type="digit" v-model="phone" :disabled="ovoLoading" maxlength="12"/>
+              <sapn class="loading" v-if="ovoLoading"><van-loading color="#1989fa" /></sapn>
+            </div>
           </div>
         </div>
+        <div class="ovoTips" v-if="parameter.payWayCode === '10006' && startPayment">{{ $t('nav.buy_configPayIDR_ovo_phoneTips') }}</div>
+        <!-- 选择接收方式的网络地址和名称 -->
+        <CryptoCurrencyAddress class="CryptoCurrencyAddress"/>
+        <IncludedDetails class="IncludedDetails" ref="includedDetails_ref" :class="{'IncludedDetails_top': AuthorizationInfo_state===false}" :network="$store.state.buyRouterParams.network"/>
+        <AuthorizationInfo class="AuthorizationInfo" :childData="childData" v-if="AuthorizationInfo_state"/>
+        <!-- tips icon -->
+        <transition>
+          <div class="downTips-icon" v-show="goDown_state" @click="goDown"><img src="@/assets/images/downIcon.svg" ref="downTips_ref" alt=""></div>
+        </transition>
       </div>
-      <div class="ovoTips" v-if="parameter.payWayCode === '10006' && startPayment">{{ $t('nav.buy_configPayIDR_ovo_phoneTips') }}</div>
-      <!-- 选择接收方式的网络地址和名称 -->
-      <CryptoCurrencyAddress class="CryptoCurrencyAddress"/>
-      <IncludedDetails class="IncludedDetails" ref="includedDetails_ref" :class="{'IncludedDetails_top': AuthorizationInfo_state===false}" :network="$store.state.buyRouterParams.network"/>
-      <AuthorizationInfo class="AuthorizationInfo" :childData="childData" v-if="AuthorizationInfo_state"/>
+      <Button :buttonData="buttonData" :disabled="disabled" ref="button_ref" @click.native="submit"></Button>
     </div>
-
-    <Button :buttonData="buttonData" :disabled="disabled" @click.native="submit"></Button>
-    <div class="companyAddress">Alchemy GPS Europe UAB, Laisvés pr. 60, LT-05120 Vilnius</div>
   </div>
 </template>
 
@@ -72,7 +76,11 @@ export default {
         loading: false,
         triggerNum: 0,
         customName: false,
-      }
+      },
+
+      goDown_state: false,
+      oldOffsetTop: 0,
+      scrollTimeDown: null,
     }
   },
   beforeRouteLeave(to,from,next){
@@ -82,6 +90,14 @@ export default {
     next()
   },
   mounted(){
+    //初始化根据可视高度控制向下提示按钮状态
+    setTimeout(()=>{
+      if(this.$refs.box_ref.offsetHeight + 4 < document.getElementById("confirmPayment-box").scrollHeight - 50){
+        this.goDown_state = true;
+      }else{
+          this.goDown_state = false;
+      }
+    })
     this.receiveInfo();
   },
   destroyed(){
@@ -243,19 +259,45 @@ export default {
         }
       })
     },
+
+    //按钮进入可视区域，隐藏滚动到底部按钮
+    handleScroll(val){
+      window.clearTimeout(this.scrollTimeDown);
+      this.scrollTimeDown = null;
+      let offset = this.$refs.button_ref.$refs.buttonChild_ref.getBoundingClientRect();
+
+      //滚动的像素+容器的高度>可滚动的总高度-50像素
+      if(this.oldOffsetTop !== offset.top && (val.srcElement.scrollTop+val.srcElement.offsetHeight<val.srcElement.scrollHeight - 50)){
+        this.goDown_state = false;
+        window.clearTimeout(this.scrollTimeDown);
+        this.scrollTimeDown = null;
+        this.scrollTimeDown = setTimeout(()=>{
+          this.goDown_state = true;
+        },1000)
+      }
+
+      if(val.srcElement.scrollTop+val.srcElement.offsetHeight>val.srcElement.scrollHeight - 50) {
+        window.clearTimeout(this.scrollTimeDown);
+        this.scrollTimeDown = null;
+        this.goDown_state = false;
+      }
+      this.oldOffsetTop = offset.top;
+    },
+    goDown(){
+      setTimeout(()=>{
+        this.$refs.button_ref.$refs.buttonChild_ref.scrollIntoView({behavior: "smooth", block: "end", inline: 'end'})
+        this.goDown_state = false;
+      })
+    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-#confirmPayment{
+#confirmPayment-box{
   position: relative;
-  display: flex;
-  flex-direction: column;
-  .confirmPayment-content{
-    flex: 1;
-    overflow: auto;
-  }
+  height: 100%;
+  overflow-y: auto;
   .payTips{
     padding: 0.1rem 0;
     font-size: 0.13rem;
@@ -358,7 +400,7 @@ export default {
 }
 
 .IncludedDetails{
-  margin-top: 0.32rem;
+  margin-top: 0.1rem;
 }
 
 .AuthorizationInfo{
@@ -366,20 +408,56 @@ export default {
   //margin-bottom: 0.2rem;
 }
 
-.companyAddress{
-  width: 100%;
-  font-size: 0.13rem;
-  font-family: "GeoLight", GeoLight;
-  font-weight: normal;
-  color: #c2c2c2c2;
-  text-align: center;
-  margin-top: 0.12rem;
-}
-
 .number_input{
   background: #F3F4F5;
 }
 .number_input ::v-deep .van-field__control{
   letter-spacing: 4px !important;
+}
+
+.downTips-icon{
+  position: absolute;
+  bottom: 1.1rem;
+  right: 0;
+  width: 0.58rem;
+  height: 0.58rem;
+  border-radius: 50%;
+  //background: #0059DA;
+  background: rgba(131,179,249,1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  img{
+    width: 0.3rem;
+  }
+}
+.downTips-icon img{
+  animation: jumpBoxHandler 1.8s infinite;/* 1.8s 事件完成时间周期 infinite无限循环 */
+}
+.v-enter-active,.v-leave-active{
+  transition: all 1s;
+}
+.v-enter,.v-leave-to{
+  opacity: 0;
+}
+.v-enter-to,.v-leave{
+  opacity: 0.8;
+}
+@keyframes jumpBoxHandler { /* css事件 */
+  0% {
+    transform: translate(0px, 0);
+  }
+  50% {
+    transform: translate(0px, 0.06rem); /* 可配置跳动方向 */
+  }
+  100% {
+    transform: translate(0px, 0px);
+  }
+}
+
+//二维码
+.QRISCode:hover{
+  pointer-events: none;
 }
 </style>

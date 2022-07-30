@@ -26,6 +26,9 @@ const store = new Vuex.Store({
         homeTabstate: 'buyCrypto', //sellCrypto buyCrypto
         tableState: false, //有参数 隐藏买币或者卖币
 
+        //订单tab状态 sell | buy
+        historyTab: 'buy',
+
         //语言
         language: '',
 
@@ -40,6 +43,7 @@ const store = new Vuex.Store({
                 code: '',
             },
             network: '',
+            network_fullName: '',
             networkDefault: '',
             addressDefault: '',
             feeRate: '',
@@ -53,10 +57,37 @@ const store = new Vuex.Store({
             },
             currencyData: {
                 name: '',
-            }
+                price: '', //kyc验证需要
+            },
+            cardInfoList: [],
+            //国家币种 - 表单
+            formPositionData: {
+                enCommonName: '',
+                alpha2: '',
+                code: '',
+            },
+
+            confirmParams: {},
+
+
+            //交易历史跳转订单订单状态返回
+            historyBack: '',
+
         },
 
-        feeParams: {}, //卖币费用请求参数
+        sellForm: {},
+
+        //卖币费用请求参数
+        feeParams: {
+            symbol: '',
+            fiatCode: '',
+            alpha2: '',
+        },
+        feeParams_order: {
+            symbol: '',
+            fiatCode: '',
+            alpha2: '',
+        },
         sellOrderId: '',
 
         cancelTokenArr: [], //ajax请求队列
@@ -66,9 +97,14 @@ const store = new Vuex.Store({
         LanguageIsShow:false,
         menuState:false,
         isLogin:false,
-
-        //移动端点击logo返回首页
-        goHomeState: true,
+        kycStatus:0,
+        //商户定制 - 订单商户
+        customized_orderMerchant: true,
+    },
+    getters: {
+        del_item({commit},id) {
+            commit('DEL_ITEM',id)
+        }
     },
     mutations: {
         //结束所有请求进程
@@ -86,7 +122,11 @@ const store = new Vuex.Store({
         emptyToken (state) {
             state.cancelTokenArr = []
         },
-    }
+        DEL_ITEM(state,id) {
+            state.sellForm = id;
+        }
+    },
+
 })
 
 export default store

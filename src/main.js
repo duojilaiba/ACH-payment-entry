@@ -17,15 +17,20 @@ import i18n from './utils/i18n/index'
 //ui类库、公共组件
 import "./utils/UI-ClassLibrary.js";
 
+// import Vconsole from 'vconsole'
+// let vConsole = new Vconsole()
+// Vue.use(vConsole);
+
 //fingerprint - 设备指纹 ｜ 设备唯一id
 import FingerprintJS from '@fingerprintjs/fingerprintjs-pro'
-// Initialize an agent at application startup.
 const fpPromise = FingerprintJS.load({
-  apiKey: 'tj43GDmCqsLyYSJYmaMc'
+  apiKey: 'TmQIZTEjFuNxiJxuyg4m'
 })
-// Get the visitor identifier when you need it.
+import { AES_Encrypt } from './utils/encryp'
 fpPromise.then(fp => fp.get()).then(result => {
-  window.localStorage.setItem("fingerprint_id",result.visitorId);
+  //加密设备ID
+  console.log('获取设备唯一标识：',result.visitorId);
+  window.localStorage.setItem("fingerprint_id",AES_Encrypt(result.visitorId));
 });
 
 //阿里云接口埋点

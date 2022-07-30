@@ -22,7 +22,7 @@
               <div class="methods_title">{{ $t('nav.Sellorder_Network') }}</div>
               <div class="methods_input network_input" :class="{'disabled': !networkDefault}" @click="openSelect">
                 <div class="selectNetwork">
-                  <span v-if="buyParams.network!==''">{{ buyParams.network }}</span>
+                  <span v-if="buyParams.network!==''">{{ network_fullName }}</span>
                   <span class="networkPlaceholder" v-else>{{ $t('nav.search_components_networkTitle') }}</span>
                 </div>
                 <span class="rightIcon"><img src="../../../assets/images/rightBlackIcon.png"></span>
@@ -36,7 +36,7 @@
       <div class="continueBox" v-show="!searchViewState">
         <button class="continue" @click="transaction" :disabled="disabled" >
           {{ $t('nav.Continue') }}
-          <img class="rightIcon" src="../../../assets/images/button-right-icon.png" alt="">
+          <img class="rightIcon" src="../../../assets/images/button-right-icon.svg" alt="">
         </button>
       </div>
     </div>
@@ -64,6 +64,7 @@ export default {
       //ach支持的币种可以选择
       supportCurrency: true,
       //select network
+      network_fullName: '',
       networkList: [],
       networkDefault: false,
       addressDefault: false,
@@ -105,6 +106,7 @@ export default {
           depositType: 1,
           payWayCode: '' //支付方式
         };
+        vm.network_fullName = "";
         vm.checkModel = [];
         vm.networkRegular = '';
         vm.walletAddress_state = false;
@@ -368,7 +370,7 @@ export default {
   }
 
   .includedDetails_view{
-    margin-top: 0.36rem;
+    margin-top: 0.1rem;
     margin-bottom: 0.2rem;
   }
 

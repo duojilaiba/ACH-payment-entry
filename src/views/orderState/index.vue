@@ -1,131 +1,25 @@
 <template>
-  <div class="order-container" ref="orderContainer">
-    <div >
-      <div class="timing" v-if="[0,1].includes(playMoneyState)" style="white-space:nowrap;">{{ $t('nav.Sellorder_transfer') }} {{orderStateData.cryptoCurrency}} {{ $t('nav.Sellorder_within') }}<span>{{ timeText }}</span></div>
-    <!-- <div class="timing" v-if="playMoneyState===1">Received {{ orderStateData.receivedSellVolume?orderStateData.receivedSellVolume:0 }} {{ orderStateData.cryptoCurrency }} {{ orderStateData.blockNumber }}/{{ orderStateData.confirmedNum }} confirmations <span style="color:#4479D9FF;margin-left:.3rem" >View</span></div> -->
-    <div class="timing" v-if="[2,3,4,5].includes(playMoneyState) && $store.state.languageValue === 'zh-HK'"> 您將賣出<span v-if="playMoneyState!==5" style="color:#000;font-weight:500"> </span>{{ orderStateData.sellVolume?orderStateData.sellVolume:0 }} {{ orderStateData.cryptoCurrency }} 並獲取 {{ orderStateData.feeUnit }} {{ getToFixed(orderStateData.fiatAmount,orderStateData.fee) }} </div>
-    <div class="timing" v-if="[2,3,4,5].includes(playMoneyState) && $store.state.languageValue !== 'zh-HK'">{{ $t('nav.Sellorder_You') }} {{ $t('nav.Sellorder_will') }}  <span v-if="playMoneyState!==5" style="color:#000;font-weight:500"></span>{{ $t('nav.Sellorder_get') }} {{ orderStateData.feeUnit }} {{ getToFixed(orderStateData.fiatAmount,orderStateData.fee) }} {{ $t('nav.Sellorder_for') }} {{ orderStateData.sellVolume?orderStateData.sellVolume:0 }} {{ orderStateData.cryptoCurrency }}</div>
-
-    <div class="timing" v-if="playMoneyState===6"> <span>{{ $t('nav.Sellorder_details') }}</span></div>
-    <div class="timing" v-if="playMoneyState===7">{{ $t('nav.Sellorder_page') }}</div>
-
-
-    <div class="order-state">
-      <div class="state">
-        <!-- <div v-if="state===0">1</div> -->
-        <div  v-if="[1,0].includes(playMoneyState)" style="background:#959595FF"><img src="../../assets/images/icon4.png" alt=""></div>
-        <div :class="[2,3,4,5,6].includes(playMoneyState)?'stateSuccessful':''" v-if="[2,3,4,5,6].includes(playMoneyState)"><img src="../../assets/images/icon4.png" alt=""></div>
-        <div :class="[7].includes(playMoneyState)?'stateError':''" v-if="playMoneyState===7"><img src="../../assets/images/errorIcon.png" alt=""></div>
-
-      </div>
-      <div :class="[2,3,4,5,6].includes(playMoneyState)?`state-content success`:`state-content`">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-      <div class="state">
-        <div v-if="[0,1,7].includes(playMoneyState)">2</div>
-        <div  v-if="[2,3,4,5,6].includes(playMoneyState)" :class="[3,4,5,6].includes(playMoneyState)?'stateSuccessful':'stateLoading'"><img src="../../assets/images/icon1.png" alt=""></div>
-      </div>
-      <div :class="[3,4,5,6].includes(playMoneyState)?`state-content success`:`state-content`">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-      <div class="state">
-        <div v-if="[0,1,2,7].includes(playMoneyState)">3</div>
-        <div :class="[4,5,6].includes(playMoneyState)?'stateSuccessful':'stateLoading'" v-if="[3,4,5,6].includes(playMoneyState)"><img src="../../assets/images/icon2.png" alt=""></div>
-      </div>
-      <div :class="[4,5,6].includes(playMoneyState)?`state-content success`:`state-content`">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-      <div class="state">
-        <div v-if="[0,1,2,3,4,7].includes(playMoneyState)" :style="{background:playMoneyState===4?'#959595FF':''}">4</div>
-        <div :class="playMoneyState===5?'stateSuccessful':''" v-if="[5].includes(playMoneyState)"><img src="../../assets/images/icon3.png" alt=""></div>
-        <div :class="[6].includes(playMoneyState)?'stateError':''" v-if="playMoneyState===6"><img src="../../assets/images/errorIcon.png" alt=""></div>
-      </div>
-    </div>
-    <div class="order-state-content">
-      <div :class="playMoneyState===7?'payCions':''" :style="{color:[0,1].includes(playMoneyState)?'':'#000',}">{{ $t('nav.Sellorder_Crypto') }}</div>
-      <div :style="{color:[0,1,2].includes(playMoneyState)?'':'#000',marginLeft:playMoneyState==5?'-.08rem':''}">{{ playMoneyState===7?'': $t('nav.Sellorder_Received') }}</div>
-      <div :style="{color:[0,1,2,3].includes(playMoneyState)?'':'#000'}">{{ playMoneyState===7?'':$t('nav.Sellorder_Initiate') }}</div>
-      <div :style="{color:[0,1,2,3,4,].includes(playMoneyState)?'':'#000',width:playMoneyState==6 || playMoneyState==5?'.45rem':'17%',marginRight:playMoneyState==5?'.05rem':playMoneyState==6?'.095rem':'-.0rem'}" v-if="[0,1,2,3,4,5,6].includes(playMoneyState)">{{playMoneyState==5?$t('nav.Sellorder_success'):playMoneyState==6?$t('nav.Sellorder_fail'):$t('nav.Sellorder_Transfer') }}</div>
-       <!-- <div :style="{color:[0,1,2,3,4,].includes(playMoneyState)?'':'#000',width:playMoneyState==6 || playMoneyState==5?'17.5%':'17%',marginRight:playMoneyState==6?'.1rem':'.1rem'}" v-if="[0,1,2,3,4,5,6].includes(playMoneyState)">{{[0,1,2,3,4,5].includes(playMoneyState)?$t('nav.Sellorder_success'):playMoneyState==6?$t('nav.Sellorder_fail'):'' }}</div> -->
-    </div>
-    <div class="order-content">
-        <div class="order-title">{{ $t('nav.Sellorder_Id') }}</div>
-        <div class="order-con order-conId" style="cursor: pointer;" @click="copy" :data-clipboard-text="orderStateData.orderId">
-          <p>{{ orderStateData.orderId }}</p>
-          <img src="../../assets/images/copy.png" alt="">
-        </div>
-        <div class="order-title" v-if="[0,1,2,3].includes(playMoneyState)" ref="SellorderNetwork">{{ $t('nav.Sellorder_Network') }}</div>
-        <div class="order-con" style="cursor: pointer;" v-if="[0,1,2,3].includes(playMoneyState)" @click="Network_isShow">
-          <p>{{ Network?Network.networkName: network1}}</p>
-          <img v-if="[0,1].includes(playMoneyState)" style="height:.24rem" src="../../assets/images/rightBlackIcon.png" alt="">
-        </div>
-        <transition name="fade">
-        <div class="network-content" v-show="Network_show1">
-          <div v-for="item in Network_data" :key="item.id" @click="SetNetwork(item)">
-            <p>{{ item.networkName }}</p>
-            <img :src="item.network===orderStateData.cryptoCurrencyNetwork?NetworkCheck:''" style="border:none" alt="">
-          </div>
-        </div>
-        </transition>
-        <div class="order-title" v-if="[0,1,2,3].includes(playMoneyState)">{{ $t('nav.Sellorder_Address') }}</div>
-        <div class="order-con" v-if="[0,1,2,3].includes(playMoneyState)" style="cursor: pointer;"  @click="copy" :data-clipboard-text="[0,1].includes(playMoneyState)?orderStateData.address:''">
-          <p>{{ orderStateData.address }}</p>
-          <div style="margin-top:.03rem" v-if="playMoneyState===0||playMoneyState===1">
-            <img style="margin-right:.2rem" @click.stop="qrCode" src="../../assets/images/Qrcode.png" alt="">
-            <img src="../../assets/images/copy.png"  alt="">
-          </div>
-        </div>
-        <div v-if="[4,5,6].includes(playMoneyState)" class="order-title">{{ $t('nav.Sellorder_Card') }}</div>
-        <div v-if="[4,5,6].includes(playMoneyState)" :style="{cursor:playMoneyState===6? 'pointer':''}"  class="order-con" @click="goBank(playMoneyState,orderStateData)">
-          <!-- <div style="width:80%"> -->
-            <!-- <p style="width:100%">{{ orderStateData.bank }}</p> -->
-            <!-- <div style="display:flex;"> -->
-              <p style="width:36%">{{ AES(cardUserName.name)?AES(cardUserName.name):'John Tan' }}</p>
-               <p style="margin-left:.16rem;overflow: none;width:100%">{{ accountNumberCode.slice(0,4) }} **** **** {{accountNumberCode.slice(accountNumberCode.length-4,accountNumberCode.length) }}</p>
-            <!-- </div>
-          </div> -->
-          <img style="height:.24rem" src="../../assets/images/rightBlackIcon.png" alt="">
-        </div>
-        <div class="order-state_title" v-if="playMoneyState===6">{{ $t('nav.Sellorder_Fail') }}</div>
-        <div class="order-state_content" v-if="playMoneyState===6" >
-          {{ orderStateData.errorMsg }}
-        </div>
-
-    </div>
-    <div class="ContinueButton" v-if="playMoneyState===7" @click="$router.replace('/')">{{ $t('nav.orderRsult') }} <img src="../../assets/images/slices/rightIcon.png" alt=""></div>
-    <IncludedDetailsSell ref="includedDetails_ref" :orderState="[3,4,5,6].includes(playMoneyState)?orderStateData:null" style="margin-top:.4rem" v-if="playMoneyState!==7" :time-down-state="[0,1,2].includes(playMoneyState)?true:false"/>
-    <van-popup class="popup_center" v-model="show" round>
-      <div class="qrcode" >
-        <div  ref="qrCodeUrl" class="qrCodeUrl"></div>
-        <p>{{ $t('nav.Sellorder_QRCode') }}</p>
-      </div>
-    </van-popup>
-    <van-popup v-model="Network_show" position="bottom" round :style="{ height: '30%' }">
-        <div class="Network-title">{{ $t('nav.Sellorder_Network') }}</div>
-        <div class="Network-content" v-for="item in Network_data" :key="item.id" @click="SetNetwork(item)"><p>{{ item.networkName }}</p><img :src="item.network===orderStateData.cryptoCurrencyNetwork?NetworkCheck:''" alt=""></div>
-    </van-popup>
-    </div>
+  <div class="order-container" >
+    <!-- {{ $store.state.nextOrderState }} -->
+    <sendCrypto v-if="[0,1,7].includes(orderStateData.orderStatus) && $store.state.nextOrderState ===1 " :orderStateData="orderStateData"/>
+    <div v-else-if="!orderStateData.orderStatus"></div>
+    <sellState v-else :orderStateData="orderStateData"/>
+    
   </div>
 
 </template>
 <script>
-import Clipboard from 'clipboard'
-import QRCode from 'qrcodejs2';
+
 import {AES_Decrypt} from '../../utils/encryp'
-import IncludedDetailsSell from '../../components/IncludedDetailsSell'
+// import IncludedDetailsSell from '../../components/IncludedDetailsSell'
+import sendCrypto from './children/sendCrypto.vue'
+import  sellState from './children/sellState'
 export default{
   name:'orderState',
   components:{
-    IncludedDetailsSell
+    sendCrypto,
+    sellState
+    // IncludedDetailsSell
   },
   data(){
     return {
@@ -141,145 +35,129 @@ export default{
       timer:null,
       timeText:'',
       cardUserName:'',
-      accountNumberCode:''
+      accountNumberCode:'',
+      nextOrderState:1,
+      feeInfo:'',
+      
 
     }
   },
   methods:{
     //保留小数点两位或者6位
-    getToFixed(firstVal,lastVal){
-      let decimalDigits = 0;
-      let resultValue = firstVal - lastVal;
-      resultValue >= 1 ? decimalDigits = 2 : decimalDigits = 6;
-      let price = resultValue.toFixed(decimalDigits);
-      isNaN(resultValue) || price <= 0 ? price = 0 : '';
-      return price;
+    // getToFixed(firstVal,lastVal){
+    //   let decimalDigits = 0;
+    //   let resultValue = firstVal - lastVal;
+    //   resultValue >= 1 ? decimalDigits = 2 : decimalDigits = 6;
+    //   let price = resultValue.toFixed(decimalDigits);
+    //   isNaN(resultValue) || price <= 0 ? price = 0 : '';
+    //   return price;
 
-    },
+    // },
 
-    Network_isShow(){
-      if(this.playMoneyState==3 || this.playMoneyState==2){
-        this.Network_show = false
-        this.Network_show1 = false
-        return false
-      }else{
-        let _chiletWidth = document.documentElement.clientWidth
-        if(_chiletWidth<750){
-          this.Network_show = true
-        }else{
-          this.Network_show1 = !this.Network_show1
-          if(this.Network_show1){
-            this.$nextTick(()=>{
-              this.$refs.orderContainer.scrollTop = this.$refs.SellorderNetwork.offsetTop+40    
-            })
-          }
-        }
-      }
-    },
-
-    copy(){
-        let clipboard = new Clipboard('.order-con');
-      clipboard.on('success', () => {
-        this.$toast({
-          duration: 3000,
-          message: this.$t('nav.copyTips')
-        });
-        clipboard.destroy()
-      })
-      clipboard.on('error', () => {
-        clipboard.destroy()
-      })
-    },
-     generateQRcode(){
-       this.$refs.qrCodeUrl.innerHTML = "";
-      new QRCode(this.$refs.qrCodeUrl, {
-        text: this.orderStateData.address,
-        width: 140,
-        height: 140,
-        colorDark: '#000000',
-        colorLight: '#ffffff',
-        correctLevel: QRCode.CorrectLevel.H
-      })
-    },
-    qrCode(){
-      this.show = true
-      setTimeout(()=>{
-        this.generateQRcode()
-      },500)
-
-    },
+    // Network_isShow(){
+    //   if(this.playMoneyState==3 || this.playMoneyState==2){
+    //     this.Network_show = false
+    //     this.Network_show1 = false
+    //     return false
+    //   }else{
+    //     let _chiletWidth = document.documentElement.clientWidth
+    //     if(_chiletWidth<750){
+    //       this.Network_show = true
+    //     }else{
+    //       this.Network_show1 = !this.Network_show1
+    //     }
+    //   }
+    // },
     //设置网络
-    SetNetwork(text){
-      let _chiletWidth = document.documentElement.clientWidth
+    // SetNetwork(text){
+    //   let _chiletWidth = document.documentElement.clientWidth
 
-      if(_chiletWidth<750){
-        this.Network_show = false
-      }else{
-        this.Network_show1 = false
-      }
+    //   if(_chiletWidth<750){
+    //     this.Network_show = false
+    //   }else{
+    //     this.Network_show1 = false
+    //   }
 
-      if(this.Network.id === text.id){
-        return false
-      }
+    //   if(this.Network.id === text.id){
+    //     return false
+    //   }
 
-      let params = {
-        // id:'15',
-        id:this.$store.state.sellOrderId,
-        cryptoCurrencyNetworkId:text.id
-      }
-      this.$axios.post(this.$api.post_sellConfirmOrder,params).then(res=>{
-        if(res && res.data){
-          this.orderStateData = res.data
-          // this.$toast(res.returnMsg)
-          this.Network = text
-          return
-        }
-        this.$toast({
-          duration: 3000,
-          message: 'error'
-        });
-      })
-      window.clearInterval(this.timer);
-      this.timer = null;
-      setTimeout(()=>{
-            this.timer = setInterval(()=>{
-              this.getCurrencyStatus()
-              },1000)
-          },2000)
-    },
+    //   let params = {
+    //     // id:'15',
+    //     id:this.$store.state.sellOrderId,
+    //     cryptoCurrencyNetworkId:text.id
+    //   }
+    //   this.$axios.post(this.$api.post_sellConfirmOrder,params).then(res=>{
+    //     if(res && res.data){
+    //       this.orderStateData = res.data
+    //       // this.$toast(res.returnMsg)
+    //       this.Network = text
+    //       return
+    //     }
+    //     this.$toast({
+    //       duration: 3000,
+    //       message: 'error'
+    //     });
+    //   })
+    //   window.clearInterval(this.timer);
+    //   this.timer = null;
+    //   setTimeout(()=>{
+    //         this.timer = setInterval(()=>{
+    //           this.getCurrencyStatus()
+    //           },1000)
+    //       },2000)
+    // },
     //获取网络列表
-    async  getNetworkList(){
-      let params = {
-        coin:this.$store.state.orderStatus.cryptoCurrency
-      }
-      let res  = await this.$axios.get(this.$api.get_networkList,params)
-      if(res.returnCode == '0000' && res.data){
-        this.Network_data = res.data
-        res.data.forEach(item => {
-            if(item.network==this.orderStateData.cryptoCurrencyNetwork){
-              this.Network = item
-            }
-          });
-      }
+    // async  getNetworkList(){
+    //   let params = {
+    //     coin:this.$store.state.orderStatus.cryptoCurrency
+    //   }
+    //   let res  = await this.$axios.get(this.$api.get_networkList,params)
+    //   if(res.returnCode == '0000' && res.data){
+    //     this.Network_data = res.data
+    //     this.$store.state.Sellorder_Network = res.data
+    //     res.data.forEach(item => {
+    //         if(item.network==this.orderStateData.cryptoCurrencyNetwork){
+    //           this.Network = item
+    //         }
+    //       });
+    //   }
 
-    },
+    // },
     //获取买币状态
     getCurrencyStatus(){
       let sellOrderId = sessionStorage.getItem('sellOrderId')
       // console.log(this.$store.state.sellOrderId);
       let parmas = {
-        // id:'426'
-        id:this.$store.state.sellOrderId?this.$store.state.sellOrderId:sellOrderId
+        // id:'140'
+        orderId:this.$store.state.sellOrderId?this.$store.state.sellOrderId:sellOrderId
       }
       // console.log(parmas);
       this.$axios.get(this.$api.get_PlayCurrencyStatus,parmas).then(res=>{
         if(res && res.data){
+          // res.data.expirationTime=1000
+          // res.data.orderStatus=  9
           this.orderStateData = res.data
           this.$store.state.orderStatus = res.data
           this.playMoneyState = res.data.orderStatus
           this.network1 = res.data.networkName
-          // console.log(this.network1);
+          if(this.orderStateData.orderStatus==2 && this.$store.state.nextOrderState == 1 && res.data.expirationTime>0 && res.data.confirmBlock > 0){
+            this.$store.state.nextOrderState = 2
+          }
           if(this.playMoneyState==7){
+            window.clearInterval(this.timer);
+            this.timer = null;
+            return
+          }
+          if(this.playMoneyState==5){
+            window.clearInterval(this.timer);
+            this.timer = null;
+            //  this.$store.replaceState({})
+          }
+          if(res.data.expirationTime<=0 && this.playMoneyState=== 7){
+          //   // this.playMoneyState = 7
+            this.orderStateData.orderStatus = 7
+            this.$store.state.nextOrderState = 1
             // sessionStorage.setItem('feeParams',JSON.stringify(this.$store.state.feeParams))
             // sessionStorage.setItem('homeTabstate',JSON.stringify(this.$store.state.homeTabstate))
             // sessionStorage.setItem('cancelTokenArr',JSON.stringify(this.$store.state.cancelTokenArr))
@@ -289,75 +167,60 @@ export default{
             // this.$store.state.feeParams =  JSON.parse(sessionStorage.getItem('feeParams'))
             // this.$store.state.homeTabstate =  JSON.parse(sessionStorage.getItem('homeTabstate'))
             // this.$store.state.cancelTokenArr =  JSON.parse(sessionStorage.getItem('cancelTokenArr'))
-            return
-          }
-          if(this.playMoneyState==5){
-            window.clearInterval(this.timer);
-            this.timer = null;
-            //  this.$store.replaceState({})
-          }
-          if(res.data.expirationTime<=0 && this.playMoneyState=== 7){
-            this.playMoneyState = 7
-            sessionStorage.setItem('feeParams',JSON.stringify(this.$store.state.feeParams))
-            sessionStorage.setItem('homeTabstate',JSON.stringify(this.$store.state.homeTabstate))
-            sessionStorage.setItem('cancelTokenArr',JSON.stringify(this.$store.state.cancelTokenArr))
-            window.clearInterval(this.timer);
-            this.timer = null;
-            this.$store.replaceState({})
-            this.$store.state.feeParams =  JSON.parse(sessionStorage.getItem('feeParams'))
-            this.$store.state.homeTabstate =  JSON.parse(sessionStorage.getItem('homeTabstate'))
-            this.$store.state.cancelTokenArr =  JSON.parse(sessionStorage.getItem('cancelTokenArr'))
+
+            
             return
           }
 
-          if(res.data.orderStatus>0 &&(this.playMoneyState == 0||this.playMoneyState == 1) ){
-            this.turnMinute(res.data.expirationTime)
-            return
-          }else{
-            this.turnMinute = null
-            return false
-          }
+          // if(res.data.orderStatus>0 &&(this.playMoneyState == 0||this.playMoneyState == 1) ){
+          //   this.turnMinute(res.data.expirationTime)
+          //   return
+          // }else{
+          //   this.turnMinute = null
+          //   return false
+          // }
 
         }
         // this.playMoneyState = 4
       })
     },
     //进入银行卡信息页
-    goBank(state,orderData){
-      if(state == 6){
-        let params = {
-          id:orderData.userCardId,
-        }
-        this.$axios.get(this.$api.get_userSellCardInfo,params).then(res=>{
-          if(res && res.returnCode =='0000'){
-            this.$store.state.sellForm = res.data
-            this.$store.state.sellForm.sellOrderId = orderData.id
-            this.$store.state.cardInfoFromPath = 'sellOrder'
-            this.$router.push('/sell-formUserInfo')
-          }
-        })
+    // goBank(state,orderData){
+    //   if(state == 6){
+    //     let params = {
+    //       id:orderData.userCardId,
+    //     }
+    //     this.$axios.get(this.$api.get_userSellCardInfo,params).then(res=>{
+    //       if(res && res.returnCode =='0000'){
+    //         this.$store.state.sellForm = res.data
+    //         this.$store.state.sellForm.sellOrderId = orderData.id
+    //         this.$store.state.cardInfoFromPath = 'sellOrder'
+    //         this.$router.push('/sell-formUserInfo')
+    //       }
+    //     })
 
-      }else{
-        this.$toast(this.$t('nav.SellOrder_modified'))
-        return
-      }
-    },
+    //   }else{
+    //     this.$toast(this.$t('nav.SellOrder_modified'))
+    //     return
+    //   }
+    // },
     //Calculate minutes and seconds
-    turnMinute(value){
-      if(value >= 0){
-        var second = value;
-        var minute=0;
-        minute = parseInt(second/60);
-        second%=60;
-        // if(minute>60) {
-        //   minute%=60;
-        // }
-        second = second>9?second:"0"+second;
-        minute = minute>9?minute:"0"+minute;
-        this.timeText = minute+":"+second;
-        // console.log(this.timeText);
-      }
-    },
+    // turnMinute(value){
+    //   if(value >= 0){
+    //     var second = value;
+    //     var minute=0;
+    //     minute = parseInt(second/60);
+    //     second%=60;
+    //     // if(minute>60) {
+    //     //   minute%=60;
+    //     // }
+    //     second = second>9?second:"0"+second;
+    //     minute = minute>9?minute:"0"+minute;
+    //     this.timeText = minute+":"+second;
+    //     // console.log(this.timeText);
+    //   }
+    // },
+   
     //解密了一些数据
     AES(value){
       if(value){
@@ -372,21 +235,21 @@ export default{
   watch:{
 
     //监听支付状态的变化请求卡信息
-    playMoneyState(newVal){
-      if(newVal!==1||newVal!==2||newVal!==3){
-        let params = {
-          id:this.orderStateData.userCardId,
-        }
-        this.$axios.get(this.$api.get_userSellCardInfo,params).then(res=>{
-          if(res.returnCode && res.data){
-            // console.log(res.data);
-            this.cardUserName = res.data
-            this.accountNumberCode = this.AES(res.data.accountNumber)
-          }
-        })
+    // playMoneyState(newVal){
+    //   if(newVal!==1||newVal!==2||newVal!==3){
+    //     let params = {
+    //       id:this.orderStateData.userCardId,
+    //     }
+    //     this.$axios.get(this.$api.get_userSellCardInfo,params).then(res=>{
+    //       if(res.returnCode && res.data){
+    //         // console.log(res.data);
+    //         this.cardUserName = res.data
+    //         this.accountNumberCode = this.AES(res.data.accountNumber)
+    //       }
+    //     })
 
-      }
-    }
+    //   }
+    // }
   },
 
   activated (){
@@ -396,26 +259,7 @@ export default{
     this.timer = setInterval(()=>{
       this.getCurrencyStatus()
     },1000)
-    if(this.playMoneyState == 6){
-      let params = {
-          id:this.orderStateData.userCardId,
-        }
-        this.$axios.get(this.$api.get_userSellCardInfo,params).then(res=>{
-          if(res.returnCode && res.data){
-            this.cardUserName = res.data
-            this.accountNumberCode = this.AES(res.data.accountNumber)
-          }
-        })
-    }
-
-      setTimeout(()=>{
-      if(this.playMoneyState == 7)
-      this.getNetworkList = null
-      else if(this.$store.state.orderStatus.cryptoCurrency)
-      this.getNetworkList()
-      else
-      this.getNetworkList()
-    },1200)
+  
 
 
 
@@ -427,6 +271,9 @@ export default{
     this.Network_show = false
     this.Network_show1 = false
     // this.$store.replaceState({})
+  },
+  mounted(){
+    this.$route.query.id?sessionStorage.setItem('sellOrderId',this.$route.query.id):''
   }
 }
 
@@ -437,9 +284,7 @@ export default{
 .order-container{
   // padding: 0 .2rem .3rem;
   // padding-bottom: .2rem;
-height: 100%;
-overflow:scroll;
-transition: 1s;
+
   .timing{
     font-family: GeoLight;
     font-weight: 500;

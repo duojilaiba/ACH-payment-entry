@@ -2,29 +2,30 @@
   <!-- Payment information -->
   <div class="paymentInformation" v-if="orderState===null">
     <div class="feeTitle">
-      <div class="feeTitle-name">{{ $t('nav.home_feeTimeDownTitle') }}</div>
+
+      <div class="feeTitle-name">1 {{ currencyData.name }} ≈ {{ price }} {{ positionData.code }}</div>
+
       <div class="feeTitle-value">
         <div class="loading-svg">
-<!--          <img src="../assets/images/countDownIcon.png" alt="">-->
-          <van-icon name="clock-o" />
+          <img src="@/assets/images/SellTime.png" alt="">
         </div>
-        <div class="feeTitle-value-text">{{ $t('nav.home_feeTimeDown') }}<span>{{ timeDownNumber }}</span>{{ $t('nav.codeSecond') }}</div>
+        <div class="feeTitle-value-text"><span>{{ timeDownNumber }}</span>{{ $t('nav.codeSecond') }}</div>
       </div>
     </div>
     <div class="fee-content">
       <div class="fee-content-title" @click="expandFee">
         <div class="left">
-          {{ $t('nav.home_sellFee_title1') }} <span>{{ routerParams.amount }} {{ currencyData.name }}</span> {{ $t('nav.home_sellFee_title2') }} <span>{{ positionData.code }} {{ routerParams.getAmount }}</span>
+          {{ $t('nav.home_sellFee_title1') }} <span>{{ routerParams.amount }} {{ currencyData.name }}</span> {{ $t('nav.home_sellFee_title2') }} <span>{{ routerParams.getAmount }} {{ positionData.code }}</span>
         </div>
         <div class="right">
-          <img src="@/assets/images/blackDownIcon.png">
+         <img src="@/assets/images/blackDownIcon1.png">
         </div>
       </div>
       <div class="fee-content-details" v-if="feeState">
-        <div class="fee-content-details-line">
-          <div class="title">{{ $t('nav.fee_listTitle_price') }}</div>
-          <div class="value">{{ feeInfo.fiatSymbol }} {{ price }}</div>
-        </div>
+<!--        <div class="fee-content-details-line">-->
+<!--          <div class="title">{{ $t('nav.fee_listTitle_price') }}</div>-->
+<!--          <div class="value">{{ feeInfo.fiatSymbol }} {{ price }}</div>-->
+<!--        </div>-->
         <div class="fee-content-details-line">
           <div class="title">
             {{ $t('nav.home_sellFee_rampFee') }}
@@ -38,7 +39,7 @@
           </div>
           <div class="value">
             <span class="minText">{{ $t('nav.home_feeRampFeeTips') }}</span>
-            {{ feeInfo.fiatSymbol }} {{ rampFee }}
+             {{ feeInfo.fiatSymbol }} {{ rampFee }}
           </div>
         </div>
       </div>
@@ -155,8 +156,7 @@ export default {
     //选择国家后刷新数据
     '$store.state.sellRouterParams.payCommission.fiatCode': {
       deep: true,
-      handler(val){
-        console.log(val,"---val")
+      handler(){
         this.timingSetting();
       }
     },
@@ -241,16 +241,17 @@ export default {
       },1000)
     },
     queryFee(){
-      this.$axios.get(this.$api.get_inquiryFeeSell,this.$store.state.feeParams).then(res=>{
+      let patams = JSON.parse(JSON.stringify(this.$store.state.feeParams))
+      this.$axios.get(this.$api.get_inquiryFeeSell,patams).then(res=>{
         if(res && res.returnCode === "0000"){
+          this.$store.state.sellRouterParams.currencyData.price = res.data.price;
+          console.log(this.$store.state.sellRouterParams.currencyData.price)
           this.feeInfo = res.data;
           this.feeInfo.rampFee = (this.routerParams.amount * this.feeInfo.price * this.feeInfo.percentageFee + this.feeInfo.fixedFee) * this.feeInfo.rate;
           //修改首页费用数据
           if(this.isHome && this.isHome === true){
-            console.log("触发")
             this.$parent.feeInfo = this.feeInfo;
             this.$parent.calculationAmount();
-            console.log(this.feeInfo,"---child")
           }
         }
       })
@@ -272,26 +273,25 @@ export default {
 <style lang="scss" scoped>
 .paymentInformation {
   .feeTitle {
-    font-size: 13px;
+    font-size: .13rem;
     font-weight: normal;
-    color: #707070;
-    line-height: 15px;
+    color: #949EA4;
     display: flex;
     align-items: center;
-
+    padding: 0 .2rem 0;
     .feeTitle-name {
-      font-family: "GeoRegular", GeoRegular;
+      font-family: SFProDisplayRegular;
     }
 
     .feeTitle-value {
-      font-family: "GeoLight", GeoLight;
+      font-family: SFProDisplayRegular;
       display: flex;
       align-items: center;
       margin-left: auto;
 
       .loading-svg {
         margin-right: 0.04rem;
-        font-size: 0.15rem;
+        font-size: 0.13rem;
         margin-top: 0.02rem;
         img {
           height: 0.12rem;
@@ -308,19 +308,18 @@ export default {
   }
 
   .fee-content {
-    background: #F3F4F5;
+    background: #F7F8FA;
     border-radius: 0.12rem;
-    margin-top: 0.08rem;
-    padding: 0 0.16rem;
-
+    margin-top: 0.36rem;
+    padding: .2rem;
     .fee-content-title {
-      padding: 0.19rem 0;
+      // padding: 0.2rem 0  .2rem;
       display: flex;
       align-items: center;
-      font-size: 0.16rem;
-      font-family: Fieldwork-GeoLight, Fieldwork;
+      font-size: 0.13rem;
+      font-family:SFProDisplayRegular;
       font-weight: normal;
-      color: #232323;
+      color: #949EA4;
       cursor: pointer;
 
       span {
@@ -329,13 +328,14 @@ export default {
 
       .left {
         word-break: break-all;
-        font-size: 0.16rem;
-        font-family: "GeoLight", GeoLight;
+        font-size: 0.13rem;
+        font-family: SFProDisplayRegular;
         font-weight: normal;
-        color: #232323;
+        color: #949EA4;
 
         span {
-          font-family: "GeoDemibold", GeoDemibold;
+          color: #063376;
+          font-family: SFProDisplayRegular;
         }
       }
 
@@ -348,26 +348,26 @@ export default {
     }
 
     .fee-content-details {
-      border-top: 1px solid #E6E6E6;
-      padding: 0.04rem 0 0.16rem 0;
+      // border-top: 1px solid #E6E6E6;
+      // padding: 0rem 0 0.2rem 0;
 
       .fee-content-details-line {
         display: flex;
         align-items: center;
-        margin-top: 0.12rem;
+        margin-top: 0.16rem;
 
         .title {
           display: flex;
           align-items: center;
-          font-size: 0.15rem;
-          font-family: "GeoLight", GeoLight;
+          font-size: 0.13rem;
+          font-family: SFProDisplayRegular;
           font-weight: normal;
-          color: #232323;
+          color: #949EA4;
 
           .tipsIcon {
-            width: 0.16rem;
-            height: 0.16rem;
-            margin-left: 0.08rem;
+            width: 0.12rem;
+            height: 0.12rem;
+            margin:.02rem 0 0 0.08rem;
             display: flex;
 
             img {
@@ -381,13 +381,13 @@ export default {
           margin-left: auto;
           display: flex;
           align-items: center;
-          font-size: 0.15rem;
-          font-family: "GeoDemibold", GeoDemibold;
-          color: #232323;
+          font-size: 0.13rem;
+          font-family: SFProDisplayRegular;
+          color: #063376;
           font-weight: normal;
 
           .minText {
-            font-family: "GeoLight", GeoLight;
+            font-family: SFProDisplayRegular;
             font-weight: normal;
             color: #848484;
             margin-right: 0.04rem;

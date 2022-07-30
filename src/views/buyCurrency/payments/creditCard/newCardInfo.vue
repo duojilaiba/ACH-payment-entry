@@ -55,7 +55,7 @@
       </div>
       <button class="continue" :disabled="buttonState" @click="submitPay" v-show="buttonIsShow" ref="button_ref">
         {{ $t('nav.Continue') }}
-        <img class="rightIcon" src="../../../../assets/images/button-right-icon.png" v-if="!request_loading">
+        <img class="rightIcon" src="../../../../assets/images/rightIconSell.png" v-if="!request_loading">
         <van-loading class="icon rightIcon loadingIcon" type="spinner" color="#fff" v-else/>
       </button>
     </div>
@@ -329,6 +329,9 @@ export default {
     //验证、提交卡信息
     submitPay(){
       this.request_loading = true;
+      //卡号验证
+      let cardNumber = this.params.cardNumber.replace(/\s*/g,"");
+
       //拼接年月日期参数
       this.params.cardExpireMonth = this.timeData.substring(0,2);
       this.params.cardExpireYear = '20' + this.timeData.substring(5,7);
@@ -336,7 +339,6 @@ export default {
       let queryParams = JSON.parse(JSON.stringify(this.params));
 
       //需要加密的敏感字段
-      let cardNumber = this.params.cardNumber.replace(/\s*/g,"");
       queryParams.cardNumber = AES_Encrypt(cardNumber).replace(/ /g,'');
       queryParams.cardCvv = AES_Encrypt(queryParams.cardCvv);
 
@@ -344,19 +346,35 @@ export default {
       queryParams.lastname = AES_Encrypt(queryParams.lastname.trim());
       queryParams.email = localStorage.getItem("email");
       queryParams.source = 0;
+
+      let _this = this
       this.$axios.post(this.$api.post_saveCardInfo,queryParams,'').then(res=>{
         this.request_loading = false;
+
+
+
         if(res && res.returnCode === '0000'){
+
           queryParams.cardNumber = queryParams.cardNumber.replace(/ /g,'');
           queryParams.userCardId = res.data.userCardId;
+
           this.$store.state.buyRouterParams.userCardId = res.data.userCardId;
+
+          this.$store.state.sellRouterParams.fullName = AES_Decrypt(res.data.firstName) + ' '+ AES_Decrypt(res.data.lastName)
+          this.$store.state.sellRouterParams.fullName = AES_Encrypt(this.$store.state.sellRouterParams.fullName)
           //是否验证过baseId
-          if(this.$store.state.buyRouterParams.kyc === true){
-            this.$router.replace(`/basisIdAuth?submitForm=${JSON.stringify(queryParams)}`);
-            return;
-          }
-          //跳转确认订单页
-          this.$router.replace(`/creditCardConfig?submitForm=${JSON.stringify(queryParams)}&merchant_orderNo=${this.$route.query.merchant_orderNo}`);
+          _this.$axios.post(this.$api.post_getKycThrough).then(_res=>{
+
+              if(_res && _res.returnCode === '0000'){
+                if(_res.data ===true){
+                  _this.$store.state.WhichPage = `/creditCardConfig?submitForm=${JSON.stringify(queryParams)}&merchant_orderNo=${this.$route.query.merchant_orderNo}`
+                  _this.$router.push('/kycVerification')
+                  return
+                }else{
+                  _this.$router.push(`/creditCardConfig?submitForm=${JSON.stringify(queryParams)}&merchant_orderNo=${this.$route.query.merchant_orderNo}`);
+                }
+              }
+          })
         }
       }).catch(()=>{
         this.request_loading = false;
@@ -493,7 +511,6 @@ export default {
   .downTips-icon img{
     animation: jumpBoxHandler 1.8s infinite;/* 1.8s 事件完成时间周期 infinite无限循环 */
   }
-
   .v-enter-active,.v-leave-active{
     transition: all 1s;
   }
@@ -523,15 +540,6 @@ export default {
 }
 .month ::v-deep .van-picker-column:nth-of-type(1){
   display: none !important;
-}
-
-.van-popup{
-  max-height: 35%;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  box-shadow: 0 0 40px #4479D9;
-  border-radius: 0 0 25px 25px;
 }
 
 //数字输入框

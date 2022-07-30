@@ -1,10 +1,16 @@
 <template>
   <div id="routerMenu">
+    <div class="router_nav" v-if="$route.path==='/sellOrder'">
+      <div class="navigationBar_view_left" style="color:#063376">{{ $t('nav.menu') }}</div>
+      <div class="navigationBar_view_right" style="padding:.1rem">
+        <img class="closeIcon" style="width:.22rem;" src="../assets/images/ShutDown.png" @click="$parent.routerViewState=true">
+      </div>
+    </div>
     <div class="routerMenu_isLogo" v-if="token===false">
         <img src="../assets/images/slices/pay.png" alt="">
         <h2>{{ $t('nav.RouterMenu_Welcome') }}</h2>
         <p>{{ $t('nav.RouterMenu_experience') }}</p>
-        <div @click="goLogin" :style="{background:loading?'#0059DA80':''}">{{ $t('nav.login') }} <img class="icon" src="../assets/images/slices/rightIcon.png" alt="" v-if="!loading">
+        <div @click="goLogin" :style="{background:loading?'#0059DA80':''}">{{ $t('nav.login') }} <img class="icon" src="../assets/images/rightIconSell.png" alt="" v-if="!loading">
         <van-loading  class="icon" type="spinner" color="#fff" v-else/></div>
     </div>
     <div class="routerMenu_history" @click="goView('/tradeHistory')" v-else >
@@ -40,19 +46,24 @@
         <div><img src="../assets/images/slices/right_icon.png"></div>
       </div>
     </div>
-    <div class="routerMenu_line" @click="show=!show" v-if="email !== ''">
-      <div class="lineIcon"><img src="../assets/images/slices/logOut.png"></div>
-      <div class="lineName">{{ $t('nav.menu_logOut') }}</div>
-      <div class="lineRight">
-        <div class="email">{{ emailSlice }}</div>
+    <div class="routerMenu_line" @click="loginOutIsShow" v-if="email !== ''" style="display:flex;justify-content: space-between;">
+      <div style="display:flex;align-items: center;">
+        <div class="lineIcon"><img src="../assets/images/slices/logOut.png"></div>
+        <div class="lineName">{{ $t('nav.menu_logOut') }}</div>
+      </div>
+      <div class="lineRight" style="margin:0">
+
+        <div class="email" style="width:1.3rem; overflow: hidden;text-overflow:ellipsis;white-space: nowrap;line-height:.2rem;display:flex;justify-content: space-between;  align-items: center;"><img style="margin-right:.02rem" :src="disAbled===true?kycError:disAbled===false?kycSess:''"   alt="">{{ emailSlice   }} </div>
         <div><img src="../assets/images/slices/right_icon.png"></div>
       </div>
     </div>
     <div class="routerMenu_loginOut" v-show="show" @click="show=false">
-      <div class="content" @click.stop="show=true">
+      <div class="content" ref="loginOutView" @click.stop="show=true">
         <h2>{{ $t('nav.loginOut_title') }}</h2>
-        <div @click.stop="outLogin">{{ $t('nav.loginOut') }} <img src="../assets/images/slices/rightIcon.png" alt=""></div>
-        <p @click.stop="show=false">{{ $t('nav.loginOut_Dismiss') }}</p>
+       <div>
+          <div @click.stop="outLogin">{{ $t('nav.menu_logOut') }} </div>
+          <p @click.stop="show=false">{{ $t('nav.loginOut_Dismiss') }}</p>
+       </div>
       </div>
     </div>
   </div>
@@ -83,6 +94,9 @@ export default {
 
       finished:false,
       newVal:'',
+      disAbled:'',
+      kycError:require('@/assets/images/AccountRisk.png'),
+      kycSess:require('@/assets/images/kycScuss.png'),
 
     }
   },
@@ -116,7 +130,8 @@ export default {
         return;
       }
 
-      if(!localStorage.getItem("token")){
+      if(!localStorage.getItem("token")|| localStorage.getItem('token')===''){
+        console.log(this.$parent.tabstate);
         this.$store.state.emailFromPath = this.$parent.tabstate;
         this.$router.push('/emailCode?fromName=tradeList').catch(()=>{});
       }else{
@@ -132,6 +147,7 @@ export default {
       let LanguageName = ''
       for(let item of Object.keys(this.$i18n.messages)){
             if(item === language){
+              // console.log(this.$i18n.messages[item].language);
               LanguageName = this.$i18n.messages[item].language
             }
           }
@@ -141,26 +157,24 @@ export default {
     outLogin(){
 
       if(this.email){
-        
         this.$axios.post(this.$api.post_outLogin,'','').then(res=>{
           if(res && res.returnCode === "0000"){
-            // this.$parent.routerViewState = true;
-            // this.$parent.menuState = false
-            this.$store.state.isLogin = false
             localStorage.removeItem("sign");
             localStorage.removeItem("token");
             localStorage.removeItem("email");
             localStorage.removeItem("userNo");
             localStorage.removeItem("userId");
+            localStorage.removeItem("login_email");
+            localStorage.removeItem("fin_token");
             localStorage.removeItem("kycStatus");
             // sessionStorage.removeItem('accessMerchantInfo')
             sessionStorage.removeItem('store')
             this.show = false
             if(this.$route.path !== '/'){
-              this.$parent.routerViewState = true;
+              this.$parent.routerViewState = true
               setTimeout(()=>{
                 this.$parent.routerViewState = false
-             
+
               },200)
               this.$router.replace('/')
             return
@@ -168,6 +182,7 @@ export default {
                 this.token = false
                 this.email = ''
             }
+
           }
         })
       }
@@ -191,12 +206,26 @@ export default {
           message: this.$t('nav.login_Youlogged')
         });
       }else{
-        this.loading = false
-        //是否是从菜单进入
-        this.$store.state.routerQueryPath = true
-        this.$parent.routerViewState = true;
-        this.$router.push('/emailCode')
+
+        setTimeout(() => {
+          this.loading = false
+          this.$store.state.routerQueryPath = true
+          this.$parent.routerViewState = true;
+          //是否是从菜单进入
+          this.$router.push('/emailCode')
+        }, 200);
       }
+    },
+    //显示退出登陆判断是否是pc 还是 移动
+    loginOutIsShow(){
+      let winWidth = document.body.clientWidth || document.documentElement.clientWidth
+      if(winWidth < 791){
+        this.$refs.loginOutView.style = 'top:20%;tannsfrom:translate(-50%,-20%)'
+      }else{
+        this.$refs.loginOutView.style = 'left:50%;top:30%;tannsfrom:translate(-50%,-30%)'
+      }
+      this.show = true
+
     },
     //是否有历史记录
     transationsList(){
@@ -214,12 +243,36 @@ export default {
     //语言切换的显示隐藏
     LanguageIsShow(){
       this.$store.state.LanguageIsShow = true
-    }
+    },
+    //查看用户是否为风险用户
+    is_kycDisabled(){
+      let _this = this
+      this.$axios.post(this.$api.post_kycDisabled,'').then(res=>{
+        if(res && res.returnCode === '0000'){
+          if(res.data){
+            this.disAbled = res.data
+            return
+          }else{
+             _this.$axios.post(_this.$api.post_getKycThrough,'').then(_res=>{
+              if(_res && _res.returnCode === '0000'){
+                if(_res.data===false){
+                  _this.disAbled = false
+                  return
+                }else{
+                  _this.disAbled = ''
+                }
+              }
+            })
+          }
+        }
+      })
+    },
+
   },
   computed:{
     emailSlice(){
       let email = this.email
-      let email1 = email.slice(0,3)+' *** '+ email.slice(email.indexOf('@'),email.length)
+      let email1 = email.slice(0,3)+' *** '+ email.slice(email.indexOf('@'),email.indexOf('@')+6)  + '...'
       return email1
     },
 
@@ -239,7 +292,8 @@ export default {
          if(newVal === true && localStorage.getItem("token")){
 
            this.token===true?this.transationsList():''
-          //  console.log(this.finished);
+           //用户是否为风险用户
+           this.is_kycDisabled()
          }
       }
     },
@@ -251,11 +305,26 @@ export default {
 <style lang="scss" scoped>
 #routerMenu{
   position: relative;
+.router_nav{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: .05rem 0 .15rem;
+  font-size: 0.18rem;
+    font-family: SFProDisplaybold;
+    font-weight: normal;
+    color: #063376;
+    font-weight: 500;
 
+  img{
+    width: .2rem;
+    cursor: pointer;
+  }
+}
   .routerMenu_line{
     display: flex;
     align-items: center;
-    margin-top: 0.24rem;
+    margin-top: 0.28rem;
     cursor: pointer;
     .lineIcon{
       display: flex;
@@ -264,10 +333,10 @@ export default {
       }
     }
     .lineName{
-      font-size: 0.17rem;
-      font-family: "GeoRegular";
-      font-weight: 500;
-      color: #232323;
+      font-size: 0.16rem;
+      font-family: "SFProDisplayRegular";
+      font-weight: 400;
+      color: #949EA4;
       margin-left: 0.08rem;
     }
     .lineRight{
@@ -276,17 +345,18 @@ export default {
       align-items: center;
       p{
         font-size: .15rem;
-        font-family: GeoLight;
+        font-family: SFProDisplayRegular;
         font-weight: normal;
-        color: #707070;
+        color: #C2C2C2;
         margin-right: .12rem;
+        font-weight: 400;
       }
       .email{
         margin-right: 0.12rem;
-        font-size: 0.14rem;
+        font-size: 0.15rem;
         font-family: "GeoLight", GeoLight;
         font-weight: 400;
-        color: #999999;;
+        color: #C2C2C2;
       }
       div{
         display: flex;
@@ -294,7 +364,7 @@ export default {
       img{
         // width: 0.6rem;
         // height: ;
-        height: .2rem;
+        height: .25rem;
       }
     }
     &:nth-of-type(1){
@@ -310,24 +380,26 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
     >img{
-      width: .5rem;
+      width: .58rem;
       height: .5rem;
       margin-top: .18rem;
     }
     h2{
-      font-size: .21rem;
-      font-family: "GeoBold";
+      font-size: .2rem;
+      font-family: "SFProDisplaybold";
       font-weight: normal;
-      color: #232323;
+      color: #063376;
       line-height: .25rem;
+      font-weight: 500;
       margin: .2rem 0 .06rem 0;
     }
     p{
-      font-size: .15rem;
-      font-family: "GeoRegular";
+      font-size: .13rem;
+      font-family: "SFProDisplayRegular";
       font-weight: normal;
-      color: #232323;
+      color: #949EA4;
     }
     >div{
       width: 90%;
@@ -339,19 +411,19 @@ export default {
       text-align: center;
       line-height: .58rem;
       color: #fff;
-      font-family: "GeoRegular";
+      font-family: "SFProDisplayRegular";
       position: relative;
       cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       .icon{
-        width: .24rem;
-        height: .24rem;
-        position: absolute;
-        right: .16rem;
-        top: .16rem;
+        width: .16rem;
+        // height: .14rem;
+        margin-left: .1rem;
         span{
-          position: absolute;
-          // top: -.13rem;
-          right: .01rem;
+          height: .16rem;
+          margin-top: .02rem;
         }
       }
     }
@@ -367,18 +439,20 @@ export default {
     justify-content: space-between;
     padding: 0 .31rem 0 .24rem;
     cursor: pointer;
+    margin-top: .3rem;
     .lineName{
+
       margin-left: .16rem;
       flex: 1;
       p:first-child{
-        font-family: GeoRegular;
+        font-family: SFProDisplaybold;
         font-size: .17rem;
         font-weight: normal;
-        color: #232323;
+        color: #063376;
         line-height: .17rem;
       }
       p:last-child{
-        font-family: GeoLight;
+        font-family: SFProDisplayRegular;
         font-weight: normal;
         color: #C0C0C2;
         line-height: 17px;
@@ -407,62 +481,67 @@ export default {
     left: 0;
     top: 0;
     .content{
-      width: 90%;
-      height: 2.6rem;
+
       max-width: 3.5rem;
       background: #FFFFFF;
       border-radius: 16px;
       position: absolute;
       left:50%;
-      top: 50%;
-      transform: translate(-50%,-50%);
+      top: 30%;
+      transform: translate(-50%,30%);
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: .4rem 0 0 0;
+      padding: .32rem .16rem .32rem;
       box-sizing: border-box;
+
       h2{
-        width: 2.4rem;
         text-align: center;
-        font-weight: normal;
-        color: #232323;
+        font-style: normal;
+        font-weight: 400;
+        color: #949EA4;;
         line-height: .31rem;
-        font-family: GeoDemibold;
-        font-size: .21rem;
+        font-size: .16rem;
+        font-family: SFProDisplayRegular;
       }
-      div{
-        width: 90%;
-        height: .58rem;
-        background: #E55643;
-        border-radius: .29rem;
-        text-align: center;
-        line-height: .58rem;
-        position: relative;
-        font-size: .17rem;
-        font-weight: normal;
-        color: #FFFFFF;
-        font-family: GeoRegular;
-        margin-top: .05rem;
-        cursor: pointer;
-        img{
-          width: .24rem;
-          position: absolute;
-          right: .16rem;
-          top: .17rem;
+      >div{
+        width: 3.3rem;
+        height: .6rem;
+        display: flex;
+        margin-top: .2rem;
+        justify-content: center;
+        align-items: center;
+        div{
+          width: 1.5rem;
+          height: .5rem;
+          background: #E55643;
+          border-radius: .29rem;
+          text-align: center;
+          line-height: .49rem;
+          font-size: .16rem;
+          font-weight: normal;
+          color: #FFFFFF;
+          font-family: SFProDisplayRegular;
+          margin-top: .05rem;
+          margin-right: .13rem;
+          cursor: pointer;
+        }
+        p{
+           width: 1.5rem;
+          height: .5rem;
+          text-align: center;
+          font-weight: normal;
+          color: #063376;
+          font-family: SFProDisplayRegular;
+          font-size: .16rem;
+          line-height: .49rem;
+          border: 1px solid #EEEEEE;
+          border-radius: .25rem;
+          cursor: pointer;
         }
       }
-      p{
-        width: 90%;
-        height: .56rem;
-        text-align: center;
-        font-weight: normal;
-        color: #232323;
-        font-family: GeoDemibold;
-        font-size: .17rem;
-        margin-top: .24rem;
-        cursor: pointer;
-      }
     }
+
   }
 }
 </style>
