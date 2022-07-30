@@ -188,7 +188,7 @@
     </div>
 
     <!-- failed - 1 -->
-    <footer v-if="detailsData.orderStatus === 6 || detailsData.orderStatus === 8 || (detailsData.orderStatus === 2 && detailsData.confirmBlock === 0) || detailsData.orderStatus === 1">
+    <footer v-if="detailsData.orderStatus === 6 || detailsData.orderStatus === 8 || detailsData.confirmBlock === 0">
       <!-- 重新购买 -->
       <button class="update-card-info" @click="updateCardInfo" v-if="detailsData.orderStatus === 6">
         Update Information
@@ -199,7 +199,7 @@
       <!-- 退款 -->
       <p @click="refund" v-if="detailsData.orderStatus === 8 || detailsData.orderStatus === 6">Request Refund of USDT</p>
       <!-- 去购买 -->
-      <button class="pay-now" @click="payNow" v-if="detailsData.orderStatus === 2 && detailsData.confirmBlock === 0">Pay Now</button>
+      <button class="pay-now" @click="payNow" v-if="detailsData.confirmBlock === 0">Pay Now</button>
     </footer>
   </div>
 </template>
