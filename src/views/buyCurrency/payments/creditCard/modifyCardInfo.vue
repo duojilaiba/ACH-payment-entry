@@ -54,7 +54,7 @@
         </transition>
       </div>
       <button class="continue" :disabled="buttonState" @click="submitPay" v-show="buttonIsShow" ref="button_ref">
-        {{ $t('nav.Continue') }}
+        Save
         <img class="rightIcon" src="../../../../assets/images/rightIconSell.png" v-if="!request_loading">
         <van-loading class="icon rightIcon loadingIcon" type="spinner" color="#fff" v-else/>
       </button>

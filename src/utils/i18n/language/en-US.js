@@ -86,7 +86,6 @@ module.exports = {
     home_buyTitle: "Buy Crypto",
     //卖币标题
     home_sellTitle: "Sell Crypto",
-    home_Tips: 'By continuing you agree to our cookie policy.',
     home_minAmountTips: 'The minimum transaction amount is',
     home_maxAmountTips: 'The maximum transaction amount is',
     home_feeTimeDownTitle: 'Remaining time',

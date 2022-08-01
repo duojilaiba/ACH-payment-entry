@@ -1,25 +1,4 @@
 <template>
-  <!-- <div id="emailCode"> -->
-    <!-- <div class="form-title">Enter your emai address</div>
-    <div class="form-input"><input type="text" placeholder="Email Address" v-model="email">
-      <span class="formOptions" :class="{'getCodeClass': email===''}" @click="getCode" v-if="timeDown===60">Get code</span>
-      <span class="formOptions" v-else>{{ timeDown }}S</span>
-    </div> -->
-    <!-- error message -->
-    <!-- <div class="errorMessage" v-if="emailErrorState" v-html="emailError"></div>
-    <div class="form-title">Enter the verification code you received</div>
-    <div class="form-input emailCode"><input type="text" v-model="code" placeholder="Login Code" maxlength="6"></div> -->
-    <!-- error message -->
-    <!-- <div class="errorMessage" v-if="codeErrorState" v-html="codeError">Verification code not match.</div> -->
-    <!-- Permission agreement -->
-    <!-- <div class="agreement-content">
-      <div class="agreement-radio"><input type="checkbox" v-model="agreement"></div>
-      <div class="agreement-text">I have read and agree to Alchemy Pay’s <span @click="goProtocol('termsUse')">{{ '<' }}Terms of Use{{ '>' }}</span> and <span @click="goProtocol('privacyPolicy')">{{ '<' }}Privacy Policy{{ '>' }}</span>.</div>
-    </div>
-    <includedDetails v-if="includedDetails_state"/>
-    <div class="continue" :class="{'buttonTrue': email!==''&&code.length===6&&agreement===true}" @click="toLogin">Continue</div> -->
-
-  <!-- </div> -->
   <div class="emailCode-container" ref="emailCode">
     <div>
 
@@ -54,15 +33,14 @@
 </template>
 
 <script>
-// import includedDetails from "../../components/IncludedDetails";
 import axios from 'axios';
 import { debounce } from '../../utils/index';
 import { AES_Encrypt,AES_Decrypt } from '@/utils/encryp.js';
 import moment from 'moment-timezone';
+import { fingerprintId } from '@/utils/publicRequest.js';
 
 export default {
   name: "emailCode",
-  // components: { includedDetails },
   data(){
     return{
       timeDown: 60,
@@ -73,13 +51,8 @@ export default {
       detailsState: true,
       email: '',
       code: '',
-      agreement: false,
-      codeErrorState: false,
-      codeError: '',
-      includedDetails_state: false,
 
       getCode_state: true,
-      login_state: true,
       login_loading:true,
       loggedIn:false
     }
@@ -89,7 +62,6 @@ export default {
     this.login_loading= true
     this.code = "";
     this.timeDown = 60;
-    this.includedDetails_state = this.$route.query.fromName ? this.$route.query.fromName === 'tradeList' ? false : true : '';
      setTimeout(()=>{
      if(localStorage.getItem('login_email')){
         this.email = AES_Decrypt(localStorage.getItem('login_email'))
@@ -136,6 +108,7 @@ export default {
 
   methods: {
     getCode:debounce(function () {
+      fingerprintId();
       this.getCode_state = false;
       // this.emailErrorState = false;
       if(this.email === ''){

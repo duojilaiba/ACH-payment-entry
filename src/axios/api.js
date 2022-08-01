@@ -7,6 +7,8 @@ export default {
   "get_buyCryptoInfo": '/crypto/buy/v2',
   //国家法币列表
   "get_countryList": '/crypto/world/list',
+  //菜单获取kyc状态
+  "post_menuKYC": '/kyc/getKycStatus',
 
   //------------------------- 买币接口 -------------------------
   "get_network": '/crypto/network',

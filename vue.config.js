@@ -2,6 +2,7 @@ const path = require('path')
 function resolve(dir) {
     return path.join(__dirname, dir)
 }
+const CompressionPlugin = require("compression-webpack-plugin")
 
 module.exports = {
     publicPath: './',
@@ -13,7 +14,11 @@ module.exports = {
         if (process.env.NODE_ENV === 'development') return
         return {
             plugins: [
-                // ......
+                new CompressionPlugin({
+                    test: /\.(js|css|otf)$/, //匹配文件名
+                    threshold: 10240,//对超过10k的数据压缩
+                    deleteOriginalAssets: true //删除源文件
+                })
             ],
             // 看这里：把chunk-vendors.js进行分包，提升资源加载速度，很有必要
             optimization: {
@@ -44,7 +49,7 @@ module.exports = {
                         },
                     },
                 }
-            }
+            },
         }
     },
     chainWebpack(config) {

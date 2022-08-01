@@ -11,7 +11,7 @@
             <div :class="{'tabClass': tabstate==='sellCrypto'}" @click="switchTab('sellCrypto')" v-else-if="tableState===true && tabstate==='sellCrypto'">{{ $t('nav.routerName_sell') }}</div>
           </div>
           <div class="allPage-icon">
-            <img style="height:.18rem;margin-top:-.1rem" src="@/assets/images/rightMeun.png" @click="openMenu">
+            <img style="height:.18rem;margin-top:-.1rem" src="@/assets/images/meun-icon.png" @click="openMenu">
           </div>
         </div>
         <div class="home-children">

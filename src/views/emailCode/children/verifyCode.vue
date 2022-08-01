@@ -23,6 +23,8 @@
 import axios from 'axios';
 import { debounce } from '../../../utils/index';
 import { AES_Encrypt } from '@/utils/encryp.js';
+import { fingerprintId } from '@/utils/publicRequest.js';
+
   export default {
   name: "verifyCode",
   data(){
@@ -38,14 +40,6 @@ import { AES_Encrypt } from '@/utils/encryp.js';
     setTimeout(()=>{
       this.changeBlur()
     },500)
-    // clearInterval(this.timeVal)
-    // this.timeVal = setInterval(()=>{
-    //   this.codeTime--
-    //   if(this.codeTime <= 0){
-    //     // this.codeTime = 10
-    //     clearInterval(this.timeVal)
-    //   }
-    // },1000)
   },
   activated(){
     this.value = ''
@@ -84,6 +78,7 @@ import { AES_Encrypt } from '@/utils/encryp.js';
     },500,false),
     toLogin(){
      if(this.netActive){
+       fingerprintId();
        let _this = this;
        this.showLoading = true
        var FormData = require('form-data');

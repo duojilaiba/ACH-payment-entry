@@ -106,17 +106,6 @@ export const constantRoutes = [
     }
   },
   {
-    path: "/basisIdAuth",
-    name: 'basisIdAuth',
-    component: resolve => require(['../views/buyCurrency/payments/creditCard/basisIdAuth.vue'], resolve),
-    meta: {
-      requireAuth: true,
-      title: 'nav.routerName_basisIdAuth',
-      keepAlive: true,
-    },
-
-  },
-  {
     path: "/creditCardForm-cardInfo",
     name: 'creditCardForm-cardInfo',
     component: resolve => require(['../views/buyCurrency/payments/creditCard/newCardInfo.vue'], resolve),
@@ -188,16 +177,6 @@ export const constantRoutes = [
       title: 'nav.routerName_sellForm',
       keepAlive: true,
     },
-  },
-  {
-    path: "/configSell",
-    name: 'configSell',
-    component: resolve => require(['../views/sellCurrency/configSell/index.vue'], resolve),
-    meta: {
-      requireAuth: true,
-      title: 'nav.routerName_configSell',
-      keepAlive: true,
-    }
   },
   {
     path: "/sellOrder",

@@ -85,7 +85,6 @@ module.exports = {
         home_buyTitle: "買幣",
         //卖币标题
         home_sellTitle: "賣幣",
-        home_Tips: '繼續操作即表示您同意我們的 cookie 政策。',
         home_minAmountTips: '最低交易額為',
         home_maxAmountTips: '最高交易額為',
         home_feeTimeDownTitle: '剩餘時間',

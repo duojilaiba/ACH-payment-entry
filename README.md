@@ -30,5 +30,10 @@ https://www.basisid.com/alchemytech/
 https://www.showdoc.com.cn/ach/8412694673175311
 ```
 
+### 优化所需依赖
+```
+压缩 - compression-webpack-plugin@6.1.1
+```
+
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).

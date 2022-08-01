@@ -1,3 +1,4 @@
+<script src="../../../../../../Desktop/总结/工具类js/Tools.js"></script>
 <template>
   <div id="tradeHistory">
 
@@ -38,22 +39,19 @@
               <div class="details_line">
                 <div class="details_line_title">{{ $t('nav.payResult_feeAmount') }} ({{ item.fiatCurrency }})</div>
                 <div class="details_line_value">
-                  <span class="value" v-if="item.amount !== null && item.amount !== ''">{{ item.amount }}</span> <!-- {{ item.fiatCurrencySymbol }} -->
-                  <span class="noValue" v-else>-- </span>
+                  <span class="value" :class="{'noValue': noData(item.amount) === '--'}">{{ noData(item.amount) }}</span>
                 </div>
               </div>
               <div class="details_line">
                 <div class="details_line_title">{{ item.cryptoCurrency }} {{ $t('nav.fee_listTitle_price') }} ({{ item.fiatCurrency }})</div>
                 <div class="details_line_value">
-                  <span class="value" v-if="item.cryptoCurrencyPrice !== null && item.cryptoCurrencyPrice !== ''">{{ item.cryptoCurrencyPrice }}</span> <!-- {{ item.fiatCurrencySymbol }} -->
-                  <span class="noValue" v-else>-- </span>
+                  <span class="value" :class="{'noValue': noData(item.cryptoCurrencyPrice) === '--'}">{{ noData(item.cryptoCurrencyPrice) }}</span>
                 </div>
               </div>
               <div class="details_line">
                 <div class="details_line_title">{{ $t('nav.history_listTitle2') }} ({{ item.cryptoCurrency }})</div>
                 <div class="details_line_value">
-                  <span class="value" v-if="item.cryptoCurrencyVolume !== null && item.cryptoCurrencyVolume !== ''">{{ item.cryptoCurrencyVolume }}</span>
-                  <span class="noValue" v-else>-- </span>
+                  <span class="value" :class="{'noValue': noData(item.cryptoCurrencyVolume) === '--'}">{{ noData(item.cryptoCurrencyVolume) }}</span>
                 </div>
               </div>
               <div class="details_line" >
@@ -62,15 +60,13 @@
                   <span v-if="item.depositType===2">{{ $t('nav.payResult_feeAddress') }}</span>
                 </div>
                 <div class="details_line_value address_value">
-                  <span class="value" v-if="item.address !== null && item.address !== ''">{{ item.address }}</span>
-                  <span class="noValue" v-else>-- </span>
+                  <span class="value" :class="{'noValue': noData(item.address) === '--'}">{{ noData(item.address) }}</span>
                 </div>
               </div>
               <div class="details_line" v-if="item.hashId">
                 <div class="details_line_title">{{ $t('nav.history_listTitle3') }}</div>
                 <div class="details_line_value">
-                  <span class="value" v-if="item.hashId !== null && item.hashId !== ''">{{ item.hashId }}</span>
-                  <span class="noValue" v-else>-- </span>
+                  <span class="value" :class="{'noValue': noData(item.hashId) === '--'}">{{ noData(item.hashId) }}</span>
                 </div>
               </div>
 
@@ -131,22 +127,19 @@
               <div class="details_line">
                 <div class="details_line_title">Order Amount ({{ item.cryptocurrency }})</div>
                 <div class="details_line_value">
-                  <span class="value" v-if="item.orderAmount !== null && item.orderAmount !== ''">{{ item.orderAmount }}</span>
-                  <span class="noValue" v-else>-- </span>
+                  <span class="value" :class="{'noValue': noData(item.orderAmount) === '--'}">{{ noData(item.orderAmount) }}</span>
                 </div>
               </div>
               <div class="details_line">
                 <div class="details_line_title">Actual Amount ({{ item.cryptocurrency }})</div>
                 <div class="details_line_value">
-                  <span class="value" v-if="item.actualAmount !== null && item.actualAmount !== ''">{{ item.actualAmount }}</span>
-                  <span class="noValue" v-else>-- </span>
+                  <span class="value" :class="{'noValue': noData(item.actualAmount) === '--'}">{{ noData(item.actualAmount) }}</span>
                 </div>
               </div>
               <div class="details_line">
                 <div class="details_line_title">Final Total ({{ item.cryptocurrency }})</div>
                 <div class="details_line_value">
-                  <span class="value" v-if="item.finalTotal !== null && item.finalTotal !== ''">{{ item.finalTotal }}</span>
-                  <span class="noValue" v-else>-- </span>
+                  <span class="value" :class="{'noValue': noData(item.finalTotal) === '--'}">{{ noData(item.finalTotal) }}</span>
                 </div>
               </div>
 
@@ -223,7 +216,6 @@
         </van-list>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -278,7 +270,7 @@ export default {
   computed: {
     tabViewName(){
       return this.$store.state.historyTab;
-    }
+    },
   },
   methods:{
     goHome(){
@@ -310,7 +302,7 @@ export default {
       let _this = this;
       this.$axios.get(this.$api.get_transactionHistory,this.buyQuery).then(res=>{
         if(res.data){
-          let newArray = res.data.result.filter(item=>{return item.orderState !== 0 && item.orderState !== 6});
+          let newArray = res.data.result.filter(item=>{return item.orderState !== 0 && item.orderState !== 6 && item.orderState !== 1});
           _this.buy_historyList = _this.buy_historyList.concat(newArray);
           _this.buyLoading = false;
           if ((_this.buyQuery.pageIndex * _this.buyQuery.pageSize) > res.data.total || _this.buy_historyList.length === res.data.total){
@@ -353,23 +345,48 @@ export default {
     },
 
     //退款、修改银行卡信息
-    optionsPath(val,state){
+    optionsPath(val,state) {
+      let _this = this;
       //修改银行卡信息
-      if(state === 'bankInfo'){
+      if (state === 'bankInfo') {
         this.$store.state.cardInfoFromPath = 'sellOrder';
         this.$router.push(`/sell-formUserInfo?sellOrderId=${val.orderId}`);
         return
       }
       //状态为2 - 区块链确认中、确认数量为0
-      if(state === 'payNow'){
-        this.$store.state.sellOrderId = val.orderId;
-        this.$store.state.nextOrderState = 1;
-        this.$router.push(`/sellOrder`);
+      if (state === 'payNow') {
+        let params = {
+          orderId: val.orderId
+        }
+        this.$axios.get(this.$api.get_PlayCurrencyStatus,params).then(res=>{
+          if(res && res.returnCode === '0000'){
+            _this.$store.state.sellOrderId = val.orderId;
+            _this.$store.state.nextOrderState = 1;
+            //费用接口所需参数
+            this.$store.state.sellRouterParams.amount = val.orderAmount;
+            this.$store.state.feeParams_order = {
+              symbol: val.cryptocurrency + "USDT",
+              fiatCode: val.fiatName,
+              alpha2: res.data.alpha2,
+            };
+            //获取网络接口所需加密货币
+            this.$store.state.sellRouterParams.cryptoCurrency = val.cryptocurrency;
+            _this.$router.push(`/sellOrder`);
+          }
+        })
         return;
       }
       //退款
       this.$router.push(`/Refund?orderId=${val.orderId}&cryptocurrency=${val.cryptocurrency}&fiatName=${val.fiatName}`);
-    }
+    },
+
+    //数据判空 - null、""、不存在这个字段
+    noData(val){
+      if(val !== null && val !== '' && val){
+        return val
+      }
+      return "--"
+    },
 
   }
 }

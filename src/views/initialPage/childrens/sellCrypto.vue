@@ -44,7 +44,6 @@
         Proceed · Sell {{ currencyData.name }}
         <img class="rightIcon" src="../../../assets/images/button-right-icon.svg" alt="">
       </button>
-      <p class="cookieTips">{{ $t('nav.home_Tips') }}</p>
       <div class="footer_logoView">
         <p class="logoText">Powered By</p>
         <div class="logo">
@@ -494,13 +493,6 @@ html,body,#buyCrypto{
 
 
 footer{
-  .cookieTips{
-    font-family: SFProDisplayRegular;
-    font-weight: 400;
-    font-size: 0.13rem;
-    color: #C2C2C2;
-    text-align: center;
-  }
   .footer_logoView{
     display: flex;
     justify-content: center;

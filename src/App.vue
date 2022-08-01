@@ -2,12 +2,6 @@
   <div id="viewBox" ref="viewApp">
     <div class="buyCrypto_iframe_view" :class="{'buyCrypto_iframe_view_pc': logoState===true}"  >
         <div id="App" >
-          <!-- 顶部logo -->
-          <!-- <div class="viewTab_logo" v-if="$route.path!=='/kycVerification'">
-            <img src="@/assets/images/achLogo.svg" alt="" @click="goHome"> -->
-            <!-- this.$store.state.customized_orderMerchant 商户订单状态不展示菜单 -->
-            <!-- <img src="@/assets/images/rightMeun.png" alt="" @click="routerViewState=!routerViewState" v-show="routerViewState && $route.path!=='/emailCode' && $route.path!=='/verifyCode'  && this.$store.state.customized_orderMerchant === true">
-          </div> -->
           <!-- 导航栏 -->
           <tab ref="viewTab"/>
           <!-- 页面内容 -->
@@ -276,6 +270,13 @@ html,body,#app,#viewBox{
   height: 100%;
   font-size: 0.16rem;
   overflow: hidden;
+  //禁止复制
+  -moz-user-select:none; /* Firefox私有属性 */
+  -webkit-user-select:none; /* WebKit内核私有属性 */
+  -ms-user-select:none; /* IE私有属性(IE10及以后) */
+  -khtml-user-select:none; /* KHTML内核私有属性 */
+  -o-user-select:none; /* Opera私有属性 */
+  user-select:none; /* CSS3属性 */
 }
 
 #viewBox{
@@ -333,24 +334,6 @@ html,body,#app,#viewBox{
 }
 .buyCrypto_iframe_view_pc{
   padding: 0.56rem 0.30rem 0.26rem 0.30rem !important;
-}
-.viewTab_logo{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: .35rem;
-  position: relative;
-  img:nth-of-type(1){
-    height: .15rem;
-    cursor: pointer;
-  }
-  img:nth-of-type(2){
-    // width: .16rem;
-   height: .16rem;
-   position: absolute;
-   right: 0;
-   cursor: pointer;
-  }
 }
 .buyCrypto_iframe_view{
   width: 375px;

@@ -6,13 +6,13 @@
         <p>Sell {{orderStateData.cryptocurrency}}</p>
       </div>
           <div class="sendCrypto_nav_right" >
-            <img class="menu" style="height:.18rem;cursor: pointer;" src="@/assets/images/rightMeun.png" v-if="this.$parent.$parent.routerViewState" @click="openMenu">
+            <img class="menu" style="height:.18rem;cursor: pointer;" src="@/assets/images/meun-icon.png" v-if="this.$parent.$parent.routerViewState" @click="openMenu">
           </div>
       </div>
     <div v-if="[0,1].includes(orderStateData.orderStatus)">
       <div>
         <div class="sendCrypto_title">
-      <p>{{ $t('nav.Sellorder_You') }} {{ $t('nav.Sellorder_will') }} {{ $t('nav.Sellorder_get') }}  <span> {{ feeInfo.fiatSymbol }} {{ amountFee }}</span>  {{ $t('nav.Sellorder_for') }} <span>  {{ $store.state.sellRouterParams.amount }} {{ $store.state.sellRouterParams.cryptoCurrency }} </span> </p>
+      <p>{{ $t('nav.home_sellFee_title1') }}  <span> {{ $store.state.sellRouterParams.amount }} {{ $store.state.sellRouterParams.cryptoCurrency }}</span>  {{ $t('nav.home_sellFee_title2') }} <span> {{ feeInfo.fiatSymbol }} {{ amountFee }}  </span> </p>
       <p style="display:flex;justify-content:space-between;width:.37rem"><img  src="@/assets/images/timeSell.svg" alt=""><span >{{ timerNumber }} </span> s</p>
 
     </div>

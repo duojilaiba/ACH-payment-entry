@@ -13,11 +13,20 @@
         <div @click="goLogin" :style="{background:loading?'#0059DA80':''}">{{ $t('nav.login') }} <img class="icon" src="../assets/images/rightIconSell.png" alt="" v-if="!loading">
         <van-loading  class="icon" type="spinner" color="#fff" v-else/></div>
     </div>
-    <div class="routerMenu_history" @click="goView('/tradeHistory')" v-else >
+    <div class="routerMenu_history goHomeView" @click="goView('/',$store.state.homeTabstate)" v-if="token!==false">
+      <div class="lineIcon"><img src="../assets/images/slices/goHome-icon.svg"></div>
+      <div class="lineName">
+        <p class="alone">Home</p>
+      </div>
+      <div class="lineRight">
+        <div><img src="../assets/images/slices/right_icon.png"></div>
+      </div>
+    </div>
+    <div class="routerMenu_history" @click="goView('/tradeHistory')" v-if="token!==false">
       <div class="lineIcon"><img src="../assets/images/slices/histry.png"></div>
       <div class="lineName">
-        <p>{{ $t('nav.menu_transactions') }}</p>
-        <p><span v-if="finished">{{ $t('nav.RouterMenu_history') }}</span></p>
+        <p class="alone">{{ $t('nav.menu_transactions') }}</p>
+<!--        <p><span v-if="finished">{{ $t('nav.RouterMenu_history') }}</span></p>-->
       </div>
       <div class="lineRight">
         <div><img src="../assets/images/slices/right_icon.png"></div>
@@ -247,13 +256,13 @@ export default {
     //查看用户是否为风险用户
     is_kycDisabled(){
       let _this = this
-      this.$axios.post(this.$api.post_kycDisabled,'').then(res=>{
+      this.$axios.post(this.$api.post_kycDisabled,'','').then(res=>{
         if(res && res.returnCode === '0000'){
           if(res.data){
             this.disAbled = res.data
             return
           }else{
-             _this.$axios.post(_this.$api.post_getKycThrough,'').then(_res=>{
+             _this.$axios.post(_this.$api.post_menuKYC,'','').then(_res=>{
               if(_res && _res.returnCode === '0000'){
                 if(_res.data===false){
                   _this.disAbled = false
@@ -428,6 +437,9 @@ export default {
       }
     }
   }
+  .goHomeView{
+    margin-top: 0.2rem !important;
+  }
   .routerMenu_history{
     width: 100%;
     height: .8rem;
@@ -439,9 +451,14 @@ export default {
     justify-content: space-between;
     padding: 0 .31rem 0 .24rem;
     cursor: pointer;
-    margin-top: .3rem;
+    margin-top: .12rem;
+    .alone{
+      font-family: SFProDisplaybold !important;
+      font-weight: 600 !important;
+      font-size: 0.16rem !important;
+      color: #063376 !important;
+    }
     .lineName{
-
       margin-left: .16rem;
       flex: 1;
       p:first-child{

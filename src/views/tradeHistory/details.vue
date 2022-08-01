@@ -46,36 +46,31 @@
         <div class="amountInfo-line">
           <div class="left">Order Amount ({{ detailsData.cryptocurrency }})</div>
           <div class="right">
-            <span class="value" v-if="detailsData.orderAmount !== '' && detailsData.orderAmount !== null">{{ detailsData.orderAmount }}</span>
-            <span class="empty" v-else>-- </span>
+            <span class="value" :class="{'empty': noData(detailsData.orderAmount) === '--'}">{{ noData(detailsData.orderAmount) }}</span>
           </div>
         </div>
         <div class="amountInfo-line">
           <div class="left">Actual Amount ({{ detailsData.cryptocurrency }})</div>
           <div class="right">
-            <span class="value" v-if="detailsData.actualAmount !== '' && detailsData.actualAmount !== null">{{ detailsData.actualAmount }}</span>
-            <span class="empty" v-else>-- </span>
+            <span class="value" :class="{'empty': noData(detailsData.actualAmount) === '--'}">{{ noData(detailsData.actualAmount) }}</span>
           </div>
         </div>
         <div class="amountInfo-line">
           <div class="left">Price ({{ detailsData.fiatName }})</div>
           <div class="right">
-            <span class="value" v-if="detailsData.price !== '' && detailsData.price !== null">{{ detailsData.price }}</span>
-            <span class="empty" v-else>-- </span>
+            <span class="value" :class="{'empty': noData(detailsData.price) === '--'}">{{ noData(detailsData.price) }}</span>
           </div>
         </div>
         <div class="amountInfo-line">
           <div class="left">Total ({{ detailsData.fiatName }})</div>
           <div class="right">
-            <span class="value" v-if="detailsData.total !== '' && detailsData.total !== null">{{ detailsData.total }}</span>
-            <span class="empty" v-else>-- </span>
+            <span class="value" :class="{'empty': noData(detailsData.total) === '--'}">{{ noData(detailsData.total) }}</span>
           </div>
         </div>
         <div class="amountInfo-line" v-if="detailsData.failureNumber < 2">
           <div class="left">Ramp Fee ({{ detailsData.fiatName }})</div>
           <div class="right">
-            <span class="value" v-if="detailsData.rampFee !== '' && detailsData.rampFee !== null">{{ detailsData.rampFee }}</span>
-            <span class="empty" v-else>-- </span>
+            <span class="value" :class="{'empty': noData(detailsData.rampFee) === '--'}">{{ noData(detailsData.rampFee) }}</span>
           </div>
         </div>
         <div class="amountInfo-line" v-if="detailsData.orderStatus === 6 || detailsData.orderStatus === 11 || detailsData.orderStatus === 8 || detailsData.orderStatus === 10">
@@ -88,8 +83,7 @@
         <div class="amountInfo-line">
           <div class="left">Final Total ({{ detailsData.fiatName }})</div>
           <div class="right">
-            <span class="value" v-if="detailsData.finalTotal !== '' && detailsData.finalTotal !== null">{{ detailsData.finalTotal }}</span>
-            <span class="empty" v-else>-- </span>
+            <span class="value" :class="{'empty': noData(detailsData.finalTotal) === '--'}">{{ noData(detailsData.finalTotal) }}</span>
           </div>
         </div>
       </div>
@@ -133,31 +127,27 @@
         <div class="amountInfo-line">
           <div class="left">Order Time:</div>
           <div class="right">
-            <span class="value" v-if="detailsData.orderTime && detailsData.orderTime !== '' && detailsData.orderTime !== null">{{ detailsData.orderTime }}</span>
-            <span class="empty" v-else>-- </span>
+            <span class="value" :class="{'empty': noData(detailsData.orderTime) === '--'}">{{ noData(detailsData.orderTime) }}</span>
           </div>
         </div>
         <div class="amountInfo-line" v-if="(detailsData.orderStatus >= 3 && detailsData.orderStatus <= 9 && detailsData.orderStatus !== 7) || (detailsData.orderStatus === 2 && detailsData.confirmBlock !== 0)">
           <div class="left">Confirmed Time:</div>
           <div class="right">
-            <span class="value" v-if="detailsData.confirmedTime && detailsData.confirmedTime !== '' && detailsData.confirmedTime !== null">{{ detailsData.confirmedTime }}</span>
-            <span class="empty" v-else>-- </span>
+            <span class="value" :class="{'empty': noData(detailsData.confirmedTime) === '--'}">{{ noData(detailsData.confirmedTime) }}</span>
           </div>
         </div>
         <!-- Completed -->
         <div class="amountInfo-line" v-if="(detailsData.orderStatus >= 5 && detailsData.orderStatus <= 9 && detailsData.orderStatus !== 7)">
           <div class="left">Transfer Time:</div>
           <div class="right">
-            <span class="value" v-if="detailsData.transferTime && detailsData.transferTime !== '' && detailsData.transferTime !== null">{{ detailsData.transferTime }}</span>
-            <span class="empty" v-else>-- </span>
+            <span class="value" :class="{'empty': noData(detailsData.transferTime) === '--'}">{{ noData(detailsData.transferTime) }}</span>
           </div>
         </div>
         <!-- Failed - 2 -->
         <div class="amountInfo-line" v-if="detailsData.orderStatus === 8 || detailsData.orderStatus === 10">
           <div class="left">Refund Time:</div>
           <div class="right">
-            <span class="value" v-if="detailsData.refundTime && detailsData.refundTime !== '' && detailsData.refundTime !== null">{{ detailsData.refundTime }}</span>
-            <span class="empty" v-else>-- </span>
+            <span class="value" :class="{'empty': noData(detailsData.refundTime) === '--'}">{{ noData(detailsData.refundTime) }}</span>
           </div>
         </div>
       </div>
@@ -166,8 +156,7 @@
         <div class="amountInfo-line">
           <div class="left">Network:</div>
           <div class="right">
-            <span class="value" v-if="detailsData.network && detailsData.network !== '' && detailsData.network !== null">{{ detailsData.network }}</span>
-            <span class="empty" v-else>-- </span>
+            <span class="value" :class="{'empty': noData(detailsData.network) === '--'}">{{ noData(detailsData.network) }}</span>
           </div>
         </div>
         <div class="amountInfo-line">
@@ -198,7 +187,7 @@
     </div>
 
     <!-- failed - 1 -->
-    <footer v-if="detailsData.orderStatus === 6 || detailsData.orderStatus === 8 || detailsData.confirmBlock === 0">
+    <footer v-if="detailsData.orderStatus === 6 || detailsData.orderStatus === 8 || (detailsData.orderStatus === 1 && detailsData.confirmBlock === 0)">
       <!-- 重新购买 -->
       <button class="update-card-info" @click="updateCardInfo" v-if="detailsData.orderStatus === 6">
         Update Information
@@ -209,7 +198,7 @@
       <!-- 退款 -->
       <p @click="refund" v-if="detailsData.orderStatus === 8 || detailsData.orderStatus === 6">Request Refund of USDT</p>
       <!-- 去购买 -->
-      <button class="pay-now" @click="payNow" v-if="detailsData.confirmBlock === 0">Pay Now</button>
+      <button class="pay-now" @click="payNow" v-if="detailsData.orderStatus === 1 && detailsData.confirmBlock === 0">Pay Now</button>
     </footer>
   </div>
 </template>
@@ -252,7 +241,7 @@ export default {
       }
       this.$axios.get(this.$api.get_sellOrderDetails,params).then(res=>{
         if(res && res.returnCode === '0000'){
-          if([5,6,7,8,9].includes(res.data.orderStatus)){
+          if([5,6,7,10,11].includes(res.data.orderStatus)){
             window.clearInterval(this.timeOut);
             this.timeOut = null;
           }
@@ -269,9 +258,26 @@ export default {
       this.$router.push(`/Refund?orderId=${this.orderId}&cryptocurrency=${this.detailsData.cryptocurrency}&fiatName=${this.detailsData.fiatName}`);
     },
     payNow(){
-      this.$store.state.sellOrderId = this.detailsData.orderId;
-      this.$store.state.nextOrderState = 1;
-      this.$router.push(`/sellOrder`);
+      let _this = this;
+      let params = {
+        orderId: this.detailsData.orderId
+      }
+      this.$axios.get(this.$api.get_PlayCurrencyStatus,params).then(res=>{
+        if(res && res.returnCode === '0000'){
+          _this.$store.state.sellOrderId = this.detailsData.orderId;
+          _this.$store.state.nextOrderState = 1;
+          //费用接口所需参数
+          this.$store.state.sellRouterParams.amount = this.detailsData.orderAmount;
+          this.$store.state.feeParams_order = {
+            symbol: this.detailsData.cryptocurrency + "USDT",
+            fiatCode: this.detailsData.fiatName,
+            alpha2: res.data.alpha2,
+          };
+          //获取网络接口所需加密货币
+          this.$store.state.sellRouterParams.cryptoCurrency = this.detailsData.cryptocurrency;
+          _this.$router.push(`/sellOrder`);
+        }
+      })
     },
 
     copy(){
@@ -287,7 +293,15 @@ export default {
       clipboard.on('error', () => {
         clipboard.destroy()
       })
-    }
+    },
+
+    //数据判空 - null、""、不存在这个字段
+    noData(val){
+      if(val !== null && val !== '' && val){
+        return val
+      }
+      return "--"
+    },
   },
   deactivated(){
     window.clearInterval(this.timeOut);
@@ -383,9 +397,11 @@ export default {
       .right{
         margin-left: auto;
         .empty{
-          font-weight: 400;
+          font-family: SFProDisplayRegular !important;
+          font-weight: 400 !important;
           font-size: 0.13rem;
-          color: #949EA4;
+          line-height: 0.14rem;
+          color: #949EA4 !important;
         }
         .value{
           font-family: SFProDisplayMedium;

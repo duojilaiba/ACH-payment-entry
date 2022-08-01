@@ -343,48 +343,54 @@ export default {
           let newCurrencyList_network = [];
           let newPopularList_network = [];
           let newrecentList_network = [];
-          newCurrencyList = this.basicData.cryptoCurrencyResponse.cryptoCurrencyList.filter(item=>{ return item.purchaseSupported === 1 });
-          newPopularList = this.basicData.cryptoCurrencyResponse.popularList.filter(item=>{ return item.purchaseSupported === 1 });
-          newrecentList = this.basicData.cryptoCurrencyResponse.buyRecentList.filter(item=>{ return item.purchaseSupported === 1 });
           //受欢迎的
-          newPopularList.forEach(item=>{
-            if(item.buyNetworkList){
-              item.buyNetworkList.forEach(item2=>{
-                let fiat = {
-                  buyNetwork: item2,
-                }
-                fiat = {...fiat,...item};
-                newPopularList_network.push(fiat);
-              })
-            }
-          });
-          this.popularList = newPopularList_network;
+          if(this.basicData.cryptoCurrencyResponse.popularList){
+            newPopularList = this.basicData.cryptoCurrencyResponse.popularList.filter(item=>{ return item.purchaseSupported === 1 });
+            newPopularList.forEach(item=>{
+              if(item.buyNetworkList){
+                item.buyNetworkList.forEach(item2=>{
+                  let fiat = {
+                    buyNetwork: item2,
+                  }
+                  fiat = {...fiat,...item};
+                  newPopularList_network.push(fiat);
+                })
+              }
+            });
+            this.popularList = newPopularList_network;
+          }
           //全部
-          newCurrencyList.forEach(item=>{
-            if(item.buyNetworkList){
-              item.buyNetworkList.forEach(item2=>{
-                let fiat = {
-                  buyNetwork: item2,
-                }
-                fiat = {...fiat,...item};
-                newCurrencyList_network.push(fiat);
-              })
-            }
-          });
-          this.cryptoCurrencyVOList = newCurrencyList_network;
+          if(this.basicData.cryptoCurrencyResponse.cryptoCurrencyList){
+            newCurrencyList = this.basicData.cryptoCurrencyResponse.cryptoCurrencyList.filter(item=>{ return item.purchaseSupported === 1 });
+            newCurrencyList.forEach(item=>{
+              if(item.buyNetworkList){
+                item.buyNetworkList.forEach(item2=>{
+                  let fiat = {
+                    buyNetwork: item2,
+                  }
+                  fiat = {...fiat,...item};
+                  newCurrencyList_network.push(fiat);
+                })
+              }
+            });
+            this.cryptoCurrencyVOList = newCurrencyList_network;
+          }
           //历史交易过的币种
-          newrecentList.forEach(item=>{
-            if(item.buyNetworkList){
-              item.buyNetworkList.forEach(item2=>{
-                let fiat = {
-                  buyNetwork: item2,
-                }
-                fiat = {...fiat,...item};
-                newrecentList_network.push(fiat);
-              })
-            }
-          });
-          this.cryptoCurrency_recentList = newrecentList_network
+          if(this.basicData.cryptoCurrencyResponse.buyRecentList){
+            newrecentList = this.basicData.cryptoCurrencyResponse.buyRecentList.filter(item=>{ return item.purchaseSupported === 1 });
+            newrecentList.forEach(item=>{
+              if(item.buyNetworkList){
+                item.buyNetworkList.forEach(item2=>{
+                  let fiat = {
+                    buyNetwork: item2,
+                  }
+                  fiat = {...fiat,...item};
+                  newrecentList_network.push(fiat);
+                })
+              }
+            });
+            this.cryptoCurrency_recentList = newrecentList_network
+          }
           // this.cryptoCurrencyVOList = this.basicData.cryptoCurrencyResponse.cryptoCurrencyList.filter(item=>{return item.purchaseSupported === 1});
         })
         return;
