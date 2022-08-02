@@ -549,11 +549,12 @@ html,body,#tradeHistory,.historyList,.van-list{
       font-weight: 400;
       font-size: 0.13rem;
       margin-top: 0.24rem;
-      padding: 0 0.16rem;
+      padding: 0 0.12rem;
       .orderState-line1{
         display: flex;
         align-items: center;
         justify-content: right;
+        padding: 0 0.04rem;
         .state_circular{
           width: 0.05rem;
           height: 0.05rem;
@@ -588,6 +589,7 @@ html,body,#tradeHistory,.historyList,.van-list{
       .state_failed_tips{
         font-size: 0.1rem;
         margin-top: 0.04rem;
+        padding: 0 0.04rem;
         text-align: right;
       }
       .options{
