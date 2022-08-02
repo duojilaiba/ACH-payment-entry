@@ -18,7 +18,7 @@
           {{ $t('nav.home_sellFee_title1') }} <span>{{ routerParams.amount }} {{ currencyData.name }}</span> {{ $t('nav.home_sellFee_title2') }} <span>{{ routerParams.getAmount }} {{ positionData.code }}</span>
         </div>
         <div class="right">
-         <img src="@/assets/images/blackDownIcon1.png">
+         <img :src="feeState?imageTop:imageBottom">
         </div>
       </div>
       <div class="fee-content-details" v-if="feeState">
@@ -132,6 +132,8 @@ export default {
       currencyData: {},
       positionData: {},
       timeDownNumber: 15,
+      imageBottom:require('@/assets/images/blackDownIcon1.png'),
+      imageTop:require('@/assets/images/imageTop.png')
     }
   },
   watch: {
@@ -275,11 +277,12 @@ export default {
   .feeTitle {
     font-size: .13rem;
     font-weight: normal;
-    color: #949EA4;
+    color: #031633;
     display: flex;
     align-items: center;
     padding: 0 .2rem 0;
     .feeTitle-name {
+      color: #031633;
       font-family: SFProDisplayRegular;
     }
 
@@ -288,6 +291,7 @@ export default {
       display: flex;
       align-items: center;
       margin-left: auto;
+      color: #6E7687;
 
       .loading-svg {
         margin-right: 0.04rem;
@@ -308,7 +312,7 @@ export default {
   }
 
   .fee-content {
-    background: #F7F8FA;
+    background: #F4F5F7;
     border-radius: 0.12rem;
     margin-top: 0.36rem;
     padding: .2rem;
@@ -319,7 +323,7 @@ export default {
       font-size: 0.13rem;
       font-family:SFProDisplayRegular;
       font-weight: normal;
-      color: #949EA4;
+      color: #6E7687;
       cursor: pointer;
 
       span {
@@ -331,10 +335,10 @@ export default {
         font-size: 0.13rem;
         font-family: SFProDisplayRegular;
         font-weight: normal;
-        color: #949EA4;
+        color: #6E7687;
 
         span {
-          color: #063376;
+          color: #031633;
           font-family: SFProDisplayRegular;
         }
       }
@@ -362,7 +366,7 @@ export default {
           font-size: 0.13rem;
           font-family: SFProDisplayRegular;
           font-weight: normal;
-          color: #949EA4;
+          color: #6E7687;
 
           .tipsIcon {
             width: 0.12rem;
@@ -383,13 +387,13 @@ export default {
           align-items: center;
           font-size: 0.13rem;
           font-family: SFProDisplayRegular;
-          color: #063376;
+          color: #031633;
           font-weight: normal;
 
           .minText {
             font-family: SFProDisplayRegular;
             font-weight: normal;
-            color: #848484;
+            color: #6E7687;
             margin-right: 0.04rem;
             margin-top: -0.02rem;
           }

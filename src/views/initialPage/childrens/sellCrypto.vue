@@ -399,8 +399,8 @@ html,body,#buyCrypto{
   }
 }
 .inputFocus{
-  border: 1px solid #D0ECFC;
-  box-shadow: 0 0 0.35rem rgba(89, 153, 248, 0.1);
+border: 1px solid #41B8FD;
+box-shadow: 0px 0px 35px rgba(89, 153, 248, 0.2);
 }
 
 .pay_input{

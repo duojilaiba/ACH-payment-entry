@@ -50,8 +50,8 @@ export default {
     
     cursor: pointer;
     img{
-      height: .17rem;
-      margin-right: .1rem;
+      height: .2rem;
+      margin-right: .05rem;
     }
     color:#063376;
     font-size: .18rem;

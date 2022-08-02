@@ -17,7 +17,7 @@
         </div>
         <!-- 商户接入模式禁止点击 -->
         <div class="right" v-if="this.$store.state.customized_orderMerchant">
-          <img src="@/assets/images/blackDownIcon1.png">
+          <img :src="detailsState?image_Top:imageBottom">
         </div>
       </div>
       <div class="fee-content-details" v-if="detailsState">
@@ -102,6 +102,8 @@ export default {
         symbol: "",
       },
       timeDownNumber: 15,
+      imageBottom:require('@/assets/images/blackDownIcon1.png'),
+      image_Top:require('@/assets/images/imageTop.png')
     }
   },
   watch:{
@@ -295,14 +297,14 @@ export default {
   .feeTitle{
     font-size: 13px;
     font-weight: normal;
-    color: #949EA4;
+    color: #6E7687;
     line-height: 15px;
     display: flex;
     align-items: center;
     padding: 0 .2rem 0;
     .feeTitle-name{
       font-family: SFProDisplayRegular;
-      color: #949EA4;
+      color: #031633;
     }
     .feeTitle-value{
       font-family: SFProDisplayRegular;
@@ -318,7 +320,7 @@ export default {
         }
       }
       .feeTitle-value-text{
-        color: #949EA4;
+        color: #6E7687;
         span{
 
           display: inline-block;
@@ -330,7 +332,7 @@ export default {
   }
 
   .fee-content{
-    background: #F7F8FA;
+    background: #F4F5F7;
     border-radius: 0.12rem;
     margin-top: 0.36rem;
     padding: 0 0.2rem .2rem;
@@ -341,7 +343,7 @@ export default {
       font-size: 0.16rem;
       font-family: SFProDisplayRegular;
       font-weight: normal;
-      color: #949EA4;
+      color: #6E7687;
       cursor: pointer;
       span{
         font-weight: bold;
@@ -351,9 +353,9 @@ export default {
         font-size: 0.13rem;
         font-family: SFProDisplayRegular;
         font-weight: normal;
-        color: #949EA4;
+        color: #6E7687;
         span{
-          color: #063376;
+          color: #031633;
           font-family: SFProDisplayRegular;
         }
       }
@@ -378,7 +380,7 @@ export default {
           font-size: 0.13rem;
           font-family: "GeoLight", GeoLight;
           font-weight: normal;
-          color: #949EA4;
+          color: #6E7687;
           .tipsIcon{
             width: 0.12rem;
             height: 0.12rem;
@@ -396,12 +398,12 @@ export default {
           align-items: center;
           font-size: 0.13rem;
           font-family: SFProDisplayRegular;
-          color: #063376;
+          color: #031633;
           font-weight: normal;
           .minText{
             font-family: SFProDisplayRegular;
             font-weight: normal;
-            color: #949EA4;
+            color: #6E7687;
             margin-right: 0.04rem;
             margin-top: -0.02rem;
           }
