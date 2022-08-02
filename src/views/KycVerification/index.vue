@@ -275,8 +275,8 @@ export default {
         this.launchWebSdk(this.getToken)
       },200)
    }else{
-     // this.status=0
-     //    this.kycVerState = 1
+    //  this.status=0
+    //     this.kycVerState = 2
      return false
    }
 
@@ -329,7 +329,7 @@ export default {
       p{
         width: 2.2rem;
         margin-top: .2rem;
-        color: #063376;
+        color: #031633;
         line-height: 22px;
         font-family: SFProDisplaybold;
       }
@@ -337,7 +337,7 @@ export default {
         width: 2.2rem;
         font-size: .13rem;
         line-height: .16rem;
-        color: #949EA4;
+        color: #6E7687;
         font-family: SFProDisplayRegular;
          white-space: nowrap;
       }
@@ -347,7 +347,7 @@ export default {
       .verify_list{
         width: 90%;
         font-size: .13rem;
-        color: #949EA4;
+        color: #6E7687;
         line-height: .16rem;
         margin-top: .2rem;
 
@@ -375,8 +375,9 @@ export default {
       color: #FFFFFF;
       cursor: pointer;
       img{
-        height: .12rem;
+        height: .2rem;
         margin-left: .12rem;
+        margin-top: .02rem;
 
       }
     }

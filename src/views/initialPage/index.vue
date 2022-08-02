@@ -11,7 +11,7 @@
             <div :class="{'tabClass': tabstate==='sellCrypto'}" @click="switchTab('sellCrypto')" v-else-if="tableState===true && tabstate==='sellCrypto'">{{ $t('nav.routerName_sell') }}</div>
           </div>
           <div class="allPage-icon">
-            <img style="height:.18rem;margin-top:-.1rem" src="@/assets/images/meun-icon.png" @click="openMenu">
+            <img style="height:.2rem;margin-top:-.1rem" src="@/assets/images/meun-icon.png" @click="openMenu">
           </div>
         </div>
         <div class="home-children">
@@ -210,7 +210,7 @@ html,body,#homePage,.homePage_view,.homePage_content{
     font-size: 0.2rem;
     font-family: 'GeoDemibold';
     font-weight: bold;
-    color: #063376;
+    color: #031633;
   }
   .navigationBar_view_right {
     padding: .06rem;

@@ -1,7 +1,7 @@
 <template>
   <div id="routerMenu">
     <div class="router_nav" v-if="$route.path==='/sellOrder'">
-      <div class="navigationBar_view_left" style="color:#063376">{{ $t('nav.menu') }}</div>
+      <div class="navigationBar_view_left" style="color:#031633">{{ $t('nav.menu') }}</div>
       <div class="navigationBar_view_right" style="padding:.1rem">
         <img class="closeIcon" style="width:.22rem;" src="../assets/images/ShutDown.png" @click="$parent.routerViewState=true">
       </div>
@@ -18,9 +18,9 @@
       <div class="lineName">
         <p class="alone">Home</p>
       </div>
-      <div class="lineRight">
+      <!-- <div class="lineRight">
         <div><img src="../assets/images/slices/right_icon.png"></div>
-      </div>
+      </div> -->
     </div>
     <div class="routerMenu_history" @click="goView('/tradeHistory')" v-if="token!==false">
       <div class="lineIcon"><img src="../assets/images/slices/histry.png"></div>
@@ -62,7 +62,7 @@
       </div>
       <div class="lineRight" style="margin:0">
 
-        <div class="email" style="width:1.3rem; overflow: hidden;text-overflow:ellipsis;white-space: nowrap;line-height:.2rem;display:flex;justify-content: space-between;  align-items: center;"><img style="margin-right:.02rem" :src="disAbled===true?kycError:disAbled===false?kycSess:''"   alt="">{{ emailSlice   }} </div>
+        <div class="email" style="width:1.3rem; overflow: hidden;text-overflow:ellipsis;white-space: nowrap;line-height:.2rem;display:flex;justify-content: space-between;  align-items: center;color:#6E7687"><img style="margin-right:.02rem" :src="disAbled===true?kycError:disAbled===false?kycSess:''"   alt="">{{ emailSlice   }} </div>
         <div><img src="../assets/images/slices/right_icon.png"></div>
       </div>
     </div>
@@ -171,10 +171,10 @@ export default {
             localStorage.removeItem("sign");
             localStorage.removeItem("token");
             localStorage.removeItem("email");
-            localStorage.removeItem("userNo");
-            localStorage.removeItem("userId");
-            localStorage.removeItem("login_email");
-            localStorage.removeItem("fin_token");
+            // localStorage.removeItem("userNo");
+            // localStorage.removeItem("userId");
+            // localStorage.removeItem("login_email");
+            // localStorage.removeItem("fin_token");
             localStorage.removeItem("kycStatus");
             // sessionStorage.removeItem('accessMerchantInfo')
             sessionStorage.removeItem('store')
@@ -208,13 +208,7 @@ export default {
     },
     goLogin(){
       this.loading = true
-      if(this.$route.path === '/emailCode' || this.$route.path === '/verifyCode'){
-        this.loading = false
-        this.$toast({
-          duration: 3000,
-          message: this.$t('nav.login_Youlogged')
-        });
-      }else{
+      
 
         setTimeout(() => {
           this.loading = false
@@ -223,7 +217,7 @@ export default {
           //是否是从菜单进入
           this.$router.push('/emailCode')
         }, 200);
-      }
+     
     },
     //显示退出登陆判断是否是pc 还是 移动
     loginOutIsShow(){
@@ -322,7 +316,7 @@ export default {
   font-size: 0.18rem;
     font-family: SFProDisplaybold;
     font-weight: normal;
-    color: #063376;
+    color: #031633;
     font-weight: 500;
 
   img{
@@ -345,7 +339,7 @@ export default {
       font-size: 0.16rem;
       font-family: "SFProDisplayRegular";
       font-weight: 400;
-      color: #949EA4;
+      color: #6E7687;
       margin-left: 0.08rem;
     }
     .lineRight{
@@ -356,7 +350,7 @@ export default {
         font-size: .15rem;
         font-family: SFProDisplayRegular;
         font-weight: normal;
-        color: #C2C2C2;
+        color: #6E7687;
         margin-right: .12rem;
         font-weight: 400;
       }
@@ -385,7 +379,7 @@ export default {
     height: 2.26rem;
     // text-align: center;
     border-radius: .12rem;
-    border: 1px solid #E2E1E5;
+    border: 1px solid #D9D9D9;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -399,7 +393,7 @@ export default {
       font-size: .2rem;
       font-family: "SFProDisplaybold";
       font-weight: normal;
-      color: #063376;
+      color: #031633;
       line-height: .25rem;
       font-weight: 500;
       margin: .2rem 0 .06rem 0;
@@ -408,7 +402,7 @@ export default {
       font-size: .13rem;
       font-family: "SFProDisplayRegular";
       font-weight: normal;
-      color: #949EA4;
+      color: #6E7687;
     }
     >div{
       width: 90%;
@@ -427,7 +421,7 @@ export default {
       justify-content: center;
       align-items: center;
       .icon{
-        width: .16rem;
+        width: .2rem;
         // height: .14rem;
         margin-left: .1rem;
         span{
@@ -456,7 +450,7 @@ export default {
       font-family: SFProDisplaybold !important;
       font-weight: 600 !important;
       font-size: 0.16rem !important;
-      color: #063376 !important;
+      color: #031633 !important;
     }
     .lineName{
       margin-left: .16rem;
@@ -474,7 +468,7 @@ export default {
         color: #C0C0C2;
         line-height: 17px;
         font-size: .15rem;
-        margin-top: .04rem;
+        // margin-top: .04rem;
       }
     }
     .lineIcon{

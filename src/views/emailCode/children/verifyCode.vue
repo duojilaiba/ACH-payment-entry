@@ -1,7 +1,7 @@
 <template>
   <div class="verifyCode-container">
       <div style="position:relative;flex:1">
-        <div class="verifyCode_title" style="font-size:.16rem;color:#063376;margin:.42rem 0 .0rem">{{ $t('nav.codeTitle1') }}</div>
+        <div class="verifyCode_title" style="font-size:.16rem;color:#031633;margin:.42rem 0 .0rem">{{ $t('nav.codeTitle1') }}</div>
       <div class="verifyCode_content">
         <span v-for="(item,index) in number" :key="index" @click="changeBlur" :class="index===value.length?'active':''">{{ value[index] }}</span>
         <input type="input" style="outline: none; color:transparent;" v-model="value" :maxlength="6" ref="input">
@@ -186,10 +186,10 @@ import { fingerprintId } from '@/utils/publicRequest.js';
   justify-content: space-between;
   .verifyCode_title{
     font-size: .13rem;
-    color: #949EA4;
+    color: #6E7687;
     font-family: "SFProDisplayRegular";
     span{
-      color: #0059DAFF;
+      color: rgba(0, 71, 173, 1);
       cursor: pointer;
     }
   }
@@ -207,7 +207,7 @@ import { fingerprintId } from '@/utils/publicRequest.js';
       height: .65rem;
       border-radius: .12rem;
       font-size: .24rem;
-      background: #F3F4F5FF;
+      background: #F4F5F7;
       text-align: center;
       line-height: .65rem;
     }

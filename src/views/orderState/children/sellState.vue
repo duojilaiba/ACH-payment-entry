@@ -2,7 +2,7 @@
   <div class="sellState-container">
     <div class="sellState_nav">
       <p>Order Status</p>
-      <img @click="goSellOrder" src="@/assets/images/ShutDown.png" alt="">
+      <div style="padding:.1rem 0 .1rem .1rem; cursor: pointer;" @click="goSellOrder"><img  src="@/assets/images/ShutDown.png" alt=""></div>
     </div>
     <div class="sellState_content">
       <div class="sellState" >
@@ -10,8 +10,8 @@
           <img v-else-if="[1].includes(orderStateData.orderStatus)"  src="@/assets/images/stateSell/icon1_In.png" alt="">
           <img v-else-if="[2,3,4,5,6,9,8].includes(orderStateData.orderStatus)" src="@/assets/images/stateSell/icon1_finish.png" alt="">
         <div class="sellState_right" >
-          <p :style="{ color:orderStateData.orderStatus==0?'#949EA4':'' }">Crypto Sent</p>
-          <p v-if="orderStateData.orderStatus!==0" :style="{color:orderStateData.orderStatus==1?'#0059DA':'#063376'}">Block confirmed ( {{ orderStateData.confirmBlock }} / {{ orderStateData.totalBlock }} )</p>
+          <p :style="{ color:orderStateData.orderStatus==0?'#6E7687':'' }">Crypto Sent</p>
+          <p v-if="orderStateData.orderStatus!==0" :style="{color:orderStateData.orderStatus==1?'#0059DA':'#031633'}">Block confirmed ( {{ orderStateData.confirmBlock }} / {{ orderStateData.totalBlock }} )</p>
         </div>
       </div>
       <img class="line" :src="[0,1].includes(orderStateData.orderStatus)?line.LineImg:line.LineImgActive" alt="">
@@ -22,8 +22,8 @@
           <img v-else-if="[2].includes(orderStateData.orderStatus)" src="@/assets/images/stateSell/icon2_In.png" alt="">
           <img v-else-if="[2,3,4,5,6,9,8].includes(orderStateData.orderStatus)" src="@/assets/images/stateSell/icon2_fil.png" alt="">
         <div class="sellState_right" >
-          <p :style="{ color:[0,1,2].includes(orderStateData.orderStatus)?'#949EA4':'' }">Confirm Order</p>
-          <p v-if="[3,4,5,6,9,8].includes(orderStateData.orderStatus)" style="color:#063376">Your order has been confirmed</p>
+          <p :style="{ color:[0,1].includes(orderStateData.orderStatus)?'#6E7687':'' }">Confirm Order</p>
+          <p v-if="[3,4,5,6,9,8].includes(orderStateData.orderStatus)" style="color:#031633">Your order has been confirmed</p>
         </div>
       </div>
       <img class="line" :src="[0,1,2].includes(orderStateData.orderStatus)?line.LineImg:line.LineImgActive" alt="">
@@ -34,8 +34,8 @@
           <img  v-else-if="[3].includes(orderStateData.orderStatus)" src="@/assets/images/stateSell/icon3_In.png" alt="">
           <img v-else-if="[4,5,6,9,8].includes(orderStateData.orderStatus)" src="@/assets/images/stateSell/icon3_fil.png" alt="">
         <div class="sellState_right">
-          <p :style="{ color:[0,1,2,3].includes(orderStateData.orderStatus)?'#949EA4':'' }">In Transfer</p>
-          <p v-if="[4,5,6,9,8].includes(orderStateData.orderStatus)" style="color:#063376">Your fiat is in transfer</p>
+          <p :style="{ color:[0,1,2].includes(orderStateData.orderStatus)?'#6E7687':'' }">In Transfer</p>
+          <p v-if="[4,5,6,9,8].includes(orderStateData.orderStatus)" style="color:#031633">Your fiat is in transfer</p>
         </div>
       </div>
       <img class="line" :src="[0,1,2,3,].includes(orderStateData.orderStatus)?line.LineImg:line.LineImgActive" alt="">
@@ -47,8 +47,8 @@
           <img v-else-if="orderStateData.orderStatus==5" src="@/assets/images/stateSell/icon4_fil.png" alt="">
           <img v-else-if="[6,9,8].includes(orderStateData.orderStatus)" src="@/assets/images/stateSell/icon4_error.png" alt="">
         <div class="sellState_right">
-          <p :style="{ color:[0,1,2,3].includes(orderStateData.orderStatus)?'#949EA4':'' }">Result</p>
-          <p v-if="[5,6,9,8].includes(orderStateData.orderStatus)" style="color:#063376">{{ orderStateData.orderStatus==5?'Order completed':'Order fail' }}</p>
+          <p :style="{ color:[0,1,2,3].includes(orderStateData.orderStatus)?'#6E7687':'' }">Result</p>
+          <p v-if="[5,6,9,8].includes(orderStateData.orderStatus)" style="color:#031633">{{ orderStateData.orderStatus==5?'Order completed':'Order fail' }}</p>
         </div>
       </div>
       
@@ -108,12 +108,12 @@ export default {
     margin-bottom: .4rem;
     p{
       font-size: .18rem;
-      color: #063376;
+      color: #031633;
       font-family: SFProDisplaybold;
     }
     img{
-      height: .22rem;
-      cursor: pointer;
+      height: .2rem;
+     
     }
   }
   .sellState_content{
@@ -133,7 +133,7 @@ export default {
        flex-direction: column;
        justify-content: center;
        p:nth-of-type(1){
-         color: #063376;
+         color: #031633;
          font-size: .16rem;
          line-height: .18rem;
          margin-top: .02rem;
@@ -141,7 +141,7 @@ export default {
        }
        p:nth-of-type(2){
          font-size: .13rem;
-         color: #063376;
+         color: #031633;
          line-height: .13rem;
          margin-top: .08rem;
          font-family: SFProDisplayRegular;
@@ -164,7 +164,7 @@ export default {
       font-style: normal;
       line-height: 18px;
       font-size: 13px;
-      color: #C2C2C2;
+      color: #94ACBA;
       font-family: SFProDisplayRegular;
     }
     .button{
@@ -182,7 +182,8 @@ export default {
         margin-right: .12rem;
       }
       img{
-        height: .12rem;
+        height: .2rem;
+        margin-top: .04rem;
       }
     }
   }

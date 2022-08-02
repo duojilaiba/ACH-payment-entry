@@ -23,25 +23,25 @@
     <div class="sendCrypto_title" style="margin-top:.16rem">
       <p >{{ $t('nav.Sellorder_Id') }}</p>
       <p style="cursor: pointer;" class="order-con" @click="copy" :data-clipboard-text="orderStateData.orderId">
-        <span style="width:2rem;overflow:hidden;font-style: normal;text-overflow: ellipsis;text-align:right" :style="{color:transferredShow?'#063376 !important':''}">{{ orderStateData.orderId }}</span>
+        <span style="width:2rem;overflow:hidden;font-style: normal;text-overflow: ellipsis;text-align:right" >{{ orderStateData.orderId }}</span>
         <img style="height:.2rem;margin-left:.08rem;flex:1" src="@/assets/images/copySell.png" alt="">
       </p>
     </div>
     <div class="sendCrypto_qrcode">
-      <p :style="{color:transferredShow?'#063376 !important':''}">{{ $t('nav.Sellorder_transfer') }} {{orderStateData.cryptoCurrency}} {{ $t('nav.Sellorder_within') }} <span>{{ turnMinute(orderStateData.expirationTime) }}</span></p>
+      <p >{{ $t('nav.Sellorder_transfer') }} {{orderStateData.cryptocurrency}} {{ $t('nav.Sellorder_within') }} <span>{{ turnMinute(orderStateData.expirationTime) }}</span></p>
       <div ref="qrCodeUrl" class="qrCodeUrl"></div>
     </div>
     <div class="sendCrypto_content" style=" align-items: center;">
       <div class="title">{{ $t('nav.Sellorder_Address') }} ({{orderStateData.cryptocurrency}})</div>
       <div class="content order-con" @click="copy" :data-clipboard-text="orderStateData.address">
-        <p style="max-width:2.5rem;white-space: normal;overflow:hidden;overflow:hidden;font-style: normal;text-overflow: ellipsis; " :style="{color:transferredShow?'#063376 !important':''}">{{ orderStateData.address }}</p>
+        <p style="max-width:2.5rem;white-space: normal;overflow:hidden;overflow:hidden;font-style: normal;text-overflow: ellipsis; " >{{ orderStateData.address }}</p>
         <img style="height:.2rem" src="@/assets/images/copySell.png" alt="">
       </div>
     </div>
     <div class="sendCrypto_content">
       <div class="title">{{  $t('nav.Sellorder_Network') }}</div>
       <div class="content" @click="Network_show = true">
-        <p :style="{color:transferredShow?'#063376 !important':''}">{{ orderStateData.networkName }}</p>
+        <p >{{ orderStateData.networkName }}</p>
         <img style="height:.2rem" src="@/assets/images/SelectNetwork.png" alt="">
       </div>
     </div>
@@ -65,7 +65,7 @@
     </div>
     <div class="sendCrypto_content1">
       <img src="@/assets/images/SellOrderTime.svg" alt="">
-      <p>Take a timeout! The address has been invalidated, please go back to the homepage to re-operate. If you insist on transferring digital currency to the current address, any loss will be borne by you!</p>
+      <p style="color:#6E7687">Take a timeout! The address has been invalidated, please go back to the homepage to re-operate. If you insist on transferring digital currency to the current address, any loss will be borne by you!</p>
     </div>
     <div class="sendCrypto_button" @click="$router.replace('/')">
       <div>
@@ -97,7 +97,7 @@
 
    </div>
    <div :class="!Network_show?'sendCrypto_bottomContent':'sendCrypto_bottomContent sendCrypto_bottomContentActive'" >
-       <div class="Network-title" >{{ $t('nav.Sellorder_Network') }} <img style="width:.22rem;" @click="Network_show = false" src="@/assets/images/ShutDown.png" alt=""></div>
+       <div class="Network-title" >{{ $t('nav.Sellorder_Network') }} <div style="padding:.1rem" @click="Network_show = false"><img style="width:.22rem;"  src="@/assets/images/ShutDown.png" alt=""></div></div>
        <div class="Network-content" v-for="item in Sellorder_NetworkList?Sellorder_NetworkList:''" :key="item.id" @click="networkSelect(item)">{{ item.networkName }} <img :src="item.networkName==orderStateData.networkName?NetworkCheck:''" alt=""></div>
      </div>
   </div>
@@ -368,7 +368,7 @@ export default {
      width: 100%;
      text-align: center;
      margin-top: .2rem;
-     border-top: 1px solid #EEEEEE;
+     border-top: 1px solid #D9D9D9;
      >img{
        height: 1.58rem;
        margin: .8rem 0 .2rem;
@@ -378,13 +378,13 @@ export default {
        font-style: normal;
        font-size: .13rem;
        line-height: .18rem;
-       color: #949EA4;
+       color: #6E7687;
      }
    }
  }
  .sendCrypto_nav{
    width: 100%;
-   padding: .0rem 0 .1rem;
+   padding: .1rem 0 .1rem;
    background: #FFFFFF;
    display: flex;
    justify-content: space-between;
@@ -406,7 +406,7 @@ export default {
      p{
        margin-left: .04rem;
        font-size: .18rem;
-       color: #063376;
+       color: #031633;
        font-family: SFProDisplaybold;
        margin-top: .01rem;
        white-space: nowrap;
@@ -421,14 +421,14 @@ export default {
     flex-wrap: nowrap;
     justify-content: space-between;
     font-size: .13rem;
-    color: #949EA4;
+    color: #6E7687;
     margin-top: .35rem;
     font-family: SFProDisplayRegular;
     p:first-child{
 
       font-style: normal;
       span{
-        color: #063376;
+        color: rgba(6, 51, 118, 1);
         margin: 0 .04rem 0;
       }
     }
@@ -445,7 +445,7 @@ export default {
   .sendCrypto_qrcode{
     width: 100%;
     margin-top: .24rem;
-    background: #F7F8FA;
+    background: #F4F5F7;
     border-radius: .06rem;
     display: flex;
     flex-direction: column;
@@ -454,7 +454,7 @@ export default {
     font-family: SFProDisplayRegular;
     p{
       font-size: .13rem;
-      color: #949EA4;
+      color: #6E7687;
       margin: .2rem 0 .16rem 0;
       text-align: center;
       display: flex;
@@ -473,15 +473,15 @@ export default {
     .title{
       font-size: .13rem;
       font-style: normal;
-      color: #949EA4;
+      color: #6E7687;
       font-weight: 400;
     }
     .content{
       width: 100%;
       height: .56rem;
-      background: #F7F8FA;
+      background: #F4F5F7;
       font-size: .16rem;
-      color: #949EA4;
+      color: #6E7687;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -495,7 +495,7 @@ export default {
   }
   .sendCrypto_bottom_title{
     font-size: .13rem;
-    color: #C2C2C2;
+    color: #94ACBA;
     font-style: normal;
     line-height: .18rem;
     margin-top: .08rem;
@@ -506,7 +506,7 @@ export default {
     height: .65rem;
     background: #FFFFFF;
     padding-top: .07rem;
-    font-family: SFProDisplayRegular;
+    
     div{
       width: 100%;
       height: .58rem;
@@ -517,14 +517,16 @@ export default {
       justify-content: center;
       align-items: center;
       cursor: pointer;
+      font-family: SFProDisplaybold;
     }
 
     position: absolute;
     bottom: .2rem;
     left: 5%;
     img{
-      height: .12rem;
+      height: .2rem;
       margin-left: .12rem;
+      margin-top: .02rem;
     }
   }
   .sendCrypto_confing{
@@ -546,7 +548,7 @@ export default {
 
       >p{
         text-align: center;
-        color: #949EA4;
+        color: #6E7687;
         font-size: .16rem;
         line-height: .24rem;
         font-family: "SFProDisplayRegular";
@@ -569,7 +571,7 @@ export default {
         p:last-child{
           width: 1.5rem;
           height: .5rem;
-          color: #063376;
+          color: #031633;
           text-align: center;
           line-height: .5rem;
           background: #FFFFFF;
@@ -607,28 +609,31 @@ export default {
 
     .Network-title{
       font-size: .18rem;
-      color: #063376;
+      color: #031633;
       text-align: center;
       margin: .3rem 0 .3rem;
       position: relative;
       font-weight: 500;
        font-family: SFProDisplaybold;
-      img{
-        width: .12rem;
-        position: absolute;
-        right: .0rem;
-        top: .0rem;
-        cursor: pointer;
+      div{
+         position: absolute;
+          right: -.1rem;
+          top: -.1rem;
+          cursor: pointer;
+        img{
+          width: .2rem;
+        }
       }
     }
     .Network-content{
       width: 100%;
-      height: .35rem;
-      border-bottom: 1px solid #F4F4F4;
-      margin-bottom: .16rem;
-      color: #949EA4;
+      // height: .35rem;
+      border-bottom: 1px solid #D9D9D9;
+      padding: .16rem 0 .16rem;
+      color: #6E7687;
       font-size: .16rem;
       display: flex;
+      line-height: .19rem;
       justify-content: space-between;
       align-items: center;
        font-family: SFProDisplayRegular;

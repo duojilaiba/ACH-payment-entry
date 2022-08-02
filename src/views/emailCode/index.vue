@@ -229,8 +229,8 @@ export default {
     //输入框选择状态样式
     emailFocus(){
       let Input = document.querySelector('.emailCode_content')
-      Input.style = `border: 1px solid #D0ECFC;
-      box-shadow: 0px 0px 35px rgba(89, 153, 248, 0.1);`
+      Input.style = `border: 1px solid #41B8FD;
+box-shadow: 0px 0px 35px rgba(89, 153, 248, 0.2);`
     },
     //输入框失去焦点时样式
     emailBlur(){
@@ -281,14 +281,14 @@ export default {
       font-family:"SFProDisplaybold";
       font-weight: normal;
       margin: .24rem 0 .16rem 0;
-      color: #063376;
+      color: #031633;
     }
     p{
       width: 2.5rem;
       font-size: .13rem;
       font-family: "SFProDisplayRegular";
       font-weight: normal;
-      color: #949EA4;
+      color: #6E7687;
       text-align: center;
     }
     img{
@@ -303,14 +303,14 @@ export default {
     font-family: "SFProDisplayRegular";
     color: #949EA4;
     span{
-      color: #0059DA;
+      color: rgba(0, 71, 173, 1);
       cursor: pointer;
     }
   }
   .emailCode_content{
     width: 100%;
     height: .56rem;
-    border: 1px solid #EEEEEE;
+    border: 1px solid #D9D9D9;
     border-radius: .12rem;
     position: relative;
     input{
@@ -320,13 +320,13 @@ export default {
       font-size: .16rem;
       position: absolute;
       left: .42rem;
-      color: #949EA4;
+      color: #6E7687;
       background: transparent;
       font-family: "SFProDisplayRegular";
       outline: none;
     }
     input::placeholder{
-      color: #C2C2C2;
+      color: #BFBFBF;
     }
     p{
       font-size: .13rem;
@@ -360,11 +360,11 @@ export default {
     cursor: pointer;
     display: flex;
     justify-content: center;
-    align-items: center;
+    // align-items: center;
     .icon{
       // width: .12rem;
-      height: .15rem;
-      margin-left: .12rem;
+      height: .2rem;
+      margin: .17rem  0 0 .1rem;
       span{
         position: absolute;
         left: 0;
@@ -383,7 +383,7 @@ export default {
   }
   .errorMessage{
     font-weight: normal;
-    color: #D92D20;
+    color: #FF2F2F;
     line-height: 17px;
     font-size: 15px;
     font-family:SFProDisplayRegular;
@@ -393,13 +393,13 @@ export default {
 .emailCode_checke{
   width: 100%;
   display: flex;
-  color: #949EA4;
+  color: #6E7687;
   font-size: .13rem;
   line-height: .16rem;
   margin-bottom: .16rem;
    font-family: "SFProDisplayRegular";
   span{
-    color: #0059DA;
+    color: rgba(0, 71, 173, 1);
   }
   .checkbox{
     margin-right: .08rem;
