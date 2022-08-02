@@ -13,7 +13,7 @@
         <div @click="goLogin" :style="{background:loading?'#0059DA80':''}">{{ $t('nav.login') }} <img class="icon" src="../assets/images/rightIconSell.png" alt="" v-if="!loading">
         <van-loading  class="icon" type="spinner" color="#fff" v-else/></div>
     </div>
-    <div class="routerMenu_history goHomeView" @click="goView('/',$store.state.homeTabstate)" v-if="token!==false">
+    <div class="routerMenu_history goHomeView" @click="goView('/',$store.state.homeTabstate)" v-if="token!==false && !this.$route.query.merchant_orderNo">
       <div class="lineIcon"><img src="../assets/images/slices/goHome-icon.svg"></div>
       <div class="lineName">
         <p class="alone">Home</p>

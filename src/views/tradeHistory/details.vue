@@ -297,7 +297,7 @@ export default {
 
     //数据判空 - null、""、不存在这个字段
     noData(val){
-      if(val !== null && val !== '' && val){
+      if(val !== null && val !== '' && val !== undefined){
         return val
       }
       return "--"
