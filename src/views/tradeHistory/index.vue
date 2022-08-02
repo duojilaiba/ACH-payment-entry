@@ -137,7 +137,7 @@
                 </div>
               </div>
               <div class="details_line">
-                <div class="details_line_title">Final Total ({{ item.cryptocurrency }})</div>
+                <div class="details_line_title">Final Total ({{ item.fiatName }})</div>
                 <div class="details_line_value">
                   <span class="value" :class="{'noValue': noData(item.finalTotal) === '--'}">{{ noData(item.finalTotal) }}</span>
                 </div>
@@ -166,7 +166,7 @@
                     <div class="state_name">In Transfer</div>
                   </div>
                 </div>
-                <div v-else-if="item.orderStatus === 5" class="state_success">fadsfasdfadsf
+                <div v-else-if="item.orderStatus === 5" class="state_success">
                   <div class="orderState-line1">
                     <div class="state_circular"></div>
                     <div class="state_name">Completed</div>
@@ -382,7 +382,7 @@ export default {
 
     //数据判空 - null、""、不存在这个字段
     noData(val){
-      if(val !== null && val !== '' && val){
+      if(val !== null && val !== '' && val !== undefined){
         return val
       }
       return "--"

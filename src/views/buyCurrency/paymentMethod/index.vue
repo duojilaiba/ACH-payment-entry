@@ -353,14 +353,17 @@ export default {
     //第一个参数是需要跳转的地址  第二个参数是kyc验证之后我要跳转的地址
     isKyc(Url){
        this.$axios.post(this.$api.post_getKycThrough).then(res=>{
-         this.request_loading = false;
          if(res && res.returnCode === '0000'){
             if(res.data===true){
               this.$store.state.WhichPage = Url
+              this.request_loading = false;
               this.$router.push('/kycVerification')
               return
             }
+            this.request_loading = false;
             this.$router.push(Url)
+          }else{
+            this.request_loading = false;ßß
           }
         }).catch(()=>{
          this.request_loading = false;
