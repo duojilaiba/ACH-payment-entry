@@ -109,6 +109,7 @@ import { fingerprintId } from '@/utils/publicRequest.js';
             _this.showLoading = false
             _this.$store.state.isLogin = true
             _this.$store.state.menuState = 'login'
+            localStorage.removeItem('loginOut')
             localStorage.setItem('login_email',_this.$store.state.userEmail)
 
             if(_this.$store.state.routerQueryPath === true){
@@ -245,12 +246,13 @@ import { fingerprintId } from '@/utils/publicRequest.js';
     cursor: pointer;
     .icon{
       // width: .24rem;
-      height: .15rem;
+      height: .2rem;
       margin-left: .12rem;
       span{
+        height: .15rem;
         position: absolute;
-        left: 0;
-        top: .0rem;
+        left: .08rem;
+        top: .02rem;
       }
     }
   }

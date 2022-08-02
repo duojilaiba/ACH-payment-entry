@@ -171,6 +171,7 @@ export default {
             localStorage.removeItem("sign");
             localStorage.removeItem("token");
             localStorage.removeItem("email");
+            localStorage.setItem('loginOut','1')
             // localStorage.removeItem("userNo");
             // localStorage.removeItem("userId");
             // localStorage.removeItem("login_email");

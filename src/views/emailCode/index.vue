@@ -130,7 +130,9 @@ export default {
        return
       }
       let timestamp = ''
-      if(this.loggedIn===true){
+      let isLoginOut = localStorage.getItem('loginOut')
+
+      if(this.loggedIn===true && isLoginOut !== '1'){
         let _this = this
          let sign = localStorage.getItem("userId");
           let userId = sign.substring(sign.lastIndexOf("H")+1,sign.length);
@@ -197,6 +199,7 @@ export default {
         this.getCode_state = true;
         if(res.returnCode === '0000'){
           this.login_loading = false
+          
           this.$store.state.userEmail = AES_Encrypt(this.email)
           this.$router.push({
             path:'/verifyCode',
@@ -366,9 +369,10 @@ box-shadow: 0px 0px 35px rgba(89, 153, 248, 0.2);`
       height: .2rem;
       margin: .17rem  0 0 .1rem;
       span{
+        height: .15rem;
         position: absolute;
-        left: 0;
-        top: .0rem;
+        left: .08rem;
+        top: .03rem;
       }
     }
   }
