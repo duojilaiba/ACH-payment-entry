@@ -161,7 +161,24 @@ export default {
           return Promise.reject(error);
         })
         axios(config).then(function (response) {
-          if(response.data.status && response.returnCode === '0000'){
+          // debugger
+          // console.log(response);
+          if((response.returnCode === '70006' || response.returnCode === '70008')){
+              localStorage.removeItem("sign");
+              localStorage.removeItem("login_email");
+              localStorage.removeItem("fin_token");
+              localStorage.removeItem("token");
+              localStorage.removeItem("email");
+              localStorage.removeItem("userNo");
+              localStorage.removeItem("userId");
+              localStorage.removeItem("kycStatus");
+              localStorage.removeItem('loginOut')
+              this.loggedIn = false
+              this.checked = false
+              this.email = ''
+              return
+           }
+          if( response.returnCode === '0000'){
             _this.login_loading = false
             localStorage.setItem('token',localStorage.getItem('fin_token'))
             localStorage.setItem('email',localStorage.getItem('login_email'))
