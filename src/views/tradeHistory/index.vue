@@ -658,7 +658,7 @@ html,body,#tradeHistory,.historyList,.van-list{
       font-size: 0.13rem;
       font-family: SFProDisplayRegular;
       font-weight: normal;
-      color: #949EA4;
+      color: #6E7687;
       margin: 0.08rem 0 0 0;
     }
     .noDataText{
@@ -667,7 +667,7 @@ html,body,#tradeHistory,.historyList,.van-list{
       font-size: 0.2rem;
       font-family: SFProDisplaybold;
       font-weight: normal;
-      color: #063376;
+      color: #031633;
     }
     .continue{
       width: 100%;
@@ -685,8 +685,9 @@ html,body,#tradeHistory,.historyList,.van-list{
       justify-content: center;
       align-items: center;
       .rightIcon{
-        width: 0.12rem;
-        margin-left: .12rem;
+        width: 0.2rem;
+        margin-left: .1rem;
+        margin-top: .01rem;
       }
     }
     .continue:disabled{

@@ -511,7 +511,7 @@ export default {
         text-align: center;
         font-style: normal;
         font-weight: 400;
-        color: #949EA4;;
+        color: #6E7687;;
         line-height: .31rem;
         font-size: .16rem;
         font-family: SFProDisplayRegular;
@@ -543,7 +543,7 @@ export default {
           height: .5rem;
           text-align: center;
           font-weight: normal;
-          color: #063376;
+          color: #031633;
           font-family: SFProDisplayRegular;
           font-size: .16rem;
           line-height: .49rem;

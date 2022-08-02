@@ -173,13 +173,15 @@ export default {
               localStorage.removeItem("userId");
               localStorage.removeItem("kycStatus");
               localStorage.removeItem('loginOut')
-              this.loggedIn = false
-              this.checked = false
-              this.email = ''
+              _this.loggedIn = false
+              _this.checked = false
+              _this.email = ''
               return
            }
           if( response.returnCode === '0000'){
-            _this.login_loading = false
+            setTimeout(()=>{
+              _this.login_loading = false
+            })
             localStorage.setItem('token',localStorage.getItem('fin_token'))
             localStorage.setItem('email',localStorage.getItem('login_email'))
             if(_this.$store.state.routerQueryPath === true){
@@ -380,15 +382,15 @@ box-shadow: 0px 0px 35px rgba(89, 153, 248, 0.2);`
     cursor: pointer;
     display: flex;
     justify-content: center;
-    // align-items: center;
+    align-items: center;
     .icon{
       // width: .12rem;
       height: .2rem;
-      margin: .17rem  0 0 .1rem;
+      margin: .02rem  0 0 .1rem;
       span{
         height: .15rem;
         position: absolute;
-        left: .08rem;
+        left: .09rem;
         top: .03rem;
       }
     }

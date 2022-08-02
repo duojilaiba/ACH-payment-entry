@@ -46,7 +46,8 @@
     <footer>
       <button class="continue" @click="nextStep" :disabled="!continueState" :class="{'continue_true': continueState}">
         Proceed · Buy {{ currencyData.name }}
-        <img class="rightIcon" src="../../../assets/images/button-right-icon.svg" alt="">
+        <img class="rightIcon" src="../../../assets/images/button-right-icon.svg" alt="" v-if="lodingStatus">
+        <van-loading class="rightIcon" type="spinner" color="#fff" v-else/>
       </button>
       <div class="footer_logoView">
         <p class="logoText">Powered By</p>
@@ -117,7 +118,11 @@ export default {
       triggerType: "hover",
 
       inputFocus: false,
+      lodingStatus:true
     }
+  },
+  deactivated(){
+    
   },
   computed: {
     //you pay input status - 数据加载后放开状态
@@ -134,6 +139,9 @@ export default {
           this.payAmount !== '' && Number(this.payAmount) >= this.payCommission.payMin &&
           Number(this.payAmount) <= this.payCommission.payMax && this.getAmount !== '' &&
           Number(this.payAmount) > 0){
+            if(this.lodingStatus===false){
+              return false
+            }
         return true
       }else{
         return false
@@ -438,7 +446,8 @@ export default {
        * */
       //是否是从菜单进入
       this.$store.state.routerQueryPath = false
-
+      //loading加载
+      this.lodingStatus = false
       let routerParams = {
         cryptoCurrency: this.currencyData.name,
         amount: this.payAmount,
@@ -453,19 +462,24 @@ export default {
       if(!localStorage.getItem('token') || localStorage.getItem('token')===''){
         this.$store.state.emailFromPath = 'buyCrypto';
         this.$store.state.homeTabstate = 'buyCrypto';
-
+       
         this.$router.push(`/emailCode`);
 
         return;
       }
       this.$axios.post(this.$api.post_kycDisabled).then(res=>{
         if(res && res.returnCode === '0000'){
+          setTimeout(() => {
+            this.lodingStatus = true
+          }, 2000);
           if(res.data){
             this.$parent.$parent.AccountisShow = true
           }else{
+            
             this.$store.state.homeTabstate = 'buyCrypto';
             this.$router.push(`/receivingMode`)
           }
+          
         }
       })
 
@@ -701,6 +715,12 @@ footer{
   margin-bottom: 0.12rem;
   .rightIcon{
     width: 0.2rem;
+    margin-left: 0.08rem;
+  }
+  .rightIcon{
+    span{
+      height: .17rem;
+    }
     margin-left: 0.08rem;
   }
 }

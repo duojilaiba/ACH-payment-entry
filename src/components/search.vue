@@ -687,7 +687,7 @@ export default {
     .screen_title{
       font-size: 0.13rem;
       font-family: "GeoDemibold", GeoDemibold;
-      color: #949EA4;
+      color: #6E7687;
       margin-top: 0.24rem;
       &:first-child{
         margin-top: 0;
@@ -740,7 +740,7 @@ export default {
           font-size: 0.16rem;
           font-family: "GeoDemibold", GeoDemibold;
           font-weight: 400;
-          color: #949EA4;
+          color: #6E7687;
           display: flex;
           align-items: center;
           margin-left: 0.05rem;
@@ -752,12 +752,12 @@ export default {
             font-size: 0.16rem;
             font-family: "GeoDemibold", GeoDemibold;
             font-weight: normal;
-            color: #949EA4;
+            color: #6E7687;
           }
           .abbreviationName{
             font-family: "GeoLight",GeoLight;
             margin-left: 0.03rem;
-            color: #949EA4;
+            color: #6E7687;
           }
           img{
             width: 0.36rem;
@@ -801,7 +801,7 @@ export default {
     padding: 0.1rem 0 0.1rem 0.1rem;
     .text{
       font-size: .18rem;
-      color: #063376;
+      color: #031633;
     }
     .icon{
       display: flex;
@@ -818,9 +818,9 @@ export default {
   .searchHeader_view2{
     width: 100%;
     height: 0.6rem;
-    background: #F3F4F5;
+    background: #F4F5F7;
     border-radius: 10px;
-    border: 1px solid #EEEEEE;
+    border: 1px solid #0059DA;;
     display: flex;
     margin-top: 0.3rem;
     position: relative;
@@ -837,9 +837,10 @@ export default {
       border-radius: 10px;
       outline: none;
       border: none;
+      color: #6E7687;
     }
     input::placeholder{
-      color: #C2C2C2;
+      color: #BFBFBF;
     }
     .searchIcon{
       display: flex;

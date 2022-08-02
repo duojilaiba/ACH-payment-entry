@@ -42,7 +42,8 @@
     <footer>
       <button class="continue" @click="nextStep" :disabled="!continueState" :class="{'continue_true': continueState}">
         Proceed · Sell {{ currencyData.name }}
-        <img class="rightIcon" src="../../../assets/images/button-right-icon.svg" alt="">
+        <img class="rightIcon" src="../../../assets/images/button-right-icon.svg" alt="" v-if="lodingStatus">
+        <van-loading class="rightIcon" type="spinner" color="#fff" v-else/>
       </button>
       <div class="footer_logoView">
         <p class="logoText">Powered By</p>
@@ -102,8 +103,10 @@ export default {
       triggerType: "hover",
 
       inputFocus: false,
+      lodingStatus:true
     }
   },
+ 
   computed: {
     //you pay input status - Data can only be entered after loading
     payAmountState(){
@@ -115,10 +118,16 @@ export default {
     },
     //确认按钮状态
     continueState(){
-      if(this.positionData.positionValue !== ''&&
+      // console.log(this.lodingStatus);
+      if((this.positionData.positionValue !== ''&&
           this.payAmount !== '' && Number(this.payAmount) >= this.currencyData.minSell &&
           Number(this.payAmount) <= this.currencyData.maxSell && this.getAmount !== '' &&
-          Number(this.payAmount) > 0){
+          Number(this.payAmount) > 0) ){
+            //增加loding效果
+            if(this.lodingStatus === false){
+
+              return false
+            }
         return true
       }else{
         return false
@@ -296,6 +305,8 @@ export default {
     nextStep(){
       //是否是从菜单进入
       this.$store.state.routerQueryPath = false
+      this.lodingStatus = false
+      // this.continueState = false
       // this.payCommission.symbol = this.$store.state.feeParams.symbol;
       // let routerParams = {
       //   amount: this.payAmount,
@@ -320,17 +331,28 @@ export default {
       if(localStorage.getItem("token")){
         this.$axios.post(this.$api.post_kycDisabled,'','').then(res=>{
           if(res && res.returnCode === '0000'){
+            
             //KYC失败次数过多 此账号为风险账号
             if(res.data){
               this.$parent.$parent.AccountisShow = true
+               setTimeout(() => {
+                this.lodingStatus = true
+              }, 2000);
             }else{
               this.$router.push('/sell-formUserInfo');
+               setTimeout(() => {
+                this.lodingStatus = true
+              }, 2000);
             }
           }
         })
       }else{
+        
         this.$store.state.emailFromPath = 'sellCrypto';
         this.$router.push('/emailCode');
+         setTimeout(() => {
+            this.lodingStatus = true
+          }, 2000);
       }
     },
   },
@@ -488,7 +510,9 @@ html,body,#buyCrypto{
     img{
       width: 0.24rem;
     }
+    
   }
+  
 }
 
 
@@ -536,6 +560,12 @@ footer{
   .rightIcon{
     width: 0.2rem;
     margin-left: 0.08rem;
+  }
+  .rightIcon{
+    span{
+      height: .18rem;
+    }
+
   }
 }
 .continue_true{
