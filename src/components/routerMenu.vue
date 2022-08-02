@@ -127,6 +127,12 @@ export default {
   methods: {
     //Select menu
     goView(name,homeTab){
+      //首页打开菜单 跳转交易历史 交易历史返回到菜单
+      if(this.$route.path === '/' && name === '/tradeHistory'){
+        this.$router.push(name);
+        return;
+      }
+
       this.$parent.routerViewState = true;
       this.$parent.menuState = false;
       if(name === '/'){
