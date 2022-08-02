@@ -363,7 +363,7 @@ export default {
             this.request_loading = false;
             this.$router.push(Url)
           }else{
-            this.request_loading = false;ßß
+            this.request_loading = false;
           }
         }).catch(()=>{
          this.request_loading = false;
