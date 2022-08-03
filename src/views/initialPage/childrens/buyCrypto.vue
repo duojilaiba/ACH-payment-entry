@@ -135,13 +135,11 @@ export default {
     },
     //continue button status - 限制确认按钮状态
     continueState(){
-      if(this.positionData.positionValue !== ''&&
+      if((this.positionData.positionValue !== ''&&
           this.payAmount !== '' && Number(this.payAmount) >= this.payCommission.payMin &&
           Number(this.payAmount) <= this.payCommission.payMax && this.getAmount !== '' &&
-          Number(this.payAmount) > 0){
-            if(this.lodingStatus===false){
-              return false
-            }
+          Number(this.payAmount) > 0) && this.lodingStatus){
+            
         return true
       }else{
         return false

@@ -122,12 +122,9 @@ export default {
       if((this.positionData.positionValue !== ''&&
           this.payAmount !== '' && Number(this.payAmount) >= this.currencyData.minSell &&
           Number(this.payAmount) <= this.currencyData.maxSell && this.getAmount !== '' &&
-          Number(this.payAmount) > 0) ){
+          Number(this.payAmount) > 0) && this.lodingStatus ){
             //增加loding效果
-            if(this.lodingStatus === false){
-
-              return false
-            }
+          
         return true
       }else{
         return false
