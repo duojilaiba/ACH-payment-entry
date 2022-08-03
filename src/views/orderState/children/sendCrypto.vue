@@ -18,7 +18,7 @@
     </div>
     <div class="sendCrypto_title" style="margin-top:.16rem">
       <p>{{ $t('nav.home_buyFee_rampFee') }} </p>
-      <p style="color:#063376">{{ feeInfo.fiatSymbol }} {{ rampFeeSell }}</p>
+      <p style="color:#031633">{{ feeInfo.fiatSymbol }} {{ rampFeeSell }}</p>
     </div>
     <div class="sendCrypto_title" style="margin-top:.16rem">
       <p >{{ $t('nav.Sellorder_Id') }}</p>
@@ -428,7 +428,7 @@ export default {
 
       font-style: normal;
       span{
-        color: rgba(6, 51, 118, 1);
+        color: #031633;
         margin: 0 .04rem 0;
       }
     }
