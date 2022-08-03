@@ -41,7 +41,7 @@ export default {
     this.walletAddress = "";
     this.errorState = false;
     this.orderId = this.$route.query.orderId;
-    this.$store.state.emailFromPath = '/Refund'
+    this.$store.state.emailFromPath = 'Refund'
     this.queryRefundInfo();
   },
   methods: {

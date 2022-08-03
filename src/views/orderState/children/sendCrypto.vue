@@ -65,7 +65,7 @@
     </div>
     <div class="sendCrypto_content1">
       <img src="@/assets/images/SellOrderTime.svg" alt="">
-      <p style="color:#6E7687">Take a timeout! The address has been invalidated, please go back to the homepage to re-operate. If you insist on transferring digital currency to the current address, any loss will be borne by you!</p>
+      <p style="color:#6E7687">Your order has expired, please do not send money to this address, otherwise the asset may be lost.</p>
     </div>
     <div class="sendCrypto_button" @click="$router.replace('/')">
       <div>

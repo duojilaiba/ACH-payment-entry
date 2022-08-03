@@ -112,11 +112,13 @@ export default {
 
         })
 
-       //获取kyc高度
+       //获取kyc高度 并且高度变化的话让kyc里面的页面回到顶部
         .on('idCheck.onResize', () => {
+          let kycChangeHeight = document.querySelector('#sumsub-websdk-container')
            let innerHeight = document.querySelector('.verif_kyc')
            let kycInneHeight = document.querySelector('.KycVer-container')
            innerHeight.style = `height:${kycInneHeight.clientHeight}px;overflow:scroll`
+           kycChangeHeight.scrollTop = '0'
         })
         .on('idCheck.onError', (type,error) => {
             console.log('onError', error)
@@ -383,7 +385,7 @@ export default {
     }
   }
   .verif_kyc{
-    width: 3.4rem;
+    width: 3.41rem;
     position: fixed;
     overflow: scroll;
     .verif_kyc_nav{
