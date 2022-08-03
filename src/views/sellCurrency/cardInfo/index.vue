@@ -354,7 +354,6 @@ export default {
     },
     //确认订单 - 请求服务
     processRequest(val){
-      console.log("下单")
       let params = {
         sellCardDTO: val,
         orderId: this.$store.state.cardInfoFromPath === 'configSell' ? '' : this.$store.state.sellOrderId, // 不传为新增卡信息，传为修改卡信息

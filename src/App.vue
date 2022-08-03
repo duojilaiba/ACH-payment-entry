@@ -357,7 +357,7 @@ html,body,#app,#viewBox{
     font-size: 0.16rem;
     font-family: 'Jost', sans-serif;
     font-weight: 500;
-    color: #FFFFFF;
+    color: #6E7687;
     img{
       width: 1.4rem;
       margin-left: 0.26rem;
