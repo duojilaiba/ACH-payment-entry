@@ -48,7 +48,7 @@ import { fingerprintId } from '@/utils/publicRequest.js';
     },500)
 
   },
- 
+
   methods:{
     //input聚焦
     changeBlur(){
@@ -107,7 +107,7 @@ import { fingerprintId } from '@/utils/publicRequest.js';
         axios(config).then(function (response) {
           if(response.returnCode === '0000'){
             _this.codeErrorState = false;
-            
+
             _this.$store.state.isLogin = true
             _this.$store.state.menuState = 'login'
             localStorage.removeItem('loginOut')
@@ -127,8 +127,8 @@ import { fingerprintId } from '@/utils/publicRequest.js';
                 _this.$router.replace(`/receivingMode`);
               }else if(_this.$store.state.emailFromPath === 'sellCrypto'){
                 _this.$router.replace('/sell-formUserInfo')
-              }else if(_this.$store.state.emailFromPath === '/Refund'){
-                _this.$router.replace('/Refund')
+              }else if(_this.$store.state.emailFromPath === 'Refund'){
+                _this.$router.replace('Refund')
               }else{
                 _this.$router.push('/');
               }

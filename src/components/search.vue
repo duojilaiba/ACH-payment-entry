@@ -484,11 +484,12 @@ export default {
             }
           });
           newWorldList = newWorldList.filter(item=>{return item.sellEnable === 1});
+          console.log(newWorldList)
         }
         this.basicData = newWorldList;
         //上次购买过的国家和法币
-        if(allBasicData.buyRecentWorldList){
-          allBasicData.buyRecentWorldList.forEach(item=>{
+        if(allBasicData.sellRecentWorldList){
+          allBasicData.sellRecentWorldList.forEach(item=>{
             if(item.sellFiatList){
               item.sellFiatList.forEach(item2=>{
                 let fiat = {
@@ -500,24 +501,25 @@ export default {
             }
           });
           recent_newWorldList = recent_newWorldList.filter(item=>{return item.buyEnable === 1});
+          console.log(recent_newWorldList)
         }
         this.recent_payCurrency = recent_newWorldList;
         //热门的
-        if(this.allBasicData.buyPoplarWorldFiat){
-          this.allBasicData.buyPoplarWorldFiat.forEach(item=>{
-            if(item.buyFiatList){
-              item.buyFiatList.forEach(item2=>{
-                let fiat = {
-                  code: item2.code,
-                }
-                fiat = {...fiat,...item};
-                poplar_newWorldList.push(fiat);
-              })
-            }
-          });
-          poplar_newWorldList = poplar_newWorldList.filter(item=>{return item.buyEnable === 1});
-        }
-        this.poplar_payCurrency = poplar_newWorldList;
+        // if(this.allBasicData.buyPoplarWorldFiat){
+        //   this.allBasicData.buyPoplarWorldFiat.forEach(item=>{
+        //     if(item.buyFiatList){
+        //       item.buyFiatList.forEach(item2=>{
+        //         let fiat = {
+        //           code: item2.code,
+        //         }
+        //         fiat = {...fiat,...item};
+        //         poplar_newWorldList.push(fiat);
+        //       })
+        //     }
+        //   });
+        //   poplar_newWorldList = poplar_newWorldList.filter(item=>{return item.buyEnable === 1});
+        // }
+        // this.poplar_payCurrency = poplar_newWorldList;
         return;
       }
       if(this.viewName === 'currency-sell'){

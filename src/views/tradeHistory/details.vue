@@ -211,6 +211,9 @@
 
 <script>
 import Clipboard from "clipboard";
+/**
+ * 邮件进入地址栏结构 - /tradeHistory-details?orderId=订单id&emailFromPath=tradeHistory-details
+ */
 
 export default {
   name: "tradeHistory-details",

@@ -15,6 +15,9 @@
 </template>
 
 <script>
+/**
+ * 邮件进入地址栏结构 - /Refund?orderId=订单id&cryptocurrency=BTC&fiatCode=EUR&emailFromPath=Refund
+ */
 
 export default {
   name: "Refund",
@@ -92,7 +95,7 @@ export default {
   position: relative;
   .title{
     height: 0.14rem;
-    font-family: 'SF Pro Display';
+    font-family: SFProDisplayRegular;
     font-style: normal;
     font-weight: 400;
     font-size: 0.13rem;

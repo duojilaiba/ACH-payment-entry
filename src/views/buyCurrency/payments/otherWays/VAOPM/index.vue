@@ -19,8 +19,10 @@
         <div class="routerMenu_loginOut" v-show="MEXConfirmState" @click="MEXConfirmState=false">
           <div class="content" @click.stop="show=true">
             <h2>{{ $t('nav.buy_configPay_title3') }}</h2>
-            <div @click="MEXConfirmOut">{{ $t('nav.buy_configPay_title4') }} <img src="@/assets/images/slices/rightIcon.png" alt=""></div>
-            <p @click.stop="MEXConfirmState=false">{{ $t('nav.buy_configPay_title5') }}</p>
+            <div class="options">
+              <div @click="MEXConfirmOut">{{ $t('nav.buy_configPay_title4') }}</div>
+              <p @click.stop="MEXConfirmState=false">{{ $t('nav.buy_configPay_title5') }}</p>
+            </div>
           </div>
         </div>
         <!-- tips icon -->
@@ -275,11 +277,10 @@ export default {
     left: 0;
     top: 0;
     .content{
-      width: 90%;
-      //height: 2.6rem;
+      width: 100%;
       max-width: 3.5rem;
       background: #FFFFFF;
-      border-radius: 16px;
+      border-radius: 0.16rem;
       position: absolute;
       left:50%;
       top: 50%;
@@ -287,10 +288,10 @@ export default {
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: .4rem 0 0 0;
+      padding: 0.32rem 0.16rem;
       box-sizing: border-box;
       h2{
-        //width: 2.4rem;
+        width: 90%;
         text-align: center;
         font-weight: normal;
         color: #232323;
@@ -298,37 +299,40 @@ export default {
         font-family: GeoDemibold;
         font-size: .21rem;
       }
-      div{
+      .options{
         width: 90%;
-        height: .58rem;
-        background: #E55643;
-        border-radius: .29rem;
-        text-align: center;
-        line-height: .58rem;
-        position: relative;
-        font-size: .17rem;
-        font-weight: normal;
-        color: #FFFFFF;
-        font-family: GeoRegular;
-        margin-top: .05rem;
-        cursor: pointer;
-        img{
-          width: .24rem;
-          position: absolute;
-          right: .16rem;
-          top: .17rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 0.32rem;
+        div{
+          flex: 1;
+          height: .5rem;
+          background: #E55643;
+          border-radius: .25rem;
+          text-align: center;
+          line-height: .5rem;
+          position: relative;
+          font-size: .16rem;
+          font-weight: normal;
+          color: #FFFFFF;
+          font-family: SFProDisplayMedium;
+          cursor: pointer;
+          margin-right: 0.13rem;
         }
-      }
-      p{
-        width: 90%;
-        height: .56rem;
-        text-align: center;
-        font-weight: normal;
-        color: #232323;
-        font-family: GeoDemibold;
-        font-size: .17rem;
-        margin-top: .24rem;
-        cursor: pointer;
+        p{
+          flex: 1;
+          border: 1px solid #D9D9D9;
+          border-radius: .25rem;
+          height: .5rem;
+          line-height: 0.5rem;
+          text-align: center;
+          font-weight: normal;
+          color: #232323;
+          font-family: SFProDisplayMedium;
+          font-size: .16rem;
+          cursor: pointer;
+        }
       }
     }
   }
