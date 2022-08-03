@@ -53,10 +53,11 @@ export default {
       height: .2rem;
       margin-right: .05rem;
     }
-    color:#063376;
+    color:#031633;
     font-size: .18rem;
     font-weight: normal;
     font-family: SFProDisplaybold;
+    // margin-bottom: .02rem;
   }
   .Language_line{
     width: 100%;
@@ -64,7 +65,7 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: .28rem;
+    margin-top: .24rem;
     cursor: pointer;
     .Language_line_left{
       display: flex;
@@ -74,16 +75,16 @@ export default {
         font-size: .16rem;
         font-family: SFProDisplayRegular;
         font-weight: normal;
-        color: #949EA4;
+        color: #6E7687;
         margin-left: .1rem;
       }
       img{
-        width: .36rem;
-        height: .36rem;
+        width: .3rem;
+        height: .3rem;
       }
     }
     >img{
-      height: .25rem;
+      height: .2rem;
     }
   }
 }

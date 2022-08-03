@@ -32,7 +32,7 @@
         <div><img src="../assets/images/slices/right_icon.png"></div>
       </div>
     </div>
-    <div class="routerMenu_line" style="margin-top:.32rem" @click="LanguageIsShow">
+    <div class="routerMenu_line" style="margin-top:.28rem" @click="LanguageIsShow">
       <div class="lineIcon"><img src="../assets/images/slices/iconLang.png"></div>
       <div class="lineName">{{ $t('nav.menu_language') }}</div>
 
@@ -334,12 +334,12 @@ export default {
   .routerMenu_line{
     display: flex;
     align-items: center;
-    margin-top: 0.28rem;
+    margin-top: 0.24rem;
     cursor: pointer;
     .lineIcon{
       display: flex;
       img{
-        width: 0.36rem;
+        width: 0.3rem;
       }
     }
     .lineName{
@@ -347,7 +347,7 @@ export default {
       font-family: "SFProDisplayRegular";
       font-weight: 400;
       color: #6E7687;
-      margin-left: 0.08rem;
+      margin-left: 0.12rem;
     }
     .lineRight{
       margin-left: auto;
@@ -374,7 +374,7 @@ export default {
       img{
         // width: 0.6rem;
         // height: ;
-        height: .25rem;
+        height: .2rem;
       }
     }
     &:nth-of-type(1){
@@ -486,7 +486,7 @@ export default {
     .lineRight{
       img{
         // width: .1rem;
-        height: .23rem;
+        height: .2rem;
       }
     }
 
