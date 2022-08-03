@@ -110,9 +110,11 @@ axios.interceptors.response.use(function (response) {
   if(response.config.url !== process.env.VUE_APP_BASE_API + '/user/login' && response.headers.token){
     localStorage.setItem("submit-token",response.headers.token);
   }
+  //7天内token过期
   if((response.data.returnCode === '70011')){
     localStorage.removeItem("token");
     localStorage.removeItem("email");
+    localStorage.setItem('loginOut','')
     // localStorage.removeItem("userNo");
     // localStorage.removeItem("userId");
     // localStorage.removeItem("kycStatus");
