@@ -189,16 +189,22 @@
     <!-- failed - 1 -->
     <footer v-if="detailsData.orderStatus === 6 || detailsData.orderStatus === 8 || (detailsData.orderStatus === 1 && detailsData.confirmBlock === 0)">
       <!-- 重新购买 -->
-      <button class="update-card-info" @click="updateCardInfo" v-if="detailsData.orderStatus === 6">
-        Update Information
-        <span class="witchBank">Mastercard</span>
-        <span class="bankCard">****8111</span>
-        <img src="@/assets/images/right_icon_orange.svg" alt="">
+      <div v-if="detailsData.orderStatus === 6">
+        <button class="update-card-info" @click="updateCardInfo">
+          Update Information
+          <span class="witchBank">Mastercard</span>
+          <span class="bankCard">****8111</span>
+          <img src="@/assets/images/right_icon_orange.svg" alt="">
+        </button>
+        <!-- 退款 -->
+        <p @click="refund">Request Refund of USDT</p>
+      </div>
+      <button class="update-card-info refund-8" @click="updateCardInfo" v-else-if="detailsData.orderStatus === 8">
+        Request Refund of USDT
+        <img src="@/assets/images/refund-right-icon.png" alt="">
       </button>
-      <!-- 退款 -->
-      <p @click="refund" v-if="detailsData.orderStatus === 8 || detailsData.orderStatus === 6">Request Refund of USDT</p>
-      <!-- 去购买 -->
-      <button class="pay-now" @click="payNow" v-if="detailsData.orderStatus === 1 && detailsData.confirmBlock === 0">Pay Now</button>
+      <!-- 去付款 -->
+      <button class="pay-now" @click="payNow" v-else-if="detailsData.orderStatus === 1 && detailsData.confirmBlock === 0">Pay Now</button>
     </footer>
   </div>
 </template>
@@ -323,12 +329,12 @@ export default {
       align-items: center;
       margin-top: 0.32rem;
       padding-bottom: 0.16rem;
-      border-bottom: 1px solid #F4F4F4;
+      border-bottom: 1px solid #D9D9D9;
       .left{
         font-family: SFProDisplayMedium;
         font-weight: 500;
         font-size: 0.16rem;
-        color: #063376;
+        color: #031633;
       }
       .right{
         margin-left: auto;
@@ -340,12 +346,12 @@ export default {
           font-family: SFProDisplayRegular;
           font-weight: 400;
           font-size: 0.13rem;
-          color: #0059DA;
+          color: #0047AD;
           div:first-child{
             width: 0.05rem;
             height: 0.05rem;
             border-radius: 50%;
-            background: #0059DA;
+            background: #0047AD;
             margin-right: 0.04rem;
           }
         }
@@ -362,9 +368,9 @@ export default {
           }
         }
         .timeout{
-          color: #949EA4;
+          color: #6E7687;
           div:first-child{
-            background: #949EA4;
+            background: #6E7687;
           }
         }
         .failed2{
@@ -389,7 +395,7 @@ export default {
       font-family: SFProDisplayRegular;
       font-weight: 400;
       font-size: 0.13rem;
-      color: #949EA4;
+      color: #6E7687;
       margin-top: 0.16rem;
       .left{
         margin-right: 0.2rem;
@@ -401,16 +407,16 @@ export default {
           font-weight: 400 !important;
           font-size: 0.13rem;
           line-height: 0.14rem;
-          color: #949EA4 !important;
+          color: #6E7687 !important;
         }
         .value{
           font-family: SFProDisplayMedium;
           font-weight: 500;
           font-size: 0.13rem;
-          color: #063376;
+          color: #031633;
         }
         .fee{
-          color: #949EA4;
+          color: #6E7687;
         }
         .copyView{
           display: flex;
@@ -422,7 +428,7 @@ export default {
             font-style: normal;
             font-weight: 500;
             font-size: 0.13rem;
-            color: #949EA4;
+            color: #6E7687;
             overflow: hidden;/*超出部分隐藏*/
             white-space: nowrap;/*不换行*/
             text-overflow:ellipsis;/*超出部分文字以...显示*/
@@ -450,14 +456,14 @@ export default {
         font-family: SFProDisplayRegular;
         font-weight: 400;
         font-size: 0.13rem;
-        color: #949EA4;
+        color: #6E7687;
         .right{
           margin-left: auto;
           font-family: SFProDisplayRegular;
           font-style: normal;
           font-weight: 400;
           font-size: 0.13rem;
-          color: #0059DA;
+          color: #0047AD;
           .completed{
             font-family: SFProDisplayRegular;
             font-weight: 400;
@@ -468,7 +474,7 @@ export default {
             color: #FF8D24;
           }
           .timeout{
-            color: #949EA4;
+            color: #6E7687;
           }
           .failed2{
             color: #FF2F2F;
@@ -503,7 +509,7 @@ export default {
           background: #FF8D24;
         }
         .timeOut{
-          background: #949EA4;
+          background: #6E7687;
         }
         .refunded{
           background: #FF2F2F;
@@ -561,6 +567,16 @@ export default {
         margin-left: 0.08rem;
       }
     }
+    .refund-8{
+      color: #FF2F2F;
+      background: #FFE8E8;
+      border: 1px solid #FFBBBB;
+      position: relative;
+      img{
+        position: absolute;
+        right: 0.12rem;
+      }
+    }
     .pay-now{
       cursor: pointer;
       width: 100%;
@@ -573,14 +589,14 @@ export default {
       font-family: SFProDisplayMedium;
       font-weight: 500;
       font-size: 0.16rem;
-      color: #0059DA;
+      color: #0047AD;
     }
     p{
       min-height: 0.14rem;
       font-family: SFProDisplayRegular;
       font-weight: 400;
       font-size: 0.13rem;
-      color: #0059DA;
+      color: #0047AD;
       margin-top: 0.16rem;
       text-align: center;
       cursor: pointer;

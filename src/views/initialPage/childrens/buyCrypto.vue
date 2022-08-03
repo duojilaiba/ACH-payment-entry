@@ -14,12 +14,12 @@
             <img :src="positionData.positionImg">
           </div>
           <div class="getText">{{ payCommission.code }}</div>
-          <div class="rightIcon"><img src="@/assets/images/blackDownIcon.png"></div>
+          <div class="rightIcon"><img src="@/assets/images/homeRight-icon.png"></div>
         </div>
         <div class="warning_text" v-if="warningTextState" v-html="payAmount_tips"></div>
       </div>
 
-      <div class="methods_select cursor">
+      <div class="methods_select cursor get_methods_select">
         <div class="methods_select-left">
           <div class="form_title">{{ $t('nav.home_buyFee_title1') }}</div>
           <div class="get_input">
@@ -33,7 +33,7 @@
 <!--            <div class="networkIcon" v-if="currencyData.buyNetwork && currencyData.buyNetwork.logo"><img :src="currencyData.buyNetwork.logo"></div>-->
           </div>
           <div class="getText">{{ currencyData.name }}</div>
-          <div class="rightIcon"><img src="@/assets/images/blackDownIcon.png"></div>
+          <div class="rightIcon"><img src="@/assets/images/homeRight-icon.png"></div>
         </div>
       </div>
 
@@ -121,9 +121,6 @@ export default {
       lodingStatus:true
     }
   },
-  deactivated(){
-    
-  },
   computed: {
     //you pay input status - 数据加载后放开状态
     payAmountState(){
@@ -208,6 +205,8 @@ export default {
     amountControl(){
       if(this.payAmount === ''){
         this.warningTextState = false;
+        this.getAmount = "";
+        this.detailedInfo_state = false;
         return;
       }
 
@@ -352,8 +351,6 @@ export default {
       this.payCommission.payMax = Math.min(...maxNumList);
       this.payCommission.payMin = Math.max(...minNumList);
 
-      //
-
       this.$store.state.buyRouterParams.exchangeRate = this.exchangeRate;
       this.$store.state.buyRouterParams.payCommission = this.payCommission;
       this.amountControl();
@@ -462,7 +459,7 @@ export default {
       if(!localStorage.getItem('token') || localStorage.getItem('token')===''){
         this.$store.state.emailFromPath = 'buyCrypto';
         this.$store.state.homeTabstate = 'buyCrypto';
-       
+
         this.$router.push(`/emailCode`);
 
         return;
@@ -475,11 +472,11 @@ export default {
           if(res.data){
             this.$parent.$parent.AccountisShow = true
           }else{
-            
+
             this.$store.state.homeTabstate = 'buyCrypto';
             this.$router.push(`/receivingMode`)
           }
-          
+
         }
       })
 
@@ -507,16 +504,16 @@ html,body,#buyCrypto{
   font-style: normal;
   font-weight: 400;
   font-size: 0.13rem;
-  color: #949EA4;
+  color: #031633;
 }
 
 .methods_title{
   margin-top: 0.2rem;
 }
 .methods_select{
-  min-height: 1.05rem;
+  min-height: 1rem;
   background: #FFFFFF;
-  border: 1px solid #EEEEEE;
+  border: 1px solid #D9D9D9;
   border-radius: 0.06rem;
   padding: 0 0.16rem;
   cursor: pointer;
@@ -528,8 +525,18 @@ html,body,#buyCrypto{
   }
 }
 .inputFocus{
- border: 1px solid #41B8FD;
-box-shadow: 0px 0px 35px rgba(89, 153, 248, 0.2);
+  border: 1px solid #41B8FD;
+  box-shadow: 0 0 0.35rem rgba(89, 153, 248, 0.2);
+}
+
+.get_methods_select{
+  min-height: 0.8rem;
+  .methods_select-left{
+    margin-top: 0;
+  }
+  .get_company{
+    margin-top: 0;
+  }
 }
 
 .pay_input{
@@ -538,7 +545,7 @@ box-shadow: 0px 0px 35px rgba(89, 153, 248, 0.2);
   outline: none;
   font-family: 'SFProDisplayMedium',SFProDisplayMedium;
   font-weight: 500;
-  font-size: 0.2rem;
+  font-size: 0.28rem;
   color: #0059DA;
   padding: 0;
   margin-top: 0.06rem;
@@ -583,9 +590,9 @@ box-shadow: 0px 0px 35px rgba(89, 153, 248, 0.2);
   left: 0.18rem;
   font-family: 'SFProDisplayRegular',SFProDisplayRegular;
   font-weight: 400;
-  font-size: 0.1rem;
+  font-size: 0.13rem;
   color: #FF3333;
-  line-height: 0.12rem;
+  line-height: 0.13rem;
 }
 
 .methods_select-left{
@@ -593,13 +600,13 @@ box-shadow: 0px 0px 35px rgba(89, 153, 248, 0.2);
 }
 .get_input{
   width: 1.4rem;
-  height: 0.26rem;
+  height: 0.28rem;
   overflow: auto;
   font-family: SFProDisplayMedium;
   font-weight: 500;
-  font-size: 0.2rem;
-  line-height: 0.24rem;
-  color: #063376;
+  font-size: 0.28rem;
+  line-height: 0.33rem;
+  color: #031633;
   margin-top: 0.06rem;
   .no_getAmount{
     color: #C2C2C2;
@@ -655,10 +662,9 @@ box-shadow: 0px 0px 35px rgba(89, 153, 248, 0.2);
   .getText{
     display: flex;
     font-family: 'SFProDisplayRegular',SFProDisplayRegular;
-    font-style: normal;
     font-weight: 400;
     font-size: 0.13rem;
-    color: #063376;
+    color: #031633;
     min-width: 0.28rem;
   }
   .rightIcon{
@@ -752,14 +758,14 @@ footer{
 }
 
 .pay_input ::v-deep .van-cell__value--alone{
-  min-height: 0.26rem;
+  min-height: 0.28rem;
 }
 .pay_input ::v-deep .van-field__control{
-  min-height: 0.26rem;
+  min-height: 0.28rem;
   border: none;
   outline: none;
   background: #FFFFFF;
-  font-size: 0.2rem !important;
+  font-size: 0.28rem !important;
   font-family: 'SFProDisplayMedium',SFProDisplayMedium;
   font-weight: 500;
   color: #0059DA !important;

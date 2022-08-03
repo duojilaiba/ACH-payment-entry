@@ -37,8 +37,9 @@ export default {
       }
     },
   },
-
   activated(){
+    this.walletAddress = "";
+    this.errorState = false;
     this.orderId = this.$route.query.orderId;
     this.$store.state.emailFromPath = '/Refund'
     this.queryRefundInfo();
@@ -95,13 +96,13 @@ export default {
     font-style: normal;
     font-weight: 400;
     font-size: 0.13rem;
-    color: #949EA4;
+    color: #6E7687;
   }
   .walletAddress{
     width: 100%;
     height: 0.56rem;
     background: #FFFFFF;
-    border: 1px solid #EEEEEE;
+    border: 1px solid #D9D9D9;
     border-radius: 0.06rem;
     position: relative;
     margin-top: 0.08rem;
@@ -111,6 +112,9 @@ export default {
       padding: 0 0.52rem 0 0.16rem;
       border: none;
       border-radius: 0.06rem;
+      font-family: SFProDisplayRegular;
+      font-weight: 400;
+      font-size: 0.13rem;
       &::placeholder{
         color: #C2C2C2;
         font-weight: 400;
@@ -125,7 +129,7 @@ export default {
     }
     .errorMessage{
       font-size: 0.1rem;
-      font-family: "GeoLight", GeoLight;
+      font-family: SFProDisplayRegular;
       font-weight: 400;
       color: #E55643;
       margin: 0.04rem 0.2rem 0 0.16rem;
@@ -133,12 +137,12 @@ export default {
   }
   .exchangeRate{
     height: 0.14rem;
-    font-family: 'SF Pro Display';
+    font-family: SFProDisplayRegular;
     font-style: normal;
     font-weight: 400;
     font-size: 0.13rem;
-    color: #949EA4;
-    margin-top: 0.18rem;
+    color: #031633;
+    margin-top: 0.2rem;
     text-align: center;
   }
 
@@ -146,14 +150,14 @@ export default {
     position: absolute;
     bottom: 0;
     .tips{
-      font-family: 'SF Pro Display';
-      font-style: normal;
+      font-family: SFProDisplayRegular;
       font-size: 0.13rem;
-      letter-spacing: 0.3px;
-      color: #C2C2C2;
+      line-height: 0.18rem;
+      text-align: justify;
+      color: #94ACBA;
       margin-bottom: 0.16rem;
       span{
-        color: #949EA4;
+        color: #6E7687;
         font-weight: 700;
       }
     }
@@ -165,8 +169,7 @@ export default {
       align-items: center;
       background: #0059DA;
       border-radius: 0.3rem;
-      font-family: 'SF Pro Display';
-      font-style: normal;
+      font-family: SFProDisplayMedium;
       font-weight: 500;
       font-size: 0.16rem;
       text-align: center;

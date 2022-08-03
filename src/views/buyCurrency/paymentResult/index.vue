@@ -87,10 +87,10 @@ export default {
     },
     resultText(){
       if(this.orderStatus >= 3 && this.orderStatus <= 4){
-        return `${this.$t('nav.result_stateTo4_your')} ${ this.detailsParameters.amount } ${ this.detailsParameters.cryptoCurrency } ${this.$t('nav.result_stateTo4')}`;
+        return `${this.$t('nav.result_stateTo4_your')} ${ this.detailsParameters.cryptoQuantity } ${ this.detailsParameters.cryptoCurrency } ${this.$t('nav.result_stateTo4')}`;
       }
       if(this.orderStatus === 5){
-        return `${ this.detailsParameters.amount } ${ this.detailsParameters.cryptoCurrency } ${this.$t('nav.result_stateTo5')}`
+        return `${ this.detailsParameters.cryptoQuantity } ${ this.detailsParameters.cryptoCurrency } ${this.$t('nav.result_stateTo5')}`
       }
     }
   },
@@ -130,17 +130,6 @@ export default {
           this.$parent.$refs.includedDetails_ref.scrollIntoView({behavior: "smooth", block: "end"})
         })
         return
-      }
-    },
-
-    //Judgment order status display text
-    judgeChannel(){
-      if(this.orderStatus >= 3 && this.orderStatus <= 4){
-        this.resultText = `${this.$t('nav.result_stateTo4_your')} ${ this.detailsParameters.amount } ${ this.detailsParameters.cryptoCurrency } ${this.$t('nav.result_stateTo4')}`;
-        return;
-      }
-      if(this.orderStatus === 5){
-        this.resultText = `${ this.detailsParameters.amount } ${ this.detailsParameters.cryptoCurrency } ${this.$t('nav.result_stateTo5')}`
       }
     },
 
