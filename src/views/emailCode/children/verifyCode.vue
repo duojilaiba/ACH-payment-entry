@@ -78,7 +78,7 @@ import { fingerprintId } from '@/utils/publicRequest.js';
        })
     },500,false),
     toLogin(){
-     if(this.netActive){
+     if(this.netActive && this.showLoading === false){
        fingerprintId();
        let _this = this;
        this.showLoading = true
@@ -172,7 +172,7 @@ import { fingerprintId } from '@/utils/publicRequest.js';
     //验证码输入完成直接登陆
     value(newVal){
       if(newVal.length >= 6){
-        this.showLoading = true
+        // this.showLoading = true
         this.toLogin()
       }
     }

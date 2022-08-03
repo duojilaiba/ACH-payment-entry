@@ -386,7 +386,7 @@ box-shadow: 0px 0px 35px rgba(89, 153, 248, 0.2);`
     .icon{
       // width: .12rem;
       height: .2rem;
-      margin: .02rem  0 0 .1rem;
+      margin: -.02rem  0 0 .1rem;
       span{
         height: .15rem;
         position: absolute;
