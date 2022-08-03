@@ -180,7 +180,7 @@
         <div class="amountInfo-line">
           <div class="left">Recipient Account:</div>
           <div class="right">
-            <span class="value">Mastercard  **** {{ detailsData.account ? detailsData.account.substring(detailsData.account.length-4,detailsData.account.length) : '' }}</span>
+            <span class="value">**** {{ detailsData.account ? detailsData.account.substring(detailsData.account.length-4,detailsData.account.length) : '' }}</span>
           </div>
         </div>
       </div>
@@ -192,8 +192,8 @@
       <div v-if="detailsData.orderStatus === 6">
         <button class="update-card-info" @click="updateCardInfo">
           Update Information
-          <span class="witchBank">Mastercard</span>
-          <span class="bankCard">****8111</span>
+<!--          <span class="witchBank">Mastercard</span>-->
+          <span class="bankCard" v-if="detailsData.account">****{{ detailsData.account.substring(detailsData.account.length-4,detailsData.account.length) }}</span>
           <img src="@/assets/images/right_icon_orange.svg" alt="">
         </button>
         <!-- 退款 -->

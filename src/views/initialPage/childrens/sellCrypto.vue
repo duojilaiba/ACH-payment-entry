@@ -124,7 +124,7 @@ export default {
           Number(this.payAmount) <= this.currencyData.maxSell && this.getAmount !== '' &&
           Number(this.payAmount) > 0) && this.lodingStatus ){
             //增加loding效果
-          
+
         return true
       }else{
         return false
@@ -333,9 +333,9 @@ export default {
             //KYC失败次数过多 此账号为风险账号
             if(res.data){
               this.$parent.$parent.AccountisShow = true
-              
+
                 this.lodingStatus = true
-              
+
             }else{
               this.$router.push('/sell-formUserInfo');
                setTimeout(() => {
@@ -442,7 +442,7 @@ html,body,#buyCrypto{
   margin-top: -0.1rem;
 }
 .get_input{
-  width: 1.4rem;
+  width: 1.8rem;
   height: 0.28rem;
   overflow: auto;
   font-family: SFProDisplayMedium;
