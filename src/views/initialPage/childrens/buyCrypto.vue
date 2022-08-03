@@ -14,12 +14,12 @@
             <img :src="positionData.positionImg">
           </div>
           <div class="getText">{{ payCommission.code }}</div>
-          <div class="rightIcon"><img src="@/assets/images/homeRight-icon.png"></div>
+          <div class="rightIcon"><img src="@/assets/images/blackDownIcon.png"></div>
         </div>
         <div class="warning_text" v-if="warningTextState" v-html="payAmount_tips"></div>
       </div>
 
-      <div class="methods_select cursor get_methods_select">
+      <div class="methods_select cursor">
         <div class="methods_select-left">
           <div class="form_title">{{ $t('nav.home_buyFee_title1') }}</div>
           <div class="get_input">
@@ -33,7 +33,7 @@
 <!--            <div class="networkIcon" v-if="currencyData.buyNetwork && currencyData.buyNetwork.logo"><img :src="currencyData.buyNetwork.logo"></div>-->
           </div>
           <div class="getText">{{ currencyData.name }}</div>
-          <div class="rightIcon"><img src="@/assets/images/homeRight-icon.png"></div>
+          <div class="rightIcon"><img src="@/assets/images/blackDownIcon.png"></div>
         </div>
       </div>
 
@@ -121,6 +121,9 @@ export default {
       lodingStatus:true
     }
   },
+  deactivated(){
+
+  },
   computed: {
     //you pay input status - 数据加载后放开状态
     payAmountState(){
@@ -132,13 +135,11 @@ export default {
     },
     //continue button status - 限制确认按钮状态
     continueState(){
-      if(this.positionData.positionValue !== ''&&
+      if((this.positionData.positionValue !== ''&&
           this.payAmount !== '' && Number(this.payAmount) >= this.payCommission.payMin &&
           Number(this.payAmount) <= this.payCommission.payMax && this.getAmount !== '' &&
-          Number(this.payAmount) > 0){
-            if(this.lodingStatus===false){
-              return false
-            }
+          Number(this.payAmount) > 0) && this.lodingStatus){
+
         return true
       }else{
         return false
@@ -351,6 +352,8 @@ export default {
       this.payCommission.payMax = Math.min(...maxNumList);
       this.payCommission.payMin = Math.max(...minNumList);
 
+      //
+
       this.$store.state.buyRouterParams.exchangeRate = this.exchangeRate;
       this.$store.state.buyRouterParams.payCommission = this.payCommission;
       this.amountControl();
@@ -442,7 +445,7 @@ export default {
        * Other payment jump /receivingMode
        * */
       //是否是从菜单进入
-      this.$store.state.routerQueryPath = false
+      // this.$store.state.routerQueryPath = false
       //loading加载
       this.lodingStatus = false
       let routerParams = {
@@ -459,20 +462,19 @@ export default {
       if(!localStorage.getItem('token') || localStorage.getItem('token')===''){
         this.$store.state.emailFromPath = 'buyCrypto';
         this.$store.state.homeTabstate = 'buyCrypto';
-
+       this.lodingStatus = true
         this.$router.push(`/emailCode`);
 
         return;
       }
       this.$axios.post(this.$api.post_kycDisabled).then(res=>{
         if(res && res.returnCode === '0000'){
-          setTimeout(() => {
-            this.lodingStatus = true
-          }, 2000);
+
           if(res.data){
+            this.lodingStatus = true
             this.$parent.$parent.AccountisShow = true
           }else{
-
+            this.lodingStatus = true
             this.$store.state.homeTabstate = 'buyCrypto';
             this.$router.push(`/receivingMode`)
           }
@@ -504,16 +506,16 @@ html,body,#buyCrypto{
   font-style: normal;
   font-weight: 400;
   font-size: 0.13rem;
-  color: #031633;
+  color: #949EA4;
 }
 
 .methods_title{
   margin-top: 0.2rem;
 }
 .methods_select{
-  min-height: 1rem;
+  min-height: 1.05rem;
   background: #FFFFFF;
-  border: 1px solid #D9D9D9;
+  border: 1px solid #EEEEEE;
   border-radius: 0.06rem;
   padding: 0 0.16rem;
   cursor: pointer;
@@ -525,18 +527,8 @@ html,body,#buyCrypto{
   }
 }
 .inputFocus{
-  border: 1px solid #41B8FD;
-  box-shadow: 0 0 0.35rem rgba(89, 153, 248, 0.2);
-}
-
-.get_methods_select{
-  min-height: 0.8rem;
-  .methods_select-left{
-    margin-top: 0;
-  }
-  .get_company{
-    margin-top: 0;
-  }
+ border: 1px solid #41B8FD;
+box-shadow: 0px 0px 35px rgba(89, 153, 248, 0.2);
 }
 
 .pay_input{
@@ -545,7 +537,7 @@ html,body,#buyCrypto{
   outline: none;
   font-family: 'SFProDisplayMedium',SFProDisplayMedium;
   font-weight: 500;
-  font-size: 0.28rem;
+  font-size: 0.2rem;
   color: #0059DA;
   padding: 0;
   margin-top: 0.06rem;
@@ -590,9 +582,9 @@ html,body,#buyCrypto{
   left: 0.18rem;
   font-family: 'SFProDisplayRegular',SFProDisplayRegular;
   font-weight: 400;
-  font-size: 0.13rem;
+  font-size: 0.1rem;
   color: #FF3333;
-  line-height: 0.13rem;
+  line-height: 0.12rem;
 }
 
 .methods_select-left{
@@ -600,13 +592,13 @@ html,body,#buyCrypto{
 }
 .get_input{
   width: 1.4rem;
-  height: 0.28rem;
+  height: 0.26rem;
   overflow: auto;
   font-family: SFProDisplayMedium;
   font-weight: 500;
-  font-size: 0.28rem;
-  line-height: 0.33rem;
-  color: #031633;
+  font-size: 0.2rem;
+  line-height: 0.24rem;
+  color: #063376;
   margin-top: 0.06rem;
   .no_getAmount{
     color: #C2C2C2;
@@ -662,9 +654,10 @@ html,body,#buyCrypto{
   .getText{
     display: flex;
     font-family: 'SFProDisplayRegular',SFProDisplayRegular;
+    font-style: normal;
     font-weight: 400;
     font-size: 0.13rem;
-    color: #031633;
+    color: #063376;
     min-width: 0.28rem;
   }
   .rightIcon{
@@ -758,14 +751,14 @@ footer{
 }
 
 .pay_input ::v-deep .van-cell__value--alone{
-  min-height: 0.28rem;
+  min-height: 0.26rem;
 }
 .pay_input ::v-deep .van-field__control{
-  min-height: 0.28rem;
+  min-height: 0.26rem;
   border: none;
   outline: none;
   background: #FFFFFF;
-  font-size: 0.28rem !important;
+  font-size: 0.2rem !important;
   font-family: 'SFProDisplayMedium',SFProDisplayMedium;
   font-weight: 500;
   color: #0059DA !important;

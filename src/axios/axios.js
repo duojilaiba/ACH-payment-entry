@@ -124,8 +124,10 @@ axios.interceptors.response.use(function (response) {
   //no login info
   if((response.data.returnCode === '70006' || response.data.returnCode === '70008') && router.currentRoute.path !== '/emailCode' && response.data.returnCode !== '70011'){
     localStorage.removeItem("sign");
-    localStorage.removeItem("login_email");
-    localStorage.removeItem("fin_token");
+    // localStorage.removeItem("login_email");
+    // localStorage.removeItem("fin_token");
+    //是否执行一键登陆所需条件
+    localStorage.setItem('loginOut','1')
     localStorage.removeItem("token");
     localStorage.removeItem("email");
     localStorage.removeItem("userNo");

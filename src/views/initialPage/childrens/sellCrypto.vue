@@ -122,12 +122,9 @@ export default {
       if((this.positionData.positionValue !== ''&&
           this.payAmount !== '' && Number(this.payAmount) >= this.currencyData.minSell &&
           Number(this.payAmount) <= this.currencyData.maxSell && this.getAmount !== '' &&
-          Number(this.payAmount) > 0) ){
+          Number(this.payAmount) > 0) && this.lodingStatus ){
             //增加loding效果
-            if(this.lodingStatus === false){
-
-              return false
-            }
+          
         return true
       }else{
         return false
@@ -336,14 +333,14 @@ export default {
             //KYC失败次数过多 此账号为风险账号
             if(res.data){
               this.$parent.$parent.AccountisShow = true
-               setTimeout(() => {
+              
                 this.lodingStatus = true
-              }, 2000);
+              
             }else{
               this.$router.push('/sell-formUserInfo');
                setTimeout(() => {
                 this.lodingStatus = true
-              }, 2000);
+              }, 1000);
             }
           }
         })
@@ -353,7 +350,7 @@ export default {
         this.$router.push('/emailCode');
          setTimeout(() => {
             this.lodingStatus = true
-          }, 2000);
+          }, 1000);
       }
     },
   },
