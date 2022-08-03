@@ -19,7 +19,7 @@
           <!-- 买币 - 确认支付后查询支付状态提示框 -->
           <QueryOrderStatusTips v-if="tipsState"/>
           <!-- 卖币 - 历史卡信息 -->
-          <HistoricalCardInfoSell v-if="historicalCardInfoSell_state"/>
+          <HistoricalCardInfoSell v-show="historicalCardInfoSell_state"/>
           <!-- 卖币 - 扫码识别网络 -->
           <ScanCode v-if="scanCode_state"/>
         </div>
@@ -45,18 +45,19 @@
 </template>
 
 <script>
-import tab from "./components/navigationBar";
-import routerMenu from "./components/routerMenu";
-import QueryOrderStatusTips from "./components/QueryOrderStatusTips";
-import Language from './components/Language.vue'
 import common from "./utils/common";
 import remSize from './utils/remSize';
-import HistoricalCardInfoSell from "./components/HistoricalCardInfo-sell";
-import ScanCode from "./components/ScanCode";
 
 export default {
   name: 'App',
-  components: {ScanCode, HistoricalCardInfoSell, tab, routerMenu, QueryOrderStatusTips ,Language},
+  components: {
+    'ScanCode': ()=>import("./components/ScanCode"),
+    'HistoricalCardInfoSell': ()=>import("./components/HistoricalCardInfo-sell"),
+    'routerMenu': ()=>import("./components/routerMenu"),
+    'QueryOrderStatusTips': ()=>import("./components/QueryOrderStatusTips"),
+    'Language': ()=>import("./components/Language.vue"),
+    'tab': ()=>import("./components/navigationBar"),
+  },
   data(){
     return{
       routerViewState: true,

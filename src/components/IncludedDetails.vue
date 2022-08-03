@@ -21,10 +21,6 @@
         </div>
       </div>
       <div class="fee-content-details" v-if="detailsState">
-<!--        <div class="fee-content-details-line">-->
-<!--          <div class="title">{{ $t('nav.fee_listTitle_price') }}</div>-->
-<!--          <div class="value">{{ payCommission.symbol }} {{ price }}</div>-->
-<!--        </div>-->
         <div class="fee-content-details-line">
           <div class="title">
             {{ $t('nav.home_buyFee_rampFee') }}
@@ -322,7 +318,6 @@ export default {
       .feeTitle-value-text{
         color: #6E7687;
         span{
-
           display: inline-block;
           width: 0.15rem;
           text-align: center;
@@ -334,10 +329,10 @@ export default {
   .fee-content{
     background: #F4F5F7;
     border-radius: 0.12rem;
-    margin-top: 0.36rem;
+    margin-top: 0.4rem;
     padding: 0 0.2rem .2rem;
     .fee-content-title{
-      padding:.2rem 0rem .0rem;
+      padding:.2rem 0 .0rem;
       display: flex;
       align-items: center;
       font-size: 0.16rem;
@@ -368,8 +363,7 @@ export default {
     }
 
     .fee-content-details{
-      // border-top: 1px solid #E6E6E6;
-      padding: 0.0rem 0 0.0 0;
+      padding: 0.0rem 0 0 0;
       .fee-content-details-line{
         display: flex;
         align-items: center;
@@ -379,7 +373,6 @@ export default {
           align-items: center;
           font-size: 0.13rem;
           font-family: "GeoLight", GeoLight;
-          font-weight: normal;
           color: #6E7687;
           .tipsIcon{
             width: 0.12rem;

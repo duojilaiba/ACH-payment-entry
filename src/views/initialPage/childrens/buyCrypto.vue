@@ -122,7 +122,7 @@ export default {
     }
   },
   deactivated(){
-    
+
   },
   computed: {
     //you pay input status - 数据加载后放开状态
@@ -139,7 +139,7 @@ export default {
           this.payAmount !== '' && Number(this.payAmount) >= this.payCommission.payMin &&
           Number(this.payAmount) <= this.payCommission.payMax && this.getAmount !== '' &&
           Number(this.payAmount) > 0) && this.lodingStatus){
-            
+
         return true
       }else{
         return false
@@ -206,6 +206,8 @@ export default {
     amountControl(){
       if(this.payAmount === ''){
         this.warningTextState = false;
+        this.getAmount = "";
+        this.detailedInfo_state = false;
         return;
       }
 
@@ -462,12 +464,12 @@ export default {
         this.$store.state.homeTabstate = 'buyCrypto';
        this.lodingStatus = true
         this.$router.push(`/emailCode`);
-        
+
         return;
       }
       this.$axios.post(this.$api.post_kycDisabled).then(res=>{
         if(res && res.returnCode === '0000'){
-       
+
           if(res.data){
             this.lodingStatus = true
             this.$parent.$parent.AccountisShow = true
@@ -476,7 +478,7 @@ export default {
             this.$store.state.homeTabstate = 'buyCrypto';
             this.$router.push(`/receivingMode`)
           }
-          
+
         }
       })
 

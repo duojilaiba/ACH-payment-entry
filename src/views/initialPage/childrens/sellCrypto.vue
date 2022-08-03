@@ -13,12 +13,12 @@
             <div class="networkIcon" v-if="currencyData.sellNetwork && currencyData.sellNetwork.logo"><img :src="currencyData.sellNetwork.logo"></div>
           </div>
           <div class="getText">{{ currencyData.name }}</div>
-          <div class="rightIcon"><img src="@/assets/images/blackDownIcon.png"></div>
+          <div class="rightIcon"><img src="@/assets/images/homeRight-icon.png"></div>
         </div>
         <div class="warning_text" v-if="warningTextState" v-html="payAmount_tips"></div>
       </div>
 
-      <div class="methods_select cursor">
+      <div class="methods_select cursor get_methods_select">
         <div class="methods_select-left">
           <div class="form_title">{{ $t('nav.home_buyFee_title1') }}</div>
           <div class="get_input">
@@ -29,7 +29,7 @@
         <div class="get_company" @click="openSearch('payCurrency-sell')">
           <div class="getImg"><img :src="positionData.positionImg"></div>
           <div class="getText">{{ payCommission.code }}</div>
-          <img class="rightIcon" src="@/assets/images/blackDownIcon.png">
+          <img class="rightIcon" src="@/assets/images/homeRight-icon.png">
         </div>
       </div>
 
@@ -106,7 +106,7 @@ export default {
       lodingStatus:true
     }
   },
- 
+
   computed: {
     //you pay input status - Data can only be entered after loading
     payAmountState(){
@@ -256,22 +256,23 @@ export default {
       //根据国家对应的币种处理数据
       //state - 1页面初始化数据处理 state - 2选择国家后数据处理
       if(state === 1){
-        this.basicData.cryptoCurrencyResponse.cryptoCurrencyList.forEach(item=>{
-          if(item.name === "BTC"){
-            this.currencyData = {
-              icon: item.logoUrl,
-              name: item.name,
-              maxSell: item.sellNetworkList[0].maxSell,
-              minSell: item.sellNetworkList[0].minSell,
-              cryptoCurrencyNetworkId: item.cryptoCurrencyNetworkId,
-              sellNetwork: item.sellNetworkList[0]
-            }
-            this.$store.state.feeParams.symbol = item.symbol; //name -- popularList币种
-            this.$store.state.feeParams_order.symbol = item.symbol; //name -- popularList币种
-            this.$store.state.sellRouterParams.cryptoCurrency = item.name;
-            this.$store.state.sellRouterParams.currencyData = this.currencyData;
-          }
-        })
+        let currencyData_default = [];
+        currencyData_default = this.basicData.cryptoCurrencyResponse.cryptoCurrencyList.filter(item=>{return item.name === "BTC"})[0];
+        if(currencyData_default === undefined){
+          currencyData_default = this.basicData.cryptoCurrencyResponse.cryptoCurrencyList.filter(item=>{return item.isSell===1})[0];
+        }
+        this.currencyData = {
+          icon: currencyData_default.logoUrl,
+          name: currencyData_default.name,
+          maxSell: currencyData_default.sellNetworkList[0].maxSell,
+          minSell: currencyData_default.sellNetworkList[0].minSell,
+          cryptoCurrencyNetworkId: currencyData_default.cryptoCurrencyNetworkId,
+          sellNetwork: currencyData_default.sellNetworkList[0]
+        }
+        this.$store.state.feeParams.symbol = currencyData_default.symbol; //name -- popularList币种
+        this.$store.state.feeParams_order.symbol = currencyData_default.symbol; //name -- popularList币种
+        this.$store.state.sellRouterParams.cryptoCurrency = currencyData_default.name;
+        this.$store.state.sellRouterParams.currencyData = this.currencyData;
         this.payCommission = data.sellFiatList[0];
         this.positionData.code = data.sellFiatList[0].code;
       }else{
@@ -328,7 +329,7 @@ export default {
       if(localStorage.getItem("token")){
         this.$axios.post(this.$api.post_kycDisabled,'','').then(res=>{
           if(res && res.returnCode === '0000'){
-            
+
             //KYC失败次数过多 此账号为风险账号
             if(res.data){
               this.$parent.$parent.AccountisShow = true
@@ -344,7 +345,7 @@ export default {
           }
         })
       }else{
-        
+
         this.$store.state.emailFromPath = 'sellCrypto';
         this.$router.push('/emailCode');
          setTimeout(() => {
@@ -375,16 +376,16 @@ html,body,#buyCrypto{
   font-style: normal;
   font-weight: 400;
   font-size: 0.13rem;
-  color: #949EA4;
+  color: #031633;
 }
 
 .methods_title{
   margin-top: 0.2rem;
 }
 .methods_select{
-  min-height: 1.05rem;
+  min-height: 1rem;
   background: #FFFFFF;
-  border: 1px solid #EEEEEE;
+  border: 1px solid #D9D9D9;
   border-radius: 0.06rem;
   padding: 0 0.16rem;
   cursor: pointer;
@@ -396,9 +397,20 @@ html,body,#buyCrypto{
   }
 }
 .inputFocus{
-border: 1px solid #41B8FD;
-box-shadow: 0px 0px 35px rgba(89, 153, 248, 0.2);
+  border: 1px solid #41B8FD;
+  box-shadow: 0 0 0.35rem rgba(89, 153, 248, 0.2);
 }
+
+.get_methods_select{
+  min-height: 0.8rem;
+  .methods_select-left{
+    margin-top: 0;
+  }
+  .get_company{
+    margin-top: 0;
+  }
+}
+
 
 .pay_input{
   width: 1.4rem;
@@ -406,8 +418,8 @@ box-shadow: 0px 0px 35px rgba(89, 153, 248, 0.2);
   outline: none;
   font-family: 'SFProDisplayMedium',SFProDisplayMedium;
   font-weight: 500;
-  font-size: 0.2rem;
-  color: #0059DA;
+  font-size: 0.29rem;
+  color: #0047AD;
   padding: 0;
   margin-top: 0.06rem;
   &::placeholder{
@@ -421,9 +433,9 @@ box-shadow: 0px 0px 35px rgba(89, 153, 248, 0.2);
   left: 0.18rem;
   font-family: 'SFProDisplayRegular',SFProDisplayRegular;
   font-weight: 400;
-  font-size: 0.1rem;
+  font-size: 0.13rem;
   color: #FF3333;
-  line-height: 0.12rem;
+  line-height: 0.13rem;
 }
 
 .methods_select-left{
@@ -431,13 +443,13 @@ box-shadow: 0px 0px 35px rgba(89, 153, 248, 0.2);
 }
 .get_input{
   width: 1.4rem;
-  height: 0.26rem;
+  height: 0.28rem;
   overflow: auto;
   font-family: SFProDisplayMedium;
   font-weight: 500;
-  font-size: 0.2rem;
-  line-height: 0.24rem;
-  color: #063376;
+  font-size: 0.28rem;
+  line-height: 0.28rem;
+  color: #031633;
   margin-top: 0.06rem;
   .no_getAmount{
     color: #C2C2C2;
@@ -507,9 +519,9 @@ box-shadow: 0px 0px 35px rgba(89, 153, 248, 0.2);
     img{
       width: 0.24rem;
     }
-    
+
   }
-  
+
 }
 
 
@@ -594,16 +606,16 @@ footer{
 }
 
 .pay_input ::v-deep .van-cell__value--alone{
-  min-height: 0.26rem;
+  min-height: 0.28rem;
 }
 .pay_input ::v-deep .van-field__control{
-  min-height: 0.26rem;
+  min-height: 0.28rem;
   border: none;
   outline: none;
-  font-size: 0.2rem !important;
+  font-size: 0.28rem !important;
   font-family: 'SFProDisplayMedium',SFProDisplayMedium;
   font-weight: 500;
-  color: #0059DA !important;
+  color: #0047AD !important;
   &::placeholder{
     color: #C2C2C2 !important;
   }

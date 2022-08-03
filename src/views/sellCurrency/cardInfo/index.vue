@@ -24,13 +24,13 @@
           <div class="formTitle"><span v-if="item.required">*</span>{{ $t(item.name) }}</div>
           <!-- bank account type -->
           <div class="formContent cursor" v-if="item.type === 'radio' && item.paramsName === 'bankAccountType'" @click="openSelect(item,index)">
-            <div class="radioInput">
+            <div class="radioInput" :class="{'radios-true': selected.index === index}">
               <div class="value">{{ $t(item.model) }}</div>
               <div class="rightIcon"><img src="../../../assets/images/rightBlackIcon.png" alt=""></div>
             </div>
           </div>
           <div class="formContent cursor" v-else-if="item.type === 'radio'" @click="openSelect(item,index)">
-            <div class="radioInput">
+            <div class="radioInput" :class="{'radios-true': selected.index === index}">
               <div class="value">{{ item.model }}</div>
               <div class="rightIcon"><img src="../../../assets/images/rightBlackIcon.png" alt=""></div>
             </div>
@@ -63,12 +63,12 @@
 
     <!-- 单选框 -->
     <!-- bank account type -->
-    <div class="selectView" v-if="selectState && selected.paramsName === 'bankAccountType'" @click="selectState=false">
+    <div class="selectView" v-if="selectState && selected.paramsName === 'bankAccountType'" @click="closeRadio">
       <ul class="selectDate">
         <li v-for="(item,index) in this.selected.item" :key="index" @click="specialChiseCheck(item)">{{ $t(item.value) }}</li>
       </ul>
     </div>
-    <div class="selectView" v-else-if="selectState" @click="selectState=false">
+    <div class="selectView" v-else-if="selectState" @click="closeRadio">
       <ul class="selectDate">
         <li v-for="(item,index) in this.selected.item" :key="index" @click="chiseCheck(item)">{{ $t(item) }}</li>
       </ul>
@@ -234,6 +234,10 @@ export default {
         index: index,
         paramsName: item.paramsName
       };
+    },
+    closeRadio(){
+      this.selectState = false;
+      this.selected.index = '';
     },
     chiseCheck(item){
       this.selectState = false;
@@ -511,9 +515,9 @@ export default {
           //默认展示最近一条数据
           if(res.data.length > 0){
             let oldCardInfo = {};
-            oldCardInfo = JSON.parse(JSON.stringify(res.data[0]));
-            oldCardInfo.accountNumber = AES_Decrypt(oldCardInfo.accountNumber);
-            _this.oldCardInfo[0] = oldCardInfo;
+            oldCardInfo = JSON.parse(JSON.stringify(res.data));
+            oldCardInfo[0].accountNumber = AES_Decrypt(oldCardInfo[0].accountNumber);
+            _this.oldCardInfo = oldCardInfo;
           }else{
             _this.oldCardInfo = [];
           }
@@ -560,281 +564,4 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-#sell-form{
-  width: 100%;
-  height: 100%;
-  overflow-y: scroll;
-  position: absolute;
-  .sellForm-content{
-    position: relative;
-  }
-}
-.downTips-icon{
-  position: absolute;
-  bottom: 0.4rem;
-  right: 0;
-  width: 0.58rem;
-  height: 0.58rem;
-  border-radius: 50%;
-  background: rgba(131,179,249,1);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  img{
-    width: 0.3rem;
-  }
-}
-.downTips-icon img{
-  animation: jumpBoxHandler 1.8s infinite;/* 1.8s 事件完成时间周期 infinite无限循环 */
-}
-
-.v-enter-active,.v-leave-active{
-  transition: all 1s;
-}
-.v-enter,.v-leave-to{
-  opacity: 0;
-}
-.v-enter-to,.v-leave{
-  opacity: 0.8;
-}
-
-@keyframes jumpBoxHandler { /* css事件 */
-  0% {
-    transform: translate(0px, 0);
-  }
-  50% {
-    transform: translate(0px, 0.06rem); /* 可配置跳动方向 */
-  }
-  100% {
-    transform: translate(0px, 0px);
-  }
-}
-
-#box{
-  width: 100%;
-  height: 100%;
-  position: relative;
-}
-
-.cardInfo-history{
-  margin-top: 0.32rem;
-  .line1{
-    display: flex;
-    align-items: center;
-    .line1-2{
-      font-family: 'SFProDisplayRegular',SFProDisplayRegular;
-      font-weight: 400;
-      font-size: 0.13rem;
-      color: #949EA4;
-      margin-left: 0.08rem;
-    }
-    .more{
-      margin-left: auto;
-      font-family: 'SFProDisplaybold',SFProDisplaybold;
-      font-weight: 400;
-      font-size: 0.13rem;
-      color: #0059DA;
-      cursor: pointer;
-    }
-  }
-  .info{
-    width: 100%;
-    height: 0.56rem;
-    line-height: 0.56rem;
-    background: #FFF4DE;
-    border-radius: 0.06rem;
-    color: #8A5B00;
-    font-size: 0.13rem;
-    margin-top: 0.08rem;
-    padding: 0 0.07rem 0 0.17rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    span{
-      font-family: 'SFProDisplaybold',SFProDisplaybold;
-    }
-  }
-}
-
-.selectView{
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  .selectDate{
-    z-index: 99;
-    position: absolute;
-    top: 2rem;
-    left: 0.16rem;
-    background: #FFFFFF;
-    box-shadow: 0 0 0.14rem 0 rgba(0, 0, 0, 0.12);
-    border-radius: 0.16rem;
-    max-height: 4rem;
-    min-width: 1.8rem;
-    overflow: auto;
-    li{
-      font-size: 0.16rem;
-      font-family: "GeoRegular", GeoRegular;
-      font-weight: normal;
-      color: #232323;
-      text-indent: 0.16rem;
-      border-bottom: 1px solid #EEEEEE;
-      height: 0.56rem;
-      line-height: 0.56rem;
-      &:last-child{
-        border: none;
-      }
-    }
-  }
-}
-
-.formLine{
-  margin-top: 0.24rem;
-  clear: both;
-  position: relative;
-  .formTitle{
-    font-family: 'SFProDisplayRegular',SFProDisplayRegular;
-    font-weight: 400;
-    font-size: 0.13rem;
-    color: #949EA4;
-    display: flex;
-    align-items: flex-end;
-    span{
-      color: #E55643;
-      margin-right: 0.03rem;
-    }
-    .formTitle_logo{
-      margin-left: auto;
-      color: darkgray;
-      img{
-        width: 0.4rem;
-      }
-    }
-  }
-  .cursor{
-    cursor: pointer;
-  }
-  .formContent{
-    display: flex;
-    margin-top: 0.08rem;
-    position: relative;
-    input{
-      width: 100%;
-      height: 0.56rem;
-      border-radius: 0.06rem;
-      border: 1px solid #EEEEEE;
-      font-family: 'SFProDisplayRegular',SFProDisplayRegular;
-      font-weight: 500;
-      font-size: 0.16rem;
-      color: #949EA4;
-      outline: none;
-      padding: 0 0.16rem;
-      &:focus{
-        border: 1px solid #D0ECFC;
-        box-shadow: 0 0 0.35rem rgba(89, 153, 248, 0.1);
-      }
-    }
-    .radioInput{
-      width: 100%;
-      display: flex;
-      align-items: center;
-      height: 0.56rem;
-      line-height: 0.56rem;
-      padding: 0 0.16rem;
-      border-radius: 0.06rem;
-      font-size: 0.16rem;
-      font-family: "GeoRegular", GeoRegular;
-      font-weight: normal;
-      color: #232323;
-      border: 1px solid #EEEEEE;
-      .rightIcon{
-        margin-left: auto;
-        display: flex;
-        align-items: center;
-        img{
-          width: 0.24rem;
-        }
-      }
-    }
-  }
-  .errorMessage{
-    position: absolute;
-    font-size: 0.1rem;
-    font-family: "GeoLight", GeoLight;
-    font-weight: 400;
-    color: #E55643;
-    margin: 0.04rem 0.2rem 0 0.16rem;
-    clear: both;
-  }
-  .tipsMessage{
-    font-family: 'SFProDisplayRegular',SFProDisplayRegular;
-    font-size: 0.13rem;
-    color: #C2C2C2;
-    margin: 0.3rem 0 0.1rem 0;
-    clear: both;
-  }
-  &:last-child{
-    margin-bottom: 0.08rem;
-  }
-}
-
-.attention{
-  font-family: 'SFProDisplayRegular',SFProDisplayRegular;
-  font-size: 0.13rem;
-  text-align: justify;
-  letter-spacing: 0.5px;
-  color: #C2C2C2;
-  margin-top: 0.24rem;
-  span{
-    color: #949EA4;
-    font-weight: 600;
-  }
-}
-
-
-.continue{
-  width: 100%;
-  height: 0.58rem;
-  background: #0059DA;
-  border-radius: 0.29rem;
-  font-family: 'SFProDisplayMedium',SFProDisplayMedium;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 0.16rem;
-  text-align: center;
-  color: #FFFFFF;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 0.3rem;
-  cursor: pointer;
-  border: none;
-  position: relative;
-  .rightIcon{
-    width: 0.2rem;
-    margin-left: 0.08rem;
-  }
-}
-.continue:disabled{
-  background: rgba(0, 89, 218, 0.5);
-  cursor: no-drop;
-}
-
-// 单选框
-.checkbox{
-  ::v-deep .el-checkbox__inner{
-    border-radius: 100% !important;
-  }
-}
-.checkbox ::v-deep .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
-  background: #0059DA;
-  border-color:#0059DA ;
-}
-
-//loading icon
-.van-loading__spinner{
-  width: 0.2rem;
-  height: 0.2rem;
-}
-</style>
+<style lang="scss" src="./cardInfo.scss" scoped></style>

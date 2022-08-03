@@ -396,7 +396,6 @@ export default {
 html,body,#tradeHistory,.historyList,.van-list{
   height: 100%;
 }
-//,.historyList-box
 
 .tabView{
   width: 100%;
@@ -412,7 +411,7 @@ html,body,#tradeHistory,.historyList,.van-list{
     font-weight: 500;
     font-size: 0.16rem;
     line-height: 0.5rem;
-    color: #949EA4;
+    color: #6E7687;
     text-align: center;
     cursor: pointer;
   }
@@ -451,7 +450,7 @@ html,body,#tradeHistory,.historyList,.van-list{
       font-family: SFProDisplayMedium;
       font-weight: 500;
       font-size: 0.13rem;
-      color: #063376;
+      color: #031633;
       min-height: 0.52rem;
       padding: 0 0.16rem;
       background: #F7F8FA;
@@ -473,7 +472,7 @@ html,body,#tradeHistory,.historyList,.van-list{
           line-height: 0.16rem;
           font-size: 0.13rem;
           font-family: SFProDisplayMedium;
-          color: #232323;
+          color: #031633;
           margin-left: 0.08rem;
         }
       }
@@ -482,7 +481,7 @@ html,body,#tradeHistory,.historyList,.van-list{
         font-weight: 400;
         font-size: 0.13rem;
         line-height: 0.14rem;
-        color: #949EA4;
+        color: #6E7687;
         margin-left: auto;
         display: flex;
         justify-content: center;
@@ -506,7 +505,7 @@ html,body,#tradeHistory,.historyList,.van-list{
       font-weight: 400;
       font-size: 0.13rem;
       line-height: 0.14rem;
-      color: #949EA4;
+      color: #6E7687;
       display: flex;
       align-items: flex-start;
       margin-top: 0.16rem;
@@ -524,14 +523,14 @@ html,body,#tradeHistory,.historyList,.van-list{
           font-weight: 500;
           font-size: 0.13rem;
           line-height: 0.14rem;
-          color: #063376;
+          color: #031633;
         }
         .noValue{
           font-family: SFProDisplayRegular;
           font-weight: 400;
           font-size: 0.13rem;
           line-height: 0.14rem;
-          color: #949EA4;
+          color: #6E7687;
         }
       }
       .address_value{
@@ -539,7 +538,7 @@ html,body,#tradeHistory,.historyList,.van-list{
         font-size: 0.15rem;
         font-family: "GeoDemibold", GeoDemibold;
         font-weight: normal;
-        color: #232323;
+        color: #031633;
       }
     }
 
@@ -569,9 +568,9 @@ html,body,#tradeHistory,.historyList,.van-list{
         }
       }
       .state_loading{
-        color: #0059DA;
+        color: #0047AD;
         .state_circular{
-          background: #0059DA;
+          background: #0047AD;
         }
       }
       .state_failed{
@@ -581,12 +580,13 @@ html,body,#tradeHistory,.historyList,.van-list{
         }
       }
       .state_timeOut{
-        color: #949EA4;
+        color: #6E7687;
         .state_circular{
-          background: #949EA4;
+          background: #6E7687;
         }
       }
       .state_failed_tips{
+        font-weight: 400;
         font-size: 0.1rem;
         margin-top: 0.04rem;
         padding: 0 0.04rem;
@@ -609,9 +609,9 @@ html,body,#tradeHistory,.historyList,.van-list{
           margin-top: 0.16rem;
         }
         .state_failed_refund{
-          background: #F7F8FA;
-          border: 1px solid #EEEEEE;
-          color: #063376;
+          background: #F4F5F7;
+          border: 1px solid #D9D9D9;
+          color: #031633;
         }
         .state_failed_Update{
           background: #FFEEDE;
@@ -627,7 +627,7 @@ html,body,#tradeHistory,.historyList,.van-list{
         .state_loading_payNow{
           background: #E8F1FF;
           border: 1px solid #9FC6FF;
-          color: #0059DA;
+          color: #0047AD;
         }
       }
       .state_error{

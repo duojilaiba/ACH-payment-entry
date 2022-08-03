@@ -13,7 +13,7 @@
         <div @click="goLogin" :style="{background:loading?'#0059DA80':''}">{{ $t('nav.login') }} <img class="icon" src="../assets/images/rightIconSell.png" alt="" v-if="!loading">
         <van-loading  class="icon" type="spinner" color="#fff" v-else/></div>
     </div>
-    <div class="routerMenu_history goHomeView" @click="goView('/',$store.state.homeTabstate)" v-if="token!==false && !this.$route.query.merchant_orderNo">
+    <div class="routerMenu_history goHomeView" @click="goView('/',$store.state.homeTabstate)" v-if="token!==false && this.$route.query.merchant_orderNo===undefined">
       <div class="lineIcon"><img src="../assets/images/slices/goHome-icon.svg"></div>
       <div class="lineName">
         <p class="alone">Home</p>
@@ -215,7 +215,7 @@ export default {
     },
     goLogin(){
       this.loading = true
-      
+
 
         setTimeout(() => {
           this.loading = false
@@ -224,7 +224,7 @@ export default {
           //是否是从菜单进入
           this.$router.push('/emailCode')
         }, 200);
-     
+
     },
     //显示退出登陆判断是否是pc 还是 移动
     loginOutIsShow(){
