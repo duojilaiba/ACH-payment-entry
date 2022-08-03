@@ -445,7 +445,7 @@ export default {
        * Other payment jump /receivingMode
        * */
       //是否是从菜单进入
-      this.$store.state.routerQueryPath = false
+      // this.$store.state.routerQueryPath = false
       //loading加载
       this.lodingStatus = false
       let routerParams = {
@@ -462,20 +462,19 @@ export default {
       if(!localStorage.getItem('token') || localStorage.getItem('token')===''){
         this.$store.state.emailFromPath = 'buyCrypto';
         this.$store.state.homeTabstate = 'buyCrypto';
-       
+       this.lodingStatus = true
         this.$router.push(`/emailCode`);
-
+        
         return;
       }
       this.$axios.post(this.$api.post_kycDisabled).then(res=>{
         if(res && res.returnCode === '0000'){
-          setTimeout(() => {
-            this.lodingStatus = true
-          }, 2000);
+       
           if(res.data){
+            this.lodingStatus = true
             this.$parent.$parent.AccountisShow = true
           }else{
-            
+            this.lodingStatus = true
             this.$store.state.homeTabstate = 'buyCrypto';
             this.$router.push(`/receivingMode`)
           }

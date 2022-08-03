@@ -335,14 +335,14 @@ export default {
             //KYC失败次数过多 此账号为风险账号
             if(res.data){
               this.$parent.$parent.AccountisShow = true
-               setTimeout(() => {
+              
                 this.lodingStatus = true
-              }, 2000);
+              
             }else{
               this.$router.push('/sell-formUserInfo');
                setTimeout(() => {
                 this.lodingStatus = true
-              }, 2000);
+              }, 1000);
             }
           }
         })
@@ -352,7 +352,7 @@ export default {
         this.$router.push('/emailCode');
          setTimeout(() => {
             this.lodingStatus = true
-          }, 2000);
+          }, 1000);
       }
     },
   },
