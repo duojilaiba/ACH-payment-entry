@@ -126,11 +126,11 @@ export default{
     // },
     //获取买币状态
     getCurrencyStatus(){
-      let sellOrderId = sessionStorage.getItem('sellOrderId')
+      // let sellOrderId = sessionStorage.getItem('sellOrderId')
       // console.log(this.$store.state.sellOrderId);
       let parmas = {
         // id:'140'
-        orderId:this.$store.state.sellOrderId?this.$store.state.sellOrderId:sellOrderId
+        orderId:this.$store.state.sellOrderId
       }
       // console.log(parmas);
       this.$axios.get(this.$api.get_PlayCurrencyStatus,parmas).then(res=>{
@@ -253,8 +253,9 @@ export default{
   },
 
   activated (){
-    this.$route.query.id?sessionStorage.setItem('sellOrderId',this.$route.query.id):''
-    this.$store.state.emailFromPath = 'sellOrder'
+    // this.$store.state.emailFromPath = 'sellOrder'
+  //  this.$route.query.id?this.$store.state.sellOrderId = this.$route.query.id:''
+  //   this.$store.state.emailFromPath = 'sellOrder'
     this.getCurrencyStatus()
     this.timer = setInterval(()=>{
       this.getCurrencyStatus()
@@ -273,7 +274,8 @@ export default{
     // this.$store.replaceState({})
   },
   mounted(){
-    this.$route.query.id?sessionStorage.setItem('sellOrderId',this.$route.query.id):''
+    //1004301396103667712
+    // this.$route.query.id?this.$store.state.sellOrderId = this.$route.query.id:''
   }
 }
 
