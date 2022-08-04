@@ -70,7 +70,7 @@
       <div class="content" ref="loginOutView" @click.stop="show=true">
         <h2>{{ $t('nav.loginOut_title') }}</h2>
        <div>
-          <div @click.stop="outLogin">{{ $t('nav.menu_logOut') }} </div>
+          <button @click.stop="outLogin" :disabled="loginOutLoading">{{ $t('nav.menu_logOut') }} <van-loading v-if="loginOutLoading" class="icon" type="spinner" color="#fff" /></button>
           <p @click.stop="show=false">{{ $t('nav.loginOut_Dismiss') }}</p>
        </div>
       </div>
@@ -106,7 +106,7 @@ export default {
       disAbled:'',
       kycError:require('@/assets/images/AccountRisk.png'),
       kycSess:require('@/assets/images/kycScuss.png'),
-
+      loginOutLoading:false
     }
   },
   activated(){
@@ -171,7 +171,8 @@ export default {
     //Exit the login hidden menu and clear the login information
     outLogin(){
 
-      if(this.email){
+      if(this.email && !this.loginOutLoading ){
+         this.loginOutLoading = true
         this.$axios.post(this.$api.post_outLogin,'','').then(res=>{
           if(res && res.returnCode === "0000"){
             localStorage.removeItem("sign");
@@ -182,6 +183,7 @@ export default {
             // localStorage.removeItem("userId");
             // localStorage.removeItem("login_email");
             // localStorage.removeItem("fin_token");
+            this.loginOutLoading = false
             localStorage.removeItem("kycStatus");
             // sessionStorage.removeItem('accessMerchantInfo')
             sessionStorage.removeItem('store')
@@ -200,6 +202,7 @@ export default {
             }
 
           }
+          this.loginOutLoading = false
         })
       }
     },
@@ -529,7 +532,7 @@ export default {
         margin-top: .2rem;
         justify-content: center;
         align-items: center;
-        div{
+        button{
           width: 1.5rem;
           height: .5rem;
           background: #E55643;
@@ -539,10 +542,19 @@ export default {
           font-size: .16rem;
           font-weight: normal;
           color: #FFFFFF;
+          border: none;
           font-family: SFProDisplayRegular;
           margin-top: .05rem;
           margin-right: .13rem;
           cursor: pointer;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          .icon{
+            span{
+              height: .2rem;
+            }
+          }
         }
         p{
            width: 1.5rem;
