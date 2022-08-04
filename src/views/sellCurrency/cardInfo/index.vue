@@ -77,6 +77,9 @@
 </template>
 
 <script>
+/**
+ * 邮件进入地址栏结构 - /sell-formUserInfo?orderId=订单id&position_alpha2=国家alpha2&position_code=国家code&getAmount=法币金额&emailFromPath=sell-formUserInfo&cardInfoFromPath=sellOrder
+ */
 import allFormJson from "@/assets/json/currencyPurchaseFormRules.json";
 import { AES_Decrypt, AES_Encrypt } from "../../../utils/encryp";
 import Search from "../../../components/search"
@@ -151,6 +154,7 @@ export default {
       this.$store.state.sellRouterParams.formPositionData.alpha2 = this.$route.query.position_alpha2;
       this.$store.state.sellRouterParams.formPositionData.code = this.$route.query.position_code;
       this.$store.state.sellRouterParams.getAmount = this.$route.query.getAmount;
+      this.$store.state.cardInfoFromPath = this.$route.query.cardInfoFromPath;
     }
 
     //初始化表单
@@ -439,10 +443,8 @@ export default {
     inputFocus(){
       if(this.$store.state.isPcAndPhone === 'phone'){
         this.buttonIsShow = false
-        return
       }else{
         this.buttonIsShow = true
-        return
       }
     },
     inputBlur(){

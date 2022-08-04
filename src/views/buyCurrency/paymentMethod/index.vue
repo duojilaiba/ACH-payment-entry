@@ -130,6 +130,9 @@ export default {
     //上一页返回还原解密数据
     this.savedCard[this.cardCheck] ? this.savedCard[this.cardCheck].cardNumber = AES_Decrypt(this.savedCard[this.cardCheck].cardNumber) : '';
   },
+  deactivated(){
+    this.request_loading = false;
+  },
   methods: {
     //商户接入查询
     buyOrderInfo(){
@@ -333,18 +336,15 @@ export default {
 
       //选择新填写支付方式
       if(this.paymethodCheck !== '' && this.payMethod.payWayCode === '10001' && this.savedCard.length <= 5){ //USD
-        this.request_loading = false;
         this.$router.push(`/creditCardForm-cardInfo?merchant_orderNo=${this.$route.query.merchant_orderNo}`);
         return;
       }
       if(this.paymethodCheck !== ''  && this.payMethod.payWayCode !== '10001'){ //IDR | 10008
         if(this.payMethod.payWayCode === '10003' || this.payMethod.payWayCode === '10008'){
-          this.request_loading = false;
           this.$router.push(`/otherWays-VA`);
           return;
         }
         if(this.payMethod.payWayCode === '10004' || this.payMethod.payWayCode === '10005' || this.payMethod.payWayCode === '10006'){ //QRIS DANA OVO
-          this.request_loading = false;
           this.$router.push(`/otherWayPay`);
         }
       }
@@ -352,15 +352,13 @@ export default {
     //是否需要kyc验证
     //第一个参数是需要跳转的地址  第二个参数是kyc验证之后我要跳转的地址
     isKyc(Url){
-       this.$axios.post(this.$api.post_getKycThrough).then(res=>{
+       this.$axios.post(this.$api.post_getKycThrough,'','').then(res=>{
          if(res && res.returnCode === '0000'){
             if(res.data===true){
               this.$store.state.WhichPage = Url
-              this.request_loading = false;
               this.$router.push('/kycVerification')
               return
             }
-            this.request_loading = false;
             this.$router.push(Url)
           }else{
             this.request_loading = false;

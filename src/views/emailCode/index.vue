@@ -179,7 +179,7 @@ export default {
                 _this.$router.replace(`/receivingMode`);
               }else if(_this.$store.state.emailFromPath === 'sellCrypto'){
                 _this.$router.replace('/sell-formUserInfo')
-              }else if(_this.$store.state.emailFromPath === '/Refund'){
+              }else if(_this.$store.state.emailFromPath === 'Refund'){
                 _this.$router.replace('/Refund')
               }else{
                 _this.$router.push('/');
@@ -201,7 +201,7 @@ export default {
         this.getCode_state = true;
         if(res.returnCode === '0000'){
           this.login_loading = false
-          
+
           this.$store.state.userEmail = AES_Encrypt(this.email)
           this.$router.push({
             path:'/verifyCode',

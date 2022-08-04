@@ -8,7 +8,7 @@
       <div class="linkName">
         {{ $t(routerName) }}
         <!-- 卖币表单页展示修改卖币信息入口 -->
-        <div class="sellChangeForm" v-if="this.$store.state.cardInfoFromPath === 'configSell' && $route.name === 'sellCardInfo'" @click="sellFormBack">
+        <div class="sellChangeForm" v-if="$store.state.cardInfoFromPath === 'configSell' && $route.name === 'sellCardInfo'" @click="sellFormBack">
           <p>· {{ this.$store.state.sellRouterParams.formPositionData.enCommonName }}</p>
           <p><img src="../assets/images/changeIcon.svg" alt=""></p>
         </div>

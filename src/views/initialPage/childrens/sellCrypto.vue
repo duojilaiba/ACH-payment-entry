@@ -237,6 +237,19 @@ export default {
           })
         }
       })
+      if(this.basicData.sellRecentWorldList){
+        this.basicData.sellRecentWorldList.forEach((item,index)=>{
+          if(item.sellFiatList){
+            item.sellFiatList.forEach((item2,index2)=>{
+              this.basicData.fiatCurrencyList.forEach(item3=>{
+                if(item3.code === item2){
+                  this.basicData.sellRecentWorldList[index].sellFiatList[index2] = item3;
+                }
+              })
+            })
+          }
+        })
+      }
 
       //获取定位的国家信息
       var worldData = {};
