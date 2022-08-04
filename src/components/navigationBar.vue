@@ -124,6 +124,16 @@ export default {
         this.$router.push('/');
         return;
       }
+      if(this.$route.path === '/sell-formUserInfo' && this.routerPath === '/emailCode'){
+        // console.log("111")
+        this.$router.push('/');
+        return;
+      }
+      if(this.$route.path === '/sell-formUserInfo' && this.routerPath === '/verifyCode'){
+        // console.log("111")
+        this.$router.push('/');
+        return;
+      }
 
       if(this.$route.path === '/sellOrder' && this.routerPath === '/sell-formUserInfo'){
         this.$router.go(-4);

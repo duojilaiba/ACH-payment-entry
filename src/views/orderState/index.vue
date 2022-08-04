@@ -154,7 +154,7 @@ export default{
             this.timer = null;
             //  this.$store.replaceState({})
           }
-          if(res.data.expirationTime<=0 && this.playMoneyState=== 7){
+          if(res.data.expirationTime<=0 || this.playMoneyState=== 7){
           //   // this.playMoneyState = 7
             this.orderStateData.orderStatus = 7
             this.$store.state.nextOrderState = 1
