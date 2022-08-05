@@ -114,7 +114,7 @@ export default {
       if(this.email === ''){
         return
       }
-      var reg = new RegExp(".+@.+\\..+");
+      var reg = new RegExp(`^[a-z0-9A-Z]+[- | a-z0-9A-Z . _]+@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-z]{2,}$`);
       if(!reg.test(this.email)){
         this.emailErrorState = true
         // this.emailError = "Not a valid email address.";
@@ -254,7 +254,7 @@ box-shadow: 0px 0px 35px rgba(89, 153, 248, 0.2);`
     //计算邮箱输入并且勾选协议时按钮高亮
     emailRep(){
       let status = false
-      let  reg = new RegExp(".+@.+\\..+");
+      let  reg = new RegExp(`^[a-z0-9A-Z]+[- | a-z0-9A-Z . _]+@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-z]{2,}$`);
       if(this.checked && reg.test(this.email)){
         status =  true
       }
