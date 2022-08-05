@@ -2,11 +2,11 @@
   <div id="refund">
     <p class="title">Enter your Tron (USDT) address </p>
     <div class="walletAddress">
-      <input type="text" v-model="walletAddress" placeholder="Enter your wallet address" @input="addressChange">
+      <input type="text" v-model="queryData.walletAddress" placeholder="Enter your wallet address" @input="addressChange">
       <img src="@/assets/images/scanCode_icon.svg" alt="" @click="openScanCode">
       <p class="errorMessage" v-if="errorState">Invalid address</p>
     </div>
-    <p class="exchangeRate">1 {{ $route.query.cryptocurrency }} ≈ {{ refundInfo.price }} {{ $route.query.fiatName }}</p>
+    <p class="exchangeRate">1 {{ queryData.cryptocurrency }} ≈ {{ refundInfo.price }} {{ queryData.fiatCode }}</p>
     <footer>
       <p class="tips"><span>Pay attention:</span> Please make sure the address you enter is correct and belong to the network that you choose. If you enter incompatible address, you will lose your funds.</p>
       <button :disabled="disabled" @click="confirmRefund">Confirm <img src="@/assets/images/button-right-icon.svg" alt=""></button>
@@ -25,6 +25,13 @@ export default {
     return{
       walletAddress: "",
       errorState: false,
+
+      queryData: {
+        orderId: '',
+        cryptocurrency: '',
+        fiatCode: '',
+      },
+
       refundInfo: {
         price: '',
         addressRegex: '',
@@ -43,8 +50,26 @@ export default {
   activated(){
     this.walletAddress = "";
     this.errorState = false;
-    this.orderId = this.$route.query.orderId;
-    this.$store.state.emailFromPath = 'Refund'
+    this.queryData = {
+      orderId: this.$route.query.orderId,
+      fiatCode: this.$route.query.fiatCode,
+      cryptocurrency: this.$route.query.cryptocurrency,
+    }
+
+    //存储邮件单页面跳传递的数据
+    if(this.$route.query.emailFromPath !== undefined && this.$route.query.emailFromPath){
+      this.$store.state.emailFromPath = this.$route.query.emailFromPath;
+      this.$store.state.emailFromquery_refund_view.orderId = this.$route.query.orderId;
+      this.$store.state.emailFromquery_refund_view.cryptocurrency = this.$route.query.cryptocurrency;
+      this.$store.state.emailFromquery_refund_view.fiatCode = this.$route.query.fiatCode;
+    }
+    //使用邮件单页面跳传递的数据
+    if(this.$store.state.emailFromPath === 'Refund'){
+      this.queryData.orderId = this.$store.state.emailFromquery_refund_view.orderId;
+      this.queryData.cryptocurrency = this.$store.state.emailFromquery_refund_view.cryptocurrency;
+      this.queryData.fiatCode = this.$store.state.emailFromquery_refund_view.fiatCode;
+    }
+
     this.queryRefundInfo();
   },
   methods: {
@@ -63,8 +88,8 @@ export default {
 
     queryRefundInfo(){
       let params = {
-        cryptocurrency: this.$route.query.cryptocurrency,
-        fiatCode: this.$route.query.fiatName
+        cryptocurrency: this.queryData.cryptocurrency,
+        fiatCode: this.queryData.fiatCode
       }
       this.$axios.get(this.$api.get_sellRefundInfo, params).then(res=>{
         if(res && res.returnCode === "0000"){
@@ -76,11 +101,17 @@ export default {
 
     confirmRefund(){
       let params = {
-        orderId: this.orderId,
-        address: this.walletAddress
+        orderId: this.queryData.orderId,
+        address: this.queryData.walletAddress
       }
       this.$axios.get(this.$api.get_sellRefund,params).then(res=>{
         if(res && res.returnCode === '0000'){
+          //邮件单页面进入
+          if(this.$store.state.emailFromPath !== ''){
+            this.$store.state.emailFromPath = '';
+            this.$router.replace("/");
+            return
+          }
           this.$router.go(-1);
         }
       })

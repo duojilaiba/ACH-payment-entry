@@ -13,7 +13,7 @@
         <div class="noDataImg"><img src="../../assets/images/noData.png"></div>
         <div class="noDataText">{{ $t('nav.history_noListText') }}</div>
         <p>{{ $t('nav.history_noListText2') }}</p>
-        <button class="continue" @click="goHome">
+        <button class="continue" @click="goHome('buyCrypto')">
           {{ $t('nav.history_noListButton') }}
           <img class="rightIcon" src="../../assets/images/rightIconSell.png" alt="">
         </button>
@@ -105,7 +105,7 @@
         <div class="noDataImg"><img src="../../assets/images/noData.png"></div>
         <div class="noDataText">{{ $t('nav.history_noListText') }}</div>
         <p>{{ $t('nav.history_noListText2') }}</p>
-        <button class="continue" @click="goHome">
+        <button class="continue" @click="goHome('sellCrypto')">
           {{ $t('nav.history_noListButton') }}
           <img class="rightIcon" src="../../assets/images/rightIconSell.png" alt="">
         </button>
@@ -256,6 +256,8 @@ export default {
         pageIndex: 1,
         pageSize: 5
       };
+      this.buyFinished = false;
+      this.buyLoading = false;
       this.buy_historyList = [];
       this.buyTransactionHistory();
     }else{
@@ -263,6 +265,8 @@ export default {
         pageIndex: 1,
         pageSize: 5
       };
+      this.sellFinished = false;
+      this.sellLoading = false;
       this.sell_historyList = [];
       this.sellTransactionHistory();
     }
@@ -273,7 +277,8 @@ export default {
     },
   },
   methods:{
-    goHome(){
+    goHome(homeTab){
+      this.$store.state.homeTabstate = homeTab;
       this.$router.push('/')
     },
 
@@ -377,7 +382,7 @@ export default {
         return;
       }
       //退款
-      this.$router.push(`/Refund?orderId=${val.orderId}&cryptocurrency=${val.cryptocurrency}&fiatName=${val.fiatName}`);
+      this.$router.push(`/Refund?orderId=${val.orderId}&cryptocurrency=${val.cryptocurrency}&fiatCode=${val.fiatName}`);
     },
 
     //数据判空 - null、""、不存在这个字段

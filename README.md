@@ -35,5 +35,10 @@ https://www.showdoc.com.cn/ach/8412694673175311
 压缩 - compression-webpack-plugin@6.1.1
 ```
 
+### 买币前端商户对接文档
+```
+https://docs.qq.com/doc/DUVhuVUlUeW1obXBI?scene=5ffbc31c9e182482ee494b8br15No1
+```
+
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).

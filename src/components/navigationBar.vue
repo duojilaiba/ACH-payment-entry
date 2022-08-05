@@ -13,7 +13,7 @@
           <p><img src="../assets/images/changeIcon.svg" alt=""></p>
         </div>
         <!-- 退款页面标题添加币种 -->
-        <span class="currency" v-if="$route.path === '/Refund'">{{ $route.query.currency }}</span>
+        <span class="currency" v-if="$route.path === '/Refund'">{{ $route.query.cryptocurrency }}</span>
       </div>
     </div>
     <!-- close menu view -->
@@ -21,7 +21,7 @@
     <div class="navigationBar_view_right">
       <!-- 买币修改表单页面 - 删除表单icon -->
       <div class="buy_deleteCardInfo" v-if="$route.path === '/modifyCardInfo'" @click="deleteForm"><img src="../assets/images/delete-icon.png" alt=""></div>
-      <div v-if="$route.name !== 'modifyCardInfo'">
+      <div v-if="$route.name !== 'modifyCardInfo' && (this.$route.query.merchant_orderNo===undefined || this.$route.query.merchant_orderNo=='undefined')">
         <div style="padding:.06rem;cursor: pointer;" v-if="!this.$parent.routerViewState" @click="openMenu"><img class="closeIcon" style="width:.22rem;margin-right:-.05rem" src="../assets/images/ShutDown.png" ></div>
         <img class="closeIcon" style="width:.2rem" src="../assets/images/meun-icon.png" v-else @click="openMenu">
       </div>

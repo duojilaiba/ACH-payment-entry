@@ -145,17 +145,41 @@ export default {
       })
       this.allBasicData = basicData;
     }
+    //交易过的国家法币
+    if(this.basicData.buyRecentWorldList){
+      this.basicData.buyRecentWorldList.forEach((item,index)=>{
+        if(item.buyFiatList){
+          item.buyFiatList.forEach((item2,index2)=>{
+            this.basicData.fiatCurrencyList.forEach(item3=>{
+              if(item3.code === item2){
+                this.basicData.buyRecentWorldList[index].buyFiatList[index2] = item3;
+              }
+            })
+          })
+        }
+      })
+    }
 
     //初始化根据可视高度控制向下提示按钮状态
     this.initializeGoDown();
 
-    //email跳转接入
-    if(this.$route.query.emailAccess){
-      this.$store.state.sellRouterParams.formPositionData.alpha2 = this.$route.query.position_alpha2;
-      this.$store.state.sellRouterParams.formPositionData.code = this.$route.query.position_code;
-      this.$store.state.sellRouterParams.getAmount = this.$route.query.getAmount;
+    //email跳转接入- 存储邮件单页面跳传递的数据
+    if(this.$route.query.emailFromPath !== undefined && this.$route.query.emailFromPath){
+      this.$store.state.emailFromPath = this.$route.query.emailFromPath;
+      this.$store.state.emailFromquery_refund_view.orderId = this.$route.query.orderId;
+      this.$store.state.emailFromquery_refund_view.position_alpha2 = this.$route.query.position_alpha2;
+      this.$store.state.emailFromquery_refund_view.position_code = this.$route.query.position_code;
+      this.$store.state.emailFromquery_refund_view.getAmount = this.$route.query.getAmount;
       this.$store.state.cardInfoFromPath = this.$route.query.cardInfoFromPath;
     }
+    //email跳转接入 - 使用邮件单页面跳传递的数据
+    if(this.$store.state.emailFromPath === 'Refund'){
+      this.$store.state.sellOrderId = this.$store.state.emailFromquery_refund_view.orderId;
+      this.$store.state.sellRouterParams.formPositionData.alpha2 = this.$store.state.emailFromquery_refund_view.position_alpha2;
+      this.$store.state.sellRouterParams.formPositionData.code = this.$store.state.emailFromquery_refund_view.position_code;
+      this.$store.state.sellRouterParams.getAmount = this.$store.state.emailFromquery_refund_view.getAmount;
+    }
+
 
     //初始化表单
     this.initializeForm();

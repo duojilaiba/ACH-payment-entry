@@ -18,17 +18,17 @@
       <div class="emailCode_content_title" v-if="loggedIn">Not you? <span @click="signAddress">{{ $t('nav.emailanother') }}</span></div>
     </div>
 
-      <div>
-        <div class="emailCode_checke" v-if="!loggedIn">
-          <el-checkbox class="checkbox" size="medium"  v-model="checked"></el-checkbox>
-          <div> {{ $t('nav.code_text') }} <span @click="openView('Terms')" style="cursor: pointer;">{{ $t('nav.code_name') }}</span> {{ $t('nav.code_and') }} <span style="cursor: pointer" @click="openView('Privacy')">{{ $t('nav.code_name2') }}.</span></div>
-        </div>
-        <div class="emailCode_button" :style="{opacity: (emailRep && login_loading=== true  )?'1':''}" @click="getCode">
-          {{ $t('nav.Proceed') }}
-          <img class="icon" src="@/assets/images/rightIconSell.png" alt="" v-if="login_loading">
-          <van-loading class="icon" type="spinner" color="#fff" v-if="login_loading===false"/>
-        </div>
+    <div>
+      <div class="emailCode_checke" v-if="!loggedIn">
+        <el-checkbox class="checkbox" size="medium"  v-model="checked"></el-checkbox>
+        <div> {{ $t('nav.code_text') }} <span @click="openView('Terms')" style="cursor: pointer;">{{ $t('nav.code_name') }}</span> {{ $t('nav.code_and') }} <span style="cursor: pointer" @click="openView('Privacy')">{{ $t('nav.code_name2') }}.</span></div>
       </div>
+      <div class="emailCode_button" :style="{opacity: (emailRep && login_loading=== true  )?'1':''}" @click="getCode">
+        {{ $t('nav.Proceed') }}
+        <img class="icon" src="@/assets/images/rightIconSell.png" alt="" v-if="login_loading">
+        <van-loading class="icon" type="spinner" color="#fff" v-if="login_loading===false"/>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -62,8 +62,8 @@ export default {
     this.login_loading= true
     this.code = "";
     this.timeDown = 60;
-     setTimeout(()=>{
-     if(localStorage.getItem('login_email')){
+    setTimeout(()=>{
+      if(localStorage.getItem('login_email')){
         this.email = AES_Decrypt(localStorage.getItem('login_email'))
         this.loggedIn = true
         this.checked = true
@@ -87,12 +87,12 @@ export default {
     window.clearInterval(this.timeVal);
     this.timeVal = null;
     this.emailError = ''
-        this.emailErrorState = false
+    this.emailErrorState = false
   },
   mounted(){
     this.$parent.routerViewState = true
-   setTimeout(()=>{
-     if(localStorage.getItem('login_email')){
+    setTimeout(()=>{
+      if(localStorage.getItem('login_email')){
         this.email = AES_Decrypt(localStorage.getItem('login_email'))
         this.loggedIn = true
         this.checked = true
@@ -104,7 +104,7 @@ export default {
     },300)
 
 
-},
+  },
 
   methods: {
     getCode:debounce(function () {
@@ -124,22 +124,22 @@ export default {
         return;
       }else if(!this.checked){
         this.$toast({
-         duration: 3000,
-         message: this.$t('nav.login_Agreement')
-       });
-       return
+          duration: 3000,
+          message: this.$t('nav.login_Agreement')
+        });
+        return
       }
       let timestamp = ''
       let isLoginOut = localStorage.getItem('loginOut')
 
       if(this.loggedIn===true && isLoginOut !== '1'){
         let _this = this
-         let sign = localStorage.getItem("userId");
-          let userId = sign.substring(sign.lastIndexOf("H")+1,sign.length);
-          let userNo = localStorage.getItem("userNo").substring(localStorage.getItem("userNo").length-5);
-           timestamp = new Date().getTime();
-          let newSign = AES_Encrypt(userId + "-" + userNo + "-" + timestamp);
-          localStorage.setItem("sign",newSign);
+        let sign = localStorage.getItem("userId");
+        let userId = sign.substring(sign.lastIndexOf("H")+1,sign.length);
+        let userNo = localStorage.getItem("userNo").substring(localStorage.getItem("userNo").length-5);
+        timestamp = new Date().getTime();
+        let newSign = AES_Encrypt(userId + "-" + userNo + "-" + timestamp);
+        localStorage.setItem("sign",newSign);
         var config = {
           method: 'get',
           url: process.env.VUE_APP_BASE_API + this.$api.getUserLogin,
@@ -221,13 +221,13 @@ export default {
     },
 
 
-   openView(name){
+    openView(name){
       if(name==='Privacy'){
         window.location = 'https://alchemypay.org/privacy-policy/'
         return
       }
       if(name === 'Terms'){
-         window.location = 'https://alchemypay.org/terms-of-use/';
+        window.location = 'https://alchemypay.org/terms-of-use/';
         return;
       }
     },
@@ -403,7 +403,7 @@ box-shadow: 0px 0px 35px rgba(89, 153, 248, 0.2);`
   font-size: .13rem;
   line-height: .16rem;
   margin-bottom: .16rem;
-   font-family: "SFProDisplayRegular";
+  font-family: "SFProDisplayRegular";
   span{
     color: rgba(0, 71, 173, 1);
   }
@@ -413,9 +413,9 @@ box-shadow: 0px 0px 35px rgba(89, 153, 248, 0.2);`
       border-radius: 100% !important;
     }
   }
- .checkbox ::v-deep .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
-   background: #0059DA;
-   border-color:#0059DA ;
- }
+  .checkbox ::v-deep .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
+    background: #0059DA;
+    border-color:#0059DA ;
+  }
 }
 </style>

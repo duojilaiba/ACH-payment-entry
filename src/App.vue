@@ -334,7 +334,7 @@ html,body,#app,#viewBox{
 
 }
 .buyCrypto_iframe_view_pc{
-  padding: 0.56rem 0.30rem 0.26rem 0.30rem !important;
+  padding: 0.36rem 0.30rem 0.26rem 0.30rem !important;
 }
 .buyCrypto_iframe_view{
   width: 375px;

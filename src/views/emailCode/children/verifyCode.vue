@@ -128,7 +128,11 @@ import { fingerprintId } from '@/utils/publicRequest.js';
               }else if(_this.$store.state.emailFromPath === 'sellCrypto'){
                 _this.$router.replace('/sell-formUserInfo')
               }else if(_this.$store.state.emailFromPath === 'Refund'){
-                _this.$router.replace('Refund')
+                _this.$router.replace(`/Refund?cryptocurrency=${_this.$store.state.emailFromquery_refund_view.cryptocurrency}`)
+              }else if(_this.$store.state.emailFromPath === 'tradeHistory-details'){
+                _this.$router.replace(`/tradeHistory-details?orderId=${_this.$store.state.emailFromquery_tradeHistoryDetails_view.orderId}`)
+              }else if(_this.$store.state.emailFromPath === 'sellOrder'){
+                _this.$router.replace(`/sellOrder?orderId=${_this.$store.state.emailFromquery_sellCardInfo_view.orderId}`)
               }else{
                 _this.$router.push('/');
               }

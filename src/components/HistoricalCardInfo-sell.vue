@@ -30,18 +30,17 @@ export default {
       deep: true,
       immediate: true,
       handler(val){
-        let cardInfoList = val.length !== 0 ? JSON.parse(JSON.stringify(val)) : [];
-        this.cardInfo = val[0];
-        cardInfoList.forEach((item,index)=>{
-          cardInfoList[index].accountNumber = AES_Decrypt(item.accountNumber);
-          cardInfoList[index].name = AES_Decrypt(item.name);
-        })
-        this.cardInfoList = cardInfoList;
+        if(val !== undefined){
+          let cardInfoList = val.length !== 0 ? JSON.parse(JSON.stringify(val)) : [];
+          this.cardInfo = val[0];
+          cardInfoList.forEach((item,index)=>{
+            cardInfoList[index].accountNumber = AES_Decrypt(item.accountNumber);
+            cardInfoList[index].name = AES_Decrypt(item.name);
+          })
+          this.cardInfoList = cardInfoList;
+        }
       }
     }
-  },
-  activated(){
-    console.log("sfasd")
   },
   methods: {
     choiseCardInfo(item,index){

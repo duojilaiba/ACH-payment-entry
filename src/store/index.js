@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 Vue.use(Vuex)
 
-//
 // // https://webpack.js.org/guides/dependency-management/#requirecontext
 // const modulesFiles = require.context('./modules', true, /\.js$/)
 //
@@ -20,7 +19,26 @@ const store = new Vuex.Store({
   // modules,
   // getters
     state: {
-        emailFromPath: '', //登陆后前往页面地址
+        //登陆后前往页面地址
+        emailFromPath: '',
+        //退款页
+        emailFromquery_refund_view: {
+            orderId: '',
+            cryptocurrency: '',
+            fiatCode: '',
+        },
+        //交易历史详情
+        emailFromquery_tradeHistoryDetails_view: {
+            orderId: '',
+        },
+        //修改卡信息
+        emailFromquery_sellCardInfo_view: {
+            orderId: '',
+            position_alpha2: '',
+            position_code: '',
+            getAmount: '',
+        },
+
         cardInfoFromPath: '', //填写卡信息后返回页面地址
         //返回首页状态
         homeTabstate: 'buyCrypto', //sellCrypto buyCrypto
@@ -49,6 +67,7 @@ const store = new Vuex.Store({
             feeRate: '',
             fixedFee: '',
         },
+
         //卖币页面参数
         sellRouterParams: {
             amount: '',
@@ -90,7 +109,8 @@ const store = new Vuex.Store({
         },
         sellOrderId: '',
 
-        cancelTokenArr: [], //ajax请求队列
+        //ajax请求队列
+        cancelTokenArr: [],
 
         //多语言
         languageValue:'en-US', // EN-US ZH-TW
@@ -98,6 +118,7 @@ const store = new Vuex.Store({
         menuState:false,
         isLogin:false,
         kycStatus:0,
+
         //商户定制 - 订单商户
         customized_orderMerchant: true,
     },

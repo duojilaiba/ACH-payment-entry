@@ -162,7 +162,7 @@
         <div class="amountInfo-line">
           <div class="left">Address:</div>
           <div class="right">
-            <div class="copyView" :data-clipboard-text="detailsData.orderId" @click="copy">
+            <div class="copyView" :data-clipboard-text="detailsData.address" @click="copy">
               <div class="copyValue">{{ detailsData.address }}</div>
               <div class="icon"><img src="@/assets/images/copy_history.svg" alt=""></div>
             </div>
@@ -171,7 +171,7 @@
         <div class="amountInfo-line">
           <div class="left">TxID:</div>
           <div class="right">
-            <div class="copyView" :data-clipboard-text="detailsData.orderId" @click="copy">
+            <div class="copyView" :data-clipboard-text="detailsData.txID" @click="copy">
               <div class="copyValue">{{ detailsData.txID }}</div>
               <div class="icon"><img src="@/assets/images/copy_history.svg" alt=""></div>
             </div>
@@ -199,7 +199,7 @@
         <!-- 退款 -->
         <p @click="refund">Request Refund of USDT</p>
       </div>
-      <button class="update-card-info refund-8" @click="updateCardInfo" v-else-if="detailsData.orderStatus === 8">
+      <button class="update-card-info refund-8" @click="refund" v-else-if="detailsData.orderStatus === 8">
         Request Refund of USDT
         <img src="@/assets/images/refund-right-icon.png" alt="">
       </button>
@@ -225,6 +225,17 @@ export default {
   },
   activated(){
     this.orderId = this.$route.query.orderId;
+
+    //存储邮件单页面跳传递的数据
+    if(this.$route.query.emailFromPath !== undefined && this.$route.query.emailFromPath){
+      this.$store.state.emailFromPath = this.$route.query.emailFromPath;
+      this.$store.state.emailFromquery_tradeHistoryDetails_view.orderId = this.$route.query.orderId;
+    }
+    //使用邮件单页面跳传递的数据
+    if(this.$store.state.emailFromPath === 'tradeHistory-details'){
+      this.orderId = this.$store.state.emailFromquery_tradeHistoryDetails_view.orderId;
+    }
+
     this.detailsInfo();
     this.timeOut = setInterval(()=>{
       this.detailsInfo();
@@ -264,7 +275,7 @@ export default {
       this.$router.push(`/sell-formUserInfo?sellOrderId=${this.orderId}`);
     },
     refund(){
-      this.$router.push(`/Refund?orderId=${this.orderId}&cryptocurrency=${this.detailsData.cryptocurrency}&fiatName=${this.detailsData.fiatName}`);
+      this.$router.push(`/Refund?orderId=${this.orderId}&cryptocurrency=${this.detailsData.cryptocurrency}&fiatCode=${this.detailsData.fiatName}`);
     },
     payNow(){
       let _this = this;
