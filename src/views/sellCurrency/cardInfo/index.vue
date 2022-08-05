@@ -129,9 +129,9 @@ export default {
     next();
   },
   activated(){
+    let basicData = JSON.parse(window.localStorage.getItem('allBasicData'));
     //选择国家和法币
     if(window.localStorage.getItem('allBasicData')){
-      let basicData = JSON.parse(window.localStorage.getItem('allBasicData'));
       basicData.worldList.forEach((item,index)=>{
         if(item.sellFiatList){
           item.sellFiatList.forEach((item2,index2)=>{
@@ -146,18 +146,19 @@ export default {
       this.allBasicData = basicData;
     }
     //交易过的国家法币
-    if(this.basicData.buyRecentWorldList){
-      this.basicData.buyRecentWorldList.forEach((item,index)=>{
-        if(item.buyFiatList){
-          item.buyFiatList.forEach((item2,index2)=>{
-            this.basicData.fiatCurrencyList.forEach(item3=>{
+    if(basicData.sellRecentWorldList){
+      basicData.sellRecentWorldList.forEach((item,index)=>{
+        if(item.sellFiatList){
+          item.sellFiatList.forEach((item2,index2)=>{
+            basicData.fiatCurrencyList.forEach(item3=>{
               if(item3.code === item2){
-                this.basicData.buyRecentWorldList[index].buyFiatList[index2] = item3;
+                basicData.sellRecentWorldList[index].sellFiatList[index2] = item3;
               }
             })
           })
         }
       })
+      this.allBasicData = basicData;
     }
 
     //初始化根据可视高度控制向下提示按钮状态
@@ -172,14 +173,13 @@ export default {
       this.$store.state.emailFromquery_refund_view.getAmount = this.$route.query.getAmount;
       this.$store.state.cardInfoFromPath = this.$route.query.cardInfoFromPath;
     }
-    //email跳转接入 - 使用邮件单页面跳传递的数据
+    // //email跳转接入 - 使用邮件单页面跳传递的数据
     if(this.$store.state.emailFromPath === 'Refund'){
       this.$store.state.sellOrderId = this.$store.state.emailFromquery_refund_view.orderId;
       this.$store.state.sellRouterParams.formPositionData.alpha2 = this.$store.state.emailFromquery_refund_view.position_alpha2;
       this.$store.state.sellRouterParams.formPositionData.code = this.$store.state.emailFromquery_refund_view.position_code;
       this.$store.state.sellRouterParams.getAmount = this.$store.state.emailFromquery_refund_view.getAmount;
     }
-
 
     //初始化表单
     this.initializeForm();

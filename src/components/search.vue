@@ -395,7 +395,6 @@ export default {
           }
           if(this.basicData.cryptoCurrencyResponse.buyRecentList){
             this.cryptoCurrency_recentList = this.basicData.cryptoCurrencyResponse.buyRecentList.filter(item=>{return item.purchaseSupported === 1});
-            console.log(this.cryptoCurrency_recentList)
           }
           if(this.basicData.cryptoCurrencyResponse.popularList){
             this.popularList = this.basicData.cryptoCurrencyResponse.popularList.filter(item=>{return item.purchaseSupported === 1});
@@ -484,7 +483,6 @@ export default {
             }
           });
           newWorldList = newWorldList.filter(item=>{return item.sellEnable === 1});
-          console.log(newWorldList)
         }
         this.basicData = newWorldList;
         //上次购买过的国家和法币
@@ -501,7 +499,6 @@ export default {
             }
           });
           recent_newWorldList = recent_newWorldList.filter(item=>{return item.buyEnable === 1});
-          console.log(recent_newWorldList)
         }
         this.recent_payCurrency = recent_newWorldList;
         //热门的
@@ -679,6 +676,7 @@ export default {
 
 <style lang="scss" scoped>
 #search{
+  z-index: 99;
   width: 100%;
   height: 100%;
   display: flex;

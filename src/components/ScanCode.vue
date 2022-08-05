@@ -1,7 +1,7 @@
 <template>
   <div id="scanCode">
     <qrcode-stream @decode="onDecode" @init="onInit"/>
-    <div class="backView" @click="back"><img src="../assets/images/goBack.png"></div>
+    <div class="backView" @click="back" v-if="backState"><img src="../assets/images/goBack.png"></div>
   </div>
 </template>
 
@@ -16,6 +16,7 @@ export default {
   data(){
     return{
       error: '',
+      backState: false,
     }
   },
   methods: {
@@ -31,6 +32,7 @@ export default {
     },
     //错误信息统计
     async onInit(promise) {
+      this.backState = false
       try {
         await promise
       } catch (error) {
@@ -51,6 +53,8 @@ export default {
         } else {
           this.error = `ERROR: Camera error (${error.name})`;
         }
+      } finally {
+        this.backState = true
       }
     },
   }

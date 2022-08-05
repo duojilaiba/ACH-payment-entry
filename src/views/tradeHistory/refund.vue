@@ -2,7 +2,7 @@
   <div id="refund">
     <p class="title">Enter your Tron (USDT) address </p>
     <div class="walletAddress">
-      <input type="text" v-model="queryData.walletAddress" placeholder="Enter your wallet address" @input="addressChange">
+      <input type="text" v-model="walletAddress" placeholder="Enter your wallet address" @input="addressChange">
       <img src="@/assets/images/scanCode_icon.svg" alt="" @click="openScanCode">
       <p class="errorMessage" v-if="errorState">Invalid address</p>
     </div>
@@ -102,7 +102,7 @@ export default {
     confirmRefund(){
       let params = {
         orderId: this.queryData.orderId,
-        address: this.queryData.walletAddress
+        address: this.walletAddress
       }
       this.$axios.get(this.$api.get_sellRefund,params).then(res=>{
         if(res && res.returnCode === '0000'){

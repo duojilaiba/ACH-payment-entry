@@ -299,6 +299,7 @@ export default {
         positionImg: data.flag,
         alpha2: data.alpha2,
         code: this.payCommission.code,
+        enCommonName: data.enCommonName,
       };
       //费用所需参数
       this.$store.state.sellRouterParams.payCommission = this.payCommission;
@@ -308,6 +309,7 @@ export default {
       this.$store.state.feeParams_order.alpha2 = data.alpha2;
       this.positionData.worldId = data.worldId;
       this.$store.state.sellRouterParams.positionData = this.positionData;
+      this.$store.state.sellRouterParams.formPositionData = this.positionData;
       this.amountControl();
     },
 
@@ -326,8 +328,9 @@ export default {
       //   positionData: this.positionData
       // }
       // this.$store.state.sellRouterParams = JSON.parse(JSON.stringify(routerParams));
-      this.positionData.enCommonName = this.positionData.positionValue;
-      this.$store.state.sellRouterParams.formPositionData = this.positionData;
+
+      //清空邮件单页面跳转状态
+      this.$store.state.emailFromPath = '';
 
       //跳转填写卡信息
       this.$store.state.homeTabstate = 'sellCrypto';

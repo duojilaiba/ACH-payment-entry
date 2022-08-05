@@ -6,6 +6,8 @@ import FingerprintJS from '@fingerprintjs/fingerprintjs-pro';
 
 //Request service address
 const baseUrl = process.env.VUE_APP_BASE_API;
+let apiKey = process.env.VUE_APP_Fingerprint_ApiKey;
+console.log(apiKey)
 
 /**
  * 提交订单、确认订单前获取submit-token公共接口
@@ -55,11 +57,11 @@ export function querySubmitToken(){
  */
 export function fingerprintId(){
     const fpPromise = FingerprintJS.load({
-        apiKey: 'TmQIZTEjFuNxiJxuyg4m'
+        apiKey: apiKey
     })
     fpPromise.then(fp => fp.get()).then(result => {
         //加密设备ID
-        console.log('获取设备唯一标识：',result.visitorId);
+        // console.log('获取设备唯一标识：',result.visitorId);
         window.localStorage.setItem("fingerprint_id",AES_Encrypt(result.visitorId));
     });
 }
