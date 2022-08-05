@@ -48,7 +48,7 @@
       <div class="footer_logoView">
         <p class="logoText">Powered By</p>
         <div class="logo">
-          <img src="../../../assets/images/homePageLogo.jpg" alt="">
+          <img :src="logoPath" alt="">
         </div>
       </div>
     </footer>
@@ -103,7 +103,10 @@ export default {
       triggerType: "hover",
 
       inputFocus: false,
-      lodingStatus:true
+      lodingStatus:true,
+
+      //配置信息
+      common: {},
     }
   },
 
@@ -135,6 +138,16 @@ export default {
         return minError;
       }else if(Number(this.payAmount) > this.currencyData.maxSell){
         return maxError;
+      }
+    },
+    //配置信息
+    logoPath(){
+      if(this.common.lapay_logo){
+        if(common.merchant_name === 'Lapay'){
+          return require(`../../../assets/images/${this.common.lapay_logo}`);
+        }else{
+          return require(`../../../assets/images/${this.common.ach_logo}`);
+        }
       }
     }
   },
@@ -218,6 +231,8 @@ export default {
 
     //position country
     currentLocation(){
+      this.common = common;
+
       //提示效果判断
       this.triggerType = common.equipmentEnd === 'pc' ? "hover" : "click";
 

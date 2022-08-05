@@ -24,6 +24,7 @@ import axios from 'axios';
 import { debounce } from '../../../utils/index';
 import { AES_Encrypt } from '@/utils/encryp.js';
 import { fingerprintId } from '@/utils/publicRequest.js';
+import common from '@/utils/common'
 
   export default {
   name: "verifyCode",
@@ -82,6 +83,7 @@ import { fingerprintId } from '@/utils/publicRequest.js';
        fingerprintId();
        let _this = this;
        this.showLoading = true
+       const appId = common.merchant_name === 'Lapay' ? common.appId_lapay : JSON.parse(sessionStorage.getItem("accessMerchantInfo")).merchantParam_state ? JSON.parse(sessionStorage.getItem("accessMerchantInfo")).appId : '';
        var FormData = require('form-data');
         var data = new FormData();
          data.append('email', this.$store.state.userEmail);
@@ -92,9 +94,8 @@ import { fingerprintId } from '@/utils/publicRequest.js';
           url: process.env.VUE_APP_BASE_API + this.$api.post_login,
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
-
-            'Accept-Language':sessionStorage.getItem('language')?sessionStorage.getItem('language'):'en-US'
-
+            'Accept-Language':sessionStorage.getItem('language')?sessionStorage.getItem('language'):'en-US',
+            'appid': appId
           },
           data : data
         };

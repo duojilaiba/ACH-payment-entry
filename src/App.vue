@@ -23,11 +23,6 @@
           <!-- 卖币 - 扫码识别网络 -->
           <ScanCode v-if="scanCode_state"/>
         </div>
-      <!-- pc端展示logo -->
-      <div class="logoView" v-if="logoState">
-        <div>Powered By</div>
-        <div><img src="./assets/images/pcLogo.png"></div>
-      </div>
       <!-- 版本号 -->
 <!--      <span class="version">V: {{ version }}</span>-->
         <!-- 账号风险提示无法进行下一步 -->
@@ -68,6 +63,7 @@ export default {
       historicalCardInfoSell_state: false,
       AccountisShow: false,
       scanCode_state: false,
+
     }
   },
   computed:{

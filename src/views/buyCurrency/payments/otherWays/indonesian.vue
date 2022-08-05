@@ -25,14 +25,14 @@
         <!-- 选择接收方式的网络地址和名称 -->
         <CryptoCurrencyAddress class="CryptoCurrencyAddress"/>
         <IncludedDetails class="IncludedDetails" ref="includedDetails_ref" :class="{'IncludedDetails_top': AuthorizationInfo_state===false}" :network="$store.state.buyRouterParams.network"/>
-        <AuthorizationInfo class="AuthorizationInfo" :childData="childData" v-if="AuthorizationInfo_state"/>
+        <AuthorizationInfo class="AuthorizationInfo" :childData="childData" :merchant_name="merchant_name" v-if="AuthorizationInfo_state"/>
         <!-- tips icon -->
         <transition>
           <div class="downTips-icon" v-show="goDown_state" @click="goDown"><img src="@/assets/images/downIcon.svg" ref="downTips_ref" alt=""></div>
         </transition>
       </div>
       <Button :buttonData="buttonData" :disabled="disabled" ref="button_ref" @click.native="submit"></Button>
-      <div class="companyAddress">Alchemy GPS Europe UAB, Laisvés pr. 60, LT-05120 Vilnius</div>
+      <div class="companyAddress" v-if="merchant_name !== 'Lapay'">Alchemy GPS Europe UAB, Laisvés pr. 60, LT-05120 Vilnius</div>
     </div>
   </div>
 </template>
@@ -44,6 +44,7 @@ import CryptoCurrencyAddress from '@/components/CryptoCurrencyAddress';
 import AuthorizationInfo from '@/components/AuthorizationInfo';
 import { timeDown } from '@/utils/index';
 import {querySubmitToken} from "../../../../utils/publicRequest";
+import common from "@/utils/common";
 
 export default {
   name: "otherWayPay",
@@ -82,6 +83,8 @@ export default {
       goDown_state: false,
       oldOffsetTop: 0,
       scrollTimeDown: null,
+
+      merchant_name: "",
     }
   },
   beforeRouteLeave(to,from,next){
@@ -91,6 +94,8 @@ export default {
     next()
   },
   mounted(){
+    this.merchant_name = common.merchant_name;
+
     //初始化根据可视高度控制向下提示按钮状态
     setTimeout(()=>{
       if(this.$refs.box_ref.offsetHeight + 4 < document.getElementById("confirmPayment-box").scrollHeight - 50){

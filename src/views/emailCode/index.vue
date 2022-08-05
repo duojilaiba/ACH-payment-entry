@@ -38,6 +38,7 @@ import { debounce } from '../../utils/index';
 import { AES_Encrypt,AES_Decrypt } from '@/utils/encryp.js';
 import moment from 'moment-timezone';
 import { fingerprintId } from '@/utils/publicRequest.js';
+import common from '@/utils/common'
 
 export default {
   name: "emailCode",
@@ -140,6 +141,7 @@ export default {
         timestamp = new Date().getTime();
         let newSign = AES_Encrypt(userId + "-" + userNo + "-" + timestamp);
         localStorage.setItem("sign",newSign);
+        const appId = common.merchant_name === 'Lapay' ? common.appId_lapay : JSON.parse(sessionStorage.getItem("accessMerchantInfo")).merchantParam_state ? JSON.parse(sessionStorage.getItem("accessMerchantInfo")).appId : '';
         var config = {
           method: 'get',
           url: process.env.VUE_APP_BASE_API + this.$api.getUserLogin,
@@ -150,7 +152,8 @@ export default {
             'sign': newSign,
             'timestamp': timestamp,
             'Content-Type': 'application/json',
-            timezone: moment.tz.guess(),
+            'timezone': moment.tz.guess(),
+            'appid': appId
           },
 
         };
@@ -222,13 +225,24 @@ export default {
 
 
     openView(name){
-      if(name==='Privacy'){
-        window.location = 'https://alchemypay.org/privacy-policy/'
-        return
+      let privacyPolicy_path = "";
+      let termsUse = "";
+      if(name === 'Privacy'){
+        if(common.merchant_name === 'Lapay'){
+          privacyPolicy_path = common.lapay_serviceAgreement;
+        }else{
+          privacyPolicy_path = common.ach_serviceAgreement;
+        }
+        window.location = privacyPolicy_path;
+        return;
       }
       if(name === 'Terms'){
-        window.location = 'https://alchemypay.org/terms-of-use/';
-        return;
+        if(common.merchant_name === 'Lapay'){
+          termsUse = common.lapay_privacyAgreement;
+        }else{
+          termsUse = common.ach_privacyAgreement;
+        }
+        window.location = termsUse;
       }
     },
     //输入框选择状态样式

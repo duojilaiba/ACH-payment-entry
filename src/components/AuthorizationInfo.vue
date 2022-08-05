@@ -5,7 +5,7 @@
         <el-checkbox v-model="childData.agreement"></el-checkbox>
       </div>
       <div class="agreement-text">
-        {{ $t('nav.agreement_components_text1') }} <span>{{ $t('nav.agreement_components_text2') }}</span>
+        {{ $t('nav.agreement_components_text1') }} <span>{{ merchant_name }} </span>
         {{ $t('nav.agreement_components_text3') }}
       </div>
     </div>
@@ -16,11 +16,16 @@
 /**
  * 勾选协议组件
  */
+
 export default {
   name: "AuthorizationInfo",
   props: {
     childData: {
       type: Object,
+      default: null
+    },
+    merchant_name: {
+      type: String,
       default: null
     }
   },

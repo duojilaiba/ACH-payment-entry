@@ -83,6 +83,7 @@
  * 菜单组件
  */
 import {AES_Decrypt} from "../utils/encryp";
+import common from '@/utils/common'
 
 export default {
   name: "routerMenu",
@@ -207,13 +208,24 @@ export default {
       }
     },
     goProtocol(name){
+      let privacyPolicy_path = "";
+      let termsUse = "";
       if(name === 'privacyPolicy'){
-        window.location = 'https://alchemypay.org/privacy-policy/';
+        if(common.merchant_name === 'Lapay'){
+          privacyPolicy_path = common.lapay_serviceAgreement;
+        }else{
+          privacyPolicy_path = common.ach_serviceAgreement;
+        }
+        window.location = privacyPolicy_path;
         return;
       }
       if(name === 'termsUse'){
-        window.location = 'https://alchemypay.org/terms-of-use/';
-        return;
+        if(common.merchant_name === 'Lapay'){
+          termsUse = common.lapay_privacyAgreement;
+        }else{
+          termsUse = common.ach_privacyAgreement;
+        }
+        window.location = termsUse;
       }
     },
     goLogin(){

@@ -14,7 +14,7 @@
         <OPM ref="opm_ref" v-else-if="routerParams.payWayCode === '10008'"/>
         <CryptoCurrencyAddress/>
         <IncludedDetails class="includedDetails" ref="includedDetails_ref" :network="$store.state.buyRouterParams.network"/>
-        <AuthorizationInfo class="authorizationInfo" :childData="childData" v-if="AuthorizationInfo_state"/>
+        <AuthorizationInfo class="authorizationInfo" :childData="childData" :merchant_name="merchant_name" v-if="AuthorizationInfo_state"/>
         <!-- 墨西哥支付确认弹框 -->
         <div class="routerMenu_loginOut" v-show="MEXConfirmState" @click="MEXConfirmState=false">
           <div class="content" @click.stop="show=true">
@@ -37,7 +37,7 @@
       </button>
       <!-- I confirm that the payment has been completed.-->
       <Button :buttonData="buttonData" :disabled="payState" @click.native="submit" ref="button_ref" v-else></Button>
-      <div class="companyAddress">Alchemy GPS Europe UAB, Laisvés pr. 60, LT-05120 Vilnius</div>
+      <div class="companyAddress" v-if="merchant_name !== 'Lapay'">Alchemy GPS Europe UAB, Laisvés pr. 60, LT-05120 Vilnius</div>
     </div>
   </div>
 </template>
@@ -49,6 +49,8 @@ import AuthorizationInfo from '@/components/AuthorizationInfo';
 import IncludedDetails from '@/components/IncludedDetails';
 import VA from './VA';
 import OPM from './OPM';
+import common from "@/utils/common";
+
 
 export default {
   name: "otherWays-VA",
@@ -85,6 +87,8 @@ export default {
       goDown_state: false,
       oldOffsetTop: 0,
       scrollTimeDown: null,
+
+      merchant_name: "",
     }
   },
   computed: {
@@ -105,6 +109,8 @@ export default {
     }
   },
   mounted(){
+    this.merchant_name = common.merchant_name;
+
     //初始化根据可视高度控制向下提示按钮状态
     setTimeout(()=>{
       if(this.$refs.box_ref.offsetHeight + 4 < document.getElementById("indonesianPayment-box").scrollHeight - 50){

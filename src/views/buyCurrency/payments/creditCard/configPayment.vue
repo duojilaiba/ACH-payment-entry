@@ -28,14 +28,14 @@
         <!-- 费用模块 -->
         <IncludedDetails class="includedDetails" ref="includedDetails_ref" :useFee="true" :isLoading="isLoading" :network="$store.state.buyRouterParams.networkDefault"/>
         <!-- 支付后隐藏协议模块 -->
-        <AuthorizationInfo class="AuthorizationInfo" :childData="childData" v-if="AuthorizationInfo_state"/>
+        <AuthorizationInfo class="AuthorizationInfo" :childData="childData" :merchant_name="merchant_name" v-if="AuthorizationInfo_state"/>
         <!-- tips icon -->
         <transition>
           <div class="downTips-icon" v-show="goDown_state" @click="goDown"><img src="@/assets/images/downIcon.svg" ref="downTips_ref" alt=""></div>
         </transition>
       </div>
       <Button :buttonData="buttonData" :disabled="disabled" :loadingDisabled="true" @click.native="submit" ref="button_ref"></Button>
-      <div class="companyAddress">Alchemy GPS Europe UAB, Laisvés pr. 60, LT-05120 Vilnius</div>
+      <div class="companyAddress" v-if="merchant_name !== 'Lapay'">Alchemy GPS Europe UAB, Laisvés pr. 60, LT-05120 Vilnius</div>
     </div>
   </div>
 </template>
@@ -46,6 +46,7 @@ import CryptoCurrencyAddress from "../../../../components/CryptoCurrencyAddress"
 import AuthorizationInfo from "../../../../components/AuthorizationInfo";
 import { querySubmitToken } from "../../../../utils/publicRequest";
 import { AES_Encrypt,AES_Decrypt } from '@/utils/encryp.js';
+import common from "@/utils/common";
 
 export default {
   name: "configPayment",
@@ -84,6 +85,8 @@ export default {
 
       //商户信息加载完 加载费用数据
       isLoading: false,
+
+      merchant_name: "",
     }
   },
   beforeRouteEnter(to,from,next) {
@@ -94,6 +97,8 @@ export default {
     })
   },
   activated(){
+    this.merchant_name = common.merchant_name;
+
     //初始化根据可视高度控制向下提示按钮状态
     setTimeout(()=>{
       if(this.$refs.box_ref.offsetHeight + 4 < document.getElementById("cardConfigPayment").scrollHeight - 50){

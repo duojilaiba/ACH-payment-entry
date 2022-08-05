@@ -3,11 +3,12 @@ import axios from "axios";
 import { AES_Encrypt } from '@/utils/encryp.js';
 import moment from 'moment-timezone';
 import FingerprintJS from '@fingerprintjs/fingerprintjs-pro';
+import common from "@/utils/common";
 
 //Request service address
 const baseUrl = process.env.VUE_APP_BASE_API;
 let apiKey = process.env.VUE_APP_Fingerprint_ApiKey;
-console.log(apiKey)
+const appId = common.merchant_name === 'Lapay' ? common.appId_lapay : JSON.parse(sessionStorage.getItem("accessMerchantInfo")).merchantParam_state ? JSON.parse(sessionStorage.getItem("accessMerchantInfo")).appId : '';
 
 /**
  * 提交订单、确认订单前获取submit-token公共接口
@@ -38,7 +39,8 @@ export function querySubmitToken(){
             'fingerprint-id': localStorage.getItem('fingerprint_id')?localStorage.getItem('fingerprint_id'):'',
             'timestamp': timestamp,
             'Content-Type': 'application/json',
-            timezone: moment.tz.guess(),
+            'timezone': moment.tz.guess(),
+            'appid': appId
         }
     }).then(res=>{
         if(res.data !== null && res.returnCode === '0000') {

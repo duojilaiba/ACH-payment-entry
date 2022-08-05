@@ -52,7 +52,7 @@
       <div class="footer_logoView">
         <p class="logoText">Powered By</p>
         <div class="logo">
-          <img src="../../../assets/images/homePageLogo.jpg" alt="">
+          <img :src=logoPath alt="">
         </div>
       </div>
     </footer>
@@ -118,7 +118,9 @@ export default {
       triggerType: "hover",
 
       inputFocus: false,
-      lodingStatus:true
+      lodingStatus:true,
+
+      common: {},
     }
   },
   computed: {
@@ -150,6 +152,17 @@ export default {
         return minError;
       }else if(Number(this.payAmount) > this.payCommission.payMax){
         return maxError;
+      }
+    },
+
+    //配置信息
+    logoPath(){
+      if(this.common.lapay_logo){
+        if(common.merchant_name === 'Lapay'){
+          return require(`../../../assets/images/${this.common.lapay_logo}`);
+        }else{
+          return require(`../../../assets/images/${this.common.ach_logo}`);
+        }
       }
     }
   },
@@ -275,6 +288,8 @@ export default {
 
     //position country
     currentLocation(){
+      this.common = common;
+
       this.basicData = this.allBasicData;
 
       //将you pay的币种和国家数据合并在一起
@@ -373,6 +388,7 @@ export default {
       //Obtain merchant order information in the address bar
       let merchantParams = {};
       JSON.stringify(this.$route.query) !== "{}" ? merchantParams = this.$route.query : merchantParams = JSON.parse(sessionStorage.getItem("accessMerchantInfo"));
+      common.merchant_name === 'Lapay' ? merchantParams.appId = common.appId_lapay: '';
       merchantParams === null ? merchantParams = {} : '';
       merchantParams.networkDefault = false;
       merchantParams.addressDefault = false;

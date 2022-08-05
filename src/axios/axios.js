@@ -4,9 +4,12 @@ import router from "../router";
 import store from '../store/index';
 import { AES_Decrypt, AES_Encrypt } from '@/utils/encryp.js';
 import moment from 'moment-timezone';
+import common from "@/utils/common";
 
 //Request service address
 const baseUrl = process.env.VUE_APP_BASE_API;
+
+const appId = common.merchant_name === 'Lapay' ? common.appId_lapay : JSON.parse(sessionStorage.getItem("accessMerchantInfo")).merchantParam_state ? JSON.parse(sessionStorage.getItem("accessMerchantInfo")).appId : '';
 
 //Encrypted sign
 /**
@@ -187,7 +190,8 @@ export default {
         'Accept-Language': sessionStorage.getItem("language") ? sessionStorage.getItem("language") : 'en-US',
         'Content-Type': 'application/json',
         'fingerprint-id':localStorage.getItem('fingerprint_id')?localStorage.getItem('fingerprint_id'):'',
-        timezone: moment.tz.guess(),
+        'timezone': moment.tz.guess(),
+        'appid': appId,
       },
     }).then((response) => {
       if (response.returnCode === "0000" || response.returnCode === "110") {
@@ -221,7 +225,8 @@ export default {
         'Accept-Language': sessionStorage.getItem("language") ? sessionStorage.getItem("language") : 'en-US',
         'Content-Type': 'application/json',
         'fingerprint-id':localStorage.getItem('fingerprint_id')?localStorage.getItem('fingerprint_id'):'',
-        timezone: moment.tz.guess(),
+        'timezone': moment.tz.guess(),
+        'appid': appId,
       }
     }).then((response) => {
       if (response.returnCode === "0000") {
