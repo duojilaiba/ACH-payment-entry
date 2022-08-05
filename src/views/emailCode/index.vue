@@ -88,6 +88,7 @@ export default {
     this.timeVal = null;
     this.emailError = ''
     this.emailErrorState = false
+    this.$refs.emailInput.style = ''
   },
   mounted(){
     this.$parent.routerViewState = true
