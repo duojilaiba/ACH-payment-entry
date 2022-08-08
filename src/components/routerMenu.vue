@@ -132,14 +132,25 @@ export default {
         this.$router.push(name);
         return;
       }
-
+      if(name === '/' && this.$route.path === '/tradeHistory'){
+        this.$parent.routerViewState = true;
+        this.$router.push('/')
+        setTimeout(() => {
+         this.$parent.$refs.routerView.menuState = false
+        }, 200);
+        return
+      }
       this.$parent.routerViewState = true;
       this.$parent.menuState = false;
+      
       if(name === '/'){
         this.$store.state.homeTabstate = homeTab;
         this.$router.push(name);
+        // this.$parent.routerViewState = false;
+        // this.$parent.$refs.routerView.menuState = false;
         return;
       }
+      
       if(name === 'Language'){
         this.$router.push(name);
         return;
@@ -191,7 +202,6 @@ export default {
               this.$parent.routerViewState = true
               setTimeout(()=>{
                 this.$parent.routerViewState = false
-
               },200)
               this.$router.replace('/')
             return
@@ -441,7 +451,7 @@ export default {
     }
   }
   .goHomeView{
-    margin-top: 0.2rem !important;
+    margin-top: 0.02rem !important;
   }
   .routerMenu_history{
     width: 100%;

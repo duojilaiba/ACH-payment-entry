@@ -207,9 +207,9 @@ html,body,#homePage,.homePage_view,.homePage_content{
   .navigationBar_view_left {
     display: flex;
     align-items: center;
-    font-size: 0.2rem;
-    font-family: 'GeoDemibold';
-    font-weight: bold;
+    font-size: 0.18rem;
+    font-family: 'SFProDisplaybold';
+    // font-weight: bold;
     color: #031633;
   }
   .navigationBar_view_right {
