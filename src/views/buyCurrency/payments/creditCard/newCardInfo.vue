@@ -5,12 +5,30 @@
         <div class="formLine formLine_flex">
           <div class="formLine_flex_child">
             <div class="formTitle">{{ $t('nav.buy_form_firstName') }}</div>
-            <div class="formContent"><input type="text" v-model="params.firstname" @input="nameChange('first')" maxlength="50"></div>
+            <div class="formContent">
+<!--              <input type="text" v-model="params.firstname" @input="nameChange('first')" maxlength="50">-->
+              <van-field
+                  class="number_input"
+                  v-model="params.firstname"
+                  :formatter="formatter"
+                  @input="nameChange('first')"
+                  maxlength="50"
+              />
+            </div>
             <div class="errorTips" v-if="errorFirstname">{{ $t('nav.sell_form_NameTips') }}</div>
           </div>
           <div class="formLine_flex_child">
             <div class="formTitle">{{ $t('nav.buy_form_lastName') }}</div>
-            <div class="formContent"><input type="text" v-model="params.lastname" @input="nameChange('last')" maxlength="50"></div>
+            <div class="formContent">
+<!--              <input type="text" v-model="params.lastname" @input="nameChange('last')" maxlength="50">-->
+              <van-field
+                  class="number_input"
+                  v-model="params.lastname"
+                  :formatter="formatter"
+                  @input="nameChange('last')"
+                  maxlength="50"
+              />
+            </div>
             <div class="errorTips" v-if="errorLastname">{{ $t('nav.sell_form_NameTips') }}</div>
           </div>
         </div>
@@ -178,6 +196,11 @@ export default {
     }
   },
   methods:{
+    formatter(value) {
+      console.log(value)
+      return value.replace(/[^a-zA-Z]/g, '');
+    },
+
     //Enter date limit manually
     timeChange(val){
       this.timeData = this.timeData.replace(/[^0-9][s+][/]/g, '');
@@ -219,13 +242,13 @@ export default {
 
     nameChange(witch){
       if(witch === 'first'){
-        if(!new RegExp("^[A-Za-z]{1,50}$").test(this.params.firstname)){
+        if(this.params.firstname.length < 2){
           this.errorFirstname = true;
         }else{
           this.errorFirstname = false;
         }
       }else{
-        if(!new RegExp("^[A-Za-z]{1,50}$").test(this.params.lastname)){
+        if(this.params.lastname.length < 2){
           this.errorLastname = true;
         }else{
           this.errorLastname = false;
