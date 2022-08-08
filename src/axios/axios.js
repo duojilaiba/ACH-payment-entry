@@ -9,7 +9,17 @@ import common from "@/utils/common";
 //Request service address
 const baseUrl = process.env.VUE_APP_BASE_API;
 
-const appId = common.merchant_name === 'Lapay' ? common.appId_lapay : JSON.parse(sessionStorage.getItem("accessMerchantInfo")).merchantParam_state ? JSON.parse(sessionStorage.getItem("accessMerchantInfo")).appId : '';
+//商户id区分环境
+let appId;
+if(common.merchant_name === 'Lapay'){
+  if(process.env.NODE_ENV === 'production'){
+    appId = common.appId_lapay_prod;
+  }else{
+    appId = common.appId_lapay_test;
+  }
+}else{
+  appId = JSON.parse(sessionStorage.getItem("accessMerchantInfo")).merchantParam_state ? JSON.parse(sessionStorage.getItem("accessMerchantInfo")).appId : '';
+}
 
 //Encrypted sign
 /**
@@ -193,6 +203,7 @@ export default {
         'timezone': moment.tz.guess(),
         'appid': appId,
       },
+      timeout: requestUrl === '/pay/card/submit' ? 5000 : 30000,
     }).then((response) => {
       if (response.returnCode === "0000" || response.returnCode === "110") {
         return Promise.resolve(response);
@@ -227,7 +238,8 @@ export default {
         'fingerprint-id':localStorage.getItem('fingerprint_id')?localStorage.getItem('fingerprint_id'):'',
         'timezone': moment.tz.guess(),
         'appid': appId,
-      }
+      },
+      timeout: requestUrl === '/pay/card/submit' ? 5000 : 30000,
     }).then((response) => {
       if (response.returnCode === "0000") {
         return Promise.resolve(response);

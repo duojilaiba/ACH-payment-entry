@@ -146,7 +146,17 @@ export default {
         timestamp = new Date().getTime();
         let newSign = AES_Encrypt(userId + "-" + userNo + "-" + timestamp);
         localStorage.setItem("sign",newSign);
-        const appId = common.merchant_name === 'Lapay' ? common.appId_lapay : JSON.parse(sessionStorage.getItem("accessMerchantInfo")).merchantParam_state ? JSON.parse(sessionStorage.getItem("accessMerchantInfo")).appId : '';
+        //商户id区分环境
+        let appId;
+        if(common.merchant_name === 'Lapay'){
+          if(process.env.NODE_ENV === 'production'){
+            appId = common.appId_lapay_prod;
+          }else{
+            appId = common.appId_lapay_test;
+          }
+        }else{
+          appId = JSON.parse(sessionStorage.getItem("accessMerchantInfo")).merchantParam_state ? JSON.parse(sessionStorage.getItem("accessMerchantInfo")).appId : '';
+        }
         var config = {
           method: 'get',
           url: process.env.VUE_APP_BASE_API + this.$api.getUserLogin,
@@ -279,14 +289,12 @@ box-shadow: 0px 0px 35px rgba(89, 153, 248, 0.2);`
       }
       return status
     },
-
-    //商户配置信息
     logoPath(){
       if(this.common.lapay_logo){
         if(common.merchant_name === 'Lapay'){
           return require(`@/assets/images/${this.common.lapay_logo}`);
         }else{
-          return require(`@/assets/images/${this.common.ach_logo}`);
+          return require('@/assets/images/slices/pay.png');
         }
       }
     }

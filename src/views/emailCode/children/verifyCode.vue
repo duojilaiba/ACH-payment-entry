@@ -83,7 +83,17 @@ import common from '@/utils/common'
        fingerprintId();
        let _this = this;
        this.showLoading = true
-       const appId = common.merchant_name === 'Lapay' ? common.appId_lapay : JSON.parse(sessionStorage.getItem("accessMerchantInfo")).merchantParam_state ? JSON.parse(sessionStorage.getItem("accessMerchantInfo")).appId : '';
+       //商户id区分环境
+       let appId;
+       if(common.merchant_name === 'Lapay'){
+         if(process.env.NODE_ENV === 'production'){
+           appId = common.appId_lapay_prod;
+         }else{
+           appId = common.appId_lapay_test;
+         }
+       }else{
+         appId = JSON.parse(sessionStorage.getItem("accessMerchantInfo")).merchantParam_state ? JSON.parse(sessionStorage.getItem("accessMerchantInfo")).appId : '';
+       }
        var FormData = require('form-data');
         var data = new FormData();
          data.append('email', this.$store.state.userEmail);

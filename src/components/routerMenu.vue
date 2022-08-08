@@ -317,7 +317,7 @@ export default {
           if(common.merchant_name === 'Lapay'){
             this.logoPath = require(`@/assets/images/${this.common.lapay_logo}`);
           }else{
-            this.logoPath = require(`@/assets/images/${this.common.ach_logo}`);
+            this.logoPath = require('@/assets/images/slices/pay.png');
           }
         }
       }
@@ -412,9 +412,9 @@ export default {
       display: flex;
       align-items: center;
       justify-content: center;
+      margin-top: .18rem;
       img{
         width: 0.58rem;
-        margin-top: .18rem;
       }
     }
     .loginBtn{

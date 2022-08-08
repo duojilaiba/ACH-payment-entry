@@ -144,9 +144,10 @@ export default {
     logoPath(){
       if(this.common.lapay_logo){
         if(common.merchant_name === 'Lapay'){
-          return require(`../../../assets/images/${this.common.lapay_logo}`);
+          console.log()
+          return require(`@/assets/images/${this.common.lapay_logo}`);
         }else{
-          return require(`../../../assets/images/${this.common.ach_logo}`);
+          return require('@/assets/images/homePageLogo.jpg');
         }
       }
     }

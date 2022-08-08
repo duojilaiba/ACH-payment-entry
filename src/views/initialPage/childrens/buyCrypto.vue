@@ -159,9 +159,9 @@ export default {
     logoPath(){
       if(this.common.lapay_logo){
         if(common.merchant_name === 'Lapay'){
-          return require(`../../../assets/images/${this.common.lapay_logo}`);
+          return require(`@/assets/images/${this.common.lapay_logo}`);
         }else{
-          return require(`../../../assets/images/${this.common.ach_logo}`);
+          return require('@/assets/images/homePageLogo.jpg');
         }
       }
     }
@@ -389,7 +389,17 @@ export default {
       let merchantParams = {};
       JSON.stringify(this.$route.query) !== "{}" ? merchantParams = this.$route.query : merchantParams = JSON.parse(sessionStorage.getItem("accessMerchantInfo"));
       merchantParams === null ? merchantParams = {} : '';
-      common.merchant_name === 'Lapay' ? merchantParams.appId = common.appId_lapay: '';
+      //商户id区分环境
+      let appId = '';
+      if(common.merchant_name === 'Lapay'){
+        if(process.env.NODE_ENV === 'production'){
+          appId = common.appId_lapay_prod;
+        }else{
+          appId = common.appId_lapay_test;
+        }
+      }else{
+        appId = JSON.parse(sessionStorage.getItem("accessMerchantInfo")).merchantParam_state ? JSON.parse(sessionStorage.getItem("accessMerchantInfo")).appId : '';
+      }
       merchantParams.networkDefault = false;
       merchantParams.addressDefault = false;
 

@@ -8,7 +8,17 @@ import common from "@/utils/common";
 //Request service address
 const baseUrl = process.env.VUE_APP_BASE_API;
 let apiKey = process.env.VUE_APP_Fingerprint_ApiKey;
-const appId = common.merchant_name === 'Lapay' ? common.appId_lapay : JSON.parse(sessionStorage.getItem("accessMerchantInfo")).merchantParam_state ? JSON.parse(sessionStorage.getItem("accessMerchantInfo")).appId : '';
+//商户id区分环境
+let appId;
+if(common.merchant_name === 'Lapay'){
+    if(process.env.NODE_ENV === 'production'){
+        appId = common.appId_lapay_prod;
+    }else{
+        appId = common.appId_lapay_test;
+    }
+}else{
+    appId = JSON.parse(sessionStorage.getItem("accessMerchantInfo")).merchantParam_state ? JSON.parse(sessionStorage.getItem("accessMerchantInfo")).appId : '';
+}
 
 /**
  * 提交订单、确认订单前获取submit-token公共接口
