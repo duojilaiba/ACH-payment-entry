@@ -132,22 +132,16 @@ export default {
         this.$router.push(name);
         return;
       }
-      if(name === '/' && this.$route.path === '/tradeHistory'){
-        this.$parent.routerViewState = true;
-        this.$router.push('/')
-        setTimeout(() => {
-         this.$parent.$refs.routerView.menuState = false
-        }, 200);
-        return
-      }
+     
       this.$parent.routerViewState = true;
       this.$parent.menuState = false;
       
       if(name === '/'){
         this.$store.state.homeTabstate = homeTab;
         this.$router.push(name);
-        // this.$parent.routerViewState = false;
-        // this.$parent.$refs.routerView.menuState = false;
+        setTimeout(() => {
+          this.$parent.$refs.routerView? this.$parent.$refs.routerView.menuState = false:''
+        }, 100);
         return;
       }
       
