@@ -278,8 +278,13 @@ export default {
   },
   methods:{
     goHome(homeTab){
+      if(homeTab === 'buyCrypto'){
+        setTimeout(()=>{
+          this.$parent.$refs.routerView.menuState = false;
+        })
+      }
       this.$store.state.homeTabstate = homeTab;
-      this.$router.push('/')
+      this.$router.push('/');
     },
 
     changeTab(val){

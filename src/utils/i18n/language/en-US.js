@@ -1,5 +1,13 @@
 module.exports = {
   language:'English(US)',
+  //首页
+  homePage: {
+
+  },
+  //按钮组件
+  button_components: {
+
+  },
   nav:{
     /**
      * 按钮文案

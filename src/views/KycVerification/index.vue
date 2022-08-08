@@ -86,7 +86,6 @@ export default {
        //获取成功或失败或等待状态
 
         .on('idCheck.applicantStatus', (type,) => {
-           console.log(type);
           if(!type){
             return
           }
@@ -122,7 +121,6 @@ export default {
         })
         .on('idCheck.onError', (type,error) => {
             console.log('onError', error)
-            console.log(type);
         })
         .build();
 

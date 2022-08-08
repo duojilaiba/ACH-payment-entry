@@ -456,7 +456,6 @@ export default {
           }else{
             this.$store.state.sellRouterParams.positionData = this.$store.state.sellRouterParams.formPositionData;
 
-            console.log("false")
             this.processRequest(val);
             //
 

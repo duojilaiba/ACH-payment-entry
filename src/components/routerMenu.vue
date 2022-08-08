@@ -146,7 +146,6 @@ export default {
       }
 
       if(!localStorage.getItem("token")|| localStorage.getItem('token')===''){
-        console.log(this.$parent.tabstate);
         this.$store.state.emailFromPath = this.$parent.tabstate;
         this.$router.push('/emailCode?fromName=tradeList').catch(()=>{});
       }else{
