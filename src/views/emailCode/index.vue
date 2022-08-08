@@ -3,7 +3,7 @@
     <div>
 
       <div class="emailCode-container_top">
-        <img src="@/assets/images/slices/pay.png" alt="">
+        <img :src="logoPath" alt=""> <!-- logoPath -->
         <h2>{{ $t('nav.loginTitle1') }}</h2>
         <p>{{ $t('nav.loginTitle2') }}</p>
       </div>
@@ -40,6 +40,7 @@ import moment from 'moment-timezone';
 import { fingerprintId } from '@/utils/publicRequest.js';
 import common from '@/utils/common'
 
+
 export default {
   name: "emailCode",
   data(){
@@ -55,10 +56,14 @@ export default {
 
       getCode_state: true,
       login_loading:true,
-      loggedIn:false
+      loggedIn:false,
+
+      common: {},
     }
   },
   activated(){
+    this.common = common;
+
     this.$parent.routerViewState = true
     this.login_loading= true
     this.code = "";
@@ -273,6 +278,17 @@ box-shadow: 0px 0px 35px rgba(89, 153, 248, 0.2);`
         status =  true
       }
       return status
+    },
+
+    //商户配置信息
+    logoPath(){
+      if(this.common.lapay_logo){
+        if(common.merchant_name === 'Lapay'){
+          return require(`@/assets/images/${this.common.lapay_logo}`);
+        }else{
+          return require(`@/assets/images/${this.common.ach_logo}`);
+        }
+      }
     }
   }
 

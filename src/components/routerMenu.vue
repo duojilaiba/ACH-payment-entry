@@ -7,10 +7,10 @@
       </div>
     </div>
     <div class="routerMenu_isLogo" v-if="token===false">
-        <img src="../assets/images/slices/pay.png" alt="">
+        <div class="routerMenu_logoView"><img :src="logoPath" alt=""></div>
         <h2>{{ $t('nav.RouterMenu_Welcome') }}</h2>
         <p>{{ $t('nav.RouterMenu_experience') }}</p>
-        <div @click="goLogin" :style="{background:loading?'#0059DA80':''}">{{ $t('nav.login') }} <img class="icon" src="../assets/images/rightIconSell.png" alt="" v-if="!loading">
+        <div class="loginBtn" @click="goLogin" :style="{background:loading?'#0059DA80':''}">{{ $t('nav.login') }} <img class="icon" src="../assets/images/rightIconSell.png" alt="" v-if="!loading">
         <van-loading  class="icon" type="spinner" color="#fff" v-else/></div>
     </div>
     <div class="routerMenu_history goHomeView" @click="goView('/',$store.state.homeTabstate)" v-if="token!==false && (this.$route.query.merchant_orderNo===undefined || this.$route.query.merchant_orderNo=='undefined')">
@@ -107,7 +107,10 @@ export default {
       disAbled:'',
       kycError:require('@/assets/images/AccountRisk.png'),
       kycSess:require('@/assets/images/kycScuss.png'),
-      loginOutLoading:false
+      loginOutLoading:false,
+
+      common: {},
+      logoPath: '',
     }
   },
   activated(){
@@ -147,7 +150,6 @@ export default {
       }
 
       if(!localStorage.getItem("token")|| localStorage.getItem('token')===''){
-        console.log(this.$parent.tabstate);
         this.$store.state.emailFromPath = this.$parent.tabstate;
         this.$router.push('/emailCode?fromName=tradeList').catch(()=>{});
       }else{
@@ -163,7 +165,6 @@ export default {
       let LanguageName = ''
       for(let item of Object.keys(this.$i18n.messages)){
             if(item === language){
-              // console.log(this.$i18n.messages[item].language);
               LanguageName = this.$i18n.messages[item].language
             }
           }
@@ -180,10 +181,6 @@ export default {
             localStorage.removeItem("token");
             localStorage.removeItem("email");
             localStorage.setItem('loginOut','1')
-            // localStorage.removeItem("userNo");
-            // localStorage.removeItem("userId");
-            // localStorage.removeItem("login_email");
-            // localStorage.removeItem("fin_token");
             this.loginOutLoading = false
             localStorage.removeItem("kycStatus");
             // sessionStorage.removeItem('accessMerchantInfo')
@@ -230,8 +227,6 @@ export default {
     },
     goLogin(){
       this.loading = true
-
-
         setTimeout(() => {
           this.loading = false
           this.$store.state.routerQueryPath = true
@@ -239,7 +234,6 @@ export default {
           //是否是从菜单进入
           this.$router.push('/emailCode')
         }, 200);
-
     },
     //显示退出登陆判断是否是pc 还是 移动
     loginOutIsShow(){
@@ -257,7 +251,6 @@ export default {
       let _this = this;
       this.$axios.get(this.$api.get_transactionHistory,this.query).then(res=>{
         if(res && res.data){
-          // console.log(res.data);
           let newArray = res.data.result;
           if (newArray.length <= 0 ) {
             _this.finished = true;
@@ -300,26 +293,33 @@ export default {
       let email1 = email.slice(0,3)+' *** '+ email.slice(email.indexOf('@'),email.indexOf('@')+6)  + '...'
       return email1
     },
-
-
   },
   watch:{
     //打开菜单栏并且已经登陆以后才会获取有没有历史记录
     '$store.state.menuState':{
       immediate:true,
       deep:true,
-       handler(newVal){
+      handler(newVal){
         if(newVal  === true){
           localStorage.getItem("token") ? this.token = true :this.token = false;
           localStorage.getItem("email") ? this.email = AES_Decrypt(localStorage.getItem("email")) :this.email = '';
 
         }
-         if(newVal === true && localStorage.getItem("token")){
+        if(newVal === true && localStorage.getItem("token")){
 
-           this.token===true?this.transationsList():''
-           //用户是否为风险用户
-           this.is_kycDisabled()
-         }
+          this.token===true?this.transationsList():''
+          //用户是否为风险用户
+          this.is_kycDisabled()
+        }
+        //商户配置信息
+        this.common = common;
+        if(this.common.lapay_logo){
+          if(common.merchant_name === 'Lapay'){
+            this.logoPath = require(`@/assets/images/${this.common.lapay_logo}`);
+          }else{
+            this.logoPath = require(`@/assets/images/${this.common.ach_logo}`);
+          }
+        }
       }
     },
 
@@ -406,27 +406,18 @@ export default {
     flex-direction: column;
     align-items: center;
     position: relative;
-    >img{
-      width: .58rem;
-      height: .5rem;
-      margin-top: .18rem;
+    .routerMenu_logoView{
+      width: 0.58rem;
+      height: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      img{
+        width: 0.58rem;
+        margin-top: .18rem;
+      }
     }
-    h2{
-      font-size: .2rem;
-      font-family: "SFProDisplaybold";
-      font-weight: normal;
-      color: #031633;
-      line-height: .25rem;
-      font-weight: 500;
-      margin: .2rem 0 .06rem 0;
-    }
-    p{
-      font-size: .13rem;
-      font-family: "SFProDisplayRegular";
-      font-weight: normal;
-      color: #6E7687;
-    }
-    >div{
+    .loginBtn{
       width: 90%;
       background: #0059DA;
       border-radius: .3rem;
@@ -451,6 +442,21 @@ export default {
           margin-top: .02rem;
         }
       }
+    }
+    h2{
+      font-size: .2rem;
+      font-family: "SFProDisplaybold";
+      font-weight: normal;
+      color: #031633;
+      line-height: .25rem;
+      font-weight: 500;
+      margin: .2rem 0 .06rem 0;
+    }
+    p{
+      font-size: .13rem;
+      font-family: "SFProDisplayRegular";
+      font-weight: normal;
+      color: #6E7687;
     }
   }
   .goHomeView{

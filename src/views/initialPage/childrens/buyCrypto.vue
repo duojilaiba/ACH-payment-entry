@@ -388,8 +388,8 @@ export default {
       //Obtain merchant order information in the address bar
       let merchantParams = {};
       JSON.stringify(this.$route.query) !== "{}" ? merchantParams = this.$route.query : merchantParams = JSON.parse(sessionStorage.getItem("accessMerchantInfo"));
-      common.merchant_name === 'Lapay' ? merchantParams.appId = common.appId_lapay: '';
       merchantParams === null ? merchantParams = {} : '';
+      common.merchant_name === 'Lapay' ? merchantParams.appId = common.appId_lapay: '';
       merchantParams.networkDefault = false;
       merchantParams.addressDefault = false;
 
