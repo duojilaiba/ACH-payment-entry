@@ -352,20 +352,20 @@ export default {
     //是否需要kyc验证
     //第一个参数是需要跳转的地址  第二个参数是kyc验证之后我要跳转的地址
     isKyc(Url){
-       this.$axios.post(this.$api.post_getKycThrough,'','').then(res=>{
-         if(res && res.returnCode === '0000'){
-            if(res.data===true){
-              this.$store.state.WhichPage = Url
-              this.$router.push('/kycVerification')
-              return
-            }
+      //  this.$axios.post(this.$api.post_getKycThrough,'','').then(res=>{
+      //    if(res && res.returnCode === '0000'){
+      //       if(res.data===true){
+      //         this.$store.state.WhichPage = Url
+      //         this.$router.push('/kycVerification')
+      //         return
+      //       }
             this.$router.push(Url)
-          }else{
-            this.request_loading = false;
-          }
-        }).catch(()=>{
-         this.request_loading = false;
-       })
+      //     }else{
+      //       this.request_loading = false;
+      //     }
+      //   }).catch(()=>{
+      //    this.request_loading = false;
+      //  })
     }
   }
 }

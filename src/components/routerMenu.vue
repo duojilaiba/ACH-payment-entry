@@ -306,7 +306,7 @@ export default {
 
            this.token===true?this.transationsList():''
            //用户是否为风险用户
-           this.is_kycDisabled()
+          //  this.is_kycDisabled()
          }
       }
     },

@@ -376,8 +376,8 @@ export default {
     //确认订单 - 处理请求参数
     submit(){
       let params = this.paramsFormData();
-      this.isKyc(params)
-
+      // this.isKyc(params)
+      this.processRequest(params)
 
     },
     //确认订单 - 请求服务
