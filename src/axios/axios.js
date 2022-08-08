@@ -189,6 +189,7 @@ export default {
         'fingerprint-id':localStorage.getItem('fingerprint_id')?localStorage.getItem('fingerprint_id'):'',
         timezone: moment.tz.guess(),
       },
+      timeout: requestUrl === '/pay/card/submit' ? 60000 : 30000,
     }).then((response) => {
       if (response.returnCode === "0000" || response.returnCode === "110") {
         return Promise.resolve(response);
@@ -222,7 +223,8 @@ export default {
         'Content-Type': 'application/json',
         'fingerprint-id':localStorage.getItem('fingerprint_id')?localStorage.getItem('fingerprint_id'):'',
         timezone: moment.tz.guess(),
-      }
+      },
+      timeout: requestUrl === '/pay/card/submit' ? 5000 : 30000,
     }).then((response) => {
       if (response.returnCode === "0000") {
         return Promise.resolve(response);

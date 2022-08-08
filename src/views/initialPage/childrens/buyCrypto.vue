@@ -487,6 +487,8 @@ export default {
             this.$router.push(`/receivingMode`)
           }
 
+        }else{
+          this.lodingStatus = true
         }
       })
 

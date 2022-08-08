@@ -7,7 +7,6 @@ import FingerprintJS from '@fingerprintjs/fingerprintjs-pro';
 //Request service address
 const baseUrl = process.env.VUE_APP_BASE_API;
 let apiKey = process.env.VUE_APP_Fingerprint_ApiKey;
-console.log(apiKey)
 
 /**
  * 提交订单、确认订单前获取submit-token公共接口
