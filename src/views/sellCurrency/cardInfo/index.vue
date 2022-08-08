@@ -382,13 +382,15 @@ export default {
     },
     //确认订单 - 请求服务
     processRequest(val){
-      let params = {
+     if(this.request_loading === false){
+        let params = {
         sellCardDTO: val,
         orderId: this.$store.state.cardInfoFromPath === 'configSell' ? '' : this.$store.state.sellOrderId, // 不传为新增卡信息，传为修改卡信息
         cryptoCurrency: this.$store.state.sellRouterParams.currencyData.name,
         sellVolume: this.$store.state.sellRouterParams.amount,
         network: this.$store.state.sellRouterParams.currencyData.sellNetwork.network,
       }
+      this.request_loading = true
       this.$axios.post(this.$api.post_sellForm,params,'').then(res=>{
         if(res && res.returnCode === '0000'){
           //存储数据 加密字段
@@ -413,6 +415,7 @@ export default {
       }).catch(()=>{
         this.request_loading = false;
       })
+     }
     },
 
     isKyc(val){
