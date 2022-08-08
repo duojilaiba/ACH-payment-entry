@@ -90,6 +90,24 @@ export default {
     }
   },
   mounted(){
+    //动态修改html标题
+    if(common.merchant_name === "Lapay"){
+      document.title = "Lapay Ramp"
+      //根据传递的参数修改Favicon
+      // 得到图标地址
+      let iconUrl = `./ico-lapay.webp`
+      //修改Favicon的方法
+      let $favicon = document.querySelector('link[rel="icon"]');
+      if ($favicon !== null) {
+        $favicon.href = iconUrl;
+      } else {
+        $favicon = document.createElement("link");
+        $favicon.rel = "icon";
+        $favicon.href = iconUrl;
+        document.head.appendChild($favicon);
+      }
+    }
+
     this.obtainWidth();
     let innerHight = document.documentElement.clientHeight || document.body.clientHeight;
     let innerWidth = document.documentElement.clientWidth || document.body.clientWidth

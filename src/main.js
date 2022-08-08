@@ -34,6 +34,13 @@ new Promise(()=>{
   }
 });
 
+//动态修改html标题
+Vue.directive('title', {
+  inserted: function (el) {
+    document.title = el.dataset.title
+  }
+})
+
 Vue.prototype.$api = api;
 Vue.prototype.$axios = axios;
 

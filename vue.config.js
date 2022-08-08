@@ -88,7 +88,7 @@ module.exports = {
             .loader('svg-sprite-loader')
             .options({
                 symbolId: 'icon-[name]',
-                title:'Alchemy Pay Ramp'
+                title:'Alchemy Pay Ramp',
             })
             .end()
     },
