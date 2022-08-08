@@ -1,96 +1,121 @@
 <template>
-  <!-- <div id="emailCode"> -->
-    <!-- <div class="form-title">Enter your emai address</div>
-    <div class="form-input"><input type="text" placeholder="Email Address" v-model="email">
-      <span class="formOptions" :class="{'getCodeClass': email===''}" @click="getCode" v-if="timeDown===60">Get code</span>
-      <span class="formOptions" v-else>{{ timeDown }}S</span>
-    </div> -->
-    <!-- error message -->
-    <!-- <div class="errorMessage" v-if="emailErrorState" v-html="emailError"></div>
-    <div class="form-title">Enter the verification code you received</div>
-    <div class="form-input emailCode"><input type="text" v-model="code" placeholder="Login Code" maxlength="6"></div> -->
-    <!-- error message -->
-    <!-- <div class="errorMessage" v-if="codeErrorState" v-html="codeError">Verification code not match.</div> -->
-    <!-- Permission agreement -->
-    <!-- <div class="agreement-content">
-      <div class="agreement-radio"><input type="checkbox" v-model="agreement"></div>
-      <div class="agreement-text">I have read and agree to Alchemy Pay’s <span @click="goProtocol('termsUse')">{{ '<' }}Terms of Use{{ '>' }}</span> and <span @click="goProtocol('privacyPolicy')">{{ '<' }}Privacy Policy{{ '>' }}</span>.</div>
-    </div>
-    <includedDetails v-if="includedDetails_state"/>
-    <div class="continue" :class="{'buttonTrue': email!==''&&code.length===6&&agreement===true}" @click="toLogin">Continue</div> -->
-
-  <!-- </div> -->
   <div class="emailCode-container" ref="emailCode">
     <div>
-      <div class="emailCode_tab">
-      <img  @click="$router.replace('/')" src="@/assets/images/closeIcon.png" alt="">
-    </div>
+
       <div class="emailCode-container_top">
         <img src="@/assets/images/slices/pay.png" alt="">
         <h2>{{ $t('nav.loginTitle1') }}</h2>
         <p>{{ $t('nav.loginTitle2') }}</p>
       </div>
       <div class="emailCode_content" ref="emailInput">
-        <p>{{ $t('nav.enterEmail') }}</p>
+        <p v-if="!loggedIn">{{ $t('nav.enterEmail') }}</p>
+        <p v-else>{{ $t('nav.enterEmail1') }}</p>
         <img src="@/assets/images/slices/emailIcon.png" alt="">
-        <input type="text"  v-model="email" placeholder="john.doe@example.com">
+
+        <input type="text"  v-model="email" @focus="emailFocus" @blur="emailBlur" :style="{cursor: loggedIn?'not-allowed':''}" :disabled="loggedIn" placeholder="john.doe@example.com">
       </div>
       <div class="errorMessage" v-if="emailErrorState" v-html="emailError"></div>
+      <div class="emailCode_content_title" v-if="loggedIn">Not you? <span @click="signAddress">{{ $t('nav.emailanother') }}</span></div>
     </div>
 
-      <div class="emailCode_button" :style="{background: (email!=='' && email!==undefined && login_loading=== true)?'#0059DAFF':login_loading===false?'':''}" @click="getCode">
-        {{ $t('nav.Continue') }}
-        <img class="icon" src="@/assets/images/slices/rightIcon.png" alt="" v-if="login_loading">
+    <div>
+      <div class="emailCode_checke" v-if="!loggedIn">
+        <el-checkbox class="checkbox" size="medium"  v-model="checked"></el-checkbox>
+        <div> {{ $t('nav.code_text') }} <span @click="openView('Terms')" style="cursor: pointer;">{{ $t('nav.code_name') }}</span> {{ $t('nav.code_and') }} <span style="cursor: pointer" @click="openView('Privacy')">{{ $t('nav.code_name2') }}.</span></div>
+      </div>
+      <div class="emailCode_button" :style="{opacity: (emailRep && login_loading=== true  )?'1':''}" @click="getCode">
+        {{ $t('nav.Proceed') }}
+        <img class="icon" src="@/assets/images/rightIconSell.png" alt="" v-if="login_loading">
         <van-loading class="icon" type="spinner" color="#fff" v-if="login_loading===false"/>
       </div>
+    </div>
   </div>
 </template>
 
 <script>
-// import includedDetails from "../../components/IncludedDetails";
-// import axios from 'axios';
+import axios from 'axios';
 import { debounce } from '../../utils/index';
-import { AES_Encrypt } from '@/utils/encryp.js';
+import { AES_Encrypt,AES_Decrypt } from '@/utils/encryp.js';
+import moment from 'moment-timezone';
+import { fingerprintId } from '@/utils/publicRequest.js';
 
 export default {
   name: "emailCode",
-  // components: { includedDetails },
   data(){
     return{
       timeDown: 60,
       timeVal: null,
       emailErrorState: false,
+      checked:false,
       emailError: '',
       detailsState: true,
       email: '',
       code: '',
-      agreement: false,
-      codeErrorState: false,
-      codeError: '',
-      includedDetails_state: false,
 
       getCode_state: true,
-      login_state: true,
-      login_loading:true
+      login_loading:true,
+      loggedIn:false
     }
   },
   activated(){
+    this.$parent.routerViewState = true
     this.login_loading= true
     this.code = "";
     this.timeDown = 60;
-    this.includedDetails_state = this.$route.query.fromName ? this.$route.query.fromName === 'tradeList' ? false : true : '';
+    setTimeout(()=>{
+      if(localStorage.getItem('login_email')){
+        this.email = AES_Decrypt(localStorage.getItem('login_email'))
+        this.loggedIn = true
+        this.checked = true
+      }else{
+        this.loggedIn = false
+        this.checked = false
+        this.email = ''
+      }
+    },300)
     if(sessionStorage.getItem("accessMerchantInfo") !== "{}" && sessionStorage.getItem("accessMerchantInfo") !== null){
       this.email = JSON.parse(sessionStorage.getItem("accessMerchantInfo")).mail;
+      return
     }
+
+
+
   },
+
+
   deactivated(){
-    clearInterval(this.timeVal)
+    window.clearInterval(this.timeVal);
+    this.timeVal = null;
+    this.emailError = ''
+    this.emailErrorState = false
+    this.$refs.emailInput.style = ''
   },
+  mounted(){
+    this.$parent.routerViewState = true
+    setTimeout(()=>{
+      if(localStorage.getItem('login_email')){
+        this.email = AES_Decrypt(localStorage.getItem('login_email'))
+        this.loggedIn = true
+        this.checked = true
+      }else{
+        this.loggedIn = false
+        this.checked = false
+        this.email = ''
+      }
+    },300)
+
+
+  },
+
   methods: {
     getCode:debounce(function () {
+      fingerprintId();
       this.getCode_state = false;
       // this.emailErrorState = false;
-      var reg = new RegExp(".+@.+\\..+");
+      if(this.email === ''){
+        return
+      }
+      var reg = new RegExp(`^[a-z0-9A-Z]+[- | a-z0-9A-Z . _]+@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-z]{2,}$`);
       if(!reg.test(this.email)){
         this.emailErrorState = true
         // this.emailError = "Not a valid email address.";
@@ -98,8 +123,74 @@ export default {
         // this.login_loading = false
         this.$refs.emailInput.style = 'border:1px solid #D92D20'
         return;
+      }else if(!this.checked){
+        this.$toast({
+          duration: 3000,
+          message: this.$t('nav.login_Agreement')
+        });
+        return
       }
-      this.$refs.emailInput.style = 'border:none'
+      let timestamp = ''
+      let isLoginOut = localStorage.getItem('loginOut')
+
+      if(this.loggedIn===true && isLoginOut !== '1'){
+        let _this = this
+        let sign = localStorage.getItem("userId");
+        let userId = sign.substring(sign.lastIndexOf("H")+1,sign.length);
+        let userNo = localStorage.getItem("userNo").substring(localStorage.getItem("userNo").length-5);
+        timestamp = new Date().getTime();
+        let newSign = AES_Encrypt(userId + "-" + userNo + "-" + timestamp);
+        localStorage.setItem("sign",newSign);
+        var config = {
+          method: 'get',
+          url: process.env.VUE_APP_BASE_API + this.$api.getUserLogin,
+          headers: {
+            'token': localStorage.getItem('fin_token'),
+            'fingerprint-id':localStorage.getItem('fingerprint_id'),
+            'Accept-Language':sessionStorage.getItem('language')?sessionStorage.getItem('language'):'en-US',
+            'sign': newSign,
+            'timestamp': timestamp,
+            'Content-Type': 'application/json',
+            timezone: moment.tz.guess(),
+          },
+
+        };
+        axios.interceptors.response.use(function (config) {
+          return config;
+        }, function (error) {
+          // Do something with response error
+          return Promise.reject(error);
+        })
+        axios(config).then(function (response) {
+          if( response.returnCode === '0000'){
+            setTimeout(()=>{
+              _this.login_loading = false
+            })
+            localStorage.setItem('token',localStorage.getItem('fin_token'))
+            localStorage.setItem('email',localStorage.getItem('login_email'))
+            if(_this.$store.state.routerQueryPath === true){
+              _this.$router.push('/');
+              return
+            }
+            if(_this.$route.query.fromName === 'tradeList'){
+              _this.$router.replace('/tradeHistory');
+            }else{
+              //登陆跳转路径根据router.from的路由跳转不同页面
+              if(_this.$store.state.emailFromPath === 'buyCrypto'){
+                _this.$router.replace(`/receivingMode`);
+              }else if(_this.$store.state.emailFromPath === 'sellCrypto'){
+                _this.$router.replace('/sell-formUserInfo')
+              }else if(_this.$store.state.emailFromPath === 'Refund'){
+                _this.$router.replace('/Refund')
+              }else{
+                _this.$router.push('/');
+              }
+            }
+          }
+        })
+
+        return
+      }
       this.emailErrorState = false;
       this.login_loading = false
       //Get code
@@ -111,6 +202,7 @@ export default {
         this.getCode_state = true;
         if(res.returnCode === '0000'){
           this.login_loading = false
+
           this.$store.state.userEmail = AES_Encrypt(this.email)
           this.$router.push({
             path:'/verifyCode',
@@ -122,191 +214,60 @@ export default {
     expandCollapse(){
       this.detailsState = this.detailsState === true ? false : true;
     },
-    // toLogin:debounce(function (){
-    //   this.login_state = false;
-    //   let _this = this;
-    //   if(this.email!==''&&this.code.length===6&&this.agreement===true){
-    //     var FormData = require('form-data');
-    //     var data = new FormData();
-    //     data.append('email', AES_Encrypt(this.email));
-    //     data.append('verificationCode', AES_Encrypt(this.code));
-    //     var config = {
-    //       method: 'post',
-    //       url: process.env.VUE_APP_BASE_API + this.$api.post_login,
-    //       headers: {
-    //         'Content-Type': 'application/x-www-form-urlencoded',
-    //       },
-    //       data : data
-    //     };
-    //     axios.interceptors.response.use(function (config) {
-    //       return config;
-    //     }, function (error) {
-    //       // Do something with response error
-    //       return Promise.reject(error);
-    //     })
-    //     axios(config).then(function (response) {
-    //       _this.login_state = true;
+    signAddress(){
+      this.loggedIn = false
+      this.checked = false
+      this.email = ''
+      localStorage.removeItem('login_email')
+    },
 
-    //       if(response.returnCode === '0000'){
-    //         _this.codeErrorState = false;
-    //         if(_this.$route.query.fromName === 'tradeList'){
-    //           _this.$router.replace('/tradeHistory');
-    //         }else{
-    //           //登陆跳转路径根据router.from的路由跳转不同页面
-    //           if(_this.$store.state.emailFromPath === 'buyCrypto'){
-    //             _this.$router.push(`/receivingMode`);
-    //           }else if(_this.$store.state.emailFromPath === 'sellCrypto'){
-    //             let params = {
-    //               country: _this.$store.state.sellRouterParams.positionData.alpha2,
-    //               fiatName: _this.$store.state.sellRouterParams.positionData.fiatCode,
-    //             };
-    //             _this.$axios.get(_this.$api.get_userSellCardInfo,params).then(res=>{
-    //               //data - null 没有填写过表单,跳转到表单页
-    //               //data - !null 有填写过表单,跳转到确认订单页
-    //               if(res && res.returnCode === "0000" && res.data === null){
-    //                 delete _this.$store.state.sellForm;
-    //                 _this.$router.push('/sell-formUserInfo')
-    //               }else if(res && res.returnCode === "0000" && res.data !== null){
-    //                 _this.$store.state.sellForm = res.data;
-    //                 _this.$router.push('/configSell')
-    //               }
-    //             })
-    //           }else if(_this.$store.state.emailFromPath === 'sellOrder'){
-    //             _this.$router.push('/sellOrder');
-    //           }else{
-    //             _this.$router.push('/');
-    //           }
-    //         }
-    //       }else if(response.returnCode === "10002" || response.returnCode === "10003" || response.returnCode === "1026" || response.returnCode === "1027" || response.returnCode === "1025"){
-    //         _this.codeErrorState = true;
-    //         _this.codeError = response.returnMsg;
-    //       }
-    //     }).catch(function (error) {
-    //       console.log(error);
-    //     });
-    //   }
-    // },300,false),
 
-    goProtocol(name){
-      if(name === 'privacyPolicy'){
-        window.location = 'https://alchemypay.org/privacy-policy/';
-        return;
+    openView(name){
+      if(name==='Privacy'){
+        window.location = 'https://alchemypay.org/privacy-policy/'
+        return
       }
-      if(name === 'termsUse'){
+      if(name === 'Terms'){
         window.location = 'https://alchemypay.org/terms-of-use/';
         return;
       }
+    },
+    //输入框选择状态样式
+    emailFocus(){
+      let Input = document.querySelector('.emailCode_content')
+      Input.style = `border: 1px solid #41B8FD;
+box-shadow: 0px 0px 35px rgba(89, 153, 248, 0.2);`
+    },
+    //输入框失去焦点时样式
+    emailBlur(){
+      let Input = document.querySelector('.emailCode_content')
+      Input.style = ``
+      if(this.email === ''){
+        this.emailError = 'necessary'
+        this.emailErrorState = true
+      }else{
+        this.emailError = ''
+        this.emailErrorState = false
+      }
     }
   },
-  mounted(){
-
+  computed:{
+    //计算邮箱输入并且勾选协议时按钮高亮
+    emailRep(){
+      let status = false
+      let  reg = new RegExp(`^[a-z0-9A-Z]+[- | a-z0-9A-Z . _]+@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-z]{2,}$`);
+      if(this.checked && reg.test(this.email)){
+        status =  true
+      }
+      return status
+    }
   }
+
 }
 </script>
 
 <style lang="scss" scoped>
-#emailCode{
-  .form-title{
-    font-size: 0.14rem;
-    font-family: 'Jost', sans-serif;
-    font-weight: 500;
-    color: #232323;
-    padding-top: 0.2rem;
-  }
-  .form-input{
-    height: 0.6rem;
-    background: #F3F4F5;
-    border-radius: 10px;
-    margin-top: 0.1rem;
-    display: flex;
-    position: relative;
-    input{
-      width: 100%;
-      height: 100%;
-      background: #F3F4F5;
-      border-radius: 10px;
-      font-size: 0.16rem;
-      color: #232323;
-      font-family: "GeoDemibold", GeoDemibold;
-      font-weight: 400;
-      padding: 0 1rem 0 0.2rem;
-      border: none;
-      outline: none;
-    }
-  }
-  .emailCode input::placeholder{
-    letter-spacing: 0;
-  }
-  .emailCode input{
-    letter-spacing: 3px;
-  }
-  .errorMessage{
-    font-size: 0.14rem;
-    font-family: "GeoDemibold", GeoDemibold;
-    font-weight: 400;
-    color: #FF0000;
-    margin: 0.1rem 0 0 0.2rem;
-  }
-  .formOptions{
-    position: absolute;
-    top: 0.19rem;
-    right: 0.2rem;
-    font-size: 0.16rem;
-    font-family: 'Jost', sans-serif;
-    font-weight: bold;
-    color: #4479D9;
-    cursor: pointer;
-  }
-  .getCodeClass{
-    opacity: 0.5;
-    cursor: no-drop;
-  }
-  .agreement-content{
-    display: flex;
-    margin-top: 0.2rem;
-    padding-bottom: 0.4rem;
-    .agreement-radio{
-      display: flex;
-      margin-top: 0.05rem;
-      input{
-        cursor: pointer;
-        width: 0.13rem;
-        height: 0.13rem;
-      }
-    }
-    .agreement-text{
-      font-size: 0.14rem;
-      font-family: "GeoDemibold", GeoDemibold;
-      font-weight: 400;
-      color: #333333;
-      margin-left: 0.2rem;
-      span{
-        font-weight: bold;
-        color: #4479DA;
-        cursor: pointer;
-      }
-    }
-  }
 
-  .continue{
-    width: 100%;
-    height: 0.6rem;
-    background: rgba(68, 121, 217, 0.5);
-    border-radius: 4px;
-    text-align: center;
-    line-height: 0.6rem;
-    font-size: 0.18rem;
-    font-family: 'Jost', sans-serif;
-    font-weight: 500;
-    color: #FAFAFA;
-    margin-top: 0.4rem;
-    cursor: no-drop;
-  }
-  .buttonTrue{
-    background: #4479D9 !important;
-    cursor: pointer;
-  }
-}
 .emailCode-container{
   width: 100%;
   // height: 100%;
@@ -320,30 +281,42 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: .4rem;
     h2{
       font-size: .21rem;
-      font-family:"GeoBold";
+      font-family:"SFProDisplaybold";
       font-weight: normal;
-      color: #232323;
       margin: .24rem 0 .16rem 0;
+      color: #031633;
     }
     p{
       width: 2.5rem;
       font-size: .13rem;
-      font-family: "GeoRegular";
+      font-family: "SFProDisplayRegular";
       font-weight: normal;
-      color: #232323;
+      color: #6E7687;
       text-align: center;
     }
     img{
       width: .4rem;
-      height: .4rem;
+      // height: .4rem;
+    }
+  }
+  .emailCode_content_title{
+    margin-top: .16rem;
+    font-size: .13rem;
+    text-align: center;
+    font-family: "SFProDisplayRegular";
+    color: #949EA4;
+    span{
+      color: rgba(0, 71, 173, 1);
+      cursor: pointer;
     }
   }
   .emailCode_content{
     width: 100%;
     height: .56rem;
-    background: #F3F4F5;
+    border: 1px solid #D9D9D9;
     border-radius: .12rem;
     position: relative;
     input{
@@ -353,16 +326,20 @@ export default {
       font-size: .16rem;
       position: absolute;
       left: .42rem;
+      color: #6E7687;
       background: transparent;
-      font-family: "GeoLight";
+      font-family: "SFProDisplayRegular";
       outline: none;
+    }
+    input::placeholder{
+      color: #BFBFBF;
     }
     p{
       font-size: .13rem;
       color: #707070;
       position: absolute;
-      font-family: "GeoRegular";
-      top: -.22rem;
+      font-family: "SFProDisplayRegular";
+      top: -.23rem;
     }
     img{
       width: .16rem;
@@ -375,7 +352,7 @@ export default {
   .emailCode_button{
     width: 100%;
     height: .58rem;
-    background: rgba(0, 89, 218, 0.5);
+    background: #0059DA;
     border-radius: .29rem;
     font-size: .17rem;
     text-align: center;
@@ -383,37 +360,63 @@ export default {
     position: relative;
     // position: absolute;
     // bottom: 0rem;
+    opacity: 0.25;
     color: #FAFAFA;
-    font-family: "GeoRegular";
+    font-family: "SFProDisplayRegular";
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     .icon{
-      width: .24rem;
-      height: .24rem;
-      position: absolute;
-      right: .16rem;
-      top: .18rem;
+      // width: .12rem;
+      height: .2rem;
+      margin: -.02rem  0 0 .1rem;
       span{
+        height: .15rem;
         position: absolute;
-        left: 0;
-        top: .0rem;
+        left: .09rem;
+        top: .03rem;
       }
     }
   }
   .emailCode_tab{
     width: 100%;
     height: .35rem;
+    cursor: pointer;
     img{
       height: .24rem;
-      float: right;
+      // float: right;
     }
   }
   .errorMessage{
     font-weight: normal;
-    color: #D92D20;
+    color: #FF2F2F;
     line-height: 17px;
     font-size: 15px;
-    font-family:GeoRegular;
+    font-family:SFProDisplayRegular;
     margin-top: .08rem;
+  }
+}
+.emailCode_checke{
+  width: 100%;
+  display: flex;
+  color: #6E7687;
+  font-size: .13rem;
+  line-height: .16rem;
+  margin-bottom: .16rem;
+  font-family: "SFProDisplayRegular";
+  span{
+    color: rgba(0, 71, 173, 1);
+  }
+  .checkbox{
+    margin-right: .08rem;
+    ::v-deep .el-checkbox__inner{
+      border-radius: 100% !important;
+    }
+  }
+  .checkbox ::v-deep .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
+    background: #0059DA;
+    border-color:#0059DA ;
   }
 }
 </style>

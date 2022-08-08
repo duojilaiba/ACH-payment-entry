@@ -1,33 +1,44 @@
 <template>
   <div id="indonesianPayment">
-    <!-- 支付倒计时提示 -->
-    <div class="payTips" v-if="startPayment && routerParams.payWayCode === '10003'">{{ $t('nav.buy_configPayIDR_timeDownTips') }} <span>{{ paymentCountDownMinute }}</span></div>
-    <!-- 费用明细 -->
-    <!-- 支付方式 10003-Virtual Account | 10008-OPM -->
-    <div class="payAmountInfo-title">{{ $t('nav.buy_configPay_title1') }}</div>
-    <div class="payAmountInfo-box" v-if="routerParams.payWayCode === '10003'">Virtual Account</div>
-    <div class="payAmountInfo-box" v-else-if="routerParams.payWayCode === '10008'">OPM</div>
-    <!-- 支付方式 VA-Virtual Account | OPM-->
-    <VA ref="va_ref" v-if="routerParams.payWayCode === '10003'"/>
-    <OPM ref="opm_ref" v-else-if="routerParams.payWayCode === '10008'"/>
-    <CryptoCurrencyAddress/>
-    <IncludedDetails class="includedDetails"/>
-    <AuthorizationInfo class="authorizationInfo" :childData="childData" v-if="AuthorizationInfo_state"/>
-    <!-- 墨西哥支付确认弹框 -->
-    <div class="routerMenu_loginOut" v-show="MEXConfirmState" @click="MEXConfirmState=false">
-      <div class="content" @click.stop="show=true">
-        <h2>{{ $t('nav.buy_configPay_title3') }}</h2>
-        <div @click="MEXConfirmOut">{{ $t('nav.buy_configPay_title4') }} <img src="@/assets/images/slices/rightIcon.png" alt=""></div>
-        <p @click.stop="MEXConfirmState=false">{{ $t('nav.buy_configPay_title5') }}</p>
+    <div id="indonesianPayment-box" ref="box_ref" @scroll="handleScroll">
+      <div class="view-content" ref="form_ref">
+        <!-- 支付倒计时提示 -->
+        <div class="payTips" v-if="startPayment && routerParams.payWayCode === '10003'">{{ $t('nav.buy_configPayIDR_timeDownTips') }} <span>{{ paymentCountDownMinute }}</span></div>
+        <!-- 费用明细 -->
+        <!-- 支付方式 10003-Virtual Account | 10008-OPM -->
+        <div class="payAmountInfo-title">{{ $t('nav.buy_configPay_title1') }}</div>
+        <div class="payAmountInfo-box" v-if="routerParams.payWayCode === '10003'">Virtual Account</div>
+        <div class="payAmountInfo-box" v-else-if="routerParams.payWayCode === '10008'">OPM</div>
+        <!-- 支付方式 VA-Virtual Account | OPM-->
+        <VA ref="va_ref" v-if="routerParams.payWayCode === '10003'"/>
+        <OPM ref="opm_ref" v-else-if="routerParams.payWayCode === '10008'"/>
+        <CryptoCurrencyAddress/>
+        <IncludedDetails class="includedDetails" ref="includedDetails_ref" :network="$store.state.buyRouterParams.network"/>
+        <AuthorizationInfo class="authorizationInfo" :childData="childData" v-if="AuthorizationInfo_state"/>
+        <!-- 墨西哥支付确认弹框 -->
+        <div class="routerMenu_loginOut" v-show="MEXConfirmState" @click="MEXConfirmState=false">
+          <div class="content" @click.stop="show=true">
+            <h2>{{ $t('nav.buy_configPay_title3') }}</h2>
+            <div class="options">
+              <div @click="MEXConfirmOut">{{ $t('nav.buy_configPay_title4') }}</div>
+              <p @click.stop="MEXConfirmState=false">{{ $t('nav.buy_configPay_title5') }}</p>
+            </div>
+          </div>
+        </div>
+        <!-- tips icon -->
+        <transition>
+          <div class="downTips-icon" v-show="goDown_state" @click="goDown"><img src="@/assets/images/downIcon.svg" ref="downTips_ref" alt=""></div>
+        </transition>
       </div>
+      <!-- 墨西哥支付按钮 -->
+      <button class="continue" @click="MEXConfirmState = true" v-if="routerParams.payWayCode === '10008'" ref="button_ref">
+        {{ $t('nav.queryOderState') }}
+        <img class="rightIcon" src="@/assets/images/button-right-icon.svg">
+      </button>
+      <!-- I confirm that the payment has been completed.-->
+      <Button :buttonData="buttonData" :disabled="payState" @click.native="submit" ref="button_ref" v-else></Button>
+      <div class="companyAddress">Alchemy GPS Europe UAB, Laisvés pr. 60, LT-05120 Vilnius</div>
     </div>
-    <!-- 墨西哥支付按钮 -->
-    <button class="continue" @click="MEXConfirmState = true" v-if="routerParams.payWayCode === '10008'">
-      {{ $t('nav.queryOderState') }}
-      <img class="rightIcon" src="@/assets/images/button-right-icon.png">
-    </button>
-    <!-- I confirm that the payment has been completed.-->
-    <Button :buttonData="buttonData" :disabled="payState" @click.native="submit" v-else></Button>
   </div>
 </template>
 
@@ -40,7 +51,7 @@ import VA from './VA';
 import OPM from './OPM';
 
 export default {
-  name: "",
+  name: "otherWays-VA",
   components: { VA, OPM, CryptoCurrencyAddress, AuthorizationInfo, IncludedDetails },
   data(){
     return{
@@ -70,6 +81,10 @@ export default {
       },
 
       MEXConfirmState: false,
+
+      goDown_state: false,
+      oldOffsetTop: 0,
+      scrollTimeDown: null,
     }
   },
   computed: {
@@ -89,13 +104,21 @@ export default {
       }
     }
   },
-  mounted() {
+  mounted(){
+    //初始化根据可视高度控制向下提示按钮状态
+    setTimeout(()=>{
+      if(this.$refs.box_ref.offsetHeight + 4 < document.getElementById("indonesianPayment-box").scrollHeight - 50){
+        this.goDown_state = true;
+      }else{
+        this.goDown_state = false;
+      }
+    })
     this.receiveInfo();
   },
   methods: {
     receiveInfo(){
       this.routerParams = this.$store.state.buyRouterParams;
-      if(this.routerParams.payWayCode === '10008') {
+      if(this.routerParams.payWayCode === '10008' && !sessionStorage.getItem("indonesiaPayment")) {
         this.MEXPay();
       }
       //还原刷新前数据状态
@@ -154,6 +177,46 @@ export default {
         }
       })
     },
+
+    //按钮进入可视区域，隐藏滚动到底部按钮
+    handleScroll(val){
+      window.clearTimeout(this.scrollTimeDown);
+      this.scrollTimeDown = null;
+
+      let offset = '';
+      if(this.routerParams.payWayCode === '10008'){
+        offset = this.$refs.button_ref.getBoundingClientRect();
+      }else{
+        offset = this.$refs.button_ref.$refs.buttonChild_ref.getBoundingClientRect();
+      }
+
+      //滚动的像素+容器的高度>可滚动的总高度-50像素
+      if(this.oldOffsetTop !== offset.top && (val.srcElement.scrollTop+val.srcElement.offsetHeight<val.srcElement.scrollHeight - 50)){
+        this.goDown_state = false;
+        window.clearTimeout(this.scrollTimeDown);
+        this.scrollTimeDown = null;
+        this.scrollTimeDown = setTimeout(()=>{
+          this.goDown_state = true;
+        },1000)
+      }
+
+      if(val.srcElement.scrollTop+val.srcElement.offsetHeight>val.srcElement.scrollHeight - 50) {
+        window.clearTimeout(this.scrollTimeDown);
+        this.scrollTimeDown = null;
+        this.goDown_state = false;
+      }
+      this.oldOffsetTop = offset.top;
+    },
+    goDown(){
+      setTimeout(()=>{
+        if(this.routerParams.payWayCode === '10008'){
+          this.$refs.button_ref.scrollIntoView({behavior: "smooth", block: "end", inline: 'end'})
+        }else{
+          this.$refs.button_ref.$refs.buttonChild_ref.scrollIntoView({behavior: "smooth", block: "end", inline: 'end'})
+        }
+        this.goDown_state = false;
+      })
+    },
   },
   destroyed() {
     this.$store.commit("clearToken"); //取消请求
@@ -163,17 +226,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-//html,body,#indonesianPayment{
-//  width: 100%;
-//  height: 100%;
-//}
-#indonesianPayment{
-  //display: flex;
-  //flex-direction: column;
-  //.view-content{
-  //  flex: 1;
-  //  overflow: auto;
-  //}
+#indonesianPayment-box{
+  height: 100%;
+  overflow-y: auto;
   .payTips{
     margin: 0.08rem 0 0.1rem 0;
     font-size: 0.13rem;
@@ -207,7 +262,7 @@ export default {
   }
 
   .includedDetails{
-    margin-top: 0.32rem;
+    margin-top: 0.1rem;
   }
   .authorizationInfo{
     margin-bottom: 0.2rem;
@@ -222,11 +277,10 @@ export default {
     left: 0;
     top: 0;
     .content{
-      width: 90%;
-      //height: 2.6rem;
+      width: 100%;
       max-width: 3.5rem;
       background: #FFFFFF;
-      border-radius: 16px;
+      border-radius: 0.16rem;
       position: absolute;
       left:50%;
       top: 50%;
@@ -234,10 +288,10 @@ export default {
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: .4rem 0 0 0;
+      padding: 0.32rem 0.16rem;
       box-sizing: border-box;
       h2{
-        //width: 2.4rem;
+        width: 90%;
         text-align: center;
         font-weight: normal;
         color: #232323;
@@ -245,37 +299,40 @@ export default {
         font-family: GeoDemibold;
         font-size: .21rem;
       }
-      div{
+      .options{
         width: 90%;
-        height: .58rem;
-        background: #E55643;
-        border-radius: .29rem;
-        text-align: center;
-        line-height: .58rem;
-        position: relative;
-        font-size: .17rem;
-        font-weight: normal;
-        color: #FFFFFF;
-        font-family: GeoRegular;
-        margin-top: .05rem;
-        cursor: pointer;
-        img{
-          width: .24rem;
-          position: absolute;
-          right: .16rem;
-          top: .17rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 0.32rem;
+        div{
+          flex: 1;
+          height: .5rem;
+          background: #E55643;
+          border-radius: .25rem;
+          text-align: center;
+          line-height: .5rem;
+          position: relative;
+          font-size: .16rem;
+          font-weight: normal;
+          color: #FFFFFF;
+          font-family: SFProDisplayMedium;
+          cursor: pointer;
+          margin-right: 0.13rem;
         }
-      }
-      p{
-        width: 90%;
-        height: .56rem;
-        text-align: center;
-        font-weight: normal;
-        color: #232323;
-        font-family: GeoDemibold;
-        font-size: .17rem;
-        margin-top: .24rem;
-        cursor: pointer;
+        p{
+          flex: 1;
+          border: 1px solid #D9D9D9;
+          border-radius: .25rem;
+          height: .5rem;
+          line-height: 0.5rem;
+          text-align: center;
+          font-weight: normal;
+          color: #232323;
+          font-family: SFProDisplayMedium;
+          font-size: .16rem;
+          cursor: pointer;
+        }
       }
     }
   }
@@ -307,6 +364,15 @@ export default {
     background: rgba(0, 89, 218, 0.5);
     cursor: no-drop;
   }
+  .companyAddress{
+    width: 100%;
+    font-size: 0.13rem;
+    font-family: "GeoLight", GeoLight;
+    font-weight: normal;
+    color: #c2c2c2c2;
+    text-align: center;
+    margin-top: 0.12rem;
+  }
 }
 
 @keyframes loadingIcon {
@@ -320,6 +386,48 @@ export default {
 @media (prefers-reduced-motion: no-preference) {
   .loadingIcon {
     animation: loadingIcon infinite 2s linear;
+  }
+}
+
+.downTips-icon{
+  z-index: 9;
+  position: absolute;
+  bottom: 1.1rem;
+  right: 0.3rem;
+  width: 0.58rem;
+  height: 0.58rem;
+  border-radius: 50%;
+  //background: #0059DA;
+  background: rgba(131,179,249,1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  img{
+    width: 0.3rem;
+  }
+}
+.downTips-icon img{
+  animation: jumpBoxHandler 1.8s infinite;/* 1.8s 事件完成时间周期 infinite无限循环 */
+}
+.v-enter-active,.v-leave-active{
+  transition: all 1s;
+}
+.v-enter,.v-leave-to{
+  opacity: 0;
+}
+.v-enter-to,.v-leave{
+  opacity: 0.8;
+}
+@keyframes jumpBoxHandler { /* css事件 */
+  0% {
+    transform: translate(0px, 0);
+  }
+  50% {
+    transform: translate(0px, 0.06rem); /* 可配置跳动方向 */
+  }
+  100% {
+    transform: translate(0px, 0px);
   }
 }
 </style>

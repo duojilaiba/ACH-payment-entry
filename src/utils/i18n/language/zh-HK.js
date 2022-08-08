@@ -9,6 +9,7 @@ module.exports = {
         ConfirmPayment: '確認付款',
         queryOderState: '我已經完成付款',
         orderRsult: '返回首頁',
+        Proceed:'進行',
 
         /**
          * 组件
@@ -21,7 +22,8 @@ module.exports = {
         agreement_components_text3: '當日從我選擇的付款方式中扣除上述金額，我充分瞭解此操作不能取消、召回或退款。',
         //查询订单状态提示
         orderTips_title: '系統沒有檢索到付款資訊',
-        orderTips_text: '抱歉，我們沒有檢測到您的付款信息。 如果您確認付款，請在此頁面稍作停留，一旦我們收到您的付款，我們會將相應金額的USDT轉給您。',
+        orderTips_text1: '抱歉，我們沒有檢測到您的付款信息。 如果您確認付款，請在此頁面稍作停留，一旦我們收到您的付款，我們會將相應金額的',
+        orderTips_text2: '轉給您。',
         orderTips_buttonText: '我已瞭解',
 
         /**
@@ -52,11 +54,13 @@ module.exports = {
         loginOut: '退出',
         loginOut_title: '確定退出?',
         loginOut_Dismiss: '取消',
-        enterEmail: '輸入email地址',
+        enterEmail: '你的電子郵件地址是什麼？',
+        enterEmail1: '這是您的電子郵件位址嗎？',
+        emailanother:'使用其他電子郵件地址登錄',
         loginTitle1: '通過Alchemy Pay結算',
         loginTitle2: '在數以百計的加密幣APP中最快捷、安全的結算方式。',
-        codeTitle1: '已將確認碼發送至您的郵箱。',
-        codeTitle2: '如果您未收到確認碼',
+        codeTitle1: '輸入您剛剛收到的登錄代碼',
+        codeTitle2: '未收到？',
         codeTitle3: '將發送新的確認碼',
         codeSecond: 's',
         code_: ' 我同意Alchemy Pay之',
@@ -71,6 +75,7 @@ module.exports = {
         menu_privacy: '隱私政策',
         menu_logOut: '退出',
         RouterMenu_experience: '登錄方可體驗全部功能',
+        login_Youlogged:'你已經在登陸頁了',
 
         /**
          * 首页
@@ -80,7 +85,6 @@ module.exports = {
         home_buyTitle: "買幣",
         //卖币标题
         home_sellTitle: "賣幣",
-        home_Tips: '繼續操作即表示您同意我們的 cookie 政策。',
         home_minAmountTips: '最低交易額為',
         home_maxAmountTips: '最高交易額為',
         home_feeTimeDownTitle: '剩餘時間',
@@ -91,11 +95,11 @@ module.exports = {
          * 买币
          */
         home_youPay: '您支付',
-        home_youBuyGet: '您支付',
+        home_youBuyGet: '你購買',
         home_buyFee_timeDownTitle: '剩餘時間',
         home_buyFee_timeDown: '引用更新數據',
         home_buyFee_title1: '您得到',
-        home_buyFee_title2: '獲得',
+        home_buyFee_title2: '花費',
         home_buyFee_rampFee: '服務費',
         home_buyFee_networkFee: '網絡費',
         //卖币
@@ -162,7 +166,7 @@ module.exports = {
         Sellorder_within:'至本地址',
         Sellorder_will:'將',
         Sellorder_get:'獲取',
-        Sellorder_for:'  為',
+        Sellorder_for:'  從',
         Sellorder_details:'請修改您銀行卡的詳細信息',
         Sellorder_page:'若繼續賣幣，請返回首頁',
         Sellorder_Crypto:'發送幣',
@@ -282,9 +286,12 @@ module.exports = {
         result_stateTo5: '已轉至您的錢包地址。',
         result_returnText_merchant: ' 返回',
         buy_configPayIDR_ovo_title: 'OVO電話',
-        login_getCode: '重新發送',
+        login_getCode: '重新發送驗證碼',
         login_VerifyCode:'請輸入六位數驗證碼',
-        login_Agreement:'請勾選用戶協定'
+        login_Agreement:'請勾選用戶協定',
+        sell_Order_network_selected:'請確保所選網路正確無誤，以免資產損失。',
+        Sell_Order_haveSent:'我已發送',
+        Sell_Order_transferred:'我已將加密貨幣轉移到指定的位址和網路。'
 
     }
 }

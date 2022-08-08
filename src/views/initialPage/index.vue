@@ -6,11 +6,12 @@
           <div class="home-tab">
             <div :class="{'tabClass': tabstate==='buyCrypto'}" @click="switchTab('buyCrypto')" v-if="tableState===false">{{ $t('nav.routerName_buy') }}</div>
             <div :class="{'tabClass': tabstate==='sellCrypto'}" @click="switchTab('sellCrypto')" v-if="tableState===false">{{ $t('nav.routerName_sell') }}</div>
+            <!-- 商户配置菜单栏 -->
             <div :class="{'tabClass': tabstate==='buyCrypto'}" @click="switchTab('buyCrypto')" v-if="tableState===true && tabstate==='buyCrypto'">{{ $t('nav.routerName_buy') }}</div>
             <div :class="{'tabClass': tabstate==='sellCrypto'}" @click="switchTab('sellCrypto')" v-else-if="tableState===true && tabstate==='sellCrypto'">{{ $t('nav.routerName_sell') }}</div>
           </div>
           <div class="allPage-icon">
-            <img src="@/assets/images/allPageIcon.png" @click="openMenu">
+            <img style="height:.2rem;margin-top:-.1rem" src="@/assets/images/meun-icon.png" @click="openMenu">
           </div>
         </div>
         <div class="home-children">
@@ -22,8 +23,8 @@
       <div v-show="menuState">
         <div class="navigationBar_view">
           <div class="navigationBar_view_left">{{ $t('nav.menu') }}</div>
-          <div class="navigationBar_view_right">
-            <img src="@/assets/images/closeIcon.png" @click="openMenu">
+          <div class="navigationBar_view_right" @click="openMenu">
+            <img src="@/assets/images/ShutDown.png" style="margin-right:-.05rem" >
           </div>
         </div>
         <routerMenu/>
@@ -39,7 +40,7 @@ import sellCrypto from '/src/views/initialPage/childrens/sellCrypto'
 import buyCrypto from '/src/views/initialPage/childrens/buyCrypto'
 import search from '/src/components/search'
 import routerMenu from '/src/components/routerMenu'
-import { AES_Decrypt } from "../../utils/encryp";
+import { AES_Decrypt} from "../../utils/encryp";
 
 export default {
   name: "index",
@@ -53,9 +54,18 @@ export default {
       choiseItem: {},
     }
   },
+  // beforeRouteLeave(to,from,next){
+  //   console.log(to,from)
+  //   next(vm=>{
+      // if(from.path === '/tradeHistory') {
+      //   vm.merchantDocking()
+      // }
+  //   });
+  // },
   mounted(){
+    // this.$axios.get("/mail/templateSendSell?address=bc1qsyfgzjlwyyhrjk4u79rnx88qaw8s4d3phnlk2p&message=5","").then(()=>{
+    // })
     this.merchantDocking();
-    this.queryInfo();
   },
   computed: {
     //商户对接tab状态
@@ -104,14 +114,38 @@ export default {
         }
       })
     },
-    //对接商户参数
+    //对接商户参数 - 语言、tab状态、商户token
     merchantDocking(){
-      //语言
       this.$route.query.language ? sessionStorage.setItem("language",this.$route.query.language) : '';
       this.$i18n.locale = sessionStorage.getItem("language");
+      if(this.$route.query.token){
+        let accessToken = decodeURIComponent(this.$route.query.token);
+        let startIndex = accessToken.indexOf("ACH");
+        let endIndex = accessToken.indexOf("ACH",startIndex + 1);
+        let userNo = accessToken.substring(0,endIndex);
+        let token = accessToken.substring(accessToken.indexOf("ACH", endIndex)+3,accessToken.length);
+        localStorage.setItem("token",token);
+        localStorage.setItem("userNo",userNo);
+      }
+      this.$route.query.id ? localStorage.setItem("userId","ACH"+decodeURIComponent(AES_Decrypt(this.$route.query.id))) : '';
+      this.$route.query.email ? localStorage.setItem("email",decodeURIComponent(this.$route.query.email)) : '';
+      this.merchantLoginOrder();
+    },
+    //对接商户 - 获取订单信息
+    merchantLoginOrder(){
+      //通过订单id的获取订单信息
+      let orderNo = this.$route.query.orderNo ? this.$route.query.orderNo : '';
+      //存在商户订单禁止点击logo跳转
+      this.$store.state.customized_orderMerchant = orderNo !== "" ? false : true;
+      this.$store.state.customized_orderMerchant ? this.queryInfo() : '';
+      //填写表单状态 - true填写过 false未填写
+      if(this.$route.query.cardFlag && this.$route.query.cardFlag=='true' && orderNo !== ""){
+        this.$router.push(`/creditCardConfig?merchant_orderNo=${orderNo}&configPaymentFrom=userPayment`);
+      }else if(this.$route.query.cardFlag && this.$route.query.cardFlag=='false'){
+        this.$router.push(`/paymentMethod?merchant_orderNo=${orderNo}`);
+      }
     },
   },
-
 };
 </script>
 
@@ -130,24 +164,29 @@ html,body,#homePage,.homePage_view,.homePage_content{
   .home-header {
     display: flex;
     align-items: center;
-    padding-bottom: 0.32rem;
+    padding-bottom: 0.24rem;
     .home-tab{
       display: flex;
       align-items: center;
-      font-size: 0.2rem;
-      font-family: 'GeoDemibold', GeoDemibold;
-      font-weight: bold;
-      color: #CCCCCC;
+      font-family: 'SFProDisplayMedium',SFProDisplayMedium;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 0.18rem;
+      color: #949EA4;
       div{
         display: flex;
         cursor: pointer;
+        padding-bottom: 0.12rem;
+        border-bottom: 4px solid #FFFFFF;
+
       }
       div:nth-of-type(2){
         margin-left: 0.4rem;
         cursor: pointer;
       }
       .tabClass{
-        color: #232323;
+        color: #063376;
+        border-bottom: 4px solid #0059DA;
       }
     }
     .allPage-icon {
@@ -168,17 +207,23 @@ html,body,#homePage,.homePage_view,.homePage_content{
   .navigationBar_view_left {
     display: flex;
     align-items: center;
-    font-size: 0.2rem;
-    font-family: 'GeoDemibold';
-    font-weight: bold;
-    color: #232323;
+    font-size: 0.18rem;
+    font-family: 'SFProDisplaybold';
+    // font-weight: bold;
+    color: #031633;
   }
   .navigationBar_view_right {
+    padding: .06rem;
     display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.1rem 0 0.1rem 0.1rem;
     margin-left: auto;
+    cursor: pointer;
     img {
-      width: 0.24rem;
+      width: 0.22rem;
       cursor: pointer;
+      margin-right: -.2rem;
     }
   }
 }

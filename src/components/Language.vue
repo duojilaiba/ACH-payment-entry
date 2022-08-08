@@ -1,6 +1,6 @@
 <template>
   <div class="Language-container">
-    <div class="Language_title" @click="$store.state.LanguageIsShow = false"><img src="../assets/images/backIcon.png" alt="">{{ $t('nav.menu_language') }}</div>
+    <div class="Language_title" @click="$store.state.LanguageIsShow = false"><img src="../assets/images/goBack.png" alt="">{{ $t('nav.menu_language') }}</div>
     <div class="Language_line" v-for="item in languageList" :key="item.name" @click="choiseItem(item)">
       <div class="Language_line_left">
         <img :src="item.icon" alt="">
@@ -37,25 +37,27 @@ export default {
 
 .Language-container{
   width: 95%;
-  height: calc(100% - .8rem);
+  height: calc(100%);
   // height: 100%;
   background: #fff;
   position: absolute;
-  top: .65rem;
+  // top: .65rem;
   padding-right: .1rem;
   .Language_title{
     width: 100%;
     display: flex;
     align-items: center;
+    
     cursor: pointer;
     img{
-      height: .17rem;
-      margin-right: .1rem;
+      height: .2rem;
+      margin-right: .05rem;
     }
-    font-size: .21rem;
-    font-family: GeoDemibold;
+    color:#031633;
+    font-size: .18rem;
     font-weight: normal;
-    color: #232323;
+    font-family: SFProDisplaybold;
+    // margin-bottom: .02rem;
   }
   .Language_line{
     width: 100%;
@@ -63,7 +65,7 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: .28rem;
+    margin-top: .24rem;
     cursor: pointer;
     .Language_line_left{
       display: flex;
@@ -71,18 +73,18 @@ export default {
 
       p{
         font-size: .16rem;
-        font-family: GeoRegular;
+        font-family: SFProDisplayRegular;
         font-weight: normal;
-        color: #232323;
+        color: #6E7687;
         margin-left: .1rem;
       }
       img{
-        width: .36rem;
-        height: .36rem;
+        width: .3rem;
+        height: .3rem;
       }
     }
     >img{
-      height: .25rem;
+      height: .2rem;
     }
   }
 }

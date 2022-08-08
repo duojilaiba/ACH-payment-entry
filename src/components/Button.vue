@@ -1,9 +1,9 @@
 <template>
-  <button class="button" :disabled="disabled" @click="submit" :class="{'loadingDisabled': this.buttonData.triggerNum >= 1 && loadingDisabled}">
+  <button class="button" :disabled="disabled" @click="submit" :class="{'loadingDisabled': this.buttonData.triggerNum >= 1 && loadingDisabled}" ref="buttonChild_ref">
     <slot v-if="buttonData.customName"/>
-    <div v-else>{{ buttonName }}</div>
+    <div v-else>{{ $t(buttonName) }}</div>
     <i v-if="buttonData.loading" class="el-icon-loading loadingIcon"></i>
-    <img v-else class="rightIcon" src="../assets/images/button-right-icon.png" alt="">
+    <img v-else class="rightIcon" src="../assets/images/button-right-icon.svg" alt="">
   </button>
 </template>
 
@@ -33,7 +33,7 @@ export default {
   },
   data(){
     return{
-      buttonName: this.$t('nav.ConfirmPayment'), // Confirm Payment ｜ I have completed the payment
+      buttonName: "nav.ConfirmPayment", // Confirm Payment ｜ I have completed the payment
     }
   },
   watch:{
@@ -53,7 +53,7 @@ export default {
       if(this.buttonData.triggerNum === 1){
         this.buttonData.loading = true;
         if(this.buttonData.customName === false){
-          this.buttonName = this.$t('nav.queryOderState');
+          this.buttonName = "nav.queryOderState";
         }
         return;
       }

@@ -23,7 +23,7 @@ Three channels for successful payment --- 'depositType'
         <div class="fee-content">
           <div class="fee-content-title" @click="expandCollapse" v-if="detailsTitleState">
             <div class="left">
-              {{ $t('nav.home_buyFee_title1') }} <span>{{ detailsParameters.cryptoQuantity }} {{ detailsParameters.cryptoCurrency }}</span> {{ $t('nav.home_buyFee_title2') }} <span>{{ detailsParameters.fiatCurrencySymbol }}{{ detailsParameters.amount }}</span>
+              {{ $t('nav.home_youBuyGet') }} <span>{{ detailsParameters.cryptoQuantity }} {{ detailsParameters.cryptoCurrency }}</span> {{ $t('nav.home_buyFee_title2') }} <span>{{ detailsParameters.fiatCurrencySymbol }}{{ detailsParameters.amount }}</span>
             </div>
             <div class="right"><van-icon name="arrow-down" /></div>
           </div>
@@ -58,7 +58,7 @@ Three channels for successful payment --- 'depositType'
     </div>
     <button class="continue" @click="goHome">
       {{ backText }}
-      <img class="rightIcon" src="../../../assets/images/button-right-icon.png" alt="">
+      <img class="rightIcon" src="../../../assets/images/button-right-icon.svg" alt="">
     </button>
   </div>
 </template>
@@ -87,10 +87,10 @@ export default {
     },
     resultText(){
       if(this.orderStatus >= 3 && this.orderStatus <= 4){
-        return `${this.$t('nav.result_stateTo4_your')} ${ this.detailsParameters.amount } ${ this.detailsParameters.cryptoCurrency } ${this.$t('nav.result_stateTo4')}`;
+        return `${this.$t('nav.result_stateTo4_your')} ${ this.detailsParameters.cryptoQuantity } ${ this.detailsParameters.cryptoCurrency } ${this.$t('nav.result_stateTo4')}`;
       }
       if(this.orderStatus === 5){
-        return `${ this.detailsParameters.amount } ${ this.detailsParameters.cryptoCurrency } ${this.$t('nav.result_stateTo5')}`
+        return `${ this.detailsParameters.cryptoQuantity } ${ this.detailsParameters.cryptoCurrency } ${this.$t('nav.result_stateTo5')}`
       }
     }
   },
@@ -112,7 +112,7 @@ export default {
           //order status
           this.orderStatus = res.data.orderStatus;
 
-          (res.data.orderStatus === 0 || res.data.orderStatus === 5 || res.data.orderStatus === 6) ?  clearInterval(this.countDown) : '';
+          (res.data.orderStatus === 0 || res.data.orderStatus === 5 || res.data.orderStatus === 6) ?  (window.clearInterval(this.countDown),this.countDown=null) : '';
 
           if(res.data.orderStatus === 0 || res.data.orderStatus === 6){
             this.detailsState = true;
@@ -133,17 +133,6 @@ export default {
       }
     },
 
-    //Judgment order status display text
-    judgeChannel(){
-      if(this.orderStatus >= 3 && this.orderStatus <= 4){
-        this.resultText = `${this.$t('nav.result_stateTo4_your')} ${ this.detailsParameters.amount } ${ this.detailsParameters.cryptoCurrency } ${this.$t('nav.result_stateTo4')}`;
-        return;
-      }
-      if(this.orderStatus === 5){
-        this.resultText = `${ this.detailsParameters.amount } ${ this.detailsParameters.cryptoCurrency } ${this.$t('nav.result_stateTo5')}`
-      }
-    },
-
     goHome(){
       let merchantInfo = sessionStorage.getItem("accessMerchantInfo") ? JSON.parse(sessionStorage.getItem("accessMerchantInfo")) : '{}';
       if(sessionStorage.getItem("accessMerchantInfo") !== '{}' && merchantInfo.redirectUrl && merchantInfo.redirectUrl !== ''){
@@ -154,7 +143,8 @@ export default {
     }
   },
   deactivated(){
-    clearInterval(this.countDown);
+    window.clearInterval(this.countDown);
+    this.countDown = null;
   },
 }
 </script>

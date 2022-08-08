@@ -3,7 +3,7 @@
     <!-- select network -->
     <search v-if="searchViewState" :viewName="viewName" :allBasicData="networkList"/>
     <!-- Select acceptance method -->
-    <div class="receiveCoins-view" v-show="!searchViewState" ref="includedDetails_ref">
+    <div class="receiveCoins-view" v-show="!searchViewState">
       <div class="receiveCoins-content">
         <div class="promptInformation">
           <span v-if="supportCurrency">Please provide cryptocurrency address to receive your order</span>
@@ -20,9 +20,9 @@
             </div>
             <div class="methods_myAddress">
               <div class="methods_title">{{ $t('nav.Sellorder_Network') }}</div>
-              <div class="methods_input network_input" @click="openSelect">
+              <div class="methods_input network_input" :class="{'disabled': !networkDefault}" @click="openSelect">
                 <div class="selectNetwork">
-                  <span v-if="buyParams.network!==''">{{ buyParams.network }}</span>
+                  <span v-if="buyParams.network!==''">{{ network_fullName }}</span>
                   <span class="networkPlaceholder" v-else>{{ $t('nav.search_components_networkTitle') }}</span>
                 </div>
                 <span class="rightIcon"><img src="../../../assets/images/rightBlackIcon.png"></span>
@@ -31,12 +31,12 @@
           </div>
         </div>
         <!-- Expense information -->
-        <includedDetails class="includedDetails_view" :network="buyParams.network"/>
+        <includedDetails class="includedDetails_view" ref="includedDetails_ref" :network="buyParams.network"/>
       </div>
       <div class="continueBox" v-show="!searchViewState">
-        <button class="continue" @click="transaction" :disabled="disabled">
+        <button class="continue" @click="transaction" :disabled="disabled" >
           {{ $t('nav.Continue') }}
-          <img class="rightIcon" src="../../../assets/images/button-right-icon.png" alt="">
+          <img class="rightIcon" src="../../../assets/images/button-right-icon.svg" alt="">
         </button>
       </div>
     </div>
@@ -64,6 +64,7 @@ export default {
       //ach支持的币种可以选择
       supportCurrency: true,
       //select network
+      network_fullName: '',
       networkList: [],
       networkDefault: false,
       addressDefault: false,
@@ -86,7 +87,7 @@ export default {
     disabled(){
       // if(this.checkModel[0]==='ach'||(this.checkModel[0]==='address'&&this.buyParams.network!==''&&this.buyParams.address!=='')){
       // console.log(this.checkModel,this.buyParams.network,this.buyParams.address)
-      if(this.buyParams.network!=='' && this.buyParams.address!==''){ //this.checkModel[0]==='address' &&
+      if(this.buyParams.network!=='' && this.buyParams.address!=='' && new RegExp(this.networkRegular).test(this.buyParams.address)){ //this.checkModel[0]==='address' &&
         return false
       }else{
         return true
@@ -105,6 +106,7 @@ export default {
           depositType: 1,
           payWayCode: '' //支付方式
         };
+        vm.network_fullName = "";
         vm.checkModel = [];
         vm.networkRegular = '';
         vm.walletAddress_state = false;
@@ -172,6 +174,7 @@ export default {
           let merchantInfo = JSON.parse(sessionStorage.getItem("accessMerchantInfo"));
           if(merchantInfo !== "{}" && (merchantInfo.networkDefault === true || merchantInfo.networkDefault === undefined)){
             this.buyParams.network = this.networkList.filter(item=>{return merchantInfo.network === item.network})[0].network;
+            this.network_fullName = this.networkList.filter(item=>{return merchantInfo.network === item.network})[0].networkName;
             this.checkModel[0] = 'address';
           }
         }
@@ -221,6 +224,7 @@ export default {
     transaction(){
       this.$store.state.placeOrderQuery = {};
       let buyParams = JSON.parse(JSON.stringify(this.buyParams));
+      buyParams.alpha2 = this.$store.state.buyRouterParams.positionData.alpha2;
       //下单接口参数
       if(this.checkModel[0] === 'address' && (buyParams.address === '' || buyParams.network === '')){
         return;
@@ -250,6 +254,7 @@ export default {
       this.$store.state.buyRouterParams.networkDefault = buyParams.network;
       this.$store.state.buyRouterParams.addressDefault = buyParams.address;
       this.$store.state.placeOrderQuery = buyParams;
+
       this.$router.push('/paymentMethod');
     },
   }
@@ -313,6 +318,9 @@ export default {
           &::placeholder{
             color: #999999;
           }
+          &:disabled{
+            cursor: no-drop;
+          }
         }
         .rightIcon{
           position: absolute;
@@ -335,8 +343,14 @@ export default {
           color: #999999;
         }
       }
-      .network_input input{
-        padding: 0 0.5rem 0 0.21rem;
+      .network_input{
+        cursor: pointer;
+        input{
+          padding: 0 0.5rem 0 0.21rem;
+        }
+      }
+      .disabled{
+        cursor: no-drop;
       }
       .methods_errorText{
         position: absolute;
@@ -357,7 +371,7 @@ export default {
   }
 
   .includedDetails_view{
-    margin-top: 0.36rem;
+    margin-top: 0.1rem;
     margin-bottom: 0.2rem;
   }
 

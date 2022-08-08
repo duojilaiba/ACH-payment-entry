@@ -1,7 +1,7 @@
 <template>
   <div class="verifyCode-container">
       <div style="position:relative;flex:1">
-        <div class="verifyCode_title">{{ $t('nav.codeTitle1') }}</div>
+        <div class="verifyCode_title" style="font-size:.16rem;color:#031633;margin:.42rem 0 .0rem">{{ $t('nav.codeTitle1') }}</div>
       <div class="verifyCode_content">
         <span v-for="(item,index) in number" :key="index" @click="changeBlur" :class="index===value.length?'active':''">{{ value[index] }}</span>
         <input type="input" style="outline: none; color:transparent;" v-model="value" :maxlength="6" ref="input">
@@ -9,13 +9,11 @@
       <div class="verifyCode_title" style="margin-top:.4rem;text-align: center;" v-if="codeTime>0">{{ $t('nav.codeTitle3') }} {{ codeTime }}{{ $t('nav.codeSecond') }}</div>
       <div class="verifyCode_title" v-else style="margin-top:.4rem;text-align: center;" >{{ $t('nav.codeTitle2') }}  <span @click="getEmailCode">{{ $t('nav.login_getCode') }} </span></div>
       </div>
-      <div style="position:relative;height: 1.1rem;">
-        <div class="verifyCode_title bottom">
-        <el-checkbox size="small" v-model="checked"></el-checkbox>
-        <div> {{ $t('nav.code_text') }} <span @click="openView('Terms')" style="cursor: pointer;">&lt;{{ $t('nav.code_name') }}&gt;</span> {{ $t('nav.code_and') }} <span style="cursor: pointer" @click="openView('Privacy')">&lt;{{ $t('nav.code_name2') }}&gt;.</span></div></div>
+      <div style="position:relative;">
+
       <div class="verifyCode_button" @click="toLogin" :style="{background:netActive && !showLoading?'#0059DAFF':''}">
-        {{ $t('nav.Continue') }}
-        <img class="icon" src="@/assets/images/slices/rightIcon.png" alt="" v-if="!showLoading">
+        {{ $t('nav.Proceed') }}
+        <img class="icon" src="@/assets/images/rightIconSell.png" alt="" v-if="!showLoading">
         <van-loading class="icon" type="spinner" color="#fff" v-else/>
       </div>
       </div>
@@ -25,13 +23,14 @@
 import axios from 'axios';
 import { debounce } from '../../../utils/index';
 import { AES_Encrypt } from '@/utils/encryp.js';
+import { fingerprintId } from '@/utils/publicRequest.js';
+
   export default {
   name: "verifyCode",
   data(){
     return {
       number:6,
       value:'',
-      checked:false,
       codeTime:0,
       timeVal:null,
       showLoading:false
@@ -41,30 +40,15 @@ import { AES_Encrypt } from '@/utils/encryp.js';
     setTimeout(()=>{
       this.changeBlur()
     },500)
-    // clearInterval(this.timeVal)
-    // this.timeVal = setInterval(()=>{
-    //   this.codeTime--
-    //   if(this.codeTime <= 0){
-    //     // this.codeTime = 10
-    //     clearInterval(this.timeVal)
-    //   }
-    // },1000)
   },
   activated(){
     this.value = ''
     setTimeout(()=>{
       this.changeBlur()
     },500)
-    // clearInterval(this.timeVal)
-    // this.codeTime = 10
-    //   this.timeVal = setInterval(()=>{
-    //   this.codeTime--
-    //   if(this.codeTime <= 0){
-    //     // this.codeTime = 10
-    //     clearInterval(this.timeVal)
-    //   }
-    // },1000)
+
   },
+
   methods:{
     //input聚焦
     changeBlur(){
@@ -81,24 +65,28 @@ import { AES_Encrypt } from '@/utils/encryp.js';
        this.$axios.post(this.$api.post_sendEmail,params,'').then(res=>{
          if(res.returnCode === '0000'){
            this.codeTime = 10
-           clearInterval(this.timeVal)
+           window.clearInterval(this.timeVal);
+           this.timeVal = null;
            this.timeVal = setInterval(()=>{
             this.codeTime--
             if(this.codeTime <= 0){
-              clearInterval(this.timeVal)
+              window.clearInterval(this.timeVal)
+              this.timeVal = null;
             }
           },1000)
          }
        })
     },500,false),
     toLogin(){
-     if(this.netActive){
+     if(this.netActive && this.showLoading === false){
+       fingerprintId();
        let _this = this;
        this.showLoading = true
        var FormData = require('form-data');
         var data = new FormData();
          data.append('email', this.$store.state.userEmail);
          data.append('verificationCode', AES_Encrypt(this.value));
+         data.append('fingerprintId', localStorage.getItem('fingerprint_id'));
          var config = {
           method: 'post',
           url: process.env.VUE_APP_BASE_API + this.$api.post_login,
@@ -119,47 +107,37 @@ import { AES_Encrypt } from '@/utils/encryp.js';
         axios(config).then(function (response) {
           if(response.returnCode === '0000'){
             _this.codeErrorState = false;
-            _this.showLoading = false
+
             _this.$store.state.isLogin = true
             _this.$store.state.menuState = 'login'
-            // debugger
-            // console.log(_this.$store.state.routerQueryPath);
-        if(_this.$store.state.routerQueryPath === true){
-          _this.$router.push('/');
-          return
-        }
+            localStorage.removeItem('loginOut')
+            localStorage.setItem('login_email',_this.$store.state.userEmail)
+            setTimeout(()=>{
+              _this.showLoading = false
+            },2000)
+            if(_this.$store.state.routerQueryPath === true){
+              _this.$router.push('/');
+              return
+            }
             if(_this.$route.query.fromName === 'tradeList'){
               _this.$router.replace('/tradeHistory');
             }else{
               //登陆跳转路径根据router.from的路由跳转不同页面
               if(_this.$store.state.emailFromPath === 'buyCrypto'){
-                _this.$router.push(`/receivingMode`);
+                _this.$router.replace(`/receivingMode`);
               }else if(_this.$store.state.emailFromPath === 'sellCrypto'){
-                  // _this.$router.push('/')
-
-                let params = {
-                  country: _this.$store.state.sellRouterParams.positionData.alpha2,
-                  fiatName: _this.$store.state.sellRouterParams.positionData.fiatCode,
-                };
-                _this.$axios.get(_this.$api.get_userSellCardInfo,params).then(res=>{
-                  //data - null 没有填写过表单,跳转到表单页
-                  //data - !null 有填写过表单,跳转到确认订单页
-                  if(res && res.returnCode === "0000" && res.data === null){
-                    delete _this.$store.state.sellForm;
-                    _this.$router.push('/sell-formUserInfo')
-                  }else if(res && res.returnCode === "0000" && res.data !== null){
-                    _this.$store.state.sellForm = res.data;
-                    _this.$router.push('/configSell')
-                  }
-                })
+                _this.$router.replace('/sell-formUserInfo')
+              }else if(_this.$store.state.emailFromPath === 'Refund'){
+                _this.$router.replace(`/Refund?cryptocurrency=${_this.$store.state.emailFromquery_refund_view.cryptocurrency}`)
+              }else if(_this.$store.state.emailFromPath === 'tradeHistory-details'){
+                _this.$router.replace(`/tradeHistory-details?orderId=${_this.$store.state.emailFromquery_tradeHistoryDetails_view.orderId}`)
               }else if(_this.$store.state.emailFromPath === 'sellOrder'){
-                _this.$router.push('/sellOrder');
+                _this.$router.replace(`/sellOrder?orderId=${_this.$store.state.emailFromquery_sellCardInfo_view.orderId}`)
               }else{
                 _this.$router.push('/');
               }
             }
           }else if(response.returnCode === "10002" || response.returnCode === "10003" || response.returnCode === "1026" || response.returnCode === "1027" || response.returnCode === "1025"){
-            // console.log(111);
             _this.codeErrorState = false;
             _this.showLoading = false
             _this.$toast({
@@ -178,34 +156,28 @@ import { AES_Encrypt } from '@/utils/encryp.js';
          message: this.$t('nav.login_VerifyCode')
        });
        return
-     }else{
-       this.$toast({
-         duration: 3000,
-         message: this.$t('nav.login_Agreement')
-       });
-       return
      }
 
     },
-    openView(name){
-      if(name==='Privacy'){
-        window.location = 'https://alchemypay.org/privacy-policy/'
-        return
-      }
-      if(name === 'Terms'){
-         window.location = 'https://alchemypay.org/terms-of-use/';
-        return;
-      }
-    }
+
   },
   computed:{
     netActive(){
-      if(this.checked && this.value.length === 6){
+      if( this.value.length === 6){
         return true
       }else if(isNaN(this.value) === true){
         return false
       }else{
         return false
+      }
+    }
+  },
+  watch:{
+    //验证码输入完成直接登陆
+    value(newVal){
+      if(newVal.length >= 6){
+        this.showLoading = false
+        this.toLogin()
       }
     }
   }
@@ -222,10 +194,10 @@ import { AES_Encrypt } from '@/utils/encryp.js';
   justify-content: space-between;
   .verifyCode_title{
     font-size: .13rem;
-    color: #232323;
-    font-family: "GeoLight";
+    color: #6E7687;
+    font-family: "SFProDisplayRegular";
     span{
-      color: #0059DAFF;
+      color: rgba(0, 71, 173, 1);
       cursor: pointer;
     }
   }
@@ -243,7 +215,7 @@ import { AES_Encrypt } from '@/utils/encryp.js';
       height: .65rem;
       border-radius: .12rem;
       font-size: .24rem;
-      background: #F3F4F5FF;
+      background: #F4F5F7;
       text-align: center;
       line-height: .65rem;
     }
@@ -270,24 +242,24 @@ import { AES_Encrypt } from '@/utils/encryp.js';
     background: rgba(0, 89, 218, 0.5);
     border-radius: .29rem;
     font-size: .17rem;
-    text-align: center;
-    line-height: .58rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     // position: absolute;
     // bottom: 0rem;
     position: relative;
     color: #FAFAFA;
-    font-family: "GeoRegular";
+    font-family: "SFProDisplayRegular";
     cursor: pointer;
     .icon{
-      width: .24rem;
-      height: .24rem;
-      position: absolute;
-      right: .16rem;
-      top: .18rem;
+      // width: .24rem;
+      height: .2rem;
+      margin-left: .12rem;
       span{
+        height: .15rem;
         position: absolute;
-        left: 0;
-        top: .03rem;
+        left: .08rem;
+        top: .02rem;
       }
     }
   }

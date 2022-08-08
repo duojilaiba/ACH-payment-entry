@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from "../views/initialPage";
 
 Vue.use(Router)
 
@@ -14,11 +13,192 @@ Router.prototype.push = function push(location) {
  * a base page that does not have permission requirements
  * all roles can be accessed
  */
+// export const constantRoutes = [
+//   {
+//     path: "/",
+//     name: 'home',
+//     component: resolve => require(['../views/initialPage'], resolve),
+//     redirectTo: '/',
+//     meta: {
+//       title: 'Home',
+//       keepAlive: true,
+//     }
+//   },
+//   //邮箱填写路由
+//   {
+//     path: "/emailCode",
+//     name: 'emailCode',
+//     component: resolve => require(['../views/emailCode/index.vue'], resolve),
+//     meta: {
+//       title: ' ',
+//       keepAlive: true,
+//     }
+//   },
+//   //验证验证码的路由
+//   {
+//     path: "/verifyCode",
+//     name: 'verifyCode',
+//     component: resolve => require(['../views/emailCode/children/verifyCode.vue'], resolve),
+//     meta: {
+//       title: ' ',
+//       keepAlive: true,
+//     }
+//   },
+//   //kyc验证
+//   {
+//     path: "/kycVerification",
+//     name: 'KycVerification',
+//     component: resolve => require(['../views/KycVerification/index'], resolve),
+//     meta: {
+//       title: ' ',
+//       keepAlive: true,
+//     }
+//   },
+//   //交易历史列表
+//   {
+//     path: "/tradeHistory",
+//     name: 'tradeHistory',
+//     component: resolve => require(['../views/tradeHistory/index.vue'], resolve),
+//     meta: {
+//       requireAuth: true,
+//       title: 'nav.routerName_Transactions',
+//       keepAlive: true,
+//     }
+//   },
+//   //交易历史详情
+//   {
+//     path: "/tradeHistory-details",
+//     name: 'tradeHistory-details',
+//     component: resolve => require(['../views/tradeHistory/details.vue'], resolve),
+//     meta: {
+//       requireAuth: true,
+//       title: 'nav.routerName_Transactions_details',
+//       keepAlive: true,
+//     }
+//   },
+//   {
+//     path: "/Refund",
+//     name: 'Refund',
+//     component: resolve => require(['../views/tradeHistory/refund.vue'], resolve),
+//     meta: {
+//       requireAuth: true,
+//       title: 'nav.routerName_Refund',
+//       keepAlive: true,
+//     }
+//   },
+//     //买币路由
+//   {
+//     path: "/receivingMode",
+//     name: 'receivingMode',
+//     component: resolve => require(['../views/buyCurrency/receivingMode/index.vue'], resolve),
+//     meta: {
+//       title: 'nav.routerName_receivingMode',
+//       keepAlive: true,
+//     }
+//   },
+//   {
+//     path: "/paymentMethod",
+//     name: 'paymentMethod',
+//     component: resolve => require(['../views/buyCurrency/paymentMethod/index.vue'], resolve),
+//     meta: {
+//       title: 'nav.routerName_paymentMethod',
+//       keepAlive: true,
+//     }
+//   },
+//   {
+//     path: "/creditCardForm-cardInfo",
+//     name: 'creditCardForm-cardInfo',
+//     component: resolve => require(['../views/buyCurrency/payments/creditCard/newCardInfo.vue'], resolve),
+//     meta: {
+//       requireAuth: true,
+//       // fromPage: 'basisIdAuth',
+//       title: 'nav.routerName_buyForm',
+//       keepAlive: true,
+//     }
+//   },
+//     //修改卡信息
+//   {
+//     path: "/modifyCardInfo",
+//     name: 'modifyCardInfo',
+//     component: resolve => require(['../views/buyCurrency/payments/creditCard/modifyCardInfo.vue'], resolve),
+//     meta: {
+//       requireAuth: true,
+//       title: 'nav.routerName_buyForm',
+//       keepAlive: true,
+//     }
+//   },
+//   {
+//     path: "/creditCardConfig",
+//     name: 'creditCardConfig',
+//     component: resolve => require(['../views/buyCurrency/payments/creditCard/configPayment.vue'], resolve),
+//     meta: {
+//       requireAuth: true,
+//       title: 'nav.routerName_creditCardConfig',
+//       keepAlive: true,
+//     }
+//   },
+//   {
+//     path: "/otherWays-VA",
+//     name: 'otherWays-VA',
+//     component: resolve => require(['../views/buyCurrency/payments/otherWays/VAOPM'], resolve),
+//     meta: {
+//       requireAuth: true,
+//       title: 'nav.routerName_buyPayment',
+//       keepAlive: false,
+//     }
+//   },
+//   {
+//     path: "/otherWayPay",
+//     name: 'otherWayPay',
+//     component: resolve => require(['../views/buyCurrency/payments/otherWays/indonesian.vue'], resolve),
+//     meta: {
+//       requireAuth: true,
+//       title: 'nav.routerName_buyOtherWayPay',
+//       keepAlive: false,
+//     }
+//   },
+//   {
+//     path: "/paymentResult",
+//     name: 'paymentResult',
+//     component: resolve => require(['../views/buyCurrency/paymentResult/index.vue'], resolve),
+//     meta: {
+//       requireAuth: true,
+//       title: 'nav.routerName_paymentResult',
+//       keepAlive: true,
+//     }
+//   },
+//     //卖币路由
+//   {
+//     path: "/sell-formUserInfo",
+//     name: 'sellCardInfo',
+//     component: resolve => require(['../views/sellCurrency/cardInfo'], resolve),
+//     meta: {
+//       requireAuth: true,
+//       title: 'nav.routerName_sellForm',
+//       keepAlive: true,
+//     },
+//   },
+//   {
+//     path: "/sellOrder",
+//     name: "sellOrder",
+//     // route level code-splitting
+//     // this generates a separate chunk (about.[hash].js) for this route
+//     // which is lazy-loaded when the route is visited.
+//     component: resolve => require(['../views/orderState/index.vue'], resolve),
+//     meta: {
+//       requireAuth: true,
+//       title: 'nav.routerName_sellOrder',
+//       title1:'',
+//       keepAlive: true,
+//     }
+//   },
+// ]
+
 export const constantRoutes = [
   {
     path: "/",
     name: 'home',
-    component: Home,
+    component: () => import('../views/initialPage'),
     redirectTo: '/',
     meta: {
       title: 'Home',
@@ -29,10 +209,9 @@ export const constantRoutes = [
   {
     path: "/emailCode",
     name: 'emailCode',
-    component: () =>
-        import(/* webpackChunkName: "about" */ "../views/emailCode/index.vue"),
+    component: () => import('../views/emailCode/index.vue'),
     meta: {
-      title: 'nav.routerName_email',
+      title: ' ',
       keepAlive: true,
     }
   },
@@ -40,30 +219,59 @@ export const constantRoutes = [
   {
     path: "/verifyCode",
     name: 'verifyCode',
-    component: () =>
-        import(/* webpackChunkName: "about" */ "../views/emailCode/children/verifyCode"),
+    component: () => import('../views/emailCode/children/verifyCode.vue'),
     meta: {
-      title: 'nav.routerName_emailCode',
+      title: ' ',
       keepAlive: true,
     }
   },
-  //切换语言的路由
+  //kyc验证
+  {
+    path: "/kycVerification",
+    name: 'KycVerification',
+    component: () => import('../views/KycVerification/index'),
+    meta: {
+      title: ' ',
+      keepAlive: true,
+    }
+  },
+  //交易历史列表
   {
     path: "/tradeHistory",
     name: 'tradeHistory',
-    component: () =>
-        import(/* webpackChunkName: "about" */ "../views/tradeHistory/index.vue"),
+    component: () => import('../views/tradeHistory/index.vue'),
     meta: {
       requireAuth: true,
       title: 'nav.routerName_Transactions',
       keepAlive: true,
     }
   },
-    //买币路由
+  //交易历史详情
+  {
+    path: "/tradeHistory-details",
+    name: 'tradeHistory-details',
+    component: () => import('../views/tradeHistory/details.vue'),
+    meta: {
+      requireAuth: true,
+      title: 'nav.routerName_Transactions_details',
+      keepAlive: true,
+    }
+  },
+  {
+    path: "/Refund",
+    name: 'Refund',
+    component: () => import('../views/tradeHistory/refund.vue'),
+    meta: {
+      requireAuth: true,
+      title: 'nav.routerName_Refund',
+      keepAlive: true,
+    }
+  },
+  //买币路由
   {
     path: "/receivingMode",
     name: 'receivingMode',
-    component: () => import(/* webpackChunkName: "about" */ "../views/buyCurrency/receivingMode/index.vue"),
+    component: () => import('../views/buyCurrency/receivingMode/index.vue'),
     meta: {
       title: 'nav.routerName_receivingMode',
       keepAlive: true,
@@ -72,30 +280,16 @@ export const constantRoutes = [
   {
     path: "/paymentMethod",
     name: 'paymentMethod',
-    component: () =>
-        import(/* webpackChunkName: "about" */ "../views/buyCurrency/paymentMethod/index.vue"),
+    component: () => import('../views/buyCurrency/paymentMethod/index.vue'),
     meta: {
       title: 'nav.routerName_paymentMethod',
       keepAlive: true,
     }
   },
   {
-    path: "/basisIdAuth",
-    name: 'basisIdAuth',
-    component: () =>
-        import(/* webpackChunkName: "about" */ "../views/buyCurrency/payments/creditCard/basisIdAuth.vue"),
-    meta: {
-      requireAuth: true,
-      title: 'nav.routerName_basisIdAuth',
-      keepAlive: true,
-    },
-
-  },
-  {
     path: "/creditCardForm-cardInfo",
     name: 'creditCardForm-cardInfo',
-    component: () =>
-        import(/* webpackChunkName: "about" */ "../views/buyCurrency/payments/creditCard/payForm-cardInfo.vue"),
+    component: () => import('../views/buyCurrency/payments/creditCard/newCardInfo.vue'),
     meta: {
       requireAuth: true,
       // fromPage: 'basisIdAuth',
@@ -103,11 +297,21 @@ export const constantRoutes = [
       keepAlive: true,
     }
   },
+  //修改卡信息
+  {
+    path: "/modifyCardInfo",
+    name: 'modifyCardInfo',
+    component: () => import('../views/buyCurrency/payments/creditCard/modifyCardInfo.vue'),
+    meta: {
+      requireAuth: true,
+      title: 'nav.routerName_buyForm',
+      keepAlive: true,
+    }
+  },
   {
     path: "/creditCardConfig",
     name: 'creditCardConfig',
-    component: () =>
-        import(/* webpackChunkName: "about" */ "../views/buyCurrency/payments/creditCard/configPayment.vue"),
+    component: () => import('../views/buyCurrency/payments/creditCard/configPayment.vue'),
     meta: {
       requireAuth: true,
       title: 'nav.routerName_creditCardConfig',
@@ -117,8 +321,7 @@ export const constantRoutes = [
   {
     path: "/otherWays-VA",
     name: 'otherWays-VA',
-    component: () =>
-        import(/* webpackChunkName: "about" */ "../views/buyCurrency/payments/otherWays/VAOPM"),
+    component: () => import('../views/buyCurrency/payments/otherWays/VAOPM'),
     meta: {
       requireAuth: true,
       title: 'nav.routerName_buyPayment',
@@ -128,8 +331,7 @@ export const constantRoutes = [
   {
     path: "/otherWayPay",
     name: 'otherWayPay',
-    component: () =>
-        import(/* webpackChunkName: "about" */ "../views/buyCurrency/payments/otherWays/indonesian.vue"),
+    component: () => import('../views/buyCurrency/payments/otherWays/indonesian.vue'),
     meta: {
       requireAuth: true,
       title: 'nav.routerName_buyOtherWayPay',
@@ -139,19 +341,18 @@ export const constantRoutes = [
   {
     path: "/paymentResult",
     name: 'paymentResult',
-    component: () =>
-        import(/* webpackChunkName: "about" */ "../views/buyCurrency/paymentResult/index.vue"),
+    component: () => import('../views/buyCurrency/paymentResult/index.vue'),
     meta: {
       requireAuth: true,
       title: 'nav.routerName_paymentResult',
       keepAlive: true,
     }
   },
-    //卖币路由
+  //卖币路由
   {
     path: "/sell-formUserInfo",
-    name: 'testForm',
-    component: () => import(/* webpackChunkName: "about" */ "../views/sellCurrency/cardInfo/testForm.vue"),
+    name: 'sellCardInfo',
+    component: () => import('../views/sellCurrency/cardInfo'),
     meta: {
       requireAuth: true,
       title: 'nav.routerName_sellForm',
@@ -159,26 +360,16 @@ export const constantRoutes = [
     },
   },
   {
-    path: "/configSell",
-    name: 'configSell',
-    component: () =>
-        import(/* webpackChunkName: "about" */ "../views/sellCurrency/configSell/index.vue"),
-    meta: {
-      requireAuth: true,
-      title: 'nav.routerName_configSell',
-      keepAlive: true,
-    }
-  },
-  {
     path: "/sellOrder",
     name: "sellOrder",
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ "../views/orderState/index.vue"),
+    component: () => import('../views/orderState/index.vue'),
     meta: {
       requireAuth: true,
       title: 'nav.routerName_sellOrder',
+      title1:'',
       keepAlive: true,
     }
   },

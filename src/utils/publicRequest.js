@@ -1,21 +1,27 @@
 import store from "../store";
 import axios from "axios";
 import { AES_Encrypt } from '@/utils/encryp.js';
+import moment from 'moment-timezone';
+import FingerprintJS from '@fingerprintjs/fingerprintjs-pro';
 
 //Request service address
 const baseUrl = process.env.VUE_APP_BASE_API;
+let apiKey = process.env.VUE_APP_Fingerprint_ApiKey;
 
+/**
+ * 提交订单、确认订单前获取submit-token公共接口
+ * @returns 获取成功返回true，失败则是fasle
+ */
 export function querySubmitToken(){
-    //Payment or submission interface failed to obtain again 'submit-token'
     let params = {
         "coin": store.state.buyRouterParams.cryptoCurrency,
         "email": localStorage.getItem("email")
     }
-    //timestamp and sign
+    //请求接口请求头信息
     let timestamp = '';
     if(localStorage.getItem("token")){
         let sign = localStorage.getItem("userId");
-        let userId = sign.substring(sign.lastIndexOf("\H")+1,sign.length);
+        let userId = sign.substring(sign.lastIndexOf("H")+1,sign.length);
         let userNo = localStorage.getItem("userNo").substring(localStorage.getItem("userNo").length-5);
         timestamp = new Date().getTime();
         let newSign = AES_Encrypt(userId + "-" + userNo + "-" + timestamp);
@@ -28,8 +34,10 @@ export function querySubmitToken(){
         headers: {
             'token': localStorage.getItem('token') ? localStorage.getItem('token') : '',
             'sign': localStorage.getItem('sign') ? localStorage.getItem('sign') : '',
+            'fingerprint-id': localStorage.getItem('fingerprint_id')?localStorage.getItem('fingerprint_id'):'',
             'timestamp': timestamp,
             'Content-Type': 'application/json',
+            timezone: moment.tz.guess(),
         }
     }).then(res=>{
         if(res.data !== null && res.returnCode === '0000') {
@@ -40,4 +48,19 @@ export function querySubmitToken(){
     }).catch(()=>{
         return false
     })
+}
+
+/**
+ * fingerprint - 设备指纹 ｜ 设备唯一id
+ * @url https://dashboard.fingerprint.com
+ */
+export function fingerprintId(){
+    const fpPromise = FingerprintJS.load({
+        apiKey: apiKey
+    })
+    fpPromise.then(fp => fp.get()).then(result => {
+        //加密设备ID
+        // console.log('获取设备唯一标识：',result.visitorId);
+        window.localStorage.setItem("fingerprint_id",AES_Encrypt(result.visitorId));
+    });
 }

@@ -1,5 +1,13 @@
 module.exports = {
-  language:'english',
+  language:'English(US)',
+  //首页
+  homePage: {
+
+  },
+  //按钮组件
+  button_components: {
+
+  },
   nav:{
     /**
      * 按钮文案
@@ -9,6 +17,7 @@ module.exports = {
     ConfirmPayment: 'Confirm Payment',
     queryOderState: 'I have completed the payment',
     orderRsult: 'Continue to buy crypto',
+    Proceed:'Proceed',
 
     /**
      * 组件
@@ -20,8 +29,9 @@ module.exports = {
     agreement_components_text2: 'AlchemyPay ',
     agreement_components_text3: 'to debit my chosen payment method for the amount above on today’s date and understand that this can not be cancelled, recalled or refunded. ',
     //查询订单状态提示
-    orderTips_title: 'Payment not funt',
-    orderTips_text: 'Sorry, we did not detect your payment information. If you confirm the payment, please stay on this page for a few minutes, once we receive your payment, we will transfer the corresponding amount of USDT to you. ',
+    orderTips_title: 'Please wait on this page',
+    orderTips_text1: 'Sorry, we have not receive your payment yet. If you confirm the payment, please wait on this page for a few minutes, once we receive your payment, we will transfer the corresponding amount of',
+    orderTips_text2: 'to you.',
     orderTips_buttonText: 'I Understand',
     //菜单
     menu: 'Menu',
@@ -38,7 +48,9 @@ module.exports = {
     routerName_sell: 'Sell Crypto',
     routerName_email: 'Enter Email Address',
     routerName_emailCode: 'Verification code',
-    routerName_Transactions: 'Transactions',
+    routerName_Transactions: 'Order History',
+    routerName_Transactions_details: 'Order History',
+    routerName_Refund: 'Request Refund of ',
     routerName_receivingMode: 'Receive coins',
     routerName_paymentMethod: 'Choose payment method',
     routerName_basisIdAuth: 'basis-Id-Auth',
@@ -47,7 +59,7 @@ module.exports = {
     routerName_buyPayment: 'Payment',
     routerName_buyOtherWayPay: 'Confirm Payment',
     routerName_paymentResult: 'Payment Result',
-    routerName_sellForm: 'Enter Information',
+    routerName_sellForm: 'Add Bank Account',
     routerName_configSell: 'Confirm',
     routerName_sellOrder: 'Order',
 
@@ -55,21 +67,24 @@ module.exports = {
      * 登陆
      */
     login: 'Login',
-    login_required: 'Required.',
+    login_required: 'Format Error.',
     loginOut: 'Login out',
     loginOut_title: 'Are you sure you want to logout?',
     loginOut_Dismiss: 'Dismiss',
-    enterEmail: 'Enter email',
+    enterEmail: 'What is your email address?',
+    enterEmail1: 'Is this your email address?',
+    emailanother:'Sign in with another email address',
     loginTitle1: 'Checkout with Alchemy Pay',
     loginTitle2: 'The fastest and safest way to checkout on hundreds of crypto apps.',
-    codeTitle1: 'We’ve sent a confirmation code to your email.',
-    codeTitle2: 'If your code doesn\'t arrive shortly. ',
+    codeTitle1: 'Enter the login code you just received',
+    codeTitle2: 'Not received? ',
     codeTitle3: 'New verification code sent ',
     codeSecond: 's',
-    code_text: ' I agree with Alchemy Pay\'s ',
+    code_text: " I have read and agree to Alchemy pay's ",
     code_name: 'Terms of Service',
     code_and: 'and',
     code_name2: 'Privacy Policy',
+    login_Youlogged:'You re already logged in',
 
     /**
      * 首页
@@ -79,7 +94,6 @@ module.exports = {
     home_buyTitle: "Buy Crypto",
     //卖币标题
     home_sellTitle: "Sell Crypto",
-    home_Tips: 'By continuing you agree to our cookie policy.',
     home_minAmountTips: 'The minimum transaction amount is',
     home_maxAmountTips: 'The maximum transaction amount is',
     home_feeTimeDownTitle: 'Remaining time',
@@ -90,19 +104,19 @@ module.exports = {
      * 买币
      */
     home_youPay: 'You Pay',
-    home_youBuyGet: 'You Get',
+    home_youBuyGet: 'You get',
     home_buyFee_timeDownTitle: 'Remaining time',
     home_buyFee_timeDown: 'Quote updates in',
-    home_buyFee_title1: 'You get',
+    home_buyFee_title1: 'You Get',
     home_buyFee_title2: 'for',
-    home_buyFee_rampFee: 'Ramp fee',
-    home_buyFee_networkFee: 'Network fee',
+    home_buyFee_rampFee: 'Ramp Fee',
+    home_buyFee_networkFee: 'Network Fee',
     //卖币
     home_youSell: 'You Sell',
     home_youSellGet: 'You Get',
     home_sellFee_title1: 'You sell',
     home_sellFee_title2: 'to',
-    home_sellFee_rampFee: 'Ramp fee',
+    home_sellFee_rampFee: 'Ramp Fee',
     //搜索组件
     search_components_countryTitle: 'Select Country',
     search_components_cryptoTitle: 'Select Crypto',
@@ -139,7 +153,7 @@ module.exports = {
     //买币 - 确认订单 - 印尼支付
     buy_configPayIDR_va_title: 'BANK',
     buy_configPayIDR_va_codeTitle: 'Payment Code',
-    buy_configPayIDR_timeDownTips: 'Plese completa payment with',
+    buy_configPayIDR_timeDownTips: 'Please complete payment with',
     buy_configPayIDR_codeTips: 'Scan QR Code to complete payment',
     buy_configPayIDR_ovo_phoneTips: 'Open OVO app to complete payment.',
     //订单结果页
@@ -171,7 +185,7 @@ module.exports = {
     Sellorder_fail:'fail',
     Sellorder_Transfer:'In Transfer',
     Sellorder_Id:'Order ID',
-    Sellorder_Network:'Network',
+    Sellorder_Network:'Choose Network',
     Sellorder_Address:'Address',
     Sellorder_Card:'Card',
     Sellorder_Fail:'Fail Reason',
@@ -179,6 +193,7 @@ module.exports = {
     Sellorder_QRCode:'Scan QR Code',
     Sellorder_You:'You',
     SellOrder_modified:'Card information cannot be modified at this time',
+    SellOrder_title:'Sell ',
     //菜单栏语言
     RouterMenu_Welcome:'Welcome to Alchemy Pay!',
     RouterMenu_experience:'Login to unlock the full experience',
@@ -262,6 +277,9 @@ module.exports = {
     sell_form_bankSwiftTips: 'Swift code and location id cannot be empty at the same time',
     sell_form_bankSwiftCodeTips: 'Bank code and swift code cannot be empty at the same time',
     // sell_form_bankCodeLocationIdTips: 'Bank code and location id cannot be empty at the same time',
+    sell_Order_network_selected:'Please ensure the network selected is correct to avoid loss of assets.',
+    Sell_Order_haveSent:'I have sent the ',
+    Sell_Order_transferred:'I have transferred the crypto to the indicated address and network.',
 
     // 后增
     history_noListButton: 'Buy crypto now',
@@ -274,7 +292,7 @@ module.exports = {
     history_listTitle1: 'Order No',
     history_listTitle2: 'Crypto',
     history_listTitle3: 'Hash ID',
-    fee_listTitle_price: 'price',
+    fee_listTitle_price: 'Price',
     sell_order_title: 'state-content',
     fee_tips: 'Based on payment method',
     search_components_Popular: 'Popular',
@@ -285,7 +303,7 @@ module.exports = {
     result_stateTo5: 'has transfered to your wallt address.',
     result_returnText_merchant: 'Return back',
     buy_configPayIDR_ovo_title: 'OVO Phone',
-    login_getCode: 'Resend',
+    login_getCode: 'Resend code',
     login_VerifyCode:'Please enter the six-digit verification code',
     login_Agreement:'Please tick the User Agreement',
 

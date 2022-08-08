@@ -2,25 +2,26 @@
   <div id="viewBox" ref="viewApp">
     <div class="buyCrypto_iframe_view" :class="{'buyCrypto_iframe_view_pc': logoState===true}"  >
         <div id="App" >
-          <!-- logo view for phone -->
-          <div class="logoView_phone" @click="goHome"><img src="./assets/images/phoneLogo.svg"></div>
           <!-- 导航栏 -->
           <tab ref="viewTab"/>
           <!-- 页面内容 -->
           <div class="routerView_box" v-show="routerViewState">
-            <div class="routerView" v-show="keepAlive">
-              <keep-alive class="keepAlive">
-                <router-view/>
+            <div class="routerView">
+              <keep-alive class="keepAlive" :exclude="keepAlive">
+                <router-view ref="routerView"/>
               </keep-alive>
             </div>
-            <div class="routerView" v-if="!keepAlive"><router-view class="noKeepAlive"/></div>
           </div>
           <!-- 菜单栏 -->
-          <routerMenu v-if="!routerViewState" />
+          <routerMenu v-if="!routerViewState"/>
           <!-- 语言切换 -->
           <Language v-if="LanguageShow"/>
-          <!-- 确认支付后查询支付状态提示框 -->
+          <!-- 买币 - 确认支付后查询支付状态提示框 -->
           <QueryOrderStatusTips v-if="tipsState"/>
+          <!-- 卖币 - 历史卡信息 -->
+          <HistoricalCardInfoSell v-show="historicalCardInfoSell_state"/>
+          <!-- 卖币 - 扫码识别网络 -->
+          <ScanCode v-if="scanCode_state"/>
         </div>
       <!-- pc端展示logo -->
       <div class="logoView" v-if="logoState">
@@ -29,34 +30,55 @@
       </div>
       <!-- 版本号 -->
 <!--      <span class="version">V: {{ version }}</span>-->
+        <!-- 账号风险提示无法进行下一步 -->
+        <div class="kycToast" v-show="AccountisShow">
+          <div>
+            <img src="@/assets/images/kycDisable.png" alt="">
+              <div>
+             This account is at risk and cannot be traded now.
+              </div>
+            <div @click="goHome">Confirm</div>
+          </div>
+        </div>
     </div>
   </div>
 </template>
 
 <script>
-import tab from "./components/navigationBar";
-import routerMenu from "./components/routerMenu";
-import QueryOrderStatusTips from "./components/QueryOrderStatusTips";
-import Language from './components/Language.vue'
 import common from "./utils/common";
-import rem_size from  './utils/rem_size';
+import remSize from './utils/remSize';
 
 export default {
   name: 'App',
-  components: { tab, routerMenu, QueryOrderStatusTips ,Language},
+  components: {
+    'ScanCode': ()=>import("./components/ScanCode"),
+    'HistoricalCardInfoSell': ()=>import("./components/HistoricalCardInfo-sell"),
+    'routerMenu': ()=>import("./components/routerMenu"),
+    'QueryOrderStatusTips': ()=>import("./components/QueryOrderStatusTips"),
+    'Language': ()=>import("./components/Language.vue"),
+    'tab': ()=>import("./components/navigationBar"),
+  },
   data(){
     return{
       routerViewState: true,
       logoState: true,
       tipsState: false,
       version: '',
-      LanguageShow:true
+      LanguageShow: true,
+      historicalCardInfoSell_state: false,
+      AccountisShow: false,
+      scanCode_state: false,
     }
   },
   computed:{
-    //赋值路由是否需要缓存状态
+    //路由是否需要缓存状态
     keepAlive(){
-      return this.$route.meta.keepAlive;
+      let keepAliveName = '';
+      let keepAliveList = this.$router.options.routes.filter(item=>{return !item.meta.keepAlive});
+      keepAliveList.forEach(item=>{
+        keepAliveName = item.name + "," + keepAliveName;
+      })
+      return keepAliveName
     },
   },
   watch:{
@@ -69,7 +91,6 @@ export default {
     },
     routerViewState(newVal){
       this.$store.state.menuState = !newVal
-      
     }
   },
   mounted(){
@@ -110,19 +131,24 @@ export default {
         if(width < 791){ //991
           common.uiSize = 375;
           common.equipmentEnd = 'phone';
-          rem_size();
+          remSize();
           this.logoState = false;
           this.$store.state.isPcAndPhone = 'phone'
           return;
         }
         common.uiSize = width + 100;
         common.equipmentEnd = 'pc';
-        rem_size();
+        remSize();
         this.logoState = true;
         this.$store.state.isPcAndPhone = 'pc'
       })
     },
     goHome(){
+      //存在商户订单禁止点击logo跳转
+      if(this.$store.state.customized_orderMerchant === false){
+        return;
+      }
+      this.AccountisShow = false
       if(this.$route.path === '/' && this.LanguageShow === true){
         this.$children[1].menuState = false;
         this.$store.state.LanguageIsShow = false;
@@ -132,6 +158,11 @@ export default {
         this.$children[1].menuState = false;
         return;
       }
+      if(this.$route.path !== '/' && this.routerViewState === false){
+        this.routerViewState = true
+        this.$router.push('/');
+        return
+      }
       this.$router.push('/');
     }
   },
@@ -140,14 +171,39 @@ export default {
 
 <style lang="scss">
 //@font-face {
-//  font-family: "Jost-Bold";
-//  src: url('./assets/fonts/Jost-Medium.ttf');
+//  font-family: "GeoDemibold";
+//  src: url('https://static.alchemypay.org/alchemypay/crypto-images/Fieldwork13-SemiBoldGeo.otf');
+//  font-weight: normal;
+//  font-style: normal;
+//}
+//@font-face {
+//  font-family: "GeoBold";
+//  src: url('https://static.alchemypay.org/alchemypay/crypto-images/Fieldwork16-GeoBold.otf');
+//  font-weight: normal;
+//  font-style: normal;
+//}
+//@font-face {
+//  font-family: "GeoLight";
+//  src: url('https://static.alchemypay.org/alchemypay/crypto-images/Fieldwork7-GeoLight.otf');
+//  font-weight: normal;
+//  font-style: normal;
+//}
+//@font-face {
+//  font-family: "GeoRegular";
+//  src: url('https://static.alchemypay.org/alchemypay/crypto-images/Fieldwork10-GeoRegular.otf');
 //  font-weight: normal;
 //  font-style: normal;
 //}
 @font-face {
   font-family: "GeoDemibold";
   src: url('./assets/fonts/Fieldwork/Fieldwork13-SemiBoldGeo.otf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SFProDisplaybold";
+  src: url('./assets/fonts/Fieldwork/SF-Pro-Display-Semibold的副本.otf');
   font-weight: normal;
   font-style: normal;
 }
@@ -166,6 +222,25 @@ export default {
 @font-face {
   font-family: "GeoRegular";
   src: url('./assets/fonts/Fieldwork/Fieldwork10-GeoRegular.otf');
+  font-weight: normal;
+  font-style: normal;
+}
+// 新增字体包
+@font-face {
+  font-family: "SFProDisplaybold";
+  src: url('./assets/fonts/Fieldwork/SF-Pro-Display-Medium的副本.otf');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "SFProDisplayRegular";
+  src: url('./assets/fonts/Fieldwork/SF-Pro-Display-Regular的副本.otf');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "SFProDisplayMedium";
+  src: url('./assets/fonts/Fieldwork/SF-Pro-Display-Medium的副本.otf');
   font-weight: normal;
   font-style: normal;
 }
@@ -188,6 +263,7 @@ a,img,button,input,textarea,span,div {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  touch-action: pan-y;
 }
 
 html,body,#app,#viewBox{
@@ -195,17 +271,70 @@ html,body,#app,#viewBox{
   height: 100%;
   font-size: 0.16rem;
   overflow: hidden;
+  //禁止复制
+  -moz-user-select:none; /* Firefox私有属性 */
+  -webkit-user-select:none; /* WebKit内核私有属性 */
+  -ms-user-select:none; /* IE私有属性(IE10及以后) */
+  -khtml-user-select:none; /* KHTML内核私有属性 */
+  -o-user-select:none; /* Opera私有属性 */
+  user-select:none; /* CSS3属性 */
 }
 
 #viewBox{
-  //background: url(./assets/images/buyCrypto_background.png) no-repeat !important;
-  //background-size: 100% 100%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+.kycToast{
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.15);
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  >div{
+    width: 90%;
+    max-width: 3.5rem;
+    // height: 2.5rem;
+    background: #FFFFFF;
+    border-radius: .18rem;
+    padding: .28rem .16rem .32rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    >img{
+      height: .36rem;
+      margin-bottom: .12rem;
+    }
+    div:nth-of-type(1){
+      font-family: SFProDisplayRegular;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 24px;
+      text-align: center;
+      color: #949EA4;
+    }
+    div:nth-of-type(2){
+      width: 100%;
+      height: .5rem;
+      background:  #E55643;
+      font-family: SFProDisplayMedium;
+      color: #FFFFFF;
+      text-align: center;
+      line-height: .5rem;
+      border-radius: .3rem;
+      margin-top: .32rem;
+      cursor: pointer;
+    }
+  }
+
+}
 .buyCrypto_iframe_view_pc{
-  padding: 0.40rem 0.30rem 0.40rem 0.30rem !important;
+  padding: 0.36rem 0.30rem 0.26rem 0.30rem !important;
 }
 .buyCrypto_iframe_view{
   width: 375px;
@@ -213,7 +342,7 @@ html,body,#app,#viewBox{
   background: #FFFFFF;
   border-radius: 0.25rem;
   position: relative;
-  padding: 0.26rem 0.22rem;
+  padding: 0.2rem 0.22rem;
   display: flex;
   justify-content: center;
   margin-top: -0.6rem;
@@ -228,24 +357,10 @@ html,body,#app,#viewBox{
     font-size: 0.16rem;
     font-family: 'Jost', sans-serif;
     font-weight: 500;
-    color: #FFFFFF;
+    color: #6E7687;
     img{
       width: 1.4rem;
       margin-left: 0.26rem;
-    }
-  }
-  .logoView_phone{
-    display: flex;
-    // justify-content: center;
-    // align-items: center;
-    padding-bottom: 15px;
-    align-items: center;
-    // padding-left: 0.06rem;
-    padding-bottom: 0.24rem;
-    cursor: pointer;
-
-    img{
-      width: 1.3rem;
     }
   }
   .version{
@@ -275,7 +390,7 @@ html,body,#app,#viewBox{
   }
   .routerView{
     height: 100%;
-    .noKeepAlive,.KeepAlive{
+    .KeepAlive{
       height: 100%;
     }
     &>div{

@@ -8,32 +8,31 @@ import axios from "./axios/axios";
 import api from "./axios/api";
 
 //rem适配
-import rem_size from  './utils/rem_size.js';
-rem_size();
+import remSize from './utils/remSize.js';
+remSize();
 
-//注册全局组件 - components
-import Button from './components/Button.vue'
-Vue.component('Button', Button)
 //国际化
 import i18n from './utils/i18n/index'
 
-//ui - element
-import { Popover,InfiniteScroll,Checkbox } from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
-Vue.use(Popover);
-Vue.use(InfiniteScroll);
-Vue.use(Checkbox);
+//ui类库、公共组件
+import "./utils/UI-ClassLibrary.js";
 
-//ui - vant
-import Vant from 'vant';
-import 'vant/lib/index.css';
-Vue.use(Vant);
+//fingerprint - 设备指纹 ｜ 设备唯一id
+import { fingerprintId } from '@/utils/publicRequest.js';
+fingerprintId();
 
-
-//VConsole
-// import VConsole from 'vconsole';
-// const vConsole = new VConsole();
-// Vue.use(vConsole);
+//阿里云接口埋点
+new Promise(()=>{
+  if(process.env.NODE_ENV !== 'development'){
+    const BrowserLogger = require('alife-logger');
+    const __bl = BrowserLogger.singleton({
+      pid: process.env.VUE_APP_Aliyun_pid,
+      imgUrl: 'https://arms-retcode.aliyuncs.com/r.png?',
+      enableLinkTrace:true,
+      behavior:true
+    });
+  }
+});
 
 Vue.prototype.$api = api;
 Vue.prototype.$axios = axios;
@@ -46,3 +45,6 @@ new Vue({
   i18n,
   render: h => h(App),
 }).$mount('#app')
+
+
+console.log("test")

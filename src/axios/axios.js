@@ -3,6 +3,7 @@ import { Toast } from 'vant';
 import router from "../router";
 import store from '../store/index';
 import { AES_Decrypt, AES_Encrypt } from '@/utils/encryp.js';
+import moment from 'moment-timezone';
 
 //Request service address
 const baseUrl = process.env.VUE_APP_BASE_API;
@@ -19,7 +20,7 @@ var timestamp = '';
 function processSign_encryption(){
   if(localStorage.getItem("token")){
     let sign = localStorage.getItem("userId");
-    let userId = sign.substring(sign.lastIndexOf("\H")+1,sign.length);
+    let userId = sign.substring(sign.lastIndexOf("H")+1,sign.length);
     let userNo = localStorage.getItem("userNo").substring(localStorage.getItem("userNo").length-5);
     timestamp = new Date().getTime();
     let newSign = AES_Encrypt(userId + "-" + userNo + "-" + timestamp);
@@ -77,6 +78,7 @@ function requestPrompt(response){
           message: response.returnMsg
         });
         break;
+
     }
   }
 }
@@ -98,6 +100,7 @@ axios.interceptors.response.use(function (response) {
   if(response.config.url === process.env.VUE_APP_BASE_API + '/user/login' && response.data.data !== null){
     localStorage.setItem("userId",AES_Decrypt(response.headers.sign));
     localStorage.setItem("token",response.headers.token);
+    localStorage.setItem("fin_token",response.headers.token);
     localStorage.setItem("email",response.data.data.email);
     localStorage.setItem("userNo",response.data.data.userNo);
     localStorage.setItem("kycStatus",response.data.data.kycStatus);
@@ -107,15 +110,33 @@ axios.interceptors.response.use(function (response) {
   if(response.config.url !== process.env.VUE_APP_BASE_API + '/user/login' && response.headers.token){
     localStorage.setItem("submit-token",response.headers.token);
   }
-
+  //7天内token过期
+  if((response.data.returnCode === '70011')){
+    localStorage.removeItem("token");
+    localStorage.removeItem("email");
+    localStorage.setItem('loginOut','')
+    // localStorage.removeItem("userNo");
+    // localStorage.removeItem("userId");
+    // localStorage.removeItem("kycStatus");
+    // store.commit("clearToken"); //取消请求
+    // store.commit("emptyToken");
+    router.push(`/emailCode`);
+      return;
+  }
   //no login info
-  if((response.data.returnCode === '70006' || response.data.returnCode === '70008') && router.currentRoute.path !== '/emailCode'){
+  if((response.data.returnCode === '70006' || response.data.returnCode === '70008') && router.currentRoute.path !== '/emailCode' && response.data.returnCode !== '70011'){
     localStorage.removeItem("sign");
+    // localStorage.removeItem("login_email");
+    // localStorage.removeItem("fin_token");
+    //是否执行一键登陆所需条件
+    localStorage.setItem('loginOut','1')
     localStorage.removeItem("token");
     localStorage.removeItem("email");
     localStorage.removeItem("userNo");
     localStorage.removeItem("userId");
     localStorage.removeItem("kycStatus");
+    store.commit("clearToken"); //取消请求
+    store.commit("emptyToken"); // 清空token数组
     if(fromRouter === '/receivingMode' && toRouter === '/'){
       router.replace(`/emailCode`);
       return;
@@ -165,9 +186,12 @@ export default {
         'submit-token': submitToken === 'submitToken' ? localStorage.getItem("submit-token") : '',
         'Accept-Language': sessionStorage.getItem("language") ? sessionStorage.getItem("language") : 'en-US',
         'Content-Type': 'application/json',
+        'fingerprint-id':localStorage.getItem('fingerprint_id')?localStorage.getItem('fingerprint_id'):'',
+        timezone: moment.tz.guess(),
       },
+      timeout: requestUrl === '/pay/card/submit' ? 60000 : 30000,
     }).then((response) => {
-      if (response.returnCode === "0000") {
+      if (response.returnCode === "0000" || response.returnCode === "110") {
         return Promise.resolve(response);
       }
       // else {
@@ -197,7 +221,10 @@ export default {
         'timestamp': timestamp,
         'Accept-Language': sessionStorage.getItem("language") ? sessionStorage.getItem("language") : 'en-US',
         'Content-Type': 'application/json',
-      }
+        'fingerprint-id':localStorage.getItem('fingerprint_id')?localStorage.getItem('fingerprint_id'):'',
+        timezone: moment.tz.guess(),
+      },
+      timeout: requestUrl === '/pay/card/submit' ? 5000 : 30000,
     }).then((response) => {
       if (response.returnCode === "0000") {
         return Promise.resolve(response);
