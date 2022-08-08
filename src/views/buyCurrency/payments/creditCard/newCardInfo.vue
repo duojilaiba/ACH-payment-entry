@@ -363,18 +363,18 @@ export default {
           this.$store.state.sellRouterParams.fullName = AES_Decrypt(res.data.firstName) + ' '+ AES_Decrypt(res.data.lastName)
           this.$store.state.sellRouterParams.fullName = AES_Encrypt(this.$store.state.sellRouterParams.fullName)
           //是否验证过baseId
-          _this.$axios.post(this.$api.post_getKycThrough).then(_res=>{
+          // _this.$axios.post(this.$api.post_getKycThrough).then(_res=>{
 
-              if(_res && _res.returnCode === '0000'){
-                if(_res.data ===true){
-                  _this.$store.state.WhichPage = `/creditCardConfig?submitForm=${JSON.stringify(queryParams)}&merchant_orderNo=${this.$route.query.merchant_orderNo}`
-                  _this.$router.push('/kycVerification')
-                  return
-                }else{
+          //     if(_res && _res.returnCode === '0000'){
+          //       if(_res.data ===true){
+          //         _this.$store.state.WhichPage = `/creditCardConfig?submitForm=${JSON.stringify(queryParams)}&merchant_orderNo=${this.$route.query.merchant_orderNo}`
+          //         _this.$router.push('/kycVerification')
+          //         return
+          //       }else{
                   _this.$router.push(`/creditCardConfig?submitForm=${JSON.stringify(queryParams)}&merchant_orderNo=${this.$route.query.merchant_orderNo}`);
-                }
-              }
-          })
+                // }
+          //     }
+          // })
         }
       }).catch(()=>{
         this.request_loading = false;
