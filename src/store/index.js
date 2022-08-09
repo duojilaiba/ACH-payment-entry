@@ -145,7 +145,10 @@ const store = new Vuex.Store({
         },
         DEL_ITEM(state,id) {
             state.sellForm = id;
-        }
+        },
+        updateCardList (state, message) {
+            state.sellRouterParams.cardInfoList = message
+        },
     },
 
 })

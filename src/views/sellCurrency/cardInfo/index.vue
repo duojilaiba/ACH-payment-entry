@@ -537,7 +537,7 @@ export default {
       }
       this.$axios.get(this.$api.get_cardList,params).then(res=>{
         if(res && res.returnCode === '0000'){
-          _this.$store.state.sellRouterParams.cardInfoList = res.data;
+          this.$store.commit('updateCardList', res.data)
           _this.$store.state.sellForm = res.data[0];
           //默认展示最近一条数据
           if(res.data.length > 0){

@@ -19,7 +19,7 @@
           <!-- 买币 - 确认支付后查询支付状态提示框 -->
           <QueryOrderStatusTips v-if="tipsState"/>
           <!-- 卖币 - 历史卡信息 -->
-          <HistoricalCardInfoSell v-show="historicalCardInfoSell_state"/>
+          <HistoricalCardInfoSell v-if="historicalCardInfoSell_state"/>
           <!-- 卖币 - 扫码识别网络 -->
           <ScanCode v-if="scanCode_state"/>
         </div>
