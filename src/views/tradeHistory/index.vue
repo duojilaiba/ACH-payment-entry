@@ -21,7 +21,7 @@
       <div class="historyList" v-else>
         <van-list v-model="buyLoading" :finished="buyFinished" :finished-text="$t('nav.history_noMore')" @load="buyOnLoad" loading-text="Loading" error-text="Loading failed">
           <div class="van-clearfix">
-            <div class="float-item" v-for="(item,index) in buy_historyList" :key="index">
+            <div class="float-item" v-for="(item,index) in buy_historyList" :key="index" @click="goBuyOrderDetails(item)">
               <div class="historyLi_header">
                 <div class="historyLi_header_left">
                   <div class="cryptoCurrencyIcon"><img :src="item.cryptoCurrencyIcon"></div>
@@ -307,19 +307,27 @@ export default {
         this.sellTransactionHistory();
       }
     },
-
+    //买币历史订单页
     buyTransactionHistory(){
       let _this = this;
       this.$axios.get(this.$api.get_transactionHistory,this.buyQuery).then(res=>{
         if(res.data){
-          let newArray = res.data.result.filter(item=>{return item.orderState !== 0 && item.orderState !== 6 && item.orderState !== 1});
+          //&& item.orderState !== 1
+          let newArray = res.data.result.filter(item=>{return item.orderState !== 0 && item.orderState !== 6 });
           _this.buy_historyList = _this.buy_historyList.concat(newArray);
+          // console.log(res.data);
           _this.buyLoading = false;
           if ((_this.buyQuery.pageIndex * _this.buyQuery.pageSize) > res.data.total || _this.buy_historyList.length === res.data.total){
             _this.buyFinished = true;
           }
         }
       })
+    },
+
+    //跳转买币订单详情页
+    goBuyOrderDetails(val){
+      // console.log(val);
+      this.$router.push(`/tradeHistory-details?orderId=${val.orderNo}&orderTab=buy`);
     },
     buyOnLoad(){
       setTimeout(() => {
@@ -684,7 +692,7 @@ html,body,#tradeHistory,.historyList,.van-list{
     .continue{
       width: 100%;
       height: 0.58rem;
-      background: #0059DA;
+      background: linear-gradient(88.06deg, #0059DA 0%, #1BB2F2 100%);;
       border-radius: 0.29rem;
       font-size: 0.17rem;
       font-family: SFProDisplayRegular;

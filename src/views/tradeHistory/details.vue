@@ -1,5 +1,5 @@
 <template>
-  <div id="tradeHistory-details">
+  <div id="tradeHistory-details" v-if="$route.query.orderTab !== 'buy'">
     <div class="content">
       <div class="line-height1">
         <div class="left">Sell {{ detailsData.cryptocurrency }}</div>
@@ -207,20 +207,27 @@
       <button class="pay-now" @click="payNow" v-else-if="detailsData.orderStatus === 1 && detailsData.confirmBlock === 0">Pay Now</button>
     </footer>
   </div>
+  <buyDetails v-else :buyData="buyData"></buyDetails>
 </template>
 
 <script>
 import Clipboard from "clipboard";
+//买币订单详情
+import buyDetails from './components/buyDetails.vue'
 /**
  * 邮件进入地址栏结构 - /tradeHistory-details?orderId=订单id&emailFromPath=tradeHistory-details
  */
 
 export default {
   name: "tradeHistory-details",
+  components:{
+    buyDetails
+  },
   data(){
     return{
       detailsData: {},
-      timeOut: null
+      timeOut: null,
+      buyData:{}
     }
   },
   activated(){
@@ -237,9 +244,19 @@ export default {
     }
 
     this.detailsInfo();
-    this.timeOut = setInterval(()=>{
-      this.detailsInfo();
-    },1000)
+    
+    
+      if(this.$route.query.orderTab !== 'buy'){
+        this.timeOut = setInterval(()=>{
+          this.detailsInfo();
+        },1000)
+        return
+      }else{
+        this.buyDetailsData()
+      }
+      
+     
+    
   },
   computed: {
     percentage(){
@@ -269,7 +286,17 @@ export default {
         }
       })
     },
-
+    //买币详情参数请求
+    buyDetailsData(){
+      let params = {
+        orderNo:this.$route.query.orderId
+      }
+      this.$axios.get(this.$api.get_payResult,params).then(res=>{
+        if(res.data && res.returnCode === '0000'){
+          this.buyData = res.data
+        }
+      })
+    },
     updateCardInfo(){
       this.$store.state.cardInfoFromPath = 'sellOrder';
       this.$router.push(`/sell-formUserInfo?sellOrderId=${this.orderId}`);
