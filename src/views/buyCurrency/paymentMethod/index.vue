@@ -4,7 +4,7 @@
       <!-- 历史支付的方式 -->
       <div class="payMethodsUl" v-if="savedCard.length !== 0 && $store.state.customized_orderMerchant">
         <div class="title">
-          <div>{{ $t('nav.buy_payment_savedTitle') }}</div>
+          <div>Recently Used</div>
           <div class="edit" @click="editCardInfo" v-if="!$route.query.merchant_orderNo">
             <span>{{ editCardInfo_state===false ? 'Edit' : 'Cancel' }}</span>
           </div>
@@ -33,7 +33,7 @@
       </div>
       <!-- 选择新的支付方式 -->
       <div class="payMethodsUl">
-        <div class="title">{{ $t('nav.buy_payment_addTitle') }}</div>
+        <div class="title">Payment Method</div>
         <div class="payMethodsLi" :class="{'cardCheck': paymethodCheck === index}" v-for="(item,index) in paymethodList" :key="index" @click="choisePayMethods(item,index)">
           <div class="payMethodsLi-left">
             <div class="cardIcon">

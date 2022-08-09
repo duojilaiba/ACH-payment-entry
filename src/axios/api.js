@@ -13,7 +13,6 @@ export default {
   //------------------------- 买币接口 -------------------------
   "get_network": '/crypto/network',
   "get_inquiryFee": '/crypto/fee',
-  "post_coinSupportedWallet": '/crypto/wallet/check',
   "post_buy": '/trade/create',
   "post_indonesiaBuy": '/pay/idr/submit',
   "post_internationalCard": '/pay/card/submit',
