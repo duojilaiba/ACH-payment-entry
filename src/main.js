@@ -19,6 +19,7 @@ import "./utils/UI-ClassLibrary.js";
 
 //fingerprint - 设备指纹 ｜ 设备唯一id
 import { fingerprintId } from '@/utils/publicRequest.js';
+import common from "./utils/common";
 fingerprintId();
 
 //阿里云接口埋点
@@ -34,12 +35,23 @@ new Promise(()=>{
   }
 });
 
-//动态修改html标题
-Vue.directive('title', {
-  inserted: function (el) {
-    document.title = el.dataset.title
-  }
-})
+//商户配置网站内容
+let iconUrl = `./ico.webp`
+if(common.merchant_name === "Lapay"){
+  //动态修改html标题
+  document.title = "Lapay Ramp"
+  iconUrl = `./ico-lapay.webp`
+}
+//修改Favicon的方法
+let $favicon = document.querySelector('link[rel="icon"]');
+if ($favicon !== null) {
+  $favicon.href = iconUrl;
+} else {
+  $favicon = document.createElement("link");
+  $favicon.rel = "icon";
+  $favicon.href = iconUrl;
+}
+
 
 Vue.prototype.$api = api;
 Vue.prototype.$axios = axios;

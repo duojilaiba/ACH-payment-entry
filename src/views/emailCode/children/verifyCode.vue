@@ -85,6 +85,7 @@ import common from '@/utils/common'
        this.showLoading = true
        //商户id区分环境
        let appId;
+       let accessMerchantInfo = sessionStorage.getItem("accessMerchantInfo") ? JSON.parse(sessionStorage.getItem("accessMerchantInfo")) : {};
        if(common.merchant_name === 'Lapay'){
          if(process.env.NODE_ENV === 'production'){
            appId = common.appId_lapay_prod;
@@ -92,7 +93,7 @@ import common from '@/utils/common'
            appId = common.appId_lapay_test;
          }
        }else{
-         appId = JSON.parse(sessionStorage.getItem("accessMerchantInfo")).merchantParam_state ? JSON.parse(sessionStorage.getItem("accessMerchantInfo")).appId : '';
+         appId = accessMerchantInfo.merchantParam_state ? accessMerchantInfo.appId : '';
        }
        var FormData = require('form-data');
         var data = new FormData();

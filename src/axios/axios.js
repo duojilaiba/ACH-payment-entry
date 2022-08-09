@@ -11,6 +11,7 @@ const baseUrl = process.env.VUE_APP_BASE_API;
 
 //商户id区分环境
 let appId;
+let accessMerchantInfo = sessionStorage.getItem("accessMerchantInfo") ? JSON.parse(sessionStorage.getItem("accessMerchantInfo")) : {};
 if(common.merchant_name === 'Lapay'){
   if(process.env.NODE_ENV === 'production'){
     appId = common.appId_lapay_prod;
@@ -18,7 +19,7 @@ if(common.merchant_name === 'Lapay'){
     appId = common.appId_lapay_test;
   }
 }else{
-  appId = JSON.parse(sessionStorage.getItem("accessMerchantInfo")).merchantParam_state ? JSON.parse(sessionStorage.getItem("accessMerchantInfo")).appId : '';
+  appId = accessMerchantInfo.merchantParam_state ? accessMerchantInfo.appId : '';
 }
 
 //Encrypted sign
