@@ -170,30 +170,6 @@ export default {
 </script>
 
 <style lang="scss">
-//@font-face {
-//  font-family: "GeoDemibold";
-//  src: url('https://static.alchemypay.org/alchemypay/crypto-images/Fieldwork13-SemiBoldGeo.otf');
-//  font-weight: normal;
-//  font-style: normal;
-//}
-//@font-face {
-//  font-family: "GeoBold";
-//  src: url('https://static.alchemypay.org/alchemypay/crypto-images/Fieldwork16-GeoBold.otf');
-//  font-weight: normal;
-//  font-style: normal;
-//}
-//@font-face {
-//  font-family: "GeoLight";
-//  src: url('https://static.alchemypay.org/alchemypay/crypto-images/Fieldwork7-GeoLight.otf');
-//  font-weight: normal;
-//  font-style: normal;
-//}
-//@font-face {
-//  font-family: "GeoRegular";
-//  src: url('https://static.alchemypay.org/alchemypay/crypto-images/Fieldwork10-GeoRegular.otf');
-//  font-weight: normal;
-//  font-style: normal;
-//}
 @font-face {
   font-family: "GeoDemibold";
   src: url('./assets/fonts/Fieldwork/Fieldwork13-SemiBoldGeo.otf');
