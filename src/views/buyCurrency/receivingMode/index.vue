@@ -174,7 +174,9 @@ export default {
           let merchantInfo = JSON.parse(sessionStorage.getItem("accessMerchantInfo"));
           if(merchantInfo !== "{}" && (merchantInfo.networkDefault === true || merchantInfo.networkDefault === undefined)){
             this.buyParams.network = this.networkList.filter(item=>{return merchantInfo.network === item.network})[0].network;
+            this.$store.state.buyRouterParams.network = this.networkList.filter(item=>{return merchantInfo.network === item.network})[0].network;
             this.network_fullName = this.networkList.filter(item=>{return merchantInfo.network === item.network})[0].networkName;
+            this.networkRegular = this.networkList.filter(item=>{return merchantInfo.network === item.network})[0].addressRegex;
             this.checkModel[0] = 'address';
           }
         }

@@ -197,7 +197,6 @@ export default {
   },
   methods:{
     formatter(value) {
-      console.log(value)
       return value.replace(/[^a-zA-Z]/g, '');
     },
 
