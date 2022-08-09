@@ -51,7 +51,7 @@ module.exports = {
     routerName_Transactions: 'Order History',
     routerName_Transactions_details: 'Order History',
     routerName_Refund: 'Request Refund of ',
-    routerName_receivingMode: 'Receive coins',
+    routerName_receivingMode: 'Receive Token',
     routerName_paymentMethod: 'Choose payment method',
     routerName_basisIdAuth: 'basis-Id-Auth',
     routerName_buyForm: 'Enter card details',

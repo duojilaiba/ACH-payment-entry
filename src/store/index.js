@@ -56,6 +56,7 @@ const store = new Vuex.Store({
             getAmount: 0,
             cryptoCurrency: '',
             exchangeRate: 0,
+            buyNetwork: {},
             payCommission: {
                 symbol: '',
                 code: '',

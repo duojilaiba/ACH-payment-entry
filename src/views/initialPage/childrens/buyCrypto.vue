@@ -30,7 +30,7 @@
         <div class="get_company" @click="openSearch('currency')">
           <div class="getImg networkImg">
             <img :src="currencyData.icon">
-            <!--            <div class="networkIcon" v-if="currencyData.buyNetwork && currencyData.buyNetwork.logo"><img :src="currencyData.buyNetwork.logo"></div>-->
+            <div class="networkIcon" v-if="currencyData.buyNetwork && currencyData.buyNetwork.logo"><img :src="currencyData.buyNetwork.logo"></div>
           </div>
           <div class="getText">{{ currencyData.name }}</div>
           <div class="rightIcon"><img src="@/assets/images/homeRight-icon.png"></div>
@@ -391,6 +391,7 @@ export default {
         buyNetwork: cryptoDate.buyNetworkList[0]
       }
       this.$store.state.buyRouterParams.cryptoCurrency = cryptoDate.name;
+      this.$store.state.buyRouterParams.buyNetwork = cryptoDate.buyNetworkList[0];
       let params = merchantParams;
       delete params.networkDefault;
       delete params.addressDefault;
@@ -462,7 +463,8 @@ export default {
         getAmount: this.getAmount,
         payCommission: this.payCommission,
         exchangeRate: this.exchangeRate,
-        positionData: this.positionData
+        positionData: this.positionData,
+        buyNetwork: this.currencyData.buyNetwork
       }
       this.$store.state.buyRouterParams = routerParams;
 

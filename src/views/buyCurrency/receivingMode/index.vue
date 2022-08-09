@@ -8,10 +8,13 @@
         <div>
           <div class="methods_myAddress">
             <div class="methods_title">
-              <div>Enter your<span class="network-name"> Ethereum (ERC20) </span>address</div>
-              <div class="icon"><img src="@/assets/images/Frametransformation-icon.png"></div>
+              <div>Enter your<span class="network-name"> {{ networkInfo.networkName }} </span>address</div>
+              <div class="icon" v-if="networkDefault" @click="openSelect"><img src="@/assets/images/Frametransformation-icon.png"></div>
             </div>
-            <div class="methods_input"><input type="text" v-model="buyParams.address" placeholder="Enter your wallet address" @input="networkAddressChange" :disabled="addressDefault"></div>
+            <div class="methods_input">
+              <input type="text" v-model="buyParams.address" placeholder="Enter your wallet address" @input="networkAddressChange" :disabled="addressDefault">
+              <div class="rightIcon" :class="{'noDrop': addressDefault}"><img src="@/assets/images/scanCode_icon.svg"></div>
+            </div>
             <div class="methods_errorText" v-if="walletAddress_state">{{ $t('nav.buy_receivingMode_addressTips1') }} {{ buyParams.cryptoCurrency }} {{ $t('nav.buy_receivingMode_addressTips2') }}</div>
           </div>
           <div class="methods_myAddress">
@@ -47,11 +50,8 @@ export default {
     return{
       routerParams: {},
       email: "",
-      //select network
-      network_fullName: '',
-      networkList: [],
-      networkDefault: false,
-      addressDefault: false,
+
+      //页面所需参数
       buyParams: {
         cryptoCurrency: "",
         address: "",
@@ -62,15 +62,29 @@ export default {
         memo: '',
         payWayCode: '' //支付方式
       },
-      networkRegular: '',
+
+      //网络列表
+      networkList: [],
+      //商户状态下 - 网络、地址禁选状态
+      networkDefault: false,
+      addressDefault: false,
+
+      //网络信息
+      networkInfo: {
+        networkName: '',
+        addressRegex: '',
+      },
+      //网络错误信息状态
       walletAddress_state: false,
+
+      //网络组件信息
       searchViewState: false,
       viewName: '',
     }
   },
   computed: {
     disabled(){
-      if(this.buyParams.network!=='' && this.buyParams.address!=='' && new RegExp(this.networkRegular).test(this.buyParams.address)){
+      if(this.buyParams.network!=='' && this.buyParams.address!=='' && new RegExp(this.networkInfo.addressRegex).test(this.buyParams.address)){
         return false
       }else{
         return true
@@ -89,8 +103,8 @@ export default {
           depositType: 1,
           payWayCode: '' //支付方式
         };
-        vm.network_fullName = "";
-        vm.networkRegular = '';
+        vm.networkInfo.networkName = "";
+        vm.networkInfo.addressRegex = '';
         vm.walletAddress_state = false;
       }
     })
@@ -100,7 +114,7 @@ export default {
   },
   methods: {
     networkAddressChange(){
-      if(!new RegExp(this.networkRegular).test(this.buyParams.address)){
+      if(!new RegExp(this.networkInfo.addressRegex).test(this.buyParams.address)){
         this.walletAddress_state = true;
       }else{
         this.walletAddress_state = false;
@@ -110,6 +124,12 @@ export default {
     routingInformation(){
       localStorage.getItem("email") ? this.email = AES_Decrypt(localStorage.getItem("email")) : this.email = '';
       this.routerParams = this.$store.state.buyRouterParams;
+      this.networkInfo = this.$store.state.buyRouterParams.buyNetwork;
+      this.buyParams.network = this.networkInfo.network;
+      let merchantInfo = JSON.parse(sessionStorage.getItem("accessMerchantInfo"));
+      if(merchantInfo !== "{}" && (merchantInfo.networkDefault === true || merchantInfo.networkDefault === undefined)){
+        this.networkInfo.networkName = this.networkList.filter(item=>{return merchantInfo.network === item.network})[0].networkName;
+      }
       //essential information
       this.buyParams.fiatCurrency = this.$store.state.buyRouterParams.payCommission.code;
       this.buyParams.cryptoCurrency = this.$store.state.buyRouterParams.cryptoCurrency;
@@ -145,11 +165,6 @@ export default {
       this.$axios.get(this.$api.get_network,params).then(res=>{
         if(res && res.returnCode === "0000") {
           this.networkList = res.data.networkList;
-          let merchantInfo = JSON.parse(sessionStorage.getItem("accessMerchantInfo"));
-          if(merchantInfo !== "{}" && (merchantInfo.networkDefault === true || merchantInfo.networkDefault === undefined)){
-            this.buyParams.network = this.networkList.filter(item=>{return merchantInfo.network === item.network})[0].network;
-            this.network_fullName = this.networkList.filter(item=>{return merchantInfo.network === item.network})[0].networkName;
-          }
         }
       })
     },
@@ -172,7 +187,7 @@ export default {
       if(buyParams.address === '' || buyParams.network === ''){
         return;
       }
-      if(!new RegExp(this.networkRegular).test(buyParams.address)){
+      if(!new RegExp(this.networkInfo.addressRegex).test(buyParams.address)){
         this.walletAddress_state = true;
         return;
       }
@@ -230,7 +245,7 @@ export default {
           border-radius: 0.06rem;
           border: 1px solid #D9D9D9;
           outline: none;
-          padding: 0 0.16rem;
+          padding: 0 0.56rem 0 0.16rem;
           color: #6E7687;
           font-size: 0.13rem;
           font-weight: 400;
@@ -251,8 +266,9 @@ export default {
           position: absolute;
           right: 0.21rem;
           display: flex;
+          cursor: pointer;
           img{
-            width: 0.24rem;
+            width: 0.2rem;
           }
         }
       }
@@ -295,6 +311,7 @@ export default {
         .icon{
           margin-left: auto;
           cursor: pointer;
+          margin-right: 0.2rem;
           img{
             width: 0.2rem;
             height: 0.2rem;
@@ -335,5 +352,9 @@ export default {
     background: rgba(0, 89, 218, 0.5);
     cursor: no-drop;
   }
+}
+
+.noDrop{
+  cursor: no-drop;
 }
 </style>
