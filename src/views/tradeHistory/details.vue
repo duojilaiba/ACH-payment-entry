@@ -67,7 +67,7 @@
             <span class="value" :class="{'empty': noData(detailsData.total) === '--'}">{{ noData(detailsData.total) }}</span>
           </div>
         </div>
-        <div class="amountInfo-line" v-if="detailsData.failureNumber < 2">
+        <div class="amountInfo-line" v-if="detailsData.failureNumber < 2 && detailsData.orderStatus !== 10">
           <div class="left">Ramp Fee ({{ detailsData.fiatName }})</div>
           <div class="right">
             <span class="value" :class="{'empty': noData(detailsData.rampFee) === '--'}">{{ noData(detailsData.rampFee) }}</span>
