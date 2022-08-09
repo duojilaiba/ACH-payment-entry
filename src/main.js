@@ -13,7 +13,7 @@ remSize();
 
 //国际化
 import i18n from './utils/i18n/index'
-
+//关联分支
 //ui类库、公共组件
 import "./utils/UI-ClassLibrary.js";
 
