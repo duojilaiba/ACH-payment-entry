@@ -159,7 +159,7 @@ export default {
       immediate: true,
       deep: true,
       handler() {
-        this.$store.state.buyRouterParams.network = '';
+        this.$store.state.buyRouterParams.buyNetwork.network = '';
         this.payAmount = '';
         this.getAmount = '';
         this.detailedInfo_state = false;

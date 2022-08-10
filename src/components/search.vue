@@ -609,18 +609,9 @@ export default {
         }
         if(type === 'network'){
           this.$nextTick(()=>{
-            this.$parent.buyParams.network = item.network;
-            this.$parent.network_fullName = item.networkName;
-            this.$store.state.buyRouterParams.network = item.network;
-            this.$store.state.buyRouterParams.network_fullName = item.network;
-            this.$parent.networkRegular = item.addressRegex;
+            this.$parent.selectNetwork(item)
             this.$parent.$parent.$refs.viewTab.tabState = true;
             this.$parent.searchViewState = false;
-            if(!new RegExp(this.$parent.networkRegular).test(this.$parent.buyParams.address)){
-              this.$parent.walletAddress_state = true;
-            }else{
-              this.$parent.walletAddress_state = false;
-            }
           })
           return;
         }

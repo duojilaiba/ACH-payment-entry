@@ -1,6 +1,7 @@
 <template>
   <div id="paymentMethod">
     <div class="paymentMethod-content">
+      <AllPaymentMethod :paymethodList="paymethodList" :savedCard="savedCard"/>
       <!-- 历史支付的方式 -->
       <div class="payMethodsUl" v-if="savedCard.length !== 0 && $store.state.customized_orderMerchant">
         <div class="title">
@@ -71,10 +72,11 @@ import IncludedDetails from "@/components/IncludedDetails.vue";
 import CryptoCurrencyAddress from "@/components/CryptoCurrencyAddress.vue";
 import {querySubmitToken} from "../../../utils/publicRequest";
 import { AES_Decrypt,AES_Encrypt } from "../../../utils/encryp";
+import AllPaymentMethod from "./childrens/allPaymentMethod";
 
 export default {
   name: "paymentMethod",
-  components: { IncludedDetails,CryptoCurrencyAddress },
+  components: {AllPaymentMethod, IncludedDetails,CryptoCurrencyAddress },
   data(){
     return{
       buyParams: {},
@@ -146,7 +148,7 @@ export default {
           _this.$store.state.buyRouterParams.payCommission.code = res.data.fiatCurrency;
           _this.$store.state.buyRouterParams.addressDefault = res.data.address;
           _this.$store.state.buyRouterParams.networkDefault = res.data.network;
-          _this.$store.state.buyRouterParams.network = res.data.network;
+          _this.$store.state.buyRouterParams.buyNetwork.network = res.data.network;
           _this.$store.state.buyRouterParams.submitForm = res.data.cardInfo;
           _this.$store.state.buyRouterParams.feeRate = res.data.feeRate;
           _this.$store.state.buyRouterParams.fixedFee = res.data.fixedFee;
@@ -176,6 +178,7 @@ export default {
         this.queryPayMethods();
       }
     },
+
     queryPayMethods(){
       let _this = this;
       let params = {
@@ -207,6 +210,7 @@ export default {
             _this.savedCard = _this.savedCard.filter(item=>{
               return item.payWayCode === '10001';
             })
+            console.log(_this.savedCard)
             //只有信用卡开放历史卡信息功能
             if(_this.$store.state.customized_orderMerchant && _this.savedCard.length !== 0 ){
               _this.choiseSavedCard(_this.savedCard[0],0)
@@ -366,7 +370,7 @@ export default {
       //   }).catch(()=>{
       //    this.request_loading = false;
       //  })
-    }
+    },
   }
 }
 </script>
