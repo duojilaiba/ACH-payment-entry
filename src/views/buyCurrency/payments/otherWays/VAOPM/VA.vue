@@ -2,8 +2,8 @@
   <!-- choise bank -->
   <div id="VABox">
     <div class="payAmountInfo-title">{{ $t('nav.buy_configPayIDR_va_title') }}</div>
-    <div class="payAmountInfo-box" v-if="bankState">
-      <div class="payAmountInfo-box-line" v-for="(item,index) in bankCardList" :key="index" @click="choiseBankCard(item,index)">
+    <div class="payAmountInfo-box" style="background:#fff;" v-if="bankState">
+      <div  v-for="(item,index) in bankCardList" :key="index" :class="!item.check?'payAmountInfo-box-line':'payAmountInfo-box-line payAmountInfo-box-lineActive'" @click="choiseBankCard(item,index)">
         <div class="logo"><img :src='require(`@/assets/images/bankCard/${item.bankLogo}`)'></div>
         <div class="name">{{ item.bankCardName }} <span>- {{ item.bankCardFullName }}</span></div>
         <div class="option" @click="choiseCheck(item,index)">
@@ -14,16 +14,16 @@
     </div>
     <!-- Display data after selecting bank card -->
     <div v-else>
-      <div class="payAmountInfo-box">{{ payExplain.bankCardName }}</div>
+      <div class="payAmountInfo-box payAmountInfoBack" >{{ payExplain.bankCardName }}</div>
       <div class="payAmountInfo-title" v-if="codeState">{{ $t('nav.buy_configPayIDR_va_codeTitle') }}</div>
-      <div class="payAmountInfo-box paymentCode" v-if="codeState" @click="copy" :data-clipboard-text="payCode">
+      <div class="payAmountInfo-box paymentCode payAmountInfoBack" v-if="codeState" @click="copy" :data-clipboard-text="payCode">
         <p>{{ payCode }}</p>
-        <p class="copyIcon"><img src="../../../../../assets/images/copyIcon.png"></p>
+        <p class="copyIcon"><img src="../../../../../assets/images/copySell.png"></p>
       </div>
       <div class="helpView" v-for="(value,key) in payExplain.allHelpTips" :key="key">
         <div class="helpView-title" @click.stop="lookMore(value,key)">
           <p>How to pay at the {{ value.helpTitle }}</p>
-          <p><img src="@/assets/images/rightBlackIcon.png" :class="{'iconCSS3': value.openState,'iconCSS3-back': !value.openState}"></p>
+          <p><img style="height:.2rem;width:.2rem" src="@/assets/images/homeRight-icon.png" :class="{'iconCSS3': value.openState,'iconCSS3-back': !value.openState}"></p>
         </div>
         <div class="helpView-line" v-for="(item,index) in value.helpInfo" :key="index" v-show="value.openState">
           <div class="headline"><div class="serialNumber"></div><div>{{ item.text }}</div></div>
@@ -203,46 +203,51 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+#VABox{
+  height: auto;
+}
 .payAmountInfo-title{
   font-size: 0.13rem;
-  font-family: "GeoRegular", GeoRegular;
+  font-family: SFProDisplayRegular;
   font-weight: normal;
-  color: #707070;
+  color: #6E7687;
   margin-top: 0.32rem;
 }
 .payAmountInfo-box{
   margin-top: 0.08rem;
   min-height: 0.56rem;
   background: #F3F4F5;
-  border-radius: 0.12rem;
+  border-radius: 0.06rem;
   font-size: 0.16rem;
   font-family: "GeoDemibold", GeoDemibold;
   font-weight: normal;
   color: #232323;
   line-height: 0.6rem;
-  padding: 0 0.16rem;
+  padding: 0 0rem .1rem;
   .payAmountInfo-box-line{
+    width: 100%;
     height: 0.56rem;
+    padding: .16rem;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-bottom: 1px solid #E9E9E9;
+    border: 1px solid #D9D9D9;
+    border-radius: .06rem;
+    margin-bottom: .12rem;
     cursor: pointer;
-    &:last-child{
-      border-bottom: none;
-    }
+   
     .logo{
       display: flex;
       img{
-        width: 0.64rem;
-        max-height: 0.2rem;
+        width: 0.32rem;
+        min-height: 0.24rem;
       }
     }
     .name{
       font-size: 0.16rem;
-      font-family: "GeoDemibold", GeoDemibold;
+      font-family: SFProDisplaybold;
       font-weight: normal;
-      color: #232323;
+      color: #6E7687;
       margin-left: 0.2rem;
       white-space: nowrap;
       text-overflow: ellipsis;
@@ -250,21 +255,30 @@ export default {
       word-break: break-all;
       padding-right: 0.37rem;
       span{
-        font-family: "GeoRegular",GeoRegular;
-        color: #666666;
+        font-family: SFProDisplayRegular;
+        color: rgba(110, 118, 135, 1);
       }
     }
     .option{
       margin-left: auto;
     }
   }
+  .payAmountInfo-box-lineActive{
+    border: 1px solid #41B8FD;
+    box-shadow: 0px 0px 35px rgba(89, 153, 248, 0.2);
+  }
 }
-
+.payAmountInfoBack{
+  padding: 0 .16rem 0;
+  color:#6E7687;
+  font-family: SFProDisplayRegular;
+  background: #F4F5F7;
+}
 .paymentCode{
   font-size: 0.21rem;
-  font-family: "GeoRegular", GeoRegular;
+  font-family: SFProDisplaybold;
   font-weight: normal;
-  color: #232323;
+  color: #031633;
   display: flex;
   cursor: pointer;
   p:nth-of-type(1){
@@ -277,7 +291,7 @@ export default {
     align-items: center;
     margin-left: auto;
     img{
-      width: 0.14rem;
+      width: 0.2rem;
     }
   }
 }
@@ -285,12 +299,12 @@ export default {
 .helpView{
   cursor: pointer;
   min-height: 0.56rem;
-  background: #F3F4F5;
-  border-radius: 0.12rem;
+  background: #F4F5F7;
+  border-radius: 0.06rem;
   font-size: 0.13rem;
-  font-family: "GeoLight", GeoLight;
+  font-family: SFProDisplayRegular;
   font-weight: normal;
-  color: #707070;
+  color: #949EB5;
   padding: 0 0.16rem;
   margin-top: 0.16rem;
   .helpView-title{
@@ -313,8 +327,7 @@ export default {
       display: flex;
       align-items: flex-start;
       font-size: 0.15rem;
-      font-family: "GeoLight", GeoLight;
-      color: #666666;
+     
       position: relative;
       .serialNumber::after{
         content: "";
@@ -323,7 +336,7 @@ export default {
         left: 0;
         width: 0.06rem;
         height: 0.06rem;
-        background: #666666;
+        background: #949EB5;
         border-radius: 50%;
         margin-right: 0.1rem;
         margin-top: 0.05rem;
@@ -364,16 +377,17 @@ export default {
 
 //element-ui复选框
 #VABox ::v-deep .el-checkbox__inner:hover{
-  border-color: #232323 !important;
+  border-color: #94ACBA !important;
   border-radius: 3px;
 }
 #VABox ::v-deep .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
-  background-color: #0059DA;
-  border: 1px solid #0059DA;
-  border-radius: 0.05rem;
+  background-color: #94ACBA;
+  border: 1px solid #94ACBA;
+  border-radius: 0.5rem;
 }
 #VABox ::v-deep .el-checkbox__inner{
-  border: 1px solid #232323;
+  border:1px solid #949EA4;
   border-radius: 3px;
+  border-radius: 0.5rem;
 }
 </style>

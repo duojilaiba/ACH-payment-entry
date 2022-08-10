@@ -69,7 +69,7 @@ export default {
 .button{
   width: 100%;
   height: 0.58rem;
-  background: #0059DA;
+  background: linear-gradient(88.06deg, #0059DA 0%, #1BB2F2 100%);
   border-radius: 0.29rem;
   display: flex;
   justify-content: center;
@@ -95,18 +95,18 @@ export default {
   }
 }
 .button[disabled] {
-  background: rgba(0, 89, 218, 0.5);
+  opacity: 0.25;
   cursor: no-drop;
 }
 .loadingDisabled{
   cursor: no-drop !important;
-  background: rgba(0, 89, 218, 0.5) !important;
+  opacity: 0.25 !important;
 }
 
 .continue{
 }
 .continue:disabled{
-  background: rgba(0, 89, 218, 0.5);
+  opacity: 0.25;
   cursor: no-drop;
 }
 </style>

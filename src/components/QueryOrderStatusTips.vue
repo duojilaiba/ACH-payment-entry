@@ -35,29 +35,29 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.15);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0 0.16rem;
   .QueryOrderStatusTips-content{
     background: #FFFFFF;
-    border-radius: 0.16rem;
+    border-radius: 0.18rem;
     backdrop-filter: blur(3px);
     .QueryOrderStatusTips-top{
       padding: 0.44rem 0.16rem;
       .title{
         font-size: 0.21rem;
-        font-family: "GeoDemibold", GeoDemibold;
+        font-family: SFProDisplaybold;
         font-weight: normal;
-        color: #232323;
+        color: #6E7687;
         text-align: center;
       }
       .tipsText{
         font-size: 0.13rem;
-        font-family: "GeoLight", GeoLight;
+        font-family: SFProDisplayRegular;
         font-weight: normal;
-        color: #232323;
+        color: #6E7687;
         line-height: 0.2rem;
         word-spacing: 0.02rem;
         text-align: center;
@@ -66,15 +66,15 @@ export default {
     }
     footer{
       height: 0.58rem;
-      background: #0059DA;
+      background: linear-gradient(88.06deg, #0059DA 0%, #1BB2F2 100%);
       border-radius: 0.29rem;
       font-size: 0.17rem;
-      font-family: "GeoRegular", GeoRegular;
+      font-family: SFProDisplaybold;
       font-weight: normal;
       color: #FFFFFF;
       text-align: center;
       line-height: 0.58rem;
-      border-top: 1px solid #999999;
+      // border-top: 1px solid #999999;
       cursor: pointer;
       margin-top: 0.16rem;
       position: relative;

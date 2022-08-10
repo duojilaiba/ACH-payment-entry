@@ -4,7 +4,7 @@
       <div class="formTitle" >{{ routerParams.networkDefault }} {{ $t('nav.networkAddress_components_title') }}</div>
       <div class="formContent" :data-clipboard-text="routerParams.addressDefault" @click="copy">
         <p>{{ routerParams.addressDefault ? routerParams.addressDefault.substring(0,10) + "……"  + routerParams.addressDefault.substring(routerParams.addressDefault.length-10,routerParams.addressDefault.length) : '' }}</p>
-        <p><img src="../assets/images/copyIcon.png"></p>
+        <p><img src="../assets/images/copySell.png"></p>
       </div>
     </div>
   </div>
@@ -53,9 +53,9 @@ export default {
   margin-top: 0.32rem;
   .formTitle {
     font-size: 0.13rem;
-    font-family: "GeoRegular", GeoRegular;
+    font-family: SFProDisplayRegular;
     font-weight: normal;
-    color: #707070;
+    color: #6E7687;
     display: flex;
     align-items: flex-end;
   }
@@ -65,11 +65,11 @@ export default {
     padding: 0 0.16rem;
     margin-top: 0.08rem;
     font-size: 0.16rem;
-    font-family: "GeoRegular", GeoRegular;
+    font-family: SFProDisplayRegular;
     font-weight: normal;
-    color: #232323;
+    color: #6E7687;
     height: 0.6rem;
-    background: #F3F4F5;
+    background: #F4F5F7;
     border-radius: 0.1rem;
     cursor: pointer;
     p:last-child{
@@ -77,7 +77,7 @@ export default {
       display: flex;
       align-items: center;
       img{
-        width: 0.14rem;
+        width: 0.2rem;
       }
     }
   }

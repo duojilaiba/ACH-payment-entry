@@ -2,7 +2,7 @@
   <div id="AuthorizationInfo">
     <div class="agreement-content">
       <div class="agreement-radio">
-        <el-checkbox v-model="childData.agreement"></el-checkbox>
+        <el-checkbox v-model="childData.agreement" ></el-checkbox>
       </div>
       <div class="agreement-text">
         {{ $t('nav.agreement_components_text1') }} <span>{{ $t('nav.agreement_components_text2') }}</span>
@@ -37,13 +37,14 @@ export default {
     }
     .agreement-text{
       font-size: 0.13rem;
-      font-family: "GeoLight", GeoLight;
+      font-family: SFProDisplayRegular;
       font-weight: normal;
-      color: #333333;
+      color: #6E7687;
       margin-left: 0.08rem;
       margin-top: 0.02rem;
+      text-align: justify;
       span{
-        color: #0059DA;
+        color: #6E7687;
       }
     }
   }
@@ -56,9 +57,11 @@ export default {
 #AuthorizationInfo ::v-deep .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
   background-color: #0059DA;
   border: 1px solid #0059DA;
-  border-radius: 0.05rem;
+  
+  border-radius: .5rem;
 }
 #AuthorizationInfo ::v-deep .el-checkbox__inner{
   border: 1px solid #DFDFDF;
+  border-radius: .5rem;
 }
 </style>

@@ -52,12 +52,19 @@ export default{
     height: .24rem;
   }
   .buyNavTab_content{
+    width: 20%;
     .icon{
       height: .36rem;
     }
     .iconActive{
       height: .48rem;
     }
+  }
+  .buyNavTab_content:nth-of-type(2){
+    text-align: center;
+  }
+  .buyNavTab_content:nth-of-type(3){
+    text-align: right;
   }
 }
 </style>

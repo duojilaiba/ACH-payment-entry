@@ -10,7 +10,7 @@
         <div class="payAmountInfo-box" v-if="routerParams.payWayCode === '10003'">Virtual Account</div>
         <div class="payAmountInfo-box" v-else-if="routerParams.payWayCode === '10008'">OPM</div>
         <!-- 支付方式 VA-Virtual Account | OPM-->
-        <VA ref="va_ref" v-if="routerParams.payWayCode === '10003'"/>
+        <VA ref="va_ref"  v-if="routerParams.payWayCode === '10003'"/>
         <OPM ref="opm_ref" v-else-if="routerParams.payWayCode === '10008'"/>
         <CryptoCurrencyAddress/>
         <IncludedDetails class="includedDetails" ref="includedDetails_ref" :network="$store.state.buyRouterParams.network"/>
@@ -232,9 +232,9 @@ export default {
   .payTips{
     margin: 0.08rem 0 0.1rem 0;
     font-size: 0.13rem;
-    font-family: "GeoLight", GeoLight;
+    font-family: SFProDisplayRegular;
     font-weight: normal;
-    color: #232323;
+    color: #031633;
     span{
       color: #E55643;
     }
@@ -242,21 +242,21 @@ export default {
 
   .payAmountInfo-title{
     font-size: 0.13rem;
-    font-family: "GeoRegular", GeoRegular;
+    font-family: SFProDisplayRegular;
     font-weight: normal;
-    color: #707070;
+    color: #6E7687;
     padding-top: 0.32rem !important;
   }
 
   .payAmountInfo-box {
     margin-top: 0.1rem;
     min-height: 0.56rem;
-    background: #F3F4F5;
+    background: #F4F5F7;
     border-radius: 0.12rem;
     font-size: 0.16rem;
-    font-family: 'Jost', sans-serif;
+    font-family: SFProDisplayRegular;
     font-weight: 500;
-    color: #232323;
+    color: #6E7687;
     line-height: 0.6rem;
     padding: 0 0.16rem;
   }

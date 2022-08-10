@@ -302,47 +302,52 @@ export default {
   .payTips{
     padding: 0.1rem 0;
     font-size: 0.13rem;
-    font-family: "GeoLight", GeoLight;
+    font-family: SFProDisplayRegular;
     font-weight: normal;
-    color: #232323;
+    color: #031633;
     span{
-      color: #E55643;
+      color: rgba(255, 47, 47, 1);
     }
   }
   .payAmountInfo-title{
     font-size: 0.13rem;
-    font-family: "GeoRegular", GeoRegular;
+    font-family: SFProDisplayRegular;
     font-weight: normal;
-    color: #707070;
+    color: #6E7687;
     margin-top: 0.32rem;
   }
   .payAmountInfo-box {
     margin-top: 0.08rem;
     height: 0.56rem;
-    background: #F3F4F5;
-    border-radius: 0.12rem;
+    background: #F4F5F7;
+    border-radius: 0.06rem;
     font-size: 0.16rem;
-    font-family: "GeoRegular", GeoRegular;
+    font-family: SFProDisplayRegular;
     font-weight: normal;
-    color: #232323;
+    color: #6E7687;
     line-height: 0.6rem;
     padding: 0 0.16rem;
   }
 }
 
 .QRISView{
+  width: 100%;
+  padding: .2rem .1rem .2rem;
+  background: #F4F5F7;
+  margin-top: .24rem;
+  border-radius: .06rem;
   .QRISCode{
     min-height: 1.4rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 0.16rem;
+    // margin-top: 0.16rem;
   }
   .QRISText{
     font-size: 0.13rem;
-    font-family: "GeoLight", GeoLight;
+    font-family: SFProDisplayRegular;
     font-weight: normal;
-    color: #232323;
+    color: #6E7687;
     text-align: center;
     margin-top: 0.08rem;
   }
@@ -390,10 +395,11 @@ export default {
 }
 .ovoTips{
   font-size: 0.15rem;
-  font-family: "GeoRegular", GeoRegular;
+  font-family: SFProDisplayRegular;
   font-weight: normal;
-  color: #0059DA;
+  color: #031633;
   margin-top: 0.08rem;
+  margin-left: .16rem;
 }
 
 .CryptoCurrencyAddress{
@@ -463,12 +469,13 @@ export default {
 }
 
 .companyAddress{
-  width: 100%;
+  width: 60%;
   font-size: 0.13rem;
-  font-family: "GeoLight", GeoLight;
+  font-family: SFProDisplayRegular;
   font-weight: normal;
-  color: #c2c2c2c2;
+  color: #6E7687;
   text-align: center;
-  margin-top: 0.12rem;
+  // margin-top: ;
+  margin:0.12rem auto 0;
 }
 </style>
