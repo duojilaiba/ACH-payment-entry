@@ -277,7 +277,7 @@ export default {
     currentLocation(){
       this.basicData = this.allBasicData;
 
-      //将you pay的币种和国家数据合并在一起
+      //将you pay法币币和国家数据合并
       this.basicData.worldList.forEach((item,index)=>{
         if(item.buyFiatList){
           item.buyFiatList.forEach((item2,index2)=>{
@@ -474,12 +474,10 @@ export default {
         this.$store.state.homeTabstate = 'buyCrypto';
         this.lodingStatus = true
         this.$router.push(`/emailCode`);
-
         return;
       }
       this.$axios.post(this.$api.post_kycDisabled).then(res=>{
         if(res && res.returnCode === '0000'){
-
           if(res.data){
             this.lodingStatus = true
             this.$parent.$parent.AccountisShow = true
@@ -488,12 +486,10 @@ export default {
             this.$store.state.homeTabstate = 'buyCrypto';
             this.$router.push(`/receivingMode`)
           }
-
         }else{
           this.lodingStatus = true
         }
       })
-
     },
   }
 }

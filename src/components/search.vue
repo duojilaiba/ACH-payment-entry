@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="search_core">
-      <!-- 选择国家和法币  -->
+      <!-- 国家和法币  -->
       <ul v-if="viewName === 'payCurrency' || viewName === 'payCurrency-sell' || viewName === 'payCurrency-sell-cardForm'">
         <div v-if="searchText===''">
           <div class="screen_title" v-if="recent_payCurrency.length > 0">Recent</div>
@@ -23,14 +23,6 @@
               <span class="abbreviationName"> {{ item.code }}</span>
             </p>
           </li>
-<!--          <div class="screen_title" v-if="poplar_payCurrency.length > 0">Popular</div>-->
-<!--          <li class="payCurrencyLi" v-for="(item,index) in poplar_payCurrency" :key="'poplar_payCurrency'+index" @click="choiseItem('payCurrency',item)">-->
-<!--            <p class="seach_li_text">-->
-<!--              <img :src="item.flag" :key="item.flag">-->
-<!--              <span class="allName">{{ item.enCommonName }} -</span>-->
-<!--              <span class="abbreviationName"> {{ item.code }}</span>-->
-<!--            </p>-->
-<!--          </li>-->
           <div class="screen_title">Available now</div>
           <li class="payCurrencyLi" v-for="(item,index) in basicData" :key="'basicData'+index" @click="choiseItem('payCurrency',item)">
             <p class="seach_li_text">
@@ -39,9 +31,6 @@
               <span class="abbreviationName"> {{ item.code }}</span> <!--  v-if="viewName === 'payCurrency'" -->
               <!-- <span class="abbreviationName" v-if="viewName === 'payCurrency-sell'">{{ item.fiatCode }}</span> -->
             </p>
-<!--            <p class="seach_li_rightIcon">-->
-<!--              <img src="../assets/images/rightIcon.png">-->
-<!--            </p>-->
           </li>
         </div>
         <div v-else>
@@ -52,9 +41,6 @@
               <span class="abbreviationName"> {{ item.code }}</span> <!--  v-if="viewName === 'payCurrency'" -->
               <!-- <span class="abbreviationName" v-if="viewName === 'payCurrency-sell'">{{ item.fiatCode }}</span> -->
             </p>
-<!--            <p class="seach_li_rightIcon">-->
-<!--              <img src="../assets/images/rightIcon.png">-->
-<!--            </p>-->
           </li>
         </div>
       </ul>
@@ -66,39 +52,39 @@
           <li v-for="(item,index) in cryptoCurrency_recentList" :key="'cryptoCurrency_recentList'+index" @click="choiseItem('currency',item)">
             <div class="seach_li_img">
               <img :src="item.logoUrl">
-              <!-- <p class="networkIcon" v-if="item.buyNetwork.logo"><img :src="item.buyNetwork.logo" alt=""></p> -->
+               <p class="networkIcon" v-if="item.buyNetwork.logo"><img :src="item.buyNetwork.logo" alt=""></p>
             </div>
-            <p class="seach_li_text currencyCopywriting">{{ item.name }} <span class="seach_li_allText" v-if="item.fullName"> - {{ item.fullName }}</span></p>   <!-- {{ item.buyNetwork.networkName }} -->
+            <p class="seach_li_text currencyCopywriting">{{ item.name }} <span class="seach_li_allText" v-if="item.buyNetwork.networkName"> - {{ item.buyNetwork.networkName }}</span></p>
           </li>
           <div class="screen_title" v-if="popularList.length > 0">{{ $t('nav.search_components_Popular') }}</div>
           <li v-for="(item,index) in popularList" :key="'popularList'+index" @click="choiseItem('currency',item)">
             <div class="seach_li_img">
               <img :src="item.logoUrl">
-              <!-- <p class="networkIcon" v-if="item.buyNetwork.logo"><img :src="item.buyNetwork.logo" alt=""></p> -->
+               <p class="networkIcon" v-if="item.buyNetwork.logo"><img :src="item.buyNetwork.logo" alt=""></p>
             </div>
-            <p class="seach_li_text currencyCopywriting">{{ item.name }} <span class="seach_li_allText" v-if="item.fullName"> - {{ item.fullName }}</span></p>
+            <p class="seach_li_text currencyCopywriting">{{ item.name }} <span class="seach_li_allText" v-if="item.buyNetwork.networkName"> - {{ item.buyNetwork.networkName }}</span></p>
           </li>
           <div class="screen_title">{{ $t('nav.search_components_All') }}</div>
           <li :class="{'allCurrencyLi': index===0}" v-for="(item,index) in cryptoCurrencyVOList" :key="'cryptoCurrencyVOList'+index" @click="choiseItem('currency',item)">
             <div class="seach_li_img">
               <img :src="item.logoUrl">
-              <!-- <p class="networkIcon" v-if="item.buyNetwork.logo"><img :src="item.buyNetwork.logo" alt=""></p> -->
+               <p class="networkIcon" v-if="item.buyNetwork.logo"><img :src="item.buyNetwork.logo" alt=""></p>
             </div>
-            <p class="seach_li_text currencyCopywriting">{{ item.name }} <span class="seach_li_allText" v-if="item.fullName"> - {{ item.fullName }}</span></p>
+            <p class="seach_li_text currencyCopywriting">{{ item.name }} <span class="seach_li_allText" v-if="item.buyNetwork.networkName"> - {{ item.buyNetwork.networkName }}</span></p>
           </li>
         </div>
         <div v-else>
           <li v-for="(item,index) in searchData" :key="'searchData'+index" @click="choiseItem('currency',item)">
             <div class="seach_li_img">
               <img :src="item.logoUrl">
-              <!-- <p class="networkIcon" v-if="item.buyNetwork.logo"><img :src="item.buyNetwork.logo" alt=""></p> -->
+               <p class="networkIcon" v-if="item.buyNetwork.logo"><img :src="item.buyNetwork.logo" alt=""></p>
             </div>
-            <p class="seach_li_text currencyCopywriting">{{ item.name }} <span class="seach_li_allText" v-if="item.fullName"> - {{ item.fullName }}</span></p>
+            <p class="seach_li_text currencyCopywriting">{{ item.name }} <span class="seach_li_allText" v-if="item.buyNetwork.networkName"> - {{ item.buyNetwork.networkName }}</span></p>
           </li>
         </div>
       </ul>
 
-      <!-- 选择网络 -->
+      <!-- 网络 -->
       <ul v-else-if="viewName === 'network'">
         <li v-for="(item,index) in basicData" :key="'basicData'+index" @click="choiseItem('network',item)">
           <!-- {{ item.network }} -->
@@ -107,27 +93,9 @@
         </li>
       </ul>
 
-      <!-- 卖币选择加密货币 -->
+      <!-- 卖币加密货币 -->
       <ul v-else-if="viewName === 'currency-sell'">
         <div v-if="searchText===''">
-<!--          <div class="screen_title" v-if="cryptoCurrency_recentList.length > 0">Recent</div>-->
-<!--          <li v-for="(item,index) in cryptoCurrency_recentList" :key="'cryptoCurrency_recentList'+index" @click="choiseItem('currency-sell',item)">-->
-<!--            <div class="seach_li_img">-->
-<!--              <img :src="item.logoUrl">-->
-<!--              <p class="networkIcon"><img src="../assets/images/hk.svg" alt=""></p>-->
-<!--            </div>-->
-<!--            <p class="seach_li_text currencyCopywriting">{{ item.name }} <span class="seach_li_allText" v-if="item.buyNetwork"> - {{ item.buyNetwork.networkName }}</span></p>-->
-<!--            <p class="seach_li_rightIcon"><img src="../assets/images/rightIcon.png"></p>-->
-<!--          </li>-->
-<!--          <div class="screen_title" v-if="popularList.length>0">Popular</div>-->
-<!--          <li v-for="(item,index) in popularList" :key="'popularList'+index" @click="choiseItem('currency-sell',item)">-->
-<!--            <div class="seach_li_img">-->
-<!--              <img :src="item.logoUrl">-->
-<!--              <p class="networkIcon"><img src="../assets/images/hk.svg" alt=""></p>-->
-<!--            </div>-->
-<!--            <p class="seach_li_text currencyCopywriting">{{ item.name }} <span class="seach_li_allText" v-if="item.sellNetwork"> - {{ item.sellNetwork.networkName }}</span></p>-->
-<!--            <p class="seach_li_rightIcon"><img src="../assets/images/rightIcon.png"></p>-->
-<!--          </li>-->
           <div class="screen_title">{{ $t('nav.search_components_All') }}</div>
           <li :class="{'allCurrencyLi': index===0}" v-for="(item,index) in cryptoCurrencyVOList" :key="'cryptoCurrencyVOList'+index" @click="choiseItem('currency-sell',item)">
             <div class="seach_li_img">
@@ -156,6 +124,8 @@
 <script>
 /**
  * 搜索、选择列表组件
+ * viewName - 组件名称
+ * allBasicData - 买卖币基本数据
  */
 
 export default {
@@ -333,71 +303,59 @@ export default {
       if(this.viewName === 'currency'){
         this.basicData = JSON.parse(JSON.stringify(this.allBasicData));
         this.$nextTick(()=>{
-          // let newCurrencyList = [];
-          // let newPopularList = [];
-          // let newrecentList = [];
-          // let newCurrencyList_network = [];
-          // let newPopularList_network = [];
-          // let newrecentList_network = [];
+          let newCurrencyList = [];
+          let newPopularList = [];
+          let newrecentList = [];
+          let newCurrencyList_network = [];
+          let newPopularList_network = [];
+          let newrecentList_network = [];
           //受欢迎的
-          // if(this.basicData.cryptoCurrencyResponse.popularList){
-          //   newPopularList = this.basicData.cryptoCurrencyResponse.popularList.filter(item=>{ return item.purchaseSupported === 1 });
-          //   newPopularList.forEach(item=>{
-          //     if(item.buyNetworkList){
-          //       item.buyNetworkList.forEach(item2=>{
-          //         let fiat = {
-          //           buyNetwork: item2,
-          //         }
-          //         fiat = {...fiat,...item};
-          //         newPopularList_network.push(fiat);
-          //       })
-          //     }
-          //   });
-          //   this.popularList = newPopularList_network;
-          // }
-          // //全部
-          // if(this.basicData.cryptoCurrencyResponse.cryptoCurrencyList){
-          //   newCurrencyList = this.basicData.cryptoCurrencyResponse.cryptoCurrencyList.filter(item=>{ return item.purchaseSupported === 1 });
-          //   newCurrencyList.forEach(item=>{
-          //     if(item.buyNetworkList){
-          //       item.buyNetworkList.forEach(item2=>{
-          //         let fiat = {
-          //           buyNetwork: item2,
-          //         }
-          //         fiat = {...fiat,...item};
-          //         newCurrencyList_network.push(fiat);
-          //       })
-          //     }
-          //   });
-          //   this.cryptoCurrencyVOList = newCurrencyList_network;
-          // }
-          // //历史交易过的币种
-          // if(this.basicData.cryptoCurrencyResponse.buyRecentList){
-          //   newrecentList = this.basicData.cryptoCurrencyResponse.buyRecentList.filter(item=>{ return item.purchaseSupported === 1 });
-          //   newrecentList.forEach(item=>{
-          //     if(item.buyNetworkList){
-          //       item.buyNetworkList.forEach(item2=>{
-          //         let fiat = {
-          //           buyNetwork: item2,
-          //         }
-          //         fiat = {...fiat,...item};
-          //         newrecentList_network.push(fiat);
-          //       })
-          //     }
-          //   });
-          //   this.cryptoCurrency_recentList = newrecentList_network
-          // }
-          this.cryptoCurrencyVOList = [];
-          this.cryptoCurrency_recentList = [];
-          this.popularList = [];
-          if(this.basicData.cryptoCurrencyResponse.cryptoCurrencyList){
-            this.cryptoCurrencyVOList = this.basicData.cryptoCurrencyResponse.cryptoCurrencyList.filter(item=>{return item.purchaseSupported === 1});
-          }
-          if(this.basicData.cryptoCurrencyResponse.buyRecentList){
-            this.cryptoCurrency_recentList = this.basicData.cryptoCurrencyResponse.buyRecentList.filter(item=>{return item.purchaseSupported === 1});
-          }
           if(this.basicData.cryptoCurrencyResponse.popularList){
-            this.popularList = this.basicData.cryptoCurrencyResponse.popularList.filter(item=>{return item.purchaseSupported === 1});
+            newPopularList = this.basicData.cryptoCurrencyResponse.popularList.filter(item=>{ return item.purchaseSupported === 1 });
+            newPopularList.forEach(item=>{
+              if(item.buyNetworkList){
+                item.buyNetworkList.forEach(item2=>{
+                  let fiat = {
+                    buyNetwork: item2,
+                  }
+                  fiat = {...fiat,...item};
+                  newPopularList_network.push(fiat);
+                })
+              }
+            });
+            this.popularList = newPopularList_network;
+          }
+          //全部
+          if(this.basicData.cryptoCurrencyResponse.cryptoCurrencyList){
+            newCurrencyList = this.basicData.cryptoCurrencyResponse.cryptoCurrencyList.filter(item=>{ return item.purchaseSupported === 1 });
+            newCurrencyList.forEach(item=>{
+              if(item.buyNetworkList){
+                item.buyNetworkList.forEach(item2=>{
+                  let fiat = {
+                    buyNetwork: item2,
+                  }
+                  fiat = {...fiat,...item};
+                  newCurrencyList_network.push(fiat);
+                })
+              }
+            });
+            this.cryptoCurrencyVOList = newCurrencyList_network;
+          }
+          //历史交易过的币种
+          if(this.basicData.cryptoCurrencyResponse.buyRecentList){
+            newrecentList = this.basicData.cryptoCurrencyResponse.buyRecentList.filter(item=>{ return item.purchaseSupported === 1 });
+            newrecentList.forEach(item=>{
+              if(item.buyNetworkList){
+                item.buyNetworkList.forEach(item2=>{
+                  let fiat = {
+                    buyNetwork: item2,
+                  }
+                  fiat = {...fiat,...item};
+                  newrecentList_network.push(fiat);
+                })
+              }
+            });
+            this.cryptoCurrency_recentList = newrecentList_network
           }
         })
         return;
@@ -469,7 +427,6 @@ export default {
         this.poplar_payCurrency = [];
         let newWorldList = [];
         let recent_newWorldList = [];
-        let poplar_newWorldList = [];
         if(allBasicData.worldList){
           allBasicData.worldList.forEach(item=>{
             if(item.sellFiatList){
@@ -501,49 +458,14 @@ export default {
           recent_newWorldList = recent_newWorldList.filter(item=>{return item.buyEnable === 1});
         }
         this.recent_payCurrency = recent_newWorldList;
-        //热门的
-        // if(this.allBasicData.buyPoplarWorldFiat){
-        //   this.allBasicData.buyPoplarWorldFiat.forEach(item=>{
-        //     if(item.buyFiatList){
-        //       item.buyFiatList.forEach(item2=>{
-        //         let fiat = {
-        //           code: item2.code,
-        //         }
-        //         fiat = {...fiat,...item};
-        //         poplar_newWorldList.push(fiat);
-        //       })
-        //     }
-        //   });
-        //   poplar_newWorldList = poplar_newWorldList.filter(item=>{return item.buyEnable === 1});
-        // }
-        // this.poplar_payCurrency = poplar_newWorldList;
         return;
       }
       if(this.viewName === 'currency-sell'){
         this.basicData = JSON.parse(JSON.stringify(this.allBasicData));
         if(this.basicData.cryptoCurrencyResponse){
           let newCurrencyList = [];
-          // let newPopularList = [];
-          // let newrecentList = [];
           let newCurrencyList_network = [];
-          // let newPopularList_network = [];
-          // let newrecentList_network = [];
           newCurrencyList = this.basicData.cryptoCurrencyResponse.cryptoCurrencyList.filter(item=>{ return item.isSell === 1 });
-          // newPopularList = this.basicData.cryptoCurrencyResponse.popularList.filter(item=>{ return item.isSell === 1 });
-          // newrecentList = this.basicData.cryptoCurrencyResponse.sellRecentList.filter(item=>{ return item.isSell === 1 });
-          //受欢迎的
-          // newPopularList.forEach(item=>{
-          //   if(item.sellNetworkList){
-          //     item.sellNetworkList.forEach(item2=>{
-          //       let fiat = {
-          //         sellNetwork: item2,
-          //       }
-          //       fiat = {...fiat,...item};
-          //       newPopularList_network.push(fiat);
-          //     })
-          //   }
-          // });
-          // this.popularList = newPopularList_network;
           //全部
           newCurrencyList.forEach(item=>{
             if(item.sellNetworkList){
@@ -557,19 +479,6 @@ export default {
             }
           });
           this.cryptoCurrencyVOList = newCurrencyList_network;
-          //历史交易过的币种
-          // newrecentList.forEach(item=>{
-          //   if(item.sellNetworkList){
-          //     item.sellNetworkList.forEach(item2=>{
-          //       let fiat = {
-          //         sellNetwork: item2,
-          //       }
-          //       fiat = {...fiat,...item};
-          //       newrecentList_network.push(fiat);
-          //     })
-          //   }
-          // });
-          // this.cryptoCurrency_recentList = newrecentList_network
         }
         return;
       }
@@ -601,7 +510,9 @@ export default {
           this.$parent.$refs.buyCrypto_ref.currencyData.networkFee = item.networkFee;
           this.$parent.$refs.buyCrypto_ref.currencyData.price = item.price;
           this.$parent.$refs.buyCrypto_ref.currencyData.serviceFee = item.serviceFee;
-          this.$parent.$refs.buyCrypto_ref.currencyData.buyNetwork = item.buyNetworkList;
+          this.$parent.$refs.buyCrypto_ref.currencyData.buyNetwork = item.buyNetwork;
+          console.log(item)
+          this.$store.state.buyRouterParams.buyNetwork = item.buyNetwork;
           this.$store.state.buyRouterParams.cryptoCurrency = item.name;
           this.$parent.$refs.buyCrypto_ref.payinfo();
           this.$parent.searchState = true;
