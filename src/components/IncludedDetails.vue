@@ -244,7 +244,7 @@ export default {
             this.$parent.calculationAmount();
           }
           //选择网络修改you get数量、商户对接计算you get数量
-          if(this.$store.state.buyRouterParams.network !== '' && this.$store.state.buyRouterParams.network !== undefined){
+          if(this.$store.state.buyRouterParams.buyNetwork.network !== '' && this.$store.state.buyRouterParams.buyNetwork.network !== undefined){
             let rampFee = this.$store.state.buyRouterParams.payCommission.rampFee;
             let networkFee = this.$store.state.buyRouterParams.exchangeRate * this.feeInfo.networkFee;
             let price = this.feeInfo.price * this.routerParams.exchangeRate

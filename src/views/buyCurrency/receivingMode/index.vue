@@ -177,6 +177,13 @@ export default {
         this.viewName = 'network';
       }
     },
+    selectNetwork(item){
+      this.buyParams.network = item.network;
+      this.networkInfo.networkName = item.networkName;
+      this.$store.state.buyRouterParams.buyNetwork = item
+      this.networkInfo.addressRegex = item.addressRegex;
+      this.networkAddressChange();
+    },
 
     //跳转选择支付方式页 整理下单接口和routerParams路由信息
     transaction(){

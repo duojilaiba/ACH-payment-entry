@@ -54,14 +54,6 @@ export default {
       choiseItem: {},
     }
   },
-  // beforeRouteLeave(to,from,next){
-  //   console.log(to,from)
-  //   next(vm=>{
-      // if(from.path === '/tradeHistory') {
-      //   vm.merchantDocking()
-      // }
-  //   });
-  // },
   mounted(){
     // this.$axios.get("/mail/templateSendSell?address=bc1qsyfgzjlwyyhrjk4u79rnx88qaw8s4d3phnlk2p&message=5","").then(()=>{
     // })
