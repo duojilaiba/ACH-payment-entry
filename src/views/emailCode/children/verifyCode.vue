@@ -11,7 +11,7 @@
       </div>
       <div style="position:relative;">
 
-      <div class="verifyCode_button" @click="toLogin" :style="{background:netActive && !showLoading?'#0059DAFF':''}">
+      <div class="verifyCode_button" @click="toLogin" :style="{opacity:netActive && !showLoading?' 1':'.25'}">
         {{ $t('nav.Proceed') }}
         <img class="icon" src="@/assets/images/rightIconSell.png" alt="" v-if="!showLoading">
         <van-loading class="icon" type="spinner" color="#fff" v-else/>
@@ -239,7 +239,7 @@ import { fingerprintId } from '@/utils/publicRequest.js';
   .verifyCode_button{
     width: 100%;
     height: .58rem;
-    background: rgba(0, 89, 218, 0.5);
+    background: linear-gradient(88.06deg, #0059DA 0%, #1BB2F2 100%);
     border-radius: .29rem;
     font-size: .17rem;
     display: flex;
@@ -251,6 +251,7 @@ import { fingerprintId } from '@/utils/publicRequest.js';
     color: #FAFAFA;
     font-family: "SFProDisplayRegular";
     cursor: pointer;
+    opacity: .25;
     .icon{
       // width: .24rem;
       height: .2rem;

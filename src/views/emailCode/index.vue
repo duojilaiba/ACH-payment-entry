@@ -352,7 +352,7 @@ box-shadow: 0px 0px 35px rgba(89, 153, 248, 0.2);`
   .emailCode_button{
     width: 100%;
     height: .58rem;
-    background: #0059DA;
+    background: linear-gradient(88.06deg, #0059DA 0%, #1BB2F2 100%);
     border-radius: .29rem;
     font-size: .17rem;
     text-align: center;

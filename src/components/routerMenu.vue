@@ -419,7 +419,7 @@ export default {
     }
     >div{
       width: 90%;
-      background: #0059DA;
+      background: linear-gradient(88.06deg, #0059DA 0%, #1BB2F2 100%);;
       border-radius: .3rem;
       height: .58rem;
       font-size: .17rem;

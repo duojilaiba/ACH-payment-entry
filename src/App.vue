@@ -4,6 +4,8 @@
         <div id="App" >
           <!-- 导航栏 -->
           <tab ref="viewTab"/>
+          <!-- 买币新增步骤 -->
+          <buyNavTab v-if="routerViewState "/>
           <!-- 页面内容 -->
           <div class="routerView_box" v-show="routerViewState">
             <div class="routerView">
@@ -57,6 +59,7 @@ export default {
     'QueryOrderStatusTips': ()=>import("./components/QueryOrderStatusTips"),
     'Language': ()=>import("./components/Language.vue"),
     'tab': ()=>import("./components/navigationBar"),
+    'buyNavTab': ()=>import("./components/buyNavTab.vue"),
   },
   data(){
     return{

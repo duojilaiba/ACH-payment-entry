@@ -510,7 +510,7 @@ export default {
     div{
       width: 100%;
       height: .58rem;
-       background: #0059DA;
+       background: linear-gradient(88.06deg, #0059DA 0%, #1BB2F2 100%);
       color: #FFFFFF;
       border-radius: .3rem;
       display: flex;
@@ -559,7 +559,7 @@ export default {
         p:first-child{
           width: 1.5rem;
           height: .5rem;
-          background: #0059DA;
+          background: linear-gradient(88.06deg, #0059DA 0%, #1BB2F2 100%);;
           border-radius: .25rem;
           color: #FFFFFF;
           line-height: .5rem;

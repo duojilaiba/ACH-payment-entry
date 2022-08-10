@@ -171,7 +171,7 @@ export default {
       width: 100%;
       height: .58rem;
       border-radius: .3rem;
-      background: #0059DA;
+      background: linear-gradient(88.06deg, #0059DA 0%, #1BB2F2 100%);
       display: flex;
       justify-content: center;
       align-items: center;
