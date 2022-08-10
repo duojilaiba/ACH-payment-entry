@@ -315,11 +315,15 @@ export default {
 
 .formLine{
   margin-top: 0.32rem;
+  &:first-child{
+    margin-top: 0;
+  }
   .formTitle{
+    font-family: SFProDisplayRegular;
+    font-weight: 400;
     font-size: 0.13rem;
-    font-family: "GeoRegular", GeoRegular;
-    font-weight: normal;
-    color: #707070;
+    line-height: 0.16rem;
+    color: #6E7687;
     display: flex;
     align-items: flex-end;
     .formTitle_logo{

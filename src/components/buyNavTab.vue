@@ -1,6 +1,6 @@
 <template>
   <div class="buyNavTab-container" v-if="tabShow">
-    
+
     <div class="buyNavTab_content">
       <img class="icon" src="../assets/images/buyTabImg/Receive.png" v-if="$route.name !== 'receivingMode'" alt="">
       <img class="iconActive" src="../assets/images/buyTabImg/ReceiveActive.png" alt="" v-if="$route.name === 'receivingMode'">
@@ -15,16 +15,16 @@
       <img class="icon" src="../assets/images/buyTabImg/order.png" v-if="$route.name !=='creditCardConfig' && $route.name !=='paymentResult'&&$route.name !== 'otherWays-VA' && $route.name !== 'otherWayPay'" alt="">
       <img class="iconActive" src="../assets/images/buyTabImg/orderActive.png" v-if="$route.name ==='creditCardConfig' || $route.name ==='paymentResult' || $route.name == 'otherWays-VA' || $route.name === 'otherWayPay'" alt="">
     </div>
-      
-      
+
+
   </div>
 </template>
-<script> 
+<script>
 export default{
   name:'BuyNavTab',
   data(){
     return{
-      
+
     }
   },
   computed:{
@@ -35,7 +35,7 @@ export default{
       }else{
         return false
       }
-      
+
     }
   }
 }
@@ -44,7 +44,7 @@ export default{
 <style lang="scss" scoped>
 .buyNavTab-container{
   width: 100%;
-  padding: .16rem 0 .0rem;
+  padding: .16rem 0 0.18rem .0rem;
   display: flex;
   align-items: center;
   justify-content: space-between;

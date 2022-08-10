@@ -1,69 +1,69 @@
 <template>
   <div id="paymentMethod">
-    <div class="paymentMethod-content">
-      <AllPaymentMethod :paymethodList="paymethodList" :savedCard="savedCard"/>
-      <!-- 历史支付的方式 -->
-      <div class="payMethodsUl" v-if="savedCard.length !== 0 && $store.state.customized_orderMerchant">
-        <div class="title">
-          <div>Recently Used</div>
-          <div class="edit" @click="editCardInfo" v-if="!$route.query.merchant_orderNo">
-            <span>{{ editCardInfo_state===false ? 'Edit' : 'Cancel' }}</span>
-          </div>
-        </div>
-        <div class="payMethodsLi" :class="{'cardCheck': cardCheck === index}" v-for="(item,index) in savedCard" :key="index" @click="choiseSavedCard(item,index)">
-          <div class="payMethodsLi-left">
-            <div class="cardIcon">
-              <img v-if="item.payWayCode === '10003' || '10001'" src="../../../assets/images/10001-icon.png">
-              <img v-if="item.payWayCode === 10004" src="../../../assets/images/10004-icon.png">
-              <img v-if="item.payWayCode === 10005" src="../../../assets/images/10005-icon.png">
-              <img v-if="item.payWayCode === 10006" src="../../../assets/images/10006-icon.png">
-              <img v-if="item.payWayCode === 10008" src ="../../../assets/images/10008-icon.png">
-            </div>
-            <div class="cardInfo">
-              <p>{{ item.payWayName }} <span>{{ $t('nav.buy_payment_ending') }} {{ item.cardNumber.substring(item.cardNumber.length-4) }}</span></p>
-              <p>{{ $t('nav.buy_payment_instant') }}</p>
-            </div>
-          </div>
-          <div class="payMethodsLi-right" v-if="cardCheck === index">
-            <img src="../../../assets/images/cardCheckIcon.png">
-          </div>
-          <div class="payMethodsLi-right" v-if="editCardInfo_state===true">
-            <img class="editIcon" src="../../../assets/images/edit-icon.png" alt="">
-          </div>
-        </div>
-      </div>
-      <!-- 选择新的支付方式 -->
-      <div class="payMethodsUl">
-        <div class="title">Payment Method</div>
-        <div class="payMethodsLi" :class="{'cardCheck': paymethodCheck === index}" v-for="(item,index) in paymethodList" :key="index" @click="choisePayMethods(item,index)">
-          <div class="payMethodsLi-left">
-            <div class="cardIcon">
-              <img v-if="item.payWayCode === '10004'" src="../../../assets/images/10004-icon.png">
-              <img v-else-if="item.payWayCode === '10005'" src="../../../assets/images/10005-icon.png">
-              <img v-else-if="item.payWayCode === '10006'" src="../../../assets/images/10006-icon.png">
-              <img v-else-if="item.payWayCode === '10008'" src="../../../assets/images/10008-icon.png">
-              <img v-else-if="item.payWayCode === '10003' || '10001'" src="../../../assets/images/10001-icon.png">
-            </div>
-            <div class="cardInfo">
-              <p>{{ item.payWayName }}</p>
-              <p>{{ $t('nav.buy_payment_instant') }}</p>
-            </div>
-          </div>
-          <div class="payMethodsLi-right">
-            <img src="../../../assets/images/addCardIcon.png" v-if="paymethodCheck==='' || paymethodCheck !== index">
-            <img src="../../../assets/images/cardCheckIcon.png" v-else>
-          </div>
-        </div>
-      </div>
-      <CryptoCurrencyAddress v-if="$store.state.customized_orderMerchant"/>
-      <IncludedDetails class="IncludedDetails" ref="includedDetails_ref" :useFee="true" :isLoading="isLoading" :network="$store.state.buyRouterParams.network"/>
-    </div>
-    <button class="continue" :disabled="disabled" @click="confirm">
-<!--      {{ $t('nav.Continue') }}-->
-      Completed
-      <img class="rightIcon" src="../../../assets/images/button-right-icon.svg" alt="" v-if="!request_loading">
-      <i class="el-icon-loading rightIcon loadingIcon" v-else></i>
-    </button>
+    <AllPaymentMethod :paymethodList="paymethodList" :savedCard="savedCard"/>
+    <!--    <div class="paymentMethod-content">-->
+<!--      &lt;!&ndash; 历史支付的方式 &ndash;&gt;-->
+<!--      <div class="payMethodsUl" v-if="savedCard.length !== 0 && $store.state.customized_orderMerchant">-->
+<!--        <div class="title">-->
+<!--          <div>Recently Used</div>-->
+<!--          <div class="edit" @click="editCardInfo" v-if="!$route.query.merchant_orderNo">-->
+<!--            <span>{{ editCardInfo_state===false ? 'Edit' : 'Cancel' }}</span>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="payMethodsLi" :class="{'cardCheck': cardCheck === index}" v-for="(item,index) in savedCard" :key="index" @click="choiseSavedCard(item,index)">-->
+<!--          <div class="payMethodsLi-left">-->
+<!--            <div class="cardIcon">-->
+<!--              <img v-if="item.payWayCode === '10003' || '10001'" src="../../../assets/images/10001-icon.png">-->
+<!--              <img v-if="item.payWayCode === 10004" src="../../../assets/images/10004-icon.png">-->
+<!--              <img v-if="item.payWayCode === 10005" src="../../../assets/images/10005-icon.png">-->
+<!--              <img v-if="item.payWayCode === 10006" src="../../../assets/images/10006-icon.png">-->
+<!--              <img v-if="item.payWayCode === 10008" src ="../../../assets/images/10008-icon.png">-->
+<!--            </div>-->
+<!--            <div class="cardInfo">-->
+<!--              <p>{{ item.payWayName }} <span>{{ $t('nav.buy_payment_ending') }} {{ item.cardNumber.substring(item.cardNumber.length-4) }}</span></p>-->
+<!--              <p>{{ $t('nav.buy_payment_instant') }}</p>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="payMethodsLi-right" v-if="cardCheck === index">-->
+<!--            <img src="../../../assets/images/cardCheckIcon.png">-->
+<!--          </div>-->
+<!--          <div class="payMethodsLi-right" v-if="editCardInfo_state===true">-->
+<!--            <img class="editIcon" src="../../../assets/images/edit-icon.png" alt="">-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      &lt;!&ndash; 选择新的支付方式 &ndash;&gt;-->
+<!--      <div class="payMethodsUl">-->
+<!--        <div class="title">Payment Method</div>-->
+<!--        <div class="payMethodsLi" :class="{'cardCheck': paymethodCheck === index}" v-for="(item,index) in paymethodList" :key="index" @click="choisePayMethods(item,index)">-->
+<!--          <div class="payMethodsLi-left">-->
+<!--            <div class="cardIcon">-->
+<!--              <img v-if="item.payWayCode === '10004'" src="../../../assets/images/10004-icon.png">-->
+<!--              <img v-else-if="item.payWayCode === '10005'" src="../../../assets/images/10005-icon.png">-->
+<!--              <img v-else-if="item.payWayCode === '10006'" src="../../../assets/images/10006-icon.png">-->
+<!--              <img v-else-if="item.payWayCode === '10008'" src="../../../assets/images/10008-icon.png">-->
+<!--              <img v-else-if="item.payWayCode === '10003' || '10001'" src="../../../assets/images/10001-icon.png">-->
+<!--            </div>-->
+<!--            <div class="cardInfo">-->
+<!--              <p>{{ item.payWayName }}</p>-->
+<!--              <p>{{ $t('nav.buy_payment_instant') }}</p>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="payMethodsLi-right">-->
+<!--            <img src="../../../assets/images/addCardIcon.png" v-if="paymethodCheck==='' || paymethodCheck !== index">-->
+<!--            <img src="../../../assets/images/cardCheckIcon.png" v-else>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <CryptoCurrencyAddress v-if="$store.state.customized_orderMerchant"/>-->
+<!--      <IncludedDetails class="IncludedDetails" ref="includedDetails_ref" :useFee="true" :isLoading="isLoading" :network="$store.state.buyRouterParams.network"/>-->
+<!--    </div>-->
+<!--    <button class="continue" :disabled="disabled" @click="confirm">-->
+<!--&lt;!&ndash;      {{ $t('nav.Continue') }}&ndash;&gt;-->
+<!--      Completed-->
+<!--      <img class="rightIcon" src="../../../assets/images/button-right-icon.svg" alt="" v-if="!request_loading">-->
+<!--      <i class="el-icon-loading rightIcon loadingIcon" v-else></i>-->
+<!--    </button>-->
   </div>
 </template>
 
@@ -210,7 +210,6 @@ export default {
             _this.savedCard = _this.savedCard.filter(item=>{
               return item.payWayCode === '10001';
             })
-            console.log(_this.savedCard)
             //只有信用卡开放历史卡信息功能
             if(_this.$store.state.customized_orderMerchant && _this.savedCard.length !== 0 ){
               _this.choiseSavedCard(_this.savedCard[0],0)
