@@ -12,8 +12,8 @@
     </div>
     <img  src="../assets/images/buyTabImg/IconRight.png" alt="">
     <div class="buyNavTab_content">
-      <img class="icon" src="../assets/images/buyTabImg/order.png" v-if="$route.name !=='creditCardConfig'" alt="">
-      <img class="iconActive" src="../assets/images/buyTabImg/orderActive.png" v-if="$route.name ==='creditCardConfig'" alt="">
+      <img class="icon" src="../assets/images/buyTabImg/order.png" v-if="$route.name !=='creditCardConfig' && $route.name !=='paymentResult'&&$route.name !== 'otherWays-VA' && $route.name !== 'otherWayPay'" alt="">
+      <img class="iconActive" src="../assets/images/buyTabImg/orderActive.png" v-if="$route.name ==='creditCardConfig' || $route.name ==='paymentResult' || $route.name == 'otherWays-VA' || $route.name === 'otherWayPay'" alt="">
     </div>
       
       
@@ -29,7 +29,8 @@ export default{
   },
   computed:{
     tabShow(){
-      if((this.$route.name === 'receivingMode' ||this.$route.name === 'paymentMethod'  ||this.$route.name === 'modifyCardInfo' || this.$route.name ==='creditCardConfig' || this.$route.name ==='otherWays-VA' || this.$route.name ==='otherWayPay' || this.$route.name ==='paymentResult') && this.$parent.$refs.viewTab.tabState === true){
+      //receivingMode 填写地址 \  paymentMethod 选择卡信息   \ creditCardConfig  确认订单 \ paymentResult 支付结果页
+      if((this.$route.name === 'receivingMode' ||this.$route.name === 'paymentMethod'  || this.$route.name ==='creditCardConfig' || this.$route.name ==='otherWays-VA' || this.$route.name ==='otherWayPay' || this.$route.name ==='paymentResult') && this.$parent.$refs.viewTab.tabState === true){
         return true
       }else{
         return false
@@ -43,7 +44,7 @@ export default{
 <style lang="scss" scoped>
 .buyNavTab-container{
   width: 100%;
-  padding: .16rem 0 .2rem;
+  padding: .16rem 0 .0rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -51,7 +52,6 @@ export default{
     height: .24rem;
   }
   .buyNavTab_content{
-   
     .icon{
       height: .36rem;
     }
